@@ -1,0 +1,10 @@
+This directory contains files used by the qmake[1] to build a stand-alone application.
+
+
+AprilDream.pro
+==============
+
+qmake project file.
+
+
+[1] - http://qt-project.org/doc/qt-4.8/qmake-manual.html

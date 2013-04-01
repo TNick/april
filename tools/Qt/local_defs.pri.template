@@ -1,0 +1,7 @@
+
+#
+#	Define BB_MEMTRACK to track memory usage. If this constant is not defined
+#	the components are completly removed from output.
+#
+# DEFINES += BB_MEMTRACK=1
+# 

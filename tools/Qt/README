@@ -1,0 +1,25 @@
+This directory contains scripts that may be used to build various parts of this project using qmake[1].
+Each directory coresponds to a product or component that may be build.
+
+
+version.pri
+===========
+
+Version information. Gets included in each final product.
+
+
+library-sources.pri
+===================
+
+qmake include file. Groups all the files that compose the library (either static or dynamic). By including these files in a project one can avoid using libraries.
+
+
+local_defs.pri and local_defs.pri.template
+==========================================
+
+The file local_defs.pri is not part of the distribution and needs to be created, based on the guidlines in local_defs.pri.template.
+It contains qmake definitions specific to the machine and to the type of build that is desired.
+
+
+
+[1] - http://qt-project.org/doc/qt-4.8/qmake-manual.html
