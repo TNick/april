@@ -24,7 +24,7 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include	"world.h"
-
+#include	<april/aprillibrary.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -55,7 +55,7 @@ World::World	( void )
 	b_running_( false )
 {
 	APRDBG_CDTOR;
-	/* stub */
+	AprilLibrary::addWorld( this );
 }
 /* ========================================================================= */
 
@@ -63,7 +63,7 @@ World::World	( void )
 World::~World	( void )
 {
 	APRDBG_CDTOR;
-	/* stub */
+	AprilLibrary::remWorld( this );
 }
 /* ========================================================================= */
 

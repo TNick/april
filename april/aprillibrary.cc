@@ -163,11 +163,6 @@ void			AprilLibrary::internalAddWorld			( World * world )
 	}
 	uniq_->worlds_.append( world );
 	world->incRef();
-#	ifdef	LIBDIGIB_SIGNALS
-	connect( world, SIGNAL(destroyed()),
-			 uniq_, SLOT( worldDestroyed() ) );
-	emit worldCreated( world );
-#	endif	/* LIBDIGIB_SIGNALS */
 }
 /* ========================================================================= */
 
@@ -211,11 +206,15 @@ void			AprilLibrary::internalRemWorld			( int i, World * world )
 	}
 	worlds_.removeAt( i );
 	world->decRef();
-#	ifdef	LIBDIGIB_SIGNALS
-	disconnect( world, SIGNAL(destroyed()),
-				uniq_, SLOT( worldDestroyed() ) );
-	emit worldRemoved( world );
-#	endif	/* LIBDIGIB_SIGNALS */
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			AprilLibrary::hasWorld						( World * world )
+{
+	Q_ASSERT( uniq_ != NULL );
+	int i = uniq_->worlds_.indexOf( world );
+	return ( i != -1 );
 }
 /* ========================================================================= */
 

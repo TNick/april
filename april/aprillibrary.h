@@ -197,7 +197,7 @@ public:
 	static void		remWorld			(
 			World *			world
 			);
-
+	
 protected:
 
 
