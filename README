@@ -1,0 +1,39 @@
+Introduction
+===========================
+
+This library is ... tbd.
+
+
+Licence
+===========================
+
+The project is distributed under the 3-clause license
+("Revised BSD License", "New BSD License", or 
+"Modified BSD License") [1]. Read about it in the COPYING file.
+
+
+Instalation
+===========================
+
+To build and install the library follow the instructions in INSTALL file.
+
+
+Content of the package
+===========================
+
+build (directory)
+    by default the result of the building process are placed 
+    in this directory. It is not part of the source distribution.
+debian (directory)
+    contains the files that are used to generate debian distributions.
+distrib (directory)
+    this is where the distributions are generated. It is not part of the source distribution.
+april (directory)
+    groups the C++ source files and headers
+tools (directory)
+    various helper files
+
+
+    
+    
+[1] http://en.wikipedia.org/wiki/BSD_licenses#3-clause_license_.28.22Revised_BSD_License.22.2C_.22New_BSD_License.22.2C_or_.22Modified_BSD_License.22.29

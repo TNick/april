@@ -1,0 +1,14 @@
+Dependencies
+===========================
+
+Before building the library make sure following dependencies are met:
+- Qt libraries >= 4.8.0
+
+
+Building
+===========================
+
+Building using qmake
+....................
+
+At this time the project uses only the qmake build system.

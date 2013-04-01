@@ -1,0 +1,18 @@
+Deploy
+===========================
+- installer for Windows
+- package for Debian
+
+Debian
+===========================
+- proper description in "control"
+
+
+Windows
+===========================
+- nsis installer control file
+
+
+Help, Documentation
+===========================
+
