@@ -1,0 +1,19 @@
+This directory contains files used with NSIS 2.46 to generate windows installers.
+
+Some caveats:
+
+Run 
+
+    git archive --format tar.gz -o "./distrib/april-1.0.0.tar.gz" -9 master
+
+to create an archive that contains the source code. Notice the 1.0.0 that is the version.
+
+Also, building with a debug configuration will not do the job even if debug_and_release is selected in .pro files. Each project needs to be switched to release mode and rebuilded.
+
+The compressor is selected in nsis script around line:
+
+;SetCompressor /SOLID lzma
+;SetCompressorDictSize 12
+SetCompressor /SOLID ZLIB
+
+For a better compression uncomment first two lines and comment third. This is because lzma takes a long time.

@@ -1,0 +1,16 @@
+This directory contains files used to generate 
+documentation from source code using doxygen[1].
+
+
+Miscellaneous
+=============
+
+To create a zip archive from the documentation enter the 
+directory containing html directory and type:
+
+    cd html
+    zip -r ../libdocs.zip .
+    cd ..
+
+
+[1] - http://www.stack.nl/~dimitri/doxygen/manual/index.html

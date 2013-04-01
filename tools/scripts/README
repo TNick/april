@@ -1,0 +1,18 @@
+This directory contains scripts that help the developer do repetitive tasks.
+
+tpl.py
+======
+
+Python script that generates new files in $PROJECT/src directory or one of its subdirectory.
+The types of files that it can generate are:
+  0 - C/C++ header (.h)
+  1 - C/C++ source file (.cc)
+  2 - C/C++ pair (.h and .cc)
+  3 - C/C++ class (.h and .cc)
+  4 - C/C++ manager class (.h and .cc)
+  5 - Qt main form (ui, .h and .cc)
+  6 - Qt dialog (ui, .h and .cc)
+  7 - python file
+
+This uses template files in $PROJECT/tools/templ .
+
