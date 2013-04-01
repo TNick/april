@@ -1,0 +1,17 @@
+Source: april
+Section: libs
+Priority: extra
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: Nicu Tofan <nicu.tofan@gmail.com>
+Build-Depends: debhelper (>= 8.0.0), libqt4-dev(>= 4.4.0), qt4-dev-tools(>= 4.7.0), qt4-qmake(>= 4.7.0)
+Standards-Version: 3.9.4
+Homepage: http://github.com/TNick/april
+Vcs-Git: git://github.com/TNick/april.git
+
+Package: april
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: A library ...
+ The project is based on Qt framework.
+ .
+ A more detailed description will be added as the library evolves.
