@@ -26,7 +26,6 @@
 #include	"aprillibrary.h"
 
 #include	<libbbb/bbblibrary.h>
-#include	<QApplication>
 #include	<QSettings>
 
 /*  INCLUDES    ============================================================ */
@@ -70,7 +69,6 @@ AprilLibrary::AprilLibrary	( QObject * parent )
 AprilLibrary::~AprilLibrary	( void )
 {
 	APRDBG_CDTOR;
-	int i;
 
 	Q_ASSERT( uniq_ == this );
 	uniq_ = NULL;
@@ -98,7 +96,7 @@ void		AprilLibrary::saveProps		( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-DIGIBSHARED_EXPORT bool	initAprilLibrary			( void )
+APRILSHARED_EXPORT bool	initAprilLibrary			( void )
 {
 	APRDBG_FUNC(APRDBG_LIBRARY);
 	if ( AprilLibrary::unique() == NULL )
@@ -111,7 +109,7 @@ DIGIBSHARED_EXPORT bool	initAprilLibrary			( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-DIGIBSHARED_EXPORT void	endAprilLibrary			( void )
+APRILSHARED_EXPORT void	endAprilLibrary			( void )
 {
 	APRDBG_FUNC(APRDBG_LIBRARY);
 	if ( AprilLibrary::unique() != NULL )

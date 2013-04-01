@@ -31,7 +31,7 @@
 //
 /*  DEFINITIONS    --------------------------------------------------------- */
 
-using namespace digibrain;
+using namespace april;
 
 /*  DEFINITIONS    ========================================================= */
 //

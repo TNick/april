@@ -85,21 +85,6 @@ namespace   april    {
 #endif
 
 
-
-/**
-*	@brief	the geometry of matrices used with core
-*/
-enum	CoreGeometry		{
-
-	/// rows and columns for input matrix
-	InputSquare = 64,
-
-	/// rows and columns for output matrix
-	OutputSquare = 64
-
-};
-
-
 /*  DEFINITIONS    ========================================================= */
 //
 //

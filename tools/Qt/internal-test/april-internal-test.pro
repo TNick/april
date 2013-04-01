@@ -6,12 +6,12 @@ TEMPLATE = app
 CONFIG(debug, debug|release) {
 	TARGET = internal-test_debug
 } else {
-	TARGET = digibrain-internal-test
+	TARGET = internal-test
 	DEFINES += QT_NO_DEBUG
 }
-CONFIG += console warn_on build_all debug_and_release
+CONFIG += console warn_on
 INCLUDEPATH += ../../..
-QT += core gui network testlib
+QT += core gui network
 greaterThan( QT_MAJOR_VERSION, 4 ): QT += widgets
 
 
@@ -20,11 +20,10 @@ greaterThan( QT_MAJOR_VERSION, 4 ): QT += widgets
 #######################################################
 LIBS += -L../../../build
 CONFIG(debug, debug|release) {
-	LIBS += -ldigibrain_debug
+	LIBS += -lbbb_debug -lapril_debug -lapril-gui_debug
 } else {
-	LIBS += -ldigibrain
+	LIBS += -lbbb -lapril -lapril-gui
 }
-
 
 
 #######################################################
@@ -37,11 +36,6 @@ include( "../local_defs.pri" )
 # google test library
 LIBS += -lgtest_main -lgtest
 
-CONFIG(debug, debug|release) {
-	LIBS += -lbbb_debug -lmemy_debug -lqtcp_debug
-} else {
-	LIBS += -lbbb -lmemy -lqtcp
-}
 
 #######################################################
 #       Where to output the files we generate?        #
@@ -64,14 +58,6 @@ isEmpty( UI_DIR ) {
 #                    Components                       #
 #######################################################
 
-SOURCES += \
-	../../../libdigibrain/test/dblibrary_test.cc \
-	../../../libdigibrain/test/dbpattern_test.cc \
-    ../../../libdigibrain/test/dbadapter_test.cc
 
-SOURCES += \
-	../../../libdigibrain/test/dbagent_test.cc
-
-SOURCES += \
     ../../../libdigibrain/test/dbinpqueue_test.cc
 

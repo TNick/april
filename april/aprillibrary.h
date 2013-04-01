@@ -26,7 +26,6 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include    <april/april.h>
-#include    <april/memmng/memmanager.h>
 #include    <QObject>
 #include    <QSettings>
 
@@ -51,7 +50,7 @@ namespace   april    {
 *	@brief	Represents the root structure for the library
 */
 class APRILSHARED_EXPORT AprilLibrary		: public QObject, public MemTrack	{
-	QPRIL_OBJECT
+	APRIL_OBJECT
 	BBM_TRACK( AprilLibrary );
 
 	//
@@ -89,11 +88,6 @@ private:
 	*	@brief	the properties
 	*/
 	LibProps						props_;
-
-	/**
-	*	@brief	memory manager
-	*/
-	MemManager						mmanager_;
 
 	/**
 	*	@brief	the one and only instance
@@ -185,8 +179,8 @@ public:
 }   //  namespace   april
 
 /// starts the library
-DIGIBSHARED_EXPORT bool	initAprilLibrary			( void );
-DIGIBSHARED_EXPORT void	endAprilLibrary				( void );
+APRILSHARED_EXPORT bool	initAprilLibrary			( void );
+APRILSHARED_EXPORT void	endAprilLibrary				( void );
 
 #endif // __APRILLIBRARY_INC__
 /* ------------------------------------------------------------------------- */

@@ -61,3 +61,18 @@ isEmpty( UI_DIR ) {
 #                    Components                       #
 #######################################################
 
+SOURCES += \
+    ../../../april/aprillibrary.cc \
+    ../../../april/april_debug.cc
+
+HEADERS += \
+    ../../../april/april_version.h \
+    ../../../april/aprillibrary.h \
+    ../../../april/april_global.h \
+    ../../../april/april_debug.h \
+    ../../../april/april_config.h \
+    ../../../april/april.h
+
+OTHER_FILES += \
+    ../../../april/april.dox
+
