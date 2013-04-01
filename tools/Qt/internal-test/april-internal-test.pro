@@ -61,3 +61,6 @@ isEmpty( UI_DIR ) {
 
     ../../../libdigibrain/test/dbinpqueue_test.cc
 
+SOURCES += \
+    ../../../april/tests/aprillibrary.cc
+

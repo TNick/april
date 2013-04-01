@@ -14,7 +14,6 @@ DEFINES += APRIL_GUI_LIBRARY
 QT += core gui
 greaterThan( QT_MAJOR_VERSION, 4 ): QT += widgets
 INCLUDEPATH += ../../..
-INCLUDEPATH += ../../../gui
 
 #######################################################
 #                     Components                      #

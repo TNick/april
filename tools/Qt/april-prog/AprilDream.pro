@@ -11,7 +11,6 @@ CONFIG(debug, debug|release) {
 }
 CONFIG += warn_on
 INCLUDEPATH += ../../..
-INCLUDEPATH += ../../../aprildream
 QT += core gui
 greaterThan( QT_MAJOR_VERSION, 4 ): QT += widgets
 
