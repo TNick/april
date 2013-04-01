@@ -67,6 +67,9 @@ class
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
 
+	friend class Actor;
+	friend class Event;
+
 	/*  DEFINITIONS    ===================================================== */
 	//
 	//
@@ -115,9 +118,6 @@ private:
 	//! the list of event factories
 	QMap<ID,EventFactory*>		events_factories_;
 
-	
-	
-	
 	/*  DATA    ============================================================ */
 	//
 	//
