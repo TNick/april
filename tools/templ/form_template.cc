@@ -55,7 +55,7 @@ using namespace april::Gui;
 ##CLASS##::##CLASS##	( QWidget *parent ) :
 	QMainWindow( parent ), MemTrack()
 {
-	DBNDBG_CDTOR;
+	APRDBG_CDTOR;
 
 	ui.setupUi( this );
 
@@ -65,7 +65,7 @@ using namespace april::Gui;
 /* ------------------------------------------------------------------------- */
 ##CLASS##::~##CLASS##	( void )
 {
-	DBNDBG_CDTOR;
+	APRDBG_CDTOR;
 	/* stub */
 }
 /* ========================================================================= */

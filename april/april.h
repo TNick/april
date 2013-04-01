@@ -29,6 +29,7 @@
 #include	<april/april_debug.h>
 #include	<april/april_version.h>
 #include	<libbbb/1/memtrack.h>
+#include    <libbbb/1/refcnt.h>
 
 /*  INCLUDES    ============================================================ */
 //

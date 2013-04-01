@@ -63,7 +63,8 @@ isEmpty( UI_DIR ) {
 
 SOURCES += \
     ../../../april/aprillibrary.cc \
-    ../../../april/april_debug.cc
+    ../../../april/april_debug.cc \
+    ../../../april/logic/world.cc
 
 HEADERS += \
     ../../../april/april_version.h \
@@ -71,7 +72,8 @@ HEADERS += \
     ../../../april/april_global.h \
     ../../../april/april_debug.h \
     ../../../april/april_config.h \
-    ../../../april/april.h
+    ../../../april/april.h \
+    ../../../april/logic/world.h
 
 OTHER_FILES += \
     ../../../april/april.dox

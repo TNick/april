@@ -38,6 +38,7 @@
 
 namespace   april    {
 
+class	World;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -58,6 +59,9 @@ class APRILSHARED_EXPORT AprilLibrary		: public QObject, public MemTrack	{
 	//
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
+
+	friend class World;
+	
 
 public:
 
@@ -88,6 +92,16 @@ private:
 	*	@brief	the properties
 	*/
 	LibProps						props_;
+
+	/**
+	*	@brief	associated worlds
+	*/
+	QList<World*>					worlds_;
+
+	/**
+	*	@brief	default world
+	*/
+	World*							def_world_;
 
 	/**
 	*	@brief	the one and only instance
@@ -161,6 +175,59 @@ public:
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
 
 
+
+	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
+	/** @name World related functionality
+	 */
+	///@{
+
+public:
+
+
+	/**
+	*	@brief	tell if an world is inside the chain
+	*/
+	static bool		hasWorld			(
+			World *			world
+			);
+
+	/**
+	*	@brief	remove a world
+	*/
+	static void		remWorld			(
+			World *			world
+			);
+
+protected:
+
+
+	/**
+	*	@brief	add a world
+	*
+	*	Do not use directly. This method is used by World constructor to
+	*	signal the parent library.
+	*/
+	static void		addWorld				(
+			World *			world
+			);
+
+private:
+
+
+	/**
+	*	@brief	adds the world
+	*/
+	void			internalAddWorld		( World * world );
+
+
+	/**
+	*	@brief	removes the world
+	*/
+	void			internalRemWorld		( int i, World * world );
+
+
+	///@}
+	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
 
 	/*  FUNCTIONS    ======================================================= */
 	//

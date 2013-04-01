@@ -26,6 +26,7 @@
 #include	"aprillibrary.h"
 
 #include	<libbbb/bbblibrary.h>
+#include	<april/logic/world.h>
 #include	<QSettings>
 
 /*  INCLUDES    ============================================================ */
@@ -137,6 +138,87 @@ void			AprilLibrary::LibProps::load			( QSettings & s )
 	s.endGroup();
 }
 /* ========================================================================= */
+
+
+/* ------------------------------------------------------------------------- */
+void			AprilLibrary::addWorld					( World * world )
+{
+	Q_ASSERT( uniq_ != NULL );
+	APRDBG_FUNC(APRDBG_LIBRARY);
+	Q_ASSERT( world != NULL );
+	int i = uniq_->worlds_.indexOf( world );
+	if ( i != -1 )
+		return;
+	uniq_->internalAddWorld( world );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void			AprilLibrary::internalAddWorld			( World * world )
+{
+	APRDBG_FUNC(APRDBG_LIBRARY);
+	if ( def_world_ == NULL )
+	{
+		def_world_ = world;
+	}
+	uniq_->worlds_.append( world );
+	world->incRef();
+#	ifdef	LIBDIGIB_SIGNALS
+	connect( world, SIGNAL(destroyed()),
+			 uniq_, SLOT( worldDestroyed() ) );
+	emit worldCreated( world );
+#	endif	/* LIBDIGIB_SIGNALS */
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void			AprilLibrary::remWorld					( World * world )
+{
+	Q_ASSERT( uniq_ != NULL );
+	APRDBG_FUNC(APRDBG_LIBRARY);
+	if ( uniq_ == NULL )
+		return;
+	Q_ASSERT( world != NULL );
+	int i = uniq_->worlds_.indexOf( world );
+	if ( i == -1 )
+	{
+		APRDBG2(APRDBG_LIBRARY,"The world does not exists in list ",
+				(quint64)world );
+	}
+	else
+	{
+		uniq_->internalRemWorld( i, world );
+	}
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void			AprilLibrary::internalRemWorld			( int i, World * world )
+{
+	if ( world->isRunning() )
+	{
+		world->stop();
+	}
+
+	if ( def_world_ == world )
+	{
+		if ( worlds_.count() == 1 )
+			def_world_ = NULL;
+		else if ( i == worlds_.count()-1 )
+			def_world_ = worlds_.at( i - 1 );
+		else
+			def_world_ = worlds_.at( i );
+	}
+	worlds_.removeAt( i );
+	world->decRef();
+#	ifdef	LIBDIGIB_SIGNALS
+	disconnect( world, SIGNAL(destroyed()),
+				uniq_, SLOT( worldDestroyed() ) );
+	emit worldRemoved( world );
+#	endif	/* LIBDIGIB_SIGNALS */
+}
+/* ========================================================================= */
+
 
 #ifdef	APRIL_SIGNALS
 

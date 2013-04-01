@@ -26,7 +26,7 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include    <QDialog>
-#include    <libapril/libapril.h>
+#include    <april/april.h>
 #include	"ui_##FILENAME##.h"
 
 /*  INCLUDES    ============================================================ */

@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			##FILENAME##.h
-  \date			##DATA##
-  \author		##AUTHOR##
+  \file			world.h
+  \date			Apr 2013
+  \author		TNick
 
-  \brief		Contains the definition for ##CLASS## class
+  \brief		Contains the definition for World class
 
 
 *//*
@@ -17,17 +17,15 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __##U_FILENAME##_INC__
-#define __##U_FILENAME##_INC__
+#ifndef __WORLD_INC__
+#define __WORLD_INC__
 //
 //
 //
 //
 /*  INCLUDES    ------------------------------------------------------------ */
 
-#include    <QMainWindow>
 #include    <april/april.h>
-#include	"ui_##FILENAME##.h"
 
 /*  INCLUDES    ============================================================ */
 //
@@ -38,8 +36,6 @@
 
 namespace   april    {
 
-namespace	Gui		{
-
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -47,13 +43,13 @@ namespace	Gui		{
 //
 /*  CLASS    --------------------------------------------------------------- */
 
-
 /**
-*	@brief	Form that ...
+*	@brief
 */
-class ##CLASS## : public QMainWindow, public MemTrack		{
-	Q_OBJECT
-	BBM_TRACK( ##CLASS## )
+class
+	APRILSHARED_EXPORT
+	World		: public libbbb::RefCnt, public MemTrack		{
+	BBM_TRACK( World );
 
 	//
 	//
@@ -71,11 +67,11 @@ class ##CLASS## : public QMainWindow, public MemTrack		{
 private:
 
 	/**
-	*	@brief	GUI components embedded here
+	*	@brief	running status
 	*/
-   Ui::##CLASS##         ui;
-
-
+	bool					b_running_:1;
+	
+	
 	/*  DATA    ============================================================ */
 	//
 	//
@@ -85,20 +81,51 @@ private:
 
 public:
 
-	/**
-	*	@brief	constructor
-	*/
-	explicit			##CLASS##		( QWidget *parent = 0 );
-
 
 	/**
-	*	@brief	destructor
+	*	@brief	constructor;
 	*/
-	~##CLASS##		(void);
-
+	World				( void );
 
 protected:
-	void				changeEvent		( QEvent *e );
+
+	/**
+	*	@brief	destructor;
+	*/
+	virtual				~World		( void );
+
+
+
+	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
+	/** @name Running
+	 */
+	///@{
+
+public:
+
+	/**
+	*	@brief	starts this world
+	*/
+	bool				start			( void )
+	{ b_running_ = true; return true; }
+
+
+	/**
+	*	@brief	stops this world
+	*/
+	void				stop			( void )
+	{ b_running_ = false; }
+
+
+	/**
+	*	@brief	tell if this world is running
+	*/
+	bool				isRunning		( void )
+	{ return b_running_; }
+
+
+	///@}
+	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
 
 
 	/*  FUNCTIONS    ======================================================= */
@@ -107,7 +134,7 @@ protected:
 	//
 	//
 
-};	/*	class ##CLASS##	*/
+};	/*	class World	*/
 
 /*  CLASS    =============================================================== */
 //
@@ -115,10 +142,8 @@ protected:
 //
 //
 
-}	//	namespace	Gui
-
 }   //  namespace   april
 
-#endif // __##U_FILENAME##_INC__
+#endif // __WORLD_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
