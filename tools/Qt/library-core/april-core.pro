@@ -70,7 +70,11 @@ SOURCES += \
     ../../../april/logic/factory.cc \
     ../../../april/logic/component.cc \
     ../../../april/logic/dna.cc \
-    ../../../april/logic/dnaview.cc
+    ../../../april/logic/dnaview.cc \
+    ../../../april/logic/sensorfactory.cc \
+    ../../../april/logic/eventfactory.cc \
+    ../../../april/logic/actuatorfactory.cc \
+    ../../../april/logic/actorfactory.cc
 
 HEADERS += \
     ../../../april/april_version.h \
@@ -85,7 +89,11 @@ HEADERS += \
     ../../../april/logic/component.h \
     ../../../april/logic/factory.h \
     ../../../april/logic/dna.h \
-    ../../../april/logic/dnaview.h
+    ../../../april/logic/dnaview.h \
+    ../../../april/logic/eventfactory.h \
+    ../../../april/logic/actuatorfactory.h \
+    ../../../april/logic/sensorfactory.h \
+    ../../../april/logic/actorfactory.h
 
 OTHER_FILES += \
     ../../../april/april.dox

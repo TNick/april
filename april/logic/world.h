@@ -236,9 +236,30 @@ public:
 	{ return sensor_factories_; }
 		
 	//! the list of event factories
-	const QMap<ID,EventFactory*>		eventeFactories		( void ) const
+	const QMap<ID,EventFactory*> &		eventFactories		( void ) const
 	{ return events_factories_; }
 
+
+	//! the actor factory for specified ID
+	ActorFactory*						actorFactory		( ID id ) const
+	{ return actor_factories_.value( id, NULL ); }
+	
+	//! the actuator factory for specified ID
+	ActuatorFactory*					actuatorFactory		( ID id ) const
+	{ return actuator_factories_.value( id, NULL ); }
+		
+	//! the brain factory for specified ID
+	BrainFactory*						brainFactory		( ID id ) const
+	{ return brain_factories_.value( id, NULL ); }
+		
+	//! the sensor factory for specified ID
+	SensorFactory*						sensorFactory		( ID id ) const
+	{ return sensor_factories_.value( id, NULL ); }
+		
+	//! the event factory for specified ID
+	EventFactory*						eventFactory		( ID id ) const
+	{ return events_factories_.value( id, NULL ); }
+	
 
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */

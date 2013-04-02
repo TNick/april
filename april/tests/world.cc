@@ -98,7 +98,7 @@ TEST(World, factories) {
 	EXPECT_EQ( w->actuatorFactories().count(), 0 );
 	EXPECT_EQ( w->brainFactories().count(), 0 );
 	EXPECT_EQ( w->sensorFactories().count(), 0 );
-	EXPECT_EQ( w->eventeFactories().count(), 0 );
+	EXPECT_EQ( w->eventFactories().count(), 0 );
 
 	endAprilLibrary();
 	
