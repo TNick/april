@@ -80,7 +80,7 @@ public:
 	/**
 	*	@brief	constructor;
 	*/
-	ActuatorFactory			( void );
+	ActuatorFactory			( World * w );
 
 protected:
 

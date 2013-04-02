@@ -50,8 +50,8 @@ using namespace april;
 /*  CLASS    --------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------------- */
-EventFactory::EventFactory	( void )
-	: Factory()
+EventFactory::EventFactory	( World * w )
+	: Factory( w )
 {
 	APRDBG_CDTOR;
 	/* stub */

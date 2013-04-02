@@ -50,8 +50,9 @@ using namespace april;
 /*  CLASS    --------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------------- */
-Factory::Factory	( void )
-	: libbbb::RefCnt(), MemTrack()
+Factory::Factory	( World * w )
+	: libbbb::RefCnt(), MemTrack(),
+	w_( w )
 {
 	APRDBG_CDTOR;
 	/* stub */

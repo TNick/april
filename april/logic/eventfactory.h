@@ -80,7 +80,7 @@ public:
 	/**
 	*	@brief	constructor;
 	*/
-	EventFactory			( void );
+	EventFactory			( World * w );
 
 
 protected:

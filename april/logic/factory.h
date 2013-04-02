@@ -26,6 +26,7 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include    <april/april.h>
+#include    <april/logic/uniqueid.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -35,6 +36,8 @@
 /*  DEFINITIONS    --------------------------------------------------------- */
 
 namespace   april    {
+
+class	World;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -66,7 +69,11 @@ class
 
 private:
 
+	//! the world where this class is hosted
+	World *				w_;
 
+	//! storage space for one name (usually there will only be one)
+	QString				s_name_for_id_;
 
 	/*  DATA    ============================================================ */
 	//
@@ -77,20 +84,33 @@ private:
 
 public:
 
-
 	/**
 	*	@brief	constructor;
 	*/
-	Factory				( void );
+	Factory						( World * w );
 
 protected:
 
 	/**
 	*	@brief	destructor;
 	*/
-	virtual				~Factory		( void );
+	virtual						~Factory		( void );
 
+public:
 
+	//! the world that hosts us;
+	inline World *				world			( void ) const
+	{ return w_; }
+
+	//! name of the element represented by provided ID
+	virtual const QString &		name			( ID id ) const
+	{ Q_UNUSED( id ); return s_name_for_id_; }
+
+protected:
+	
+	//! chang the name of the element represented by provided ID
+	void						setName			( const QString & s )
+	{ s_name_for_id_ = s; }
 
 
 

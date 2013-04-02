@@ -50,8 +50,9 @@ using namespace april;
 /*  CLASS    --------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------------- */
-ActorFactory::ActorFactory	( void )
-	: Factory()
+ActorFactory::ActorFactory	( World * w )
+	: Factory( w ),
+	default_dna_()
 {
 	APRDBG_CDTOR;
 	/* stub */

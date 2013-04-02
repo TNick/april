@@ -89,7 +89,7 @@ public:
 	/**
 	*	@brief	constructor;
 	*/
-	ActorFactory			( void );
+	ActorFactory			( World * w );
 
 protected:
 
@@ -107,6 +107,7 @@ public:
 
 	//! create a new actor
 	virtual Actor *			create				( ID id ) = 0;
+
 
 	/*  FUNCTIONS    ======================================================= */
 	//

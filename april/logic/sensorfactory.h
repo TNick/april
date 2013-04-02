@@ -80,7 +80,7 @@ public:
 	/**
 	*	@brief	constructor;
 	*/
-	SensorFactory			( void );
+	SensorFactory			( World * w );
 
 protected:
 
