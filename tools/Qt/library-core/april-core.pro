@@ -66,7 +66,9 @@ SOURCES += \
     ../../../april/april_debug.cc \
     ../../../april/logic/world.cc \
     ../../../april/logic/uniqueid.cc \
-    ../../../april/logic/actor.cc
+    ../../../april/logic/actor.cc \
+    ../../../april/logic/factory.cc \
+    ../../../april/logic/component.cc
 
 HEADERS += \
     ../../../april/april_version.h \
@@ -77,7 +79,9 @@ HEADERS += \
     ../../../april/april.h \
     ../../../april/logic/world.h \
     ../../../april/logic/uniqueid.h \
-    ../../../april/logic/actor.h
+    ../../../april/logic/actor.h \
+    ../../../april/logic/component.h \
+    ../../../april/logic/factory.h
 
 OTHER_FILES += \
     ../../../april/april.dox
