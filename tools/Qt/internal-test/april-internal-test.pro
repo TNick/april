@@ -10,6 +10,7 @@ CONFIG(debug, debug|release) {
 	DEFINES += QT_NO_DEBUG
 }
 CONFIG += console warn_on
+DEFINES += APRIL_INTERNAL_TESTS=1
 INCLUDEPATH += ../../..
 QT += core gui network
 greaterThan( QT_MAJOR_VERSION, 4 ): QT += widgets

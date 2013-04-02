@@ -88,7 +88,7 @@ qreal		DNAView::value		( int i ) const
 		return 0.0;
 	if ( i > count_ )
 		return 0.0;
-	Q_ASSERT( dna_->values_.length()	< start_ + i );
+	Q_ASSERT( dna_->values_.length() > start_ + i );
 	return dna_->values_.at( start_ + i );
 }
 /* ========================================================================= */

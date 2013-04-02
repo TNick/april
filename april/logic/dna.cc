@@ -125,6 +125,14 @@ bool			DNA::fromMerge	( const DNA & p1, const DNA & p2 )
 	{
 		return false;
 	}
+	if ( p1.values_i_.at( OffKind ) == InvalidId )
+	{
+		return false;
+	}
+	if ( p2.values_i_.at( OffKind ) == InvalidId )
+	{
+		return false;
+	}
 	
 	mergeAllParts( p1, p2 );
 	mergeAllVals( p1, p2 );
@@ -147,16 +155,21 @@ bool			DNA::mergeAllVals		( const DNA & p1, const DNA & p2 )
 	int iter_1 = OffMax;
 	int iter_2 = OffMax;
 	
-	mergeBrains( iter_1, iter_2, p1, p2 );
+	mergeBrains( p1, p2 );
 	iter_1 += p1.values_i_.at( OffBrains );
 	iter_2 += p2.values_i_.at( OffBrains );
 	
 	int res;
 	for ( int i = OffBrains+1; i < OffMax; i++ )
 	{
-		res = mergeUniteEl( iter_1, iter_2, p1, p2 );
+		res = mergeUniteEl( 
+					iter_1, iter_2, 
+					p1.values_i_.at( i ), 
+					p2.values_i_.at( i ),
+					p1, p2 );
 		if ( res == -1 )
 			return false;
+		values_i_[i] = (quint64)res;
 		iter_1 += p1.values_i_.at( i );
 		iter_2 += p2.values_i_.at( i );
 	}
@@ -172,6 +185,7 @@ int			DNA::mergeUniteEl		(
 		const DNA & p1, const DNA & p2 )
 {
 	bool b_not_found;
+	int cnt = values_i_.count();
 	if ( i_max_1 + iter_1 > p1.values_i_.count() )
 		return -1;
 	if ( i_max_2 + iter_2 > p2.values_i_.count() )
@@ -207,8 +221,8 @@ int			DNA::mergeUniteEl		(
 			values_i_.append( val );
 		}
 	}
-			
-	return true;
+	
+	return values_i_.count() - cnt;
 }
 /* ========================================================================= */
 
@@ -217,7 +231,11 @@ bool			DNA::mergeBrains		( const DNA & p1, const DNA & p2 )
 {
 	int i_max_1 = p1.values_i_.at( OffBrains );
 	int i_max_2 = p2.values_i_.at( OffBrains );
-	
+	if ( i_max_1 == 0 && i_max_2 == 0 )
+	{
+		values_i_[OffBrains] = 0;
+		return true;
+	}
 	int iter_1 = OffMax;
 	int iter_2 = OffMax;
 	
@@ -232,7 +250,7 @@ bool			DNA::mergeBrains		( const DNA & p1, const DNA & p2 )
 		{
 			/* if they are the same there is no decision to be made */
 			values_i_.append( p1.values_i_.at( iter_1 ) );
-			values_i_( OffBrains ) = 1;
+			values_i_[OffBrains] = 1;
 			return true;
 		}
 	}
@@ -248,7 +266,7 @@ bool			DNA::mergeBrains		( const DNA & p1, const DNA & p2 )
 	{
 		values_i_.append( p2.values_i_.at( iter_2+i ) );	
 	}
-	values_i_( OffBrains ) = 1;
+	values_i_[OffBrains] = 1;
 	return true;
 }
 /* ========================================================================= */
@@ -257,8 +275,9 @@ bool			DNA::mergeBrains		( const DNA & p1, const DNA & p2 )
 void			DNA::mergeAllParts		( 
 		const DNA & p1, const DNA & p2  )
 {
-	const Partition & part_1;
-	const Partition & part_2;
+#	define part_1(i) p1.parts_.at( i )
+#	define part_2(i) p2.parts_.at( i )
+	
 	int i_max_1 = p1.parts_.count();
 	int i_max_2 = p2.parts_.count();
 	int i_max_me;
@@ -267,22 +286,20 @@ void			DNA::mergeAllParts		(
 	/* iterate in partitions from first parent */
 	for ( int i = 0; i < i_max_1; i++ )
 	{
-		part_1 = p1.parts_.at( i ); 
-		if ( part_1.id_ == InvalidId )
+		if ( part_1(i).id_ == InvalidId )
 			continue;
 		b_found = false;
 		
 		/* attempt to locate same id in second parent */
 		for ( int j = 0; j < i_max_2; j++ )
 		{
-			part_2 = p2.parts_.at( j ); 
-			if ( part_2.id_ == InvalidId )
+			if ( part_2(j).id_ == InvalidId )
 				continue;
 			
 			/* if found merge and step to next in first parent */
-			if ( part_1.id_ == part_2.id_ )
+			if ( part_1(i).id_ == part_2(j).id_ )
 			{
-				mergeParts( part_1, part_2 );
+				mergeParts( part_1(i), part_2(j), p1, p2 );
 				b_found = true;
 				break;
 			}
@@ -290,7 +307,7 @@ void			DNA::mergeAllParts		(
 		/* if not found copy only from first parent */
 		if ( b_found == false )
 		{
-			mergePart( part_1, p1 );
+			mergePart( part_1(i), p1 );
 		}
 	}
 	i_max_me = values_.count();
@@ -298,18 +315,15 @@ void			DNA::mergeAllParts		(
 	/* iterate in partitions from second parent */
 	for ( int j = 0; j < i_max_2; j++ )
 	{
-		part_2 = p2.parts_.at( j ); 
-		if ( part_2.id_ == InvalidId )
+		if ( part_2(j).id_ == InvalidId )
 			continue;
 		
 		/* only add parts that were not added already */
 		for ( int i = 0; i < i_max_me; i++ )
 		{
-			part_1 = parts_.at( i ); 
-			part_1 = p1.parts_.at( i ); 
-			if ( part_1.id_ == InvalidId )
+			if ( parts_.at( i ).id_ == InvalidId )
 				continue;
-			if ( part_1.id_ == part_2.id_ )
+			if ( parts_.at( i ).id_ == part_2(j).id_ )
 			{
 				b_found = true;
 				break;				
@@ -319,9 +333,12 @@ void			DNA::mergeAllParts		(
 		/* if was not already added, add it now */
 		if ( b_found == false )
 		{
-			mergePart( part_2, p2 );
+			mergePart( part_2(j), p2 );
 		}
 	}
+#	undef	part_1
+#	undef	part_2
+	
 }
 /* ========================================================================= */
 
@@ -383,7 +400,7 @@ void			DNA::mergePart		(
 	Partition pout;
 	qreal val;
 	
-	pout.id_ = part_1.id_;
+	pout.id_ = part.id_;
 	pout.start_ = values_.count();
 	pout.count_ = i_max;
 	
@@ -400,18 +417,46 @@ void			DNA::mergePart		(
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-DNAView			DNA::getView	( ID id )
+DNAView			DNA::getView	( ID id, Factory * f )
 {
 	DNAView		view(this,InvalidId);
 	
 	int i = findID( id );
-	if ( i == -1 )
-		return view;
-	
+	if ( i != -1 )
+	{ /* id found in a partition */
+		view.setBegin( parts_.at( i ).start_ );
+		view.setCount( parts_.at( i ).count_ );
+	}
+	else
+	{ /* id was not found inside our parts */
+		if ( f == NULL )
+		{ /* no factory provided */
+			return view;
+		}
+		else
+		{ /* a factory was provided; attempt to request defaults */
+			QList<qreal> vals = f->defaultDNA( id );
+			Partition part;
+			if ( vals.count() == 0 )
+			{ /* no return */
+				return view;
+			}
+			
+			/* factory gave us the defaults; create new partition */
+			part.id_ = id;
+			part.count_ = vals.count();
+			part.start_ = values_.count();
+			parts_.append( part );
+			
+			/* append the values */
+			values_.append( vals );
+			
+			/* and return a view to them */
+			view.setBegin( part.start_ );
+			view.setCount( part.count_ );
+		}
+	}
 	view.setIdentificator( id );
-	view.setBegin( parts_.at( i ).start_ );
-	view.setCount( parts_.at( i ).count_ );
-	
 	return view;
 }
 /* ========================================================================= */
@@ -658,6 +703,70 @@ qreal				DNA::dnaNoise				( void )
 	return RAND_ARROUND_0 * noise_level;
 }
 /* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				DNA::addActuator			( ID id )
+{
+	if ( id == InvalidId )
+		return false;
+	
+	int i = OffMax + 
+			values_i_.at( OffBrains ) +
+			values_i_.at( OffActuators );
+	values_i_.insert( i, id );
+	values_i_[OffActuators]++;
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				DNA::addBrain				( ID id )
+{
+	if ( id == InvalidId )
+		return false;
+	
+	int i = OffMax + 
+			values_i_.at( OffBrains );
+	values_i_.insert( i, id );
+	values_i_[OffBrains]++;
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				DNA::addReflex				( ID id )
+{
+	if ( id == InvalidId )
+		return false;
+	
+	int i = OffMax + 
+			values_i_.at( OffBrains ) +
+			values_i_.at( OffActuators ) +
+			values_i_.at( OffSensors ) +
+			values_i_.at( OffReflexes );
+	values_i_.insert( i, id );
+	values_i_[OffReflexes]++;
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				DNA::addSensor				( ID id )
+{
+	if ( id == InvalidId )
+		return false;
+	
+	int i = OffMax + 
+			values_i_.at( OffBrains ) +
+			values_i_.at( OffActuators ) +
+			values_i_.at( OffSensors );
+	values_i_.insert( i, id );
+	values_i_[OffSensors]++;
+	return true;
+}
+/* ========================================================================= */
+
+
 
 /*  CLASS    =============================================================== */
 //

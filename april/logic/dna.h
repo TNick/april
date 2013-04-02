@@ -41,6 +41,7 @@
 namespace   april    {
 
 class World;
+class Factory;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -69,7 +70,7 @@ class
 	
 	friend class DNAView;
 	
-private:
+protected:
 	
 	
 	//! an entry in the list of partitions
@@ -107,12 +108,10 @@ public:
 	//
 	/*  DATA    ------------------------------------------------------------ */
 	
-private:
+protected:
 	
 	//! list of regions that partition the list of values
 	QVector<Partition>			parts_;
-	
-protected:
 	
 	//! actual sequence of numbers; subject to degradation
 	QList<qreal>				values_;
@@ -156,13 +155,6 @@ public:
 	*/
 	~DNA			( void );
 	
-	
-	//! get a view for a particular id
-	/**
-	 *	If the id is not to be found the DNAView will be invalid
-	 */
-	DNAView			getView			( ID id );
-	
 	//! set the DNA as a result of the two parents
 	/**
 	 *	This instance is set to the result of the merge. It is affected 
@@ -180,6 +172,21 @@ public:
 	//! tell if this instance s valid or not
 	bool			isValid			( void ) const;
 	
+	
+	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
+	/** @name examine components
+	 */
+	///@{
+	
+	
+	//! get a view for a particular id
+	/**
+	 *	If the id is not to be found and a factory is 
+	 *	provided then it is asked for a default for this ID.
+	 *	If that does not work the DNAView will be invalid.
+	 */
+	DNAView			getView			( ID id, Factory * f = NULL );
+
 	//! get the kind
 	ID				kind			( void ) const;
 	
@@ -195,7 +202,56 @@ public:
 	//! get the list of reflexes
 	QList<ID>		reflexes		( void ) const;
 	
+	///@}
+	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
+
+
+	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
+	/** @name add components
+	 */
+	///@{
+
+	//! append a brain
+	/**
+	 * May fail because id is invalid. The id is inserted in
+	 * the list and will be shown by a call to brains().
+	 * @param id the ID to insert (different than InvalidID)
+	 * @return true for success
+	 */
+	bool			addBrain		( ID id );
 	
+	//! append an actuator
+	/**
+	 * May fail because id is invalid. The id is inserted in
+	 * the list and will be shown by a call to actuators().
+	 * @param id the ID to insert (different than InvalidID)
+	 * @return true for success
+	 */
+	bool			addActuator		( ID id );
+		
+	//! append a sensor
+	/**
+	 * May fail because id is invalid. The id is inserted in
+	 * the list and will be shown by a call to sensors().
+	 * @param id the ID to insert (different than InvalidID)
+	 * @return true for success
+	 */
+	bool			addSensor		( ID id );
+		
+	//! append a reflex
+	/**
+	 * May fail because id is invalid. The id is inserted in
+	 * the list and will be shown by a call to reflexes().
+	 * @param id the ID to insert (different than InvalidID)
+	 * @return true for success
+	 */
+	bool			addReflex		( ID id );
+
+	
+	///@}
+	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
+
+
 	
 	//! save the content of this DNA to indicated object
 	bool			save			( QSettings & stg ) const;
@@ -215,6 +271,13 @@ protected:
 	
 private:
 	
+	
+	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
+	/** @name Merge helpers
+	 */
+	///@{
+
+
 	bool			mergeAllVals	(
 			const DNA &			p1,
 			const DNA &			p2
@@ -250,6 +313,21 @@ private:
 			const Partition &	part,
 			const DNA &			p
 			);
+	
+	
+	///@}
+	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
+	
+	
+#ifdef APRIL_INTERNAL_TESTS
+public:
+	void			setParts				( QVector<Partition> & new_val )
+	{ parts_ = new_val; }
+	void			setValues				( QList<qreal> & new_val )
+	{ values_ = new_val; }
+	void			setValuesI				( QList<quint64> & new_val )
+	{ values_i_ = new_val; }
+#endif
 	
 	
 	/*  FUNCTIONS    ======================================================= */

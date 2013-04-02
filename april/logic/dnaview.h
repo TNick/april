@@ -112,16 +112,20 @@ public:
 	
 	//! tell if this structure is valid or not
 	bool			isValid				( void ) const
-	{ return id_ == InvalidId; }
+	{ return id_ != InvalidId; }
 	
 	//! get the value at index i
 	qreal			value				( int i ) const;
 
-protected:
-
 	//! the unique ID of the component
 	inline ID		identificator		( void ) const
 	{ return id_; }
+	
+	//! the source DNA
+	inline const DNA *	source			( void ) const
+	{ return dna_; }
+
+protected:
 	
 	//! index of the first value
 	inline int		begin				( void ) const 
@@ -130,10 +134,6 @@ protected:
 	//! number of values
 	inline int		count				( void ) const
 	{ return count_; }
-	
-	//! the source DNA
-	inline const DNA *	source			( void ) const
-	{ return dna_; }
 
 
 	//! set the unique ID of the component
