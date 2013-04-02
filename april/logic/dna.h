@@ -29,6 +29,8 @@
 #include	<april/logic/uniqueid.h>
 #include	<april/logic/dnaview.h>
 
+#include	<QSettings>
+
 /*  INCLUDES    ============================================================ */
 //
 //
@@ -37,6 +39,8 @@
 /*  DEFINITIONS    --------------------------------------------------------- */
 
 namespace   april    {
+
+class World;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -67,6 +71,7 @@ class
 
 private:
 
+
 	//! an entry in the list of partitions
 	struct	Partition {
 		
@@ -79,6 +84,7 @@ private:
 		//! number of values
 		int			count_;
 	};
+	
 	
 public:
 	
@@ -126,15 +132,29 @@ public:
 
 
 	/**
-	*	@brief	constructor;
+	*	@brief	constructor; creates an empty, invalid shell
 	*/
-	DNA					( void );
-
+	DNA				( void );
+	
+	/**
+	*	@brief	constructor; creates a valid instance
+	*
+	*	The kind is looked up in the world and, if found, the default
+	*	DNA for that kind is copied.
+	*
+	*	The resulted instance may be invalid if something goes wrong
+	*	(world is invalid,  the kind does not
+	*	have a valid default DNA).
+	*
+	*	If the world does not contain that kind the instance is valid
+	*	but mostly empty.
+	*/
+	DNA				( const World * w, ID kind );
 
 	/**
 	*	@brief	destructor;
 	*/
-	~DNA				( void );
+	~DNA			( void );
 
 
 	//! get a view for a particular id
@@ -148,6 +168,34 @@ public:
 			const DNA &			p1,
 			const DNA &			p2
 			);
+	
+	//! tell if this instance s valid or not
+	bool			isValid			( void ) const;
+	
+	//! get the kind
+	ID				kind			( void ) const;
+	
+	//! get the list of brains
+	QList<ID>		brains			( void ) const;
+	
+	//! get the list of actuators
+	QList<ID>		actuators		( void ) const;
+	
+	//! get the list of sensors
+	QList<ID>		sensors			( void ) const;
+	
+	//! get the list of reflexes
+	QList<ID>		reflexes		( void ) const;
+
+	
+	
+	//! save the content of this DNA to indicated object
+	bool			save			( QSettings & stg ) const;
+	
+	//! load the content of this DNA from indicated object
+	bool			load			( QSettings & stg );
+	
+	
 	
 protected:
 
