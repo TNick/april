@@ -58,7 +58,9 @@ enum	UniqueIdSpecialCodes	{
 /**
 *	@brief	Provides support for unique identificators
 */
-class UniqueId				{
+class
+	APRILSHARED_EXPORT
+	UniqueId				{
 	BBM_TRACK( UniqueId );
 
 	//

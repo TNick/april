@@ -52,7 +52,9 @@ class Actor;
 /**
 *	@brief	An active ocupier of the world
 */
-class Actor		: public libbbb::RefCnt, public MemTrack		{
+class
+	APRILSHARED_EXPORT
+	Actor		: public libbbb::RefCnt, public MemTrack		{
 	BBM_TRACK( Actor );
 
 	//

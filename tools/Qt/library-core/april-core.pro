@@ -9,7 +9,7 @@ CONFIG(debug, debug|release) {
 	TARGET = april
 }
 CONFIG += dll warn_on
-DEFINES += DIGIB_LIBRARY
+DEFINES += APRIL_LIBRARY
 QT += core gui
 INCLUDEPATH += ../../..
 

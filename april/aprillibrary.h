@@ -50,7 +50,9 @@ class	World;
 /**
 *	@brief	Represents the root structure for the library
 */
-class APRILSHARED_EXPORT AprilLibrary		: public QObject, public MemTrack	{
+class
+	APRILSHARED_EXPORT
+	AprilLibrary		: public QObject, public MemTrack	{
 	APRIL_OBJECT
 	BBM_TRACK( AprilLibrary );
 
