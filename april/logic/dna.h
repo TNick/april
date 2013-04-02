@@ -4,10 +4,10 @@
   \file			dna.h
   \date			Apr 2013
   \author		TNick
-
+  
   \brief		Contains the definition for DNA class
-
-
+  
+  
 *//*
 
 
@@ -58,20 +58,20 @@ class World;
 *	Each part is accesible as a DNAView.
 */
 class
-	APRILSHARED_EXPORT
-	DNA				{
-
+		APRILSHARED_EXPORT
+		DNA				{
+	
 	//
 	//
 	//
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
-
+	
 	friend class DNAView;
-
+	
 private:
-
-
+	
+	
 	//! an entry in the list of partitions
 	struct	Partition {
 		
@@ -99,38 +99,38 @@ public:
 		OffMax
 		/* the list of brains, actuators, sensors, reflex id's follows */
 	};
-
+	
 	/*  DEFINITIONS    ===================================================== */
 	//
 	//
 	//
 	//
 	/*  DATA    ------------------------------------------------------------ */
-
+	
 private:
-
+	
 	//! list of regions that partition the list of values
 	QVector<Partition>			parts_;
-
+	
 protected:
 	
 	//! actual sequence of numbers; subject to degradation
 	QList<qreal>				values_;
-
+	
 	//! actual sequence of numbers; not subject to degradation
 	QList<quint64>				values_i_;
-
-
+	
+	
 	/*  DATA    ============================================================ */
 	//
 	//
 	//
 	//
 	/*  FUNCTIONS    ------------------------------------------------------- */
-
+	
 public:
-
-
+	
+	
 	/**
 	*	@brief	constructor; creates an empty, invalid shell
 	*/
@@ -150,13 +150,13 @@ public:
 	*	but mostly empty.
 	*/
 	DNA				( const World * w, ID kind );
-
+	
 	/**
 	*	@brief	destructor;
 	*/
 	~DNA			( void );
-
-
+	
+	
 	//! get a view for a particular id
 	/**
 	 *	If the id is not to be found the DNAView will be invalid
@@ -164,7 +164,15 @@ public:
 	DNAView			getView			( ID id );
 	
 	//! set the DNA as a result of the two parents
-	void			fromMerge		(
+	/**
+	 *	This instance is set to the result of the merge. It is affected 
+	 *	by random noise in the real part.
+	 *
+	 * @param p1 first parent
+	 * @param p2 second parent
+	 * @return true if the merge was succesfull
+	 */
+	bool			fromMerge		(
 			const DNA &			p1,
 			const DNA &			p2
 			);
@@ -186,7 +194,7 @@ public:
 	
 	//! get the list of reflexes
 	QList<ID>		reflexes		( void ) const;
-
+	
 	
 	
 	//! save the content of this DNA to indicated object
@@ -196,19 +204,60 @@ public:
 	bool			load			( QSettings & stg );
 	
 	
+	//! the level of noise to add to copy opperations
+	static qreal	dnaNoise		( void );
 	
 protected:
-
+	
 	//! get the index of the ID or -1 if not found
 	int				findID			( ID id ) const;
-
-
+	
+	
+private:
+	
+	bool			mergeAllVals	(
+			const DNA &			p1,
+			const DNA &			p2
+			);
+	
+	int				mergeUniteEl	(
+			int					iter_1,
+			int					iter_2,
+			int					i_max_1,
+			int					i_max_2,
+			const DNA &			p1,
+			const DNA &			p2
+			);
+	
+	bool			mergeBrains		(
+			const DNA &			p1,
+			const DNA &			p2
+			);
+	
+	void			mergeAllParts	(
+			const DNA &			p1,
+			const DNA &			p2
+			);
+	
+	void			mergeParts		(
+			const Partition &	part_1, 
+			const Partition &	part_2, 
+			const DNA &			p1, 
+			const DNA &			p2
+			);
+	
+	void			mergePart		(
+			const Partition &	part,
+			const DNA &			p
+			);
+	
+	
 	/*  FUNCTIONS    ======================================================= */
 	//
 	//
 	//
 	//
-
+	
 };	/*	class DNA	*/
 
 /*  CLASS    =============================================================== */

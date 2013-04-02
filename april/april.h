@@ -46,6 +46,11 @@ Object emit signals on certain actions if APRIL_SIGNALS is defined.
 #undef		LIBDIGIB_SIGNALS
 */
 
+#define RAND_0_1		( ((qreal)qrand()) / RAND_MAX )
+#define RAND_ARROUND_1	( RAND_0_1 + 0.5 )
+#define RAND_ARROUND_0	( RAND_0_1 - 0.5 )
+#define SMALL_RANDOM	( RAND_ARROUND_0 / 100000 )
+
 
 /*  DEFINITIONS    ========================================================= */
 //
