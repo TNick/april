@@ -99,6 +99,8 @@ public:
 	//! create an actuator;
 	virtual Sensor *		create				( Actor * ag, ID id ) = 0;
 
+protected:
+
 	//! add this class to the world
 	bool					addMyself			( ID id );
 

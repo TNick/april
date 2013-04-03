@@ -25,6 +25,7 @@
 
 #include	"actorfactory.h"
 #include	"world.h"
+#include	"actor.h"
 
 /*  INCLUDES    ============================================================ */
 //
@@ -72,6 +73,22 @@ bool				ActorFactory::addMyself			( ID id )
 {
 	Q_ASSERT( id != InvalidId );
 	return world()->addActorFactory( this, id );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void				ActorFactory::setDNA			( 
+	Actor * a, const DNA & dna )
+{
+	Q_ASSERT( a != NULL );
+	a->setDNA( dna );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void				ActorFactory::initDNA			( DNA & dna, ID id_kind )
+{
+	dna.initDNA( id_kind );
 }
 /* ========================================================================= */
 

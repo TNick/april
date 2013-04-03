@@ -71,6 +71,7 @@ class
 	friend class World;
 	friend class Reflex;
 	friend class Brain;
+	friend class ActorFactory;
 	
 	/*  DEFINITIONS    ===================================================== */
 	//
@@ -217,6 +218,10 @@ public:
 
 protected:
 
+	//! ste the DNA to provided sequence (intended for ActorFactory)
+	inline void			setDNA					( const DNA & src )
+	{ dna_ = src; }
+
 	//! load the components of the actor from the DNA
 	bool				decodeDNA				( void );
 
@@ -231,6 +236,7 @@ protected:
 
 	//! add a Brain
 	bool				addBrain				( Brain * act );
+
 
 
 	/*  FUNCTIONS    ======================================================= */

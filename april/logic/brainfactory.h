@@ -85,6 +85,7 @@ public:
 	*/
 	BrainFactory			( World * w );
 
+protected:
 
 	/**
 	*	@brief	destructor;
@@ -96,6 +97,8 @@ public:
 
 	//! create an actuator;
 	virtual Brain *		create				( Actor * ag, ID id ) = 0;
+
+protected:
 
 	//! add this class to the world
 	bool					addMyself			( ID id );

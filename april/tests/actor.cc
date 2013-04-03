@@ -33,33 +33,30 @@ TEST(Actor, init) {
 	endAprilLibrary();
 }
 
-enum TestId	{
+enum TestIds {
 	TestId = 1
 };
 
 class TstFact : public ActorFactory	{
 public:
 	
-	TstFact( World * w ) 
-		: ActorFactory( w )
-	{
+	TstFact( World * w ) : ActorFactory( w ) {
+		w->insertId( TestId, "kinds.test" );
 		addMyself( TestId );
-		DNA & d = defaultDNA();
-		DNA src( w, TestId );
-		d = src;
+		initDNA( TestId );
 	}
 	
-	virtual Actor *			create				( ID id )
-	{
+	virtual Actor * create ( ID id ) {
 		Q_UNUSED( id );
 		Q_ASSERT( id == TestId );
-		Actor * ret = new Actor( world() );
-		
+		/* create new instance that gets inserted in the world */
+		Actor * ret = new Actor( world() ); 
+		/* set a default dan */
+		setDNA( ret );
 		return ret;
 	}
 
-	virtual void			copyDefaultDNA		( DNA & destination )
-	{ 
+	virtual void copyDefaultDNA ( DNA & destination ) { 
 		destination = defaultDNA();
 	}
 
@@ -68,7 +65,7 @@ public:
 TEST(Actor, factory) {
 	
 	initAprilLibrary();
-	World * w = new World( "test-world", 1000 );
+	World * w = new World( __FUNCTION__, 1000 );
 	DEC_REF( w, w );
 	
 	TstFact * fact = new TstFact( w );
@@ -76,7 +73,6 @@ TEST(Actor, factory) {
 	
 	Actor * a = w->createActor( TestId );
 	EXPECT_TRUE( a != NULL );
-	
 	
 	
 	endAprilLibrary();

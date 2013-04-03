@@ -69,7 +69,8 @@ class
 	/*  DEFINITIONS    ----------------------------------------------------- */
 	
 	friend class DNAView;
-	
+	friend class ActorFactory;
+
 protected:
 	
 	
@@ -181,7 +182,7 @@ public:
 	
 	
 	//! energy cost
-	quint64				cost					( void ) const
+	quint64			cost			( void ) const
 	{ Q_ASSERT(values_i_.length() >= OffMax ); return values_i_.at( OffCost ); }
 	
 	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
@@ -279,6 +280,12 @@ protected:
 	//! get the index of the ID or -1 if not found
 	int				findID			( ID id ) const;
 	
+	//! initialise an empty DNA with a kind; the instance becomes valid
+	/**
+	 * This is usefull for ActorFactory to create a default DNA
+	 * @param id_kind the ID to set inside
+	 */
+	void			initDNA			( ID id_kind );
 	
 private:
 	

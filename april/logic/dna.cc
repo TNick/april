@@ -103,14 +103,29 @@ int				DNA::findID			( ID id ) const
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-bool			DNA::fromMerge	( const DNA & p1, const DNA & p2 )
+void			DNA::initDNA		( ID id_kind )
+{
+	parts_.clear();
+	values_.clear();
+	values_i_.clear();
+	
+	/* initialise the header */
+	values_i_.reserve( OffMax );
+	values_i_.append( id_kind );
+	for ( int i = OffKind+1; i < OffMax; i++ )
+	{
+		values_i_.append( 0 );
+	}
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			DNA::fromMerge		( const DNA & p1, const DNA & p2 )
 {
 	Q_UNUSED( p1 );
 	Q_UNUSED( p2 );
 	
-	parts_.clear();
-	values_.clear();
-	values_i_.clear();
+	initDNA( InvalidId );
 	
 	/* check compatibility */
 	if ( p1.values_i_.count() < OffMax )
@@ -133,7 +148,7 @@ bool			DNA::fromMerge	( const DNA & p1, const DNA & p2 )
 	{
 		return false;
 	}
-	
+	values_i_[OffKind] = p2.values_i_.at( OffKind );
 	mergeAllParts( p1, p2 );
 	mergeAllVals( p1, p2 );
 	
@@ -144,13 +159,6 @@ bool			DNA::fromMerge	( const DNA & p1, const DNA & p2 )
 /* ------------------------------------------------------------------------- */
 bool			DNA::mergeAllVals		( const DNA & p1, const DNA & p2 )
 {
-	/* initialise the header */
-	values_i_.reserve( OffMax );
-	values_i_.append( p1.values_i_.at( OffKind ) );
-	for ( int i = OffKind+1; i < OffMax; i++ )
-	{
-		values_i_.append( 0 );
-	}
 	
 	int iter_1 = OffMax;
 	int iter_2 = OffMax;

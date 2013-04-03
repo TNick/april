@@ -118,7 +118,25 @@ protected:
 
 	//! add this class to the world
 	bool					addMyself			( ID id );
-
+	
+	//! set the DNA in the actor
+	void					setDNA				( Actor * a, const DNA & dna );
+	
+	//! set default DNA in the actor
+	void					setDNA				( Actor * a )
+	{ setDNA( a, default_dna_ ); }
+	
+	//! initialise a DNA instance
+	/**
+	 * @param dna target structure
+	 * @param id_kind the id to set in target structure
+	 */
+	void					initDNA				( DNA & dna, ID id_kind );
+	
+	//! initialise default DNA instance
+	void					initDNA				( ID id_kind )
+	{ initDNA( default_dna_, id_kind ); }
+	
 	/*  FUNCTIONS    ======================================================= */
 	//
 	//

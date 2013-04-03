@@ -92,6 +92,9 @@ public:
 	*/
 	virtual				~Brain		( void );
 
+	//! parent actor
+	inline Actor *		actor		( void ) const
+	{ return actor_; }
 
 
 	/*  FUNCTIONS    ======================================================= */
