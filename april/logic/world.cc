@@ -91,6 +91,13 @@ bool				World::setTotEnergy			( quint64 new_val )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+Actor *				World::firstActor			( void ) const
+{
+	return firstActor_(this);
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
 void				World::advance				( void )
 {
 	if  ( b_running_ == false )
@@ -119,9 +126,16 @@ bool				World::remActor				( Actor * act )
 {
 	Q_ASSERT( actors_.contains( act ) == true );
 	
-	actors_.removeOne( act );
+	actors_.remove( act );
 	DEC_REF( act, this );
 	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+Event*				World::firstEvent			( void ) const
+{
+	return firstEvent_( this );
 }
 /* ========================================================================= */
 
@@ -140,7 +154,7 @@ bool				World::remEvent				( Event * ev )
 {
 	Q_ASSERT( events_.contains( ev ) == true );
 	
-	events_.removeOne( ev );
+	events_.remove( ev );
 	return true;
 }
 /* ========================================================================= */

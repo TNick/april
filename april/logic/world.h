@@ -27,6 +27,7 @@
 
 #include    <april/april.h>
 #include    <april/logic/uniqueid.h>
+#include    <libbbb/1/list2d.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -95,10 +96,10 @@ private:
 	quint64						energy_free_;
 
 	//! the list of actors (alive or recently dead)
-	QList<Actor*>				actors_;
+	List2Dh						actors_;
 	
 	//! the list of events (alive or recently dead)
-	QList<Event*>				events_;
+	List2Dh						events_;
 	
 	//! unique ID provider
 	UniqueId					uid_;
@@ -308,9 +309,8 @@ public:
 
 public:
 
-	//! the list of actors (alive or recently dead)
-	const QList<Actor*> &	actors		( void ) const
-	{ return actors_; }
+	//! first in the list of actors (alive or recently dead)
+	Actor *			firstActor			( void ) const;
 
 protected:
 
@@ -331,9 +331,8 @@ protected:
 	///@{
 
 	
-	//! the list of events (alive or recently dead)
-	const QList<Event*> &	events		( void ) const
-	{ return events_; }
+	//! first in the list of events (alive or recently dead)
+	Event *			firstEvent			( void ) const;
 
 protected:
 
