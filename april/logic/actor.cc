@@ -56,7 +56,20 @@ using namespace april;
 /* ------------------------------------------------------------------------- */
 Actor::Actor	( World * w )
 	: Component(),
-	world_( w )
+	world_( w ),
+	sensors_(),
+	actuators_(),
+	reflexes_(),
+	brains_(),
+	dna_(),
+	kind_(InvalidId),
+	birth_(0),
+	death_(0),
+	age_(0),
+	energy_(0),
+	cost_(0),
+	alive_(false),
+	payload_()
 {
 	APRDBG_CDTOR;
 	Q_ASSERT( w != NULL );
@@ -98,6 +111,13 @@ Reflex *		Actor::firstReflex				( void ) const
 Brain *			Actor::firstBrain				( void ) const
 {
 	return firstBrain_(this);
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+QString			Actor::kindName					( void ) const
+{
+	return world_->nameForId( kind_ );
 }
 /* ========================================================================= */
 

@@ -27,6 +27,8 @@
 
 #include    <april/april.h>
 #include    <april/logic/component.h>
+#include    <april/logic/dna.h>
+#include	<libbbb/1/amorph.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -95,6 +97,35 @@ private:
 	//! header for the list of brains
 	List2Dh					brains_;
 	
+	//! the DNA of this actor
+	DNA						dna_;
+	
+	//! the kind cached here (also present in DNA)
+	ID						kind_;
+
+	//! time of birth
+	quint64					birth_;
+	
+	//! time of death
+	quint64					death_;
+	
+	//! current age
+	quint64					age_;
+	
+	//! current energy reserve
+	quint64					energy_;
+	
+	//! running cost (energy substracted from energy_ on each time step)
+	quint64					cost_;
+
+	//! alive or dead
+	bool					alive_;
+
+	//! associated data
+	Amorph					payload_;
+
+
+
 
 	/*  DATA    ============================================================ */
 	//
@@ -107,21 +138,22 @@ public:
 
 
 	/**
-	*	@brief	constructor;
+	*	@brief	constructor; creates an invalid actor that needs 
+	*	further initialisation
 	*/
-	Actor			( World * w );
+	Actor				( World * w );
 
 protected:
 
 	/**
 	*	@brief	destructor;
 	*/
-	virtual			~Actor		( void );
+	virtual				~Actor					( void );
 
 public:
 
 	//! the world where we belong
-	inline World *	world					( void ) const
+	inline World *		world					( void ) const
 	{ return world_; }
 
 
@@ -129,16 +161,60 @@ public:
 	
 	
 	//! first sensor in internal list
-	Sensor *		firstSensor				( void ) const;
+	Sensor *			firstSensor				( void ) const;
 	
 	//! first actuator in internal list
-	Actuator *		firstActuator			( void ) const;
+	Actuator *			firstActuator			( void ) const;
 	
 	//! first reflex in internal list
-	Reflex *		firstReflex				( void ) const;
+	Reflex *			firstReflex				( void ) const;
 	
 	//! first brain in internal list
-	Brain *			firstBrain				( void ) const;
+	Brain *				firstBrain				( void ) const;
+
+
+	//! tell the kind
+	inline ID			kind					( void ) const
+	{ return kind_; }
+	
+	//! get the name of the kind (shortcut for UniqueId::name() )
+	QString				kindName				( void ) const;
+
+	//! tell the date of birth
+	inline quint64		birth					( void ) const
+	{ return birth_; }
+	
+	//! tell the date of death
+	inline quint64		death					( void ) const
+	{ return death_; }
+	
+	//! tell the age of this actor
+	inline quint64		age						( void ) const
+	{ return age_; }
+	
+	//! tell the life span of this actor
+	inline quint64		toLive					( void ) const
+	{ return death_-birth_; }
+	
+	//! energy reserve
+	quint64				energy					( void ) const
+	{ return energy_; }
+	
+	//! energy cost
+	quint64				cost					( void ) const
+	{ return cost_; }
+
+	//! alive or dead
+	bool				isAlive					( void ) const
+	{ return alive_; }
+	
+	//! tell if this is the moment when the agent dies
+	inline bool			dies					( void ) const
+	{ return (birth_+age_ >= death_); }
+
+	//! associated data
+	Amorph &			payload					( void )
+	{ return payload_; }
 
 
 	/*  FUNCTIONS    ======================================================= */
