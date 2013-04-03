@@ -36,6 +36,7 @@
 /*  DEFINITIONS    --------------------------------------------------------- */
 
 namespace   april    {
+class	Actor;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -45,7 +46,7 @@ namespace   april    {
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief
+*	@brief	Base class for sensors
 */
 class
 	APRILSHARED_EXPORT
@@ -67,6 +68,8 @@ class
 
 private:
 
+	//! parent actor
+	Actor *					actor_;
 
 
 	/*  DATA    ============================================================ */
@@ -82,13 +85,13 @@ public:
 	/**
 	*	@brief	constructor;
 	*/
-	Sensor			( void );
+	Sensor				( Actor * actor );
 
 
 	/**
 	*	@brief	destructor;
 	*/
-	virtual				~Sensor		( void );
+	virtual				~Sensor			( void );
 
 
 

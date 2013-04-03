@@ -87,7 +87,6 @@ World::World	( const QString & name, quint64 tot_energ )
 World::~World	( void )
 {
 	APRDBG_CDTOR;
-	AprilLibrary::remWorld( this );
 }
 /* ========================================================================= */
 

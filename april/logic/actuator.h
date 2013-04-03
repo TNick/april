@@ -46,7 +46,10 @@ class	Actor;
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief	
+*	@brief	Base class for actuators
+*
+*	This is the output of an actor. This may be a hand or a foot, for example,
+*	or the generic action of moving.
 */
 class
 	APRILSHARED_EXPORT
