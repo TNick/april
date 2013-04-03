@@ -6,7 +6,7 @@
 
 using namespace april;
 
-TEST(Agent, init) {
+TEST(Actor, init) {
 
 	initAprilLibrary();
 	World * w = new World( "test-world", 1000 );
@@ -65,7 +65,7 @@ public:
 
 };
 
-TEST(Agent, factory) {
+TEST(Actor, factory) {
 	
 	initAprilLibrary();
 	World * w = new World( "test-world", 1000 );

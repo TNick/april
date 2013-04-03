@@ -36,6 +36,7 @@
 /*  DEFINITIONS    --------------------------------------------------------- */
 
 namespace   april    {
+class	World;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -67,7 +68,8 @@ class
 
 private:
 
-
+	//! the world where this belongs
+	World *				world_;
 
 	/*  DATA    ============================================================ */
 	//
@@ -82,7 +84,7 @@ public:
 	/**
 	*	@brief	constructor;
 	*/
-	Event			( void );
+	Event				( World * w );
 
 
 	/**

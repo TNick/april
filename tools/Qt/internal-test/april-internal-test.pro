@@ -67,5 +67,9 @@ SOURCES += \
     ../../../april/tests/world.cc \
     ../../../april/tests/dna.cc \
     ../../../april/tests/actor.cc \
-    ../../../april/tests/actuator.cc
+    ../../../april/tests/actuator.cc \
+    ../../../april/tests/sensor.cc \
+    ../../../april/tests/reflex.cc \
+    ../../../april/tests/event.cc \
+    ../../../april/tests/brain.cc
 
