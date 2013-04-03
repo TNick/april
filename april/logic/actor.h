@@ -116,6 +116,9 @@ private:
 	quint64					energy_;
 	
 	//! running cost (energy substracted from energy_ on each time step)
+	/**
+	 * This value is cached here from DNA::cost().
+	 */
 	quint64					cost_;
 
 	//! alive or dead
@@ -179,6 +182,10 @@ public:
 	
 	//! get the name of the kind (shortcut for UniqueId::name() )
 	QString				kindName				( void ) const;
+	
+	//! the DNA of this actor
+	const DNA &			dna						( void ) const
+	{ return dna_; }
 
 	//! tell the date of birth
 	inline quint64		birth					( void ) const
@@ -215,6 +222,11 @@ public:
 	//! associated data
 	Amorph &			payload					( void )
 	{ return payload_; }
+
+protected:
+
+	//! load the components of the actor from the DNA
+	bool				decodeDNA				( void );
 
 
 	/*  FUNCTIONS    ======================================================= */

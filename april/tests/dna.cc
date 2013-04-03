@@ -29,8 +29,9 @@ TEST(DNA, basic) {
 	l1.append( 0 );
 	l1.append( 0 );
 	l1.append( 0 );
+	l1.append( 4 ); // cost
 	dna.setValuesI( l1 );
-	EXPECT_NE( dna.kind(), InvalidId );
+	EXPECT_EQ( dna.kind(), (quint64)1 );
 	EXPECT_EQ( dna.brains().length(), 0 );
 	EXPECT_EQ( dna.actuators().length(), 0 );
 	EXPECT_EQ( dna.sensors().length(), 0 );
@@ -149,6 +150,7 @@ TEST(DNA, basicMerge) {
 	l1.append( 0 );
 	l1.append( 0 );
 	l1.append( 0 );
+	l1.append( 4 ); // cost
 	
 	dna.setValuesI( l1 ); // values are clerared by the merge
 	EXPECT_EQ( dna.fromMerge( dnap1, dnap2 ), false );
@@ -186,6 +188,7 @@ TEST(DNA, complexMerge) {
 	l1.append( 0 );
 	l1.append( 0 );
 	l1.append( 0 );
+	l1.append( 4 ); // cost
 	dnap1.setValuesI( l1 );
 	dnap2.setValuesI( l1 );
 	
@@ -277,6 +280,7 @@ TEST(DNA, getView) {
 	l1.append( 0 );
 	l1.append( 0 );
 	l1.append( 0 );
+	l1.append( 4 ); // cost
 	dnap1.setValuesI( l1 );
 	
 	TstFactory * tf = new TstFactory();

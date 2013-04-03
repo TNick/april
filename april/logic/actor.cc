@@ -121,6 +121,56 @@ QString			Actor::kindName					( void ) const
 }
 /* ========================================================================= */
 
+/* ------------------------------------------------------------------------- */
+bool			Actor::decodeDNA				( void )
+{
+	Q_ASSERT( kind_ == dna_.kind() );
+	
+	cost_ = dna_.cost();
+	Brain * itr_brain;
+	foreach( ID itr, dna_.brains() )
+	{
+		itr_brain = world()->createBrain( this, itr );
+		if ( itr_brain == NULL )
+			return false;
+		brains_.prepend( itr_brain );
+		OWN_CREF(itr_brain,this);
+	}
+	
+	Actuator * itr_act;
+	foreach( ID itr, dna_.actuators() )
+	{
+		itr_act = world()->createActuator( this, itr );
+		if ( itr_act == NULL )
+			return false;
+		actuators_.prepend( itr_act );
+		OWN_CREF(itr_act,this);
+	}
+	
+	Sensor * itr_sens;
+	foreach( ID itr, dna_.sensors() )
+	{
+		itr_sens = world()->createSensor( this, itr );
+		if ( itr_sens == NULL )
+			return false;
+		sensors_.prepend( itr_sens );
+		OWN_CREF(itr_sens,this);
+	}
+	
+	Reflex * itr_refl;
+	foreach( ID itr, dna_.reflexes() )
+	{
+		itr_refl = world()->createReflex( this, itr );
+		if ( itr_refl == NULL )
+			return false;
+		reflexes_.prepend( itr_refl );
+		OWN_CREF(itr_refl,this);
+	}
+	
+	return true;
+}
+/* ========================================================================= */
+
 /*  CLASS    =============================================================== */
 //
 //

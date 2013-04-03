@@ -92,12 +92,19 @@ public:
 	//! offsets for predefined values
 	enum	Predef	{
 		OffKind = 0,	/**< the kind - ID */
+		
 		OffBrains,		/**< number of brains in the list that follows */
+		
 		OffActuators,	/**< number of actuators in the list that follows */
 		OffSensors,		/**< number of sensors in the list that follows */
 		OffReflexes,	/**< number of reflexes in the list that follows */
 		
-		OffMax
+		OffCost,		/**< the cost for running the Actor per time unit */
+		
+		
+		
+		OffMax,
+		OffLastList = OffReflexes+1
 		/* the list of brains, actuators, sensors, reflex id's follows */
 	};
 	
@@ -172,6 +179,10 @@ public:
 	//! tell if this instance s valid or not
 	bool			isValid			( void ) const;
 	
+	
+	//! energy cost
+	quint64				cost					( void ) const
+	{ Q_ASSERT(values_i_.length() >= OffMax ); return values_i_.at( OffCost ); }
 	
 	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
 	/** @name examine components

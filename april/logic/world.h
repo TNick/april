@@ -44,12 +44,14 @@ class Event;
 class Actuator;
 class Brain;
 class Sensor;
+class Reflex;
 
 class ActorFactory;
 class ActuatorFactory;
 class BrainFactory;
 class SensorFactory;
 class EventFactory;
+class ReflexFactory;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -79,6 +81,7 @@ class
 	friend class BrainFactory;
 	friend class SensorFactory;
 	friend class EventFactory;
+	friend class ReflexFactory;
 
 	/*  DEFINITIONS    ===================================================== */
 	//
@@ -127,6 +130,9 @@ private:
 		
 	//! the list of event factories
 	QMap<ID,EventFactory*>		event_factories_;
+		
+	//! the list of reflex factories
+	QMap<ID,ReflexFactory*>		reflex_factories_;
 
 	/*  DATA    ============================================================ */
 	//
@@ -248,6 +254,10 @@ public:
 	//! the list of event factories
 	const QMap<ID,EventFactory*> &		eventFactories		( void ) const
 	{ return event_factories_; }
+		
+	//! the list of reflex factories
+	const QMap<ID,ReflexFactory*> &		reflexFactories		( void ) const
+	{ return reflex_factories_; }
 
 
 	//! the actor factory for specified ID
@@ -269,6 +279,10 @@ public:
 	//! the event factory for specified ID
 	EventFactory*						eventFactory		( ID id ) const
 	{ return event_factories_.value( id, NULL ); }
+		
+	//! the event factory for specified ID
+	ReflexFactory*						reflexFactory		( ID id ) const
+	{ return reflex_factories_.value( id, NULL ); }
 	
 
 	///@}
@@ -377,6 +391,9 @@ protected:
 
 	//! add one to the list of event factories
 	bool			addEventFactory		( EventFactory * factory, ID id );
+
+	//! add one to the list of event factories
+	bool			addReflexFactory	( ReflexFactory * factory, ID id );
 	
 
 	//! add one to the list of actor factories
@@ -393,6 +410,9 @@ protected:
 
 	//! add one to the list of event factories
 	bool			remEventFactory		( EventFactory * factory, ID id );
+
+	//! add one to the list of event factories
+	bool			remReflexFactory	( ReflexFactory * factory, ID id );
 	
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
@@ -426,6 +446,9 @@ public:
 	
 	//! create a brain
 	Event *			createEvent			( ID id );
+	
+	//! create a reflex
+	Reflex *		createReflex		( Actor * actor, ID id );
 	
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */

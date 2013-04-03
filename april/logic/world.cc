@@ -34,6 +34,8 @@
 #include	"sensorfactory.h"
 #include	"brain.h"
 #include	"brainfactory.h"
+#include	"reflex.h"
+#include	"reflexfactory.h"
 
 #include	<april/aprillibrary.h>
 
@@ -234,6 +236,19 @@ bool				World::addEventFactory		( EventFactory * factory, ID id )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+bool				World::addReflexFactory		( ReflexFactory * factory, ID id )
+{
+	if ( factory == NULL )
+		return false;
+	if ( reflex_factories_.contains( id ) )
+		return false;
+	INC_REF( factory, this );
+	reflex_factories_.insert( id, factory );
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
 bool				World::remActorFactory		( ActorFactory * factory, ID id )
 {
 	if ( factory == NULL )
@@ -329,15 +344,54 @@ bool				World::remEventFactory		( EventFactory * factory, ID id )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+bool				World::remReflexFactory		( ReflexFactory * factory, ID id )
+{
+	if ( factory == NULL )
+		return false;
+	QMap<ID,ReflexFactory*>::Iterator itr = reflex_factories_.find( id );
+	if ( itr == reflex_factories_.end() )
+	{
+		return false;
+	}
+	if ( itr.value() != factory )
+	{
+		return false;
+	}
+	reflex_factories_.erase( itr );
+	return true;	
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
 Actor *				World::createActor			( ID id_kind )
 {
+	Actor * ret;
 	QMap<ID,ActorFactory*>::Iterator itr = actor_factories_.find( id_kind );
 	if ( itr == actor_factories_.end() )
 	{
 		return NULL;
 	}
 	Q_ASSERT( itr.value() != NULL );
-	return itr.value()->create( id_kind );
+	
+	/*	create the instance; this allocates memory for
+	*	an Actor and copies the default DNA inside
+	*/
+	ret = itr.value()->create( id_kind );
+	if ( ret != NULL )
+	{ /* by decoding the DNA we're creating all the componets */
+		if ( ret->decodeDNA() == false )
+		{ /* if the DNA can't be decoded then die at birth */
+			DEC_REF( ret, ret );
+			remActor( ret ); /* was added by the constructor */
+			ret = NULL;
+		}
+		else
+		{ /* we have a proper actor */
+			
+		}
+	}
+	
+	return ret;
 }
 /* ========================================================================= */
 
@@ -372,6 +426,19 @@ Sensor *			World::createSensor			( Actor * actor, ID id )
 {
 	QMap<ID,SensorFactory*>::Iterator itr = sensor_factories_.find( id );
 	if ( itr == sensor_factories_.end() )
+	{
+		return NULL;
+	}
+	Q_ASSERT( itr.value() != NULL );
+	return itr.value()->create( actor, id );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+Reflex *			World::createReflex			( Actor * actor, ID id )
+{
+	QMap<ID,ReflexFactory*>::Iterator itr = reflex_factories_.find( id );
+	if ( itr == reflex_factories_.end() )
 	{
 		return NULL;
 	}

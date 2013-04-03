@@ -80,7 +80,8 @@ SOURCES += \
     ../../../april/logic/event.cc \
     ../../../april/logic/brain.cc \
     ../../../april/logic/actuator.cc \
-    ../../../april/logic/brainfactory.cc
+    ../../../april/logic/brainfactory.cc \
+    ../../../april/logic/reflexfactory.cc
 
 HEADERS += \
     ../../../april/april_version.h \
@@ -105,7 +106,8 @@ HEADERS += \
     ../../../april/logic/brain.h \
     ../../../april/logic/actuator.h \
     ../../../april/logic/sensor.h \
-    ../../../april/logic/brainfactory.h
+    ../../../april/logic/brainfactory.h \
+    ../../../april/logic/reflexfactory.h
 
 OTHER_FILES += \
     ../../../april/april.dox

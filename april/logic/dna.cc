@@ -160,7 +160,7 @@ bool			DNA::mergeAllVals		( const DNA & p1, const DNA & p2 )
 	iter_2 += p2.values_i_.at( OffBrains );
 	
 	int res;
-	for ( int i = OffBrains+1; i < OffMax; i++ )
+	for ( int i = OffBrains+1; i < OffLastList; i++ )
 	{
 		res = mergeUniteEl( 
 					iter_1, iter_2, 
@@ -173,6 +173,12 @@ bool			DNA::mergeAllVals		( const DNA & p1, const DNA & p2 )
 		iter_1 += p1.values_i_.at( i );
 		iter_2 += p2.values_i_.at( i );
 	}
+	
+	/* the cost of running the agent as an average */
+	values_i_[OffCost] = 
+			p1.values_i_.at( OffCost ) + 
+			p2.values_i_.at( OffCost ) + 
+			qrand() % 4; /* some randomness */
 	
 	return true;
 }
@@ -257,7 +263,7 @@ bool			DNA::mergeBrains		( const DNA & p1, const DNA & p2 )
 	
 	/* take a (single) random entry */
 	int i = qrand() % (i_max_1+i_max_2);
-	if ( i > i_max_1 )
+	if ( i >= i_max_1 )
 	{
 		i -= i_max_1;
 		values_i_.append( p1.values_i_.at( iter_1+i ) );

@@ -44,10 +44,15 @@ public:
 		: ActorFactory( w )
 	{
 		addMyself( TestId );
+		DNA & d = defaultDNA();
+		DNA src( w, TestId );
+		d = src;
 	}
 	
 	virtual Actor *			create				( ID id )
 	{
+		Q_UNUSED( id );
+		Q_ASSERT( id == TestId );
 		Actor * ret = new Actor( world() );
 		
 		return ret;
@@ -66,10 +71,11 @@ TEST(Agent, factory) {
 	World * w = new World( "test-world", 1000 );
 	DEC_REF( w, w );
 	
-	
-
 	TstFact * fact = new TstFact( w );
-	DEC_REF( w, w );
+	DEC_REF( fact, fact );
+	
+	Actor * a = w->createActor( TestId );
+	EXPECT_TRUE( a != NULL );
 	
 	
 	
