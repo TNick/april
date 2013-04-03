@@ -15,7 +15,7 @@ TEST(World, running) {
 	
 	// create an world
 	World * w = new World( "test-world", 1000 );
-	w->decRef();
+	DEC_REF( w, w );
 	EXPECT_TRUE( AprilLibrary::hasWorld( w ) );
 
 	EXPECT_FALSE( w->isRunning() );
@@ -40,7 +40,7 @@ TEST(World, energy) {
 
 	initAprilLibrary();
 	World * w = new World( "test-world", 1000 );
-	w->decRef();
+	DEC_REF( w, w );
 	
 	EXPECT_EQ( w->energy(), (quint64)1000 );
 	EXPECT_EQ( w->energyFree(), (quint64)1000 );
@@ -55,7 +55,7 @@ TEST(World, time) {
 
 	initAprilLibrary();
 	World * w = new World( "test-world", 1000 );
-	w->decRef();
+	DEC_REF( w, w );
 
 	EXPECT_EQ( w->currentTime(), (quint64)0 );
 	w->advance();
@@ -92,7 +92,7 @@ TEST(World, factories) {
 	
 	initAprilLibrary();
 	World * w = new World( "test-world", 1000 );
-	w->decRef();
+	DEC_REF( w, w );
 
 	EXPECT_EQ( w->actorFactories().count(), 0 );
 	EXPECT_EQ( w->actuatorFactories().count(), 0 );
@@ -108,7 +108,7 @@ TEST(World, unique_id) {
 
 initAprilLibrary();
 	World * w = new World( "test-world", 1000 );
-	w->decRef();
+	DEC_REF( w, w );
 
 	EXPECT_EQ( w->idValue( QString() ), InvalidId );
 	EXPECT_EQ( w->idValue( "1"), InvalidId );

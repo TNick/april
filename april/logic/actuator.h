@@ -47,7 +47,9 @@ namespace   april    {
 /**
 *	@brief
 */
-class Actuator		: public Component		{
+class
+	APRILSHARED_EXPORT
+	Actuator		: public Component		{
 	BBM_TRACK( Actuator );
 
 	//

@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			actuatorfactory.cc
+  \file			brainfactory.cc
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the implementation of ActuatorFactory class
+  \brief		Contains the implementation of BrainFactory class
 
 
 *//*
@@ -23,7 +23,7 @@
 //
 /*  INCLUDES    ------------------------------------------------------------ */
 
-#include	"actuatorfactory.h"
+#include	"brainfactory.h"
 #include	"world.h"
 
 /*  INCLUDES    ============================================================ */
@@ -50,7 +50,7 @@ using namespace april;
 /*  CLASS    --------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------------- */
-ActuatorFactory::ActuatorFactory	( World * w )
+BrainFactory::BrainFactory	( World * w )
 	: Factory( w )
 {
 	APRDBG_CDTOR;
@@ -59,7 +59,7 @@ ActuatorFactory::ActuatorFactory	( World * w )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-ActuatorFactory::~ActuatorFactory	( void )
+BrainFactory::~BrainFactory	( void )
 {
 	APRDBG_CDTOR;
 	/* stub */
@@ -67,10 +67,10 @@ ActuatorFactory::~ActuatorFactory	( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-bool				ActuatorFactory::addMyself			( ID id )
+bool				BrainFactory::addMyself			( ID id )
 {
 	Q_ASSERT( id != InvalidId );
-	return world()->addActuatorFactory( this, id );
+	return world()->addBrainFactory( this, id );
 }
 /* ========================================================================= */
 

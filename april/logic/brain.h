@@ -47,7 +47,9 @@ namespace   april    {
 /**
 *	@brief
 */
-class Brain		: public Component		{
+class
+	APRILSHARED_EXPORT
+	Brain		: public Component		{
 	BBM_TRACK( Brain );
 
 	//

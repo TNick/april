@@ -47,7 +47,9 @@ namespace   april    {
 /**
 *	@brief
 */
-class Event		: public Component		{
+class
+	APRILSHARED_EXPORT
+	Event		: public Component		{
 	BBM_TRACK( Event );
 
 	//

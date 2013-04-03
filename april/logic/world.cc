@@ -4,10 +4,10 @@
   \file			world.cc
   \date			Apr 2013
   \author		TNick
-
+  
   \brief		Contains the implementation of World class
-
-
+  
+  
 *//*
 
 
@@ -25,7 +25,16 @@
 
 #include	"world.h"
 #include	"actor.h"
+#include	"actorfactory.h"
 #include	"event.h"
+#include	"eventfactory.h"
+#include	"actuator.h"
+#include	"actuatorfactory.h"
+#include	"sensor.h"
+#include	"sensorfactory.h"
+#include	"brain.h"
+#include	"brainfactory.h"
+
 #include	<april/aprillibrary.h>
 
 /*  INCLUDES    ============================================================ */
@@ -54,17 +63,17 @@ using namespace april;
 /* ------------------------------------------------------------------------- */
 World::World	( const QString & name, quint64 tot_energ )
 	: libbbb::RefCnt(), MemTrack(),
-	b_running_( false ),
-	s_name_(name),
-	time_(0),
-	energy_all_(tot_energ),
-	energy_free_(tot_energ),
-	actors_(),
-	uid_(name),
-	actor_factories_(),
-	actuator_factories_(),
-	brain_factories_(),
-	sensor_factories_()
+	  b_running_( false ),
+	  s_name_(name),
+	  time_(0),
+	  energy_all_(tot_energ),
+	  energy_free_(tot_energ),
+	  actors_(),
+	  uid_(name),
+	  actor_factories_(),
+	  actuator_factories_(),
+	  brain_factories_(),
+	  sensor_factories_()
 {
 	APRDBG_CDTOR;
 	
@@ -102,10 +111,10 @@ void				World::advance				( void )
 {
 	if  ( b_running_ == false )
 		return;
-		
+	
 	time_++;
-
-
+	
+	
 }
 /* ========================================================================= */
 
@@ -158,6 +167,232 @@ bool				World::remEvent				( Event * ev )
 	return true;
 }
 /* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				World::addActorFactory		( ActorFactory * factory, ID id )
+{
+	if ( factory == NULL )
+		return false;
+	if ( actor_factories_.contains( id ) )
+		return false;
+	INC_REF( factory, this );
+	actor_factories_.insert( id, factory );
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				World::addActuatorFactory	( ActuatorFactory * factory, ID id )
+{
+	if ( factory == NULL )
+		return false;
+	if ( actuator_factories_.contains( id ) )
+		return false;
+	INC_REF( factory, this );
+	actuator_factories_.insert( id, factory );
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				World::addSensorFactory		( SensorFactory * factory, ID id )
+{
+	if ( factory == NULL )
+		return false;
+	if ( sensor_factories_.contains( id ) )
+		return false;
+	INC_REF( factory, this );
+	sensor_factories_.insert( id, factory );
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				World::addBrainFactory		( BrainFactory * factory, ID id )
+{
+	if ( factory == NULL )
+		return false;
+	if ( brain_factories_.contains( id ) )
+		return false;
+	INC_REF( factory, this );
+	brain_factories_.insert( id, factory );
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				World::addEventFactory		( EventFactory * factory, ID id )
+{
+	if ( factory == NULL )
+		return false;
+	if ( event_factories_.contains( id ) )
+		return false;
+	INC_REF( factory, this );
+	event_factories_.insert( id, factory );
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				World::remActorFactory		( ActorFactory * factory, ID id )
+{
+	if ( factory == NULL )
+		return false;
+	QMap<ID,ActorFactory*>::Iterator itr = actor_factories_.find( id );
+	if ( itr == actor_factories_.end() )
+	{
+		return false;
+	}
+	if ( itr.value() != factory )
+	{
+		return false;
+	}
+	actor_factories_.erase( itr );
+	return true;	
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				World::remActuatorFactory	( ActuatorFactory * factory, ID id )
+{
+	if ( factory == NULL )
+		return false;
+	QMap<ID,ActuatorFactory*>::Iterator itr = actuator_factories_.find( id );
+	if ( itr == actuator_factories_.end() )
+	{
+		return false;
+	}
+	if ( itr.value() != factory )
+	{
+		return false;
+	}
+	actuator_factories_.erase( itr );
+	return true;	
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				World::remSensorFactory		( SensorFactory * factory, ID id )
+{
+	if ( factory == NULL )
+		return false;
+	QMap<ID,SensorFactory*>::Iterator itr = sensor_factories_.find( id );
+	if ( itr == sensor_factories_.end() )
+	{
+		return false;
+	}
+	if ( itr.value() != factory )
+	{
+		return false;
+	}
+	sensor_factories_.erase( itr );
+	return true;	
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				World::remBrainFactory		( BrainFactory * factory, ID id )
+{
+	if ( factory == NULL )
+		return false;
+	QMap<ID,BrainFactory*>::Iterator itr = brain_factories_.find( id );
+	if ( itr == brain_factories_.end() )
+	{
+		return false;
+	}
+	if ( itr.value() != factory )
+	{
+		return false;
+	}
+	brain_factories_.erase( itr );
+	return true;	
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				World::remEventFactory		( EventFactory * factory, ID id )
+{
+	if ( factory == NULL )
+		return false;
+	QMap<ID,EventFactory*>::Iterator itr = event_factories_.find( id );
+	if ( itr == event_factories_.end() )
+	{
+		return false;
+	}
+	if ( itr.value() != factory )
+	{
+		return false;
+	}
+	event_factories_.erase( itr );
+	return true;	
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+Actor *				World::createActor			( ID id_kind )
+{
+	QMap<ID,ActorFactory*>::Iterator itr = actor_factories_.find( id_kind );
+	if ( itr == actor_factories_.end() )
+	{
+		return NULL;
+	}
+	Q_ASSERT( itr.value() != NULL );
+	return itr.value()->create( id_kind );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+Actuator *			World::createActuator		( Actor * actor, ID id )
+{
+	QMap<ID,ActuatorFactory*>::Iterator itr = actuator_factories_.find( id );
+	if ( itr == actuator_factories_.end() )
+	{
+		return NULL;
+	}
+	Q_ASSERT( itr.value() != NULL );
+	return itr.value()->create( actor, id );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+Brain *				World::createBrain			( Actor * actor, ID id )
+{
+	QMap<ID,BrainFactory*>::Iterator itr = brain_factories_.find( id );
+	if ( itr == brain_factories_.end() )
+	{
+		return NULL;
+	}
+	Q_ASSERT( itr.value() != NULL );
+	return itr.value()->create( actor, id );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+Sensor *			World::createSensor			( Actor * actor, ID id )
+{
+	QMap<ID,SensorFactory*>::Iterator itr = sensor_factories_.find( id );
+	if ( itr == sensor_factories_.end() )
+	{
+		return NULL;
+	}
+	Q_ASSERT( itr.value() != NULL );
+	return itr.value()->create( actor, id );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+Event *				World::createEvent			( ID id )
+{
+	QMap<ID,EventFactory*>::Iterator itr = event_factories_.find( id );
+	if ( itr == event_factories_.end() )
+	{
+		return NULL;
+	}
+	Q_ASSERT( itr.value() != NULL );
+	return itr.value()->create( id );
+}
+/* ========================================================================= */
+
 
 /*  CLASS    =============================================================== */
 //

@@ -37,6 +37,9 @@
 
 namespace   april    {
 
+class	Actor;
+class	Actuator;
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -47,7 +50,9 @@ namespace   april    {
 /**
 *	@brief	Factory class for actuators
 */
-class ActuatorFactory		: public Factory		{
+class
+	APRILSHARED_EXPORT
+	ActuatorFactory		: public Factory		{
 	BBM_TRACK( ActuatorFactory );
 
 	//
@@ -89,6 +94,13 @@ protected:
 	*/
 	virtual					~ActuatorFactory		( void );
 
+public:
+
+	//! create an actuator;
+	virtual Actuator *		create					( Actor * ag, ID id ) = 0;
+
+	//! add this class to the world
+	bool					addMyself			( ID id );
 
 
 	/*  FUNCTIONS    ======================================================= */

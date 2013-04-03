@@ -41,6 +41,10 @@ namespace   april    {
 class Actor;
 class World;
 class Event;
+class Actuator;
+class Brain;
+class Sensor;
+
 class ActorFactory;
 class ActuatorFactory;
 class BrainFactory;
@@ -70,6 +74,11 @@ class
 
 	friend class Actor;
 	friend class Event;
+	friend class ActorFactory;
+	friend class ActuatorFactory;
+	friend class BrainFactory;
+	friend class SensorFactory;
+	friend class EventFactory;
 
 	/*  DEFINITIONS    ===================================================== */
 	//
@@ -117,7 +126,7 @@ private:
 	QMap<ID,SensorFactory*>		sensor_factories_;
 		
 	//! the list of event factories
-	QMap<ID,EventFactory*>		events_factories_;
+	QMap<ID,EventFactory*>		event_factories_;
 
 	/*  DATA    ============================================================ */
 	//
@@ -238,7 +247,7 @@ public:
 		
 	//! the list of event factories
 	const QMap<ID,EventFactory*> &		eventFactories		( void ) const
-	{ return events_factories_; }
+	{ return event_factories_; }
 
 
 	//! the actor factory for specified ID
@@ -259,7 +268,7 @@ public:
 		
 	//! the event factory for specified ID
 	EventFactory*						eventFactory		( ID id ) const
-	{ return events_factories_.value( id, NULL ); }
+	{ return event_factories_.value( id, NULL ); }
 	
 
 	///@}
@@ -342,6 +351,81 @@ protected:
 
 	//! used by the Event class to remove itself
 	bool			remEvent			( Event * act );
+	
+	///@}
+	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
+
+
+	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
+	/** @name Factories added and removed here
+	 */
+	///@{
+	
+protected:
+
+	//! add one to the list of actor factories
+	bool			addActorFactory		( ActorFactory * factory, ID id );
+
+	//! add one to the list of actuator factories
+	bool			addActuatorFactory	( ActuatorFactory * factory, ID id );
+
+	//! add one to the list of sensor factories
+	bool			addSensorFactory	( SensorFactory * factory, ID id );
+
+	//! add one to the list of brain factories
+	bool			addBrainFactory		( BrainFactory * factory, ID id );
+
+	//! add one to the list of event factories
+	bool			addEventFactory		( EventFactory * factory, ID id );
+	
+
+	//! add one to the list of actor factories
+	bool			remActorFactory		( ActorFactory * factory, ID id );
+
+	//! add one to the list of actuator factories
+	bool			remActuatorFactory	( ActuatorFactory * factory, ID id );
+
+	//! add one to the list of sensor factories
+	bool			remSensorFactory	( SensorFactory * factory, ID id );
+
+	//! add one to the list of brain factories
+	bool			remBrainFactory		( BrainFactory * factory, ID id );
+
+	//! add one to the list of event factories
+	bool			remEventFactory		( EventFactory * factory, ID id );
+	
+	///@}
+	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
+
+
+	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
+	/** @name Components are created here
+	 */
+	///@{
+
+public:
+
+	//! create an actor
+	/**
+	 * A factory is searched for this ID and, if found, it is requested
+	 * to create an Actor.
+	 *
+	 * @param id_kind the id to search
+	 * @return NULL for error, an actor otherwise
+	 */
+	Actor *			createActor			( ID id_kind );
+	
+	//! create an actuator
+	Actuator *		createActuator		( Actor * actor, ID id );
+	
+	//! create a brain
+	Brain *			createBrain			( Actor * actor, ID id );
+	
+	//! create a brain
+	Sensor *		createSensor		( Actor * actor, ID id );
+	
+	//! create a brain
+	Event *			createEvent			( ID id );
 	
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */

@@ -47,7 +47,9 @@ namespace   april    {
 /**
 *	@brief
 */
-class Sensor		: public Component		{
+class
+	APRILSHARED_EXPORT
+	Sensor		: public Component		{
 	BBM_TRACK( Sensor );
 
 	//

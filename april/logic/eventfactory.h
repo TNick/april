@@ -37,6 +37,8 @@
 
 namespace   april    {
 
+class	Event;
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -47,7 +49,9 @@ namespace   april    {
 /**
 *	@brief	Factory class for events
 */
-class EventFactory		: public Factory		{
+class
+	APRILSHARED_EXPORT
+	EventFactory		: public Factory		{
 	BBM_TRACK( EventFactory );
 
 	//
@@ -91,6 +95,13 @@ protected:
 	virtual					~EventFactory		( void );
 
 
+public:
+
+	//! create an actuator;
+	virtual Event *			create				( ID id ) = 0;
+
+	//! add this class to the world
+	bool					addMyself			( ID id );
 
 	/*  FUNCTIONS    ======================================================= */
 	//

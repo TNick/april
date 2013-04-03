@@ -65,5 +65,6 @@ isEmpty( UI_DIR ) {
 SOURCES += \
     ../../../april/tests/aprillibrary.cc \
     ../../../april/tests/world.cc \
-    ../../../april/tests/dna.cc
+    ../../../april/tests/dna.cc \
+    ../../../april/tests/actor.cc
 

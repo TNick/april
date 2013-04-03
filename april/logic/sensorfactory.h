@@ -37,6 +37,9 @@
 
 namespace   april    {
 
+class	Sensor;
+class	Actor;
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -47,7 +50,9 @@ namespace   april    {
 /**
 *	@brief	Factory class for sensors
 */
-class SensorFactory		: public Factory		{
+class
+	APRILSHARED_EXPORT
+	SensorFactory		: public Factory		{
 	BBM_TRACK( SensorFactory );
 
 	//
@@ -87,9 +92,15 @@ protected:
 	/**
 	*	@brief	destructor;
 	*/
-	virtual				~SensorFactory		( void );
+	virtual					~SensorFactory		( void );
 
+public:
 
+	//! create an actuator;
+	virtual Sensor *		create				( Actor * ag, ID id ) = 0;
+
+	//! add this class to the world
+	bool					addMyself			( ID id );
 
 	/*  FUNCTIONS    ======================================================= */
 	//

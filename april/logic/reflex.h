@@ -47,7 +47,9 @@ namespace   april    {
 /**
 *	@brief
 */
-class Reflex		: public Component		{
+class
+	APRILSHARED_EXPORT
+	Reflex		: public Component		{
 	BBM_TRACK( Reflex );
 
 	//

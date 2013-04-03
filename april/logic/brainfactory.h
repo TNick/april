@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			actorfactory.h
+  \file			brainfactory.h
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the definition for ActorFactory class
+  \brief		Contains the definition for BrainFactory class
 
 
 *//*
@@ -17,8 +17,8 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __ACTORFACTORY_INC__
-#define __ACTORFACTORY_INC__
+#ifndef __BRAINFACTORY_INC__
+#define __BRAINFACTORY_INC__
 //
 //
 //
@@ -27,7 +27,6 @@
 
 #include    <april/april.h>
 #include    <april/logic/factory.h>
-#include    <april/logic/dna.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -38,8 +37,8 @@
 
 namespace   april    {
 
-class		DNA;
-class		Actor;
+class	Brain;
+class	Actor;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -49,12 +48,10 @@ class		Actor;
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief	Factory class for agents
+*	@brief
 */
-class
-	APRILSHARED_EXPORT
-	ActorFactory		: public Factory		{
-	BBM_TRACK( ActorFactory );
+class BrainFactory		: public Factory		{
+	BBM_TRACK( BrainFactory );
 
 	//
 	//
@@ -71,12 +68,7 @@ class
 
 private:
 
-	//! storage space for default DNA
-	/**
-	 * If the class provides more than one actor than additional space
-	 * will be needed.
-	 */
-	DNA			default_dna_;
+
 
 	/*  DATA    ============================================================ */
 	//
@@ -91,33 +83,23 @@ public:
 	/**
 	*	@brief	constructor;
 	*/
-	ActorFactory			( World * w );
+	BrainFactory			( World * w );
 
-protected:
 
 	/**
 	*	@brief	destructor;
 	*/
-	virtual					~ActorFactory		( void );
+	virtual				~BrainFactory		( void );
+
 
 public:
 
-
-	//! copies default DNA from internal storage to destination
-	virtual void			copyDefaultDNA		( DNA & destination )
-	{ destination = default_dna_; }
-
-	//! create a new actor
-	virtual Actor *			create				( ID id ) = 0;
-
-protected:
-
-	//! allow access to default dna storage
-	DNA &					defaultDNA			( void )
-	{ return default_dna_; }
+	//! create an actuator;
+	virtual Brain *		create				( Actor * ag, ID id ) = 0;
 
 	//! add this class to the world
 	bool					addMyself			( ID id );
+
 
 	/*  FUNCTIONS    ======================================================= */
 	//
@@ -125,7 +107,7 @@ protected:
 	//
 	//
 
-};	/*	class ActorFactory	*/
+};	/*	class BrainFactory	*/
 
 /*  CLASS    =============================================================== */
 //
@@ -135,6 +117,6 @@ protected:
 
 }   //  namespace   april
 
-#endif // __ACTORFACTORY_INC__
+#endif // __BRAINFACTORY_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
