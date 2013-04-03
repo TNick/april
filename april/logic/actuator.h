@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			actor.h
+  \file			actuator.h
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the definition for Actor class
+  \brief		Contains the definition for Actuator class
 
 
 *//*
@@ -17,8 +17,8 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __ACTOR_INC__
-#define __ACTOR_INC__
+#ifndef __ACTUATOR_INC__
+#define __ACTUATOR_INC__
 //
 //
 //
@@ -37,13 +37,6 @@
 
 namespace   april    {
 
-class World;
-class Sensor;
-class Actuator;
-class Brain;
-class Actor;
-class Reflex;
-
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -52,12 +45,10 @@ class Reflex;
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief	An active ocupier of the world
+*	@brief
 */
-class
-	APRILSHARED_EXPORT
-	Actor		: public Component		{
-	BBM_TRACK( Actor );
+class Actuator		: public Component		{
+	BBM_TRACK( Actuator );
 
 	//
 	//
@@ -65,12 +56,6 @@ class
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
 
-	friend class Sensor;
-	friend class Actuator;
-	friend class World;
-	friend class Reflex;
-	friend class Brain;
-	
 	/*  DEFINITIONS    ===================================================== */
 	//
 	//
@@ -80,21 +65,7 @@ class
 
 private:
 
-	//! the world where we belong
-	World *					world_;
 
-	//! header for the list of sensors
-	List2Dh					sensors_;
-	
-	//! header for the list of actuators
-	List2Dh					actuators_;
-	
-	//! header for the list of reflexes
-	List2Dh					reflexes_;
-	
-	//! header for the list of brains
-	List2Dh					brains_;
-	
 
 	/*  DATA    ============================================================ */
 	//
@@ -109,36 +80,14 @@ public:
 	/**
 	*	@brief	constructor;
 	*/
-	Actor			( World * w );
+	Actuator			( void );
 
-protected:
 
 	/**
 	*	@brief	destructor;
 	*/
-	virtual			~Actor		( void );
+	virtual				~Actuator		( void );
 
-public:
-
-	//! the world where we belong
-	inline World *	world					( void ) const
-	{ return world_; }
-
-
-public:
-	
-	
-	//! first sensor in internal list
-	Sensor *		firstSensor				( void ) const;
-	
-	//! first actuator in internal list
-	Actuator *		firstActuator			( void ) const;
-	
-	//! first reflex in internal list
-	Reflex *		firstReflex				( void ) const;
-	
-	//! first brain in internal list
-	Brain *			firstBrain				( void ) const;
 
 
 	/*  FUNCTIONS    ======================================================= */
@@ -147,7 +96,7 @@ public:
 	//
 	//
 
-};	/*	class Actor	*/
+};	/*	class Actuator	*/
 
 /*  CLASS    =============================================================== */
 //
@@ -157,6 +106,6 @@ public:
 
 }   //  namespace   april
 
-#endif // __ACTOR_INC__
+#endif // __ACTUATOR_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */

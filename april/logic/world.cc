@@ -24,6 +24,8 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include	"world.h"
+#include	"actor.h"
+#include	"event.h"
 #include	<april/aprillibrary.h>
 
 /*  INCLUDES    ============================================================ */
@@ -104,9 +106,9 @@ void				World::advance				( void )
 bool				World::addActor				( Actor * act )
 {
 	Q_ASSERT( actors_.contains( act ) == false );
-	Q_ASSERT( actors_ != NULL );
+	Q_ASSERT( act != NULL );
 	
-	INC_REF( act );
+	INC_REF( act, this );
 	actors_.append( act );
 	return true;
 }
@@ -118,7 +120,7 @@ bool				World::remActor				( Actor * act )
 	Q_ASSERT( actors_.contains( act ) == true );
 	
 	actors_.removeOne( act );
-	DEC_REF( act );
+	DEC_REF( act, this );
 	return true;
 }
 /* ========================================================================= */
