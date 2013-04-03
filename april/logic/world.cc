@@ -104,7 +104,9 @@ void				World::advance				( void )
 bool				World::addActor				( Actor * act )
 {
 	Q_ASSERT( actors_.contains( act ) == false );
+	Q_ASSERT( actors_ != NULL );
 	
+	INC_REF( act );
 	actors_.append( act );
 	return true;
 }
@@ -116,6 +118,7 @@ bool				World::remActor				( Actor * act )
 	Q_ASSERT( actors_.contains( act ) == true );
 	
 	actors_.removeOne( act );
+	DEC_REF( act );
 	return true;
 }
 /* ========================================================================= */

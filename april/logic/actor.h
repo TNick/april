@@ -26,6 +26,7 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include    <april/april.h>
+#include    <april/logic/component.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -41,6 +42,7 @@ class Sensor;
 class Actuator;
 class Brain;
 class Actor;
+class Reflex;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -54,7 +56,7 @@ class Actor;
 */
 class
 	APRILSHARED_EXPORT
-	Actor		: public libbbb::RefCnt, public MemTrack		{
+	Actor		: public Component		{
 	BBM_TRACK( Actor );
 
 	//
@@ -66,6 +68,7 @@ class
 	friend class Sensor;
 	friend class Actuator;
 	friend class World;
+	friend class Reflex;
 	friend class Brain;
 	
 	/*  DEFINITIONS    ===================================================== */
@@ -77,7 +80,21 @@ class
 
 private:
 
+	//! the world where we belong
+	World *					world_;
 
+	//! header for the list of sensors
+	List2Dh					sensors_;
+	
+	//! header for the list of actuators
+	List2Dh					actuators_;
+	
+	//! header for the list of reflexes
+	List2Dh					reflexes_;
+	
+	//! header for the list of brains
+	List2Dh					brains_;
+	
 
 	/*  DATA    ============================================================ */
 	//
@@ -92,7 +109,7 @@ public:
 	/**
 	*	@brief	constructor;
 	*/
-	Actor			( void );
+	Actor			( World * w );
 
 protected:
 
@@ -101,8 +118,27 @@ protected:
 	*/
 	virtual			~Actor		( void );
 
+public:
+
+	//! the world where we belong
+	inline World *		world				( void ) const
+	{ return world_; }
 
 
+public:
+	
+	
+	//! first sensor in internal list
+	Sensor *		firstSensor				( void ) const;
+	
+	//! first actuator in internal list
+	Actuator *		firstActuator			( void ) const;
+	
+	//! first reflex in internal list
+	Reflex *		firstReflex				( void ) const;
+	
+	//! first brain in internal list
+	Brain *			firstBrain				( void ) const;
 
 
 	/*  FUNCTIONS    ======================================================= */
