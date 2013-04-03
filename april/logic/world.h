@@ -27,7 +27,7 @@
 
 #include    <april/april.h>
 #include    <april/logic/uniqueid.h>
-#include    <libbbb/1/list2d.h>
+#include    <april/logic/component.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -65,7 +65,7 @@ class ReflexFactory;
 */
 class
 	APRILSHARED_EXPORT
-	World		: public libbbb::RefCnt, public MemTrack		{
+	World		: public Component		{
 	BBM_TRACK( World );
 
 	//

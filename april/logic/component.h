@@ -27,6 +27,7 @@
 
 #include    <april/april.h>
 #include	<libbbb/1/list2d.h>
+#include	<libbbb/1/amorph.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -70,7 +71,8 @@ class
 
 private:
 
-
+	//! associated data
+	Amorph					payload_;
 
 	/*  DATA    ============================================================ */
 	//
@@ -92,8 +94,13 @@ protected:
 	/**
 	*	@brief	destructor;
 	*/
-	virtual				~Component		( void );
+	virtual				~Component				( void );
 
+public:
+
+	//! associated data
+	Amorph &			payload					( void )
+	{ return payload_; }
 
 
 	/*  FUNCTIONS    ======================================================= */

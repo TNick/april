@@ -36,6 +36,7 @@
 /*  DEFINITIONS    --------------------------------------------------------- */
 
 namespace   april    {
+class	Actor;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -45,7 +46,7 @@ namespace   april    {
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief
+*	@brief	
 */
 class
 	APRILSHARED_EXPORT
@@ -67,7 +68,8 @@ class
 
 private:
 
-
+	//! parent actor
+	Actor *					actor_;
 
 	/*  DATA    ============================================================ */
 	//
@@ -82,7 +84,7 @@ public:
 	/**
 	*	@brief	constructor;
 	*/
-	Actuator			( void );
+	Actuator			( Actor * actor );
 
 
 	/**

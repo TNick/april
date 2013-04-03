@@ -66,5 +66,6 @@ SOURCES += \
     ../../../april/tests/aprillibrary.cc \
     ../../../april/tests/world.cc \
     ../../../april/tests/dna.cc \
-    ../../../april/tests/actor.cc
+    ../../../april/tests/actor.cc \
+    ../../../april/tests/actuator.cc
 

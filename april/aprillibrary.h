@@ -28,6 +28,7 @@
 #include    <april/april.h>
 #include    <QObject>
 #include    <QSettings>
+#include    <libbbb/1/list2d.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -98,12 +99,12 @@ private:
 	/**
 	*	@brief	associated worlds
 	*/
-	QList<World*>					worlds_;
+	List2Dh							worlds_;
 
 	/**
 	*	@brief	default world
 	*/
-	World*							def_world_;
+	World *							def_world_;
 
 	/**
 	*	@brief	the one and only instance
@@ -225,7 +226,7 @@ private:
 	/**
 	*	@brief	removes the world
 	*/
-	void			internalRemWorld		( int i, World * world );
+	void			internalRemWorld		( World * world );
 
 
 	///@}

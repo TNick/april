@@ -75,6 +75,10 @@ Object emit signals on certain actions if APRIL_SIGNALS is defined.
 #define prevEvent_(p)	static_cast<Event*>(p->prev())
 #define nextEvent_(p)	static_cast<Event*>(p->next())
 
+#define firstWorld_(p)	static_cast<World*>(p->worlds_.first())
+#define prevWorld_(p)	static_cast<World*>(p->prev())
+#define nextWorld_(p)	static_cast<World*>(p->next())
+
 
 
 

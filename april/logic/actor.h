@@ -28,7 +28,6 @@
 #include    <april/april.h>
 #include    <april/logic/component.h>
 #include    <april/logic/dna.h>
-#include	<libbbb/1/amorph.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -124,9 +123,6 @@ private:
 	//! alive or dead
 	bool					alive_;
 
-	//! associated data
-	Amorph					payload_;
-
 
 
 
@@ -219,14 +215,22 @@ public:
 	inline bool			dies					( void ) const
 	{ return (birth_+age_ >= death_); }
 
-	//! associated data
-	Amorph &			payload					( void )
-	{ return payload_; }
-
 protected:
 
 	//! load the components of the actor from the DNA
 	bool				decodeDNA				( void );
+
+	//! add an Actuator
+	bool				addActuator				( Actuator * act );
+
+	//! add a Sensor
+	bool				addSensor				( Sensor * act );
+
+	//! add a Reflex
+	bool				addReflex				( Reflex * act );
+
+	//! add a Brain
+	bool				addBrain				( Brain * act );
 
 
 	/*  FUNCTIONS    ======================================================= */

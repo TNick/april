@@ -68,8 +68,7 @@ Actor::Actor	( World * w )
 	age_(0),
 	energy_(0),
 	cost_(0),
-	alive_(false),
-	payload_()
+	alive_(false)
 {
 	APRDBG_CDTOR;
 	Q_ASSERT( w != NULL );
@@ -82,7 +81,43 @@ Actor::Actor	( World * w )
 Actor::~Actor	( void )
 {
 	APRDBG_CDTOR;
-	/* stub */
+	
+	Sensor * itr_sens = firstSensor_(this);
+	Sensor * itr_sens_n;
+	while ( itr_sens != NULL )
+	{
+		itr_sens_n = nextSensor_(itr_sens);
+		DEC_REF(itr_sens,this);
+		itr_sens = itr_sens_n;
+	}
+	
+	Actuator * itr_act = firstActuator_(this);
+	Actuator * itr_act_n;
+	while ( itr_act != NULL )
+	{
+		itr_act_n = nextActuator_(itr_act);
+		DEC_REF(itr_act,this);
+		itr_act = itr_act_n;
+	}
+	
+	Reflex * itr_refl = firstReflex_(this);
+	Reflex * itr_refl_n;
+	while ( itr_refl != NULL )
+	{
+		itr_refl_n = nextReflex_(itr_act);
+		DEC_REF(itr_refl,this);
+		itr_refl = itr_refl_n;
+	}
+	
+	Brain * itr_brn = firstBrain_(this);
+	Brain * itr_brn_n;
+	while ( itr_brn != NULL )
+	{
+		itr_brn_n = nextBrain_(itr_brn);
+		DEC_REF(itr_brn,this);
+		itr_brn = itr_brn_n;
+	}
+	
 }
 /* ========================================================================= */
 
@@ -167,6 +202,51 @@ bool			Actor::decodeDNA				( void )
 		OWN_CREF(itr_refl,this);
 	}
 	
+	return true;
+}
+/* ========================================================================= */
+
+
+/* ------------------------------------------------------------------------- */
+bool				Actor::addActuator				( Actuator * itm )
+{
+	if ( actuators_.contains( itm ) )
+		return false;
+	INC_REF( itm, this );
+	actuators_.prepend( itm );
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				Actor::addSensor				( Sensor * itm )
+{
+	if ( sensors_.contains( itm ) )
+		return false;
+	INC_REF( itm, this );
+	sensors_.prepend( itm );
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				Actor::addReflex				( Reflex * itm )
+{
+	if ( reflexes_.contains( itm ) )
+		return false;
+	INC_REF( itm, this );
+	reflexes_.prepend( itm );
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				Actor::addBrain					( Brain * itm )
+{
+	if ( brains_.contains( itm ) )
+		return false;
+	INC_REF( itm, this );
+	brains_.prepend( itm );
 	return true;
 }
 /* ========================================================================= */

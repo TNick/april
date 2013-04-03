@@ -64,7 +64,7 @@ using namespace april;
 
 /* ------------------------------------------------------------------------- */
 World::World	( const QString & name, quint64 tot_energ )
-	: libbbb::RefCnt(), MemTrack(),
+	: Component(),
 	  b_running_( false ),
 	  s_name_(name),
 	  time_(0),
