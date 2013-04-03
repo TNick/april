@@ -2,10 +2,9 @@
 #include	<april/aprillibrary.h>
 #include	<april/logic/world.h>
 #include	<april/logic/actor.h>
+#include	<april/logic/actorfactory.h>
 #include	<april/logic/brain.h>
 #include	<april/logic/brainfactory.h>
-#include	<april/logic/actor.h>
-#include	<april/logic/actorfactory.h>
 
 using namespace april;
 
@@ -38,14 +37,13 @@ public:
 	virtual Brain * create ( Actor * a, ID id ) {
 		Q_UNUSED( id );
 		Brain * ret = new Brain( a );
-		
 		return ret;
 	}
 };
 
-class ActorTstFact : public ActorFactory {
+class ActorBrainTstFact : public ActorFactory {
 public:
-	ActorTstFact( World * w ) : ActorFactory( w ) {
+	ActorBrainTstFact( World * w ) : ActorFactory( w ) {
 		w->insertId( TestIdKind, "kinds.test" );
 		addMyself( TestIdKind );
 		initDNA( TestIdKind );
@@ -72,7 +70,7 @@ TEST(Brain, factory) {
 	BrainTstFact * brain_fact = new BrainTstFact( w );
 	DEC_REF( brain_fact, brain_fact );
 	
-	ActorTstFact * actor_fact = new ActorTstFact( w );
+	ActorBrainTstFact * actor_fact = new ActorBrainTstFact( w );
 	DEC_REF( actor_fact, actor_fact );
 	
 	Actor * a = w->createActor( TestIdKind );

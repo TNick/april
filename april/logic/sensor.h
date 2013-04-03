@@ -87,6 +87,7 @@ public:
 	*/
 	Sensor				( Actor * actor );
 
+protected:
 
 	/**
 	*	@brief	destructor;
@@ -94,6 +95,11 @@ public:
 	virtual				~Sensor			( void );
 
 
+public:
+
+	//! parent actor
+	inline Actor *		actor		( void ) const
+	{ return actor_; }
 
 	/*  FUNCTIONS    ======================================================= */
 	//

@@ -89,12 +89,18 @@ public:
 	*/
 	Actuator			( Actor * actor );
 
+protected:
 
 	/**
 	*	@brief	destructor;
 	*/
 	virtual				~Actuator		( void );
 
+public:
+
+	//! parent actor
+	inline Actor *		actor		( void ) const
+	{ return actor_; }
 
 
 	/*  FUNCTIONS    ======================================================= */

@@ -86,11 +86,14 @@ public:
 	*/
 	Brain				( Actor * actor );
 
+protected:
 
 	/**
 	*	@brief	destructor;
 	*/
 	virtual				~Brain		( void );
+
+public:
 
 	//! parent actor
 	inline Actor *		actor		( void ) const

@@ -86,12 +86,19 @@ public:
 	*/
 	Reflex				( Actor * actor );
 
+protected:
 
 	/**
 	*	@brief	destructor;
 	*/
 	virtual				~Reflex		( void );
 
+
+public:
+
+	//! parent actor
+	inline Actor *		actor		( void ) const
+	{ return actor_; }
 
 
 	/*  FUNCTIONS    ======================================================= */
