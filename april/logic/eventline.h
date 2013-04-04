@@ -52,7 +52,9 @@ class	EventData;
 /**
 *	@brief	Buffers between events and sensors
 */
-class EventLine		: public Component		{
+class
+	APRILSHARED_EXPORT
+	EventLine		: public Component		{
 	BBM_TRACK( EventLine );
 
 	//

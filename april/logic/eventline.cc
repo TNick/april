@@ -111,7 +111,7 @@ EventData *				EventLine::lastEventData			( void )
 	{
 		last_ = static_cast<EventData*>( event_data_.last() );
 	}
-	return NULL;
+	return last_;
 }
 /* ========================================================================= */
 

@@ -48,7 +48,9 @@ class	World;
 /**
 *	@brief	A packet in an EventLine
 */
-class EventData		: public Component		{
+class
+	APRILSHARED_EXPORT
+	EventData		: public Component		{
 	BBM_TRACK( EventData );
 
 	//
@@ -80,6 +82,9 @@ public:
 
 	//! constructor;
 	EventData			( void );
+
+	//! constructor; sets how long this data should stay in the lines
+	EventData			( World * w, quint64 dt );
 
 protected:
 

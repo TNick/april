@@ -118,14 +118,23 @@ World::~World	( void )
 }
 	/* ...... */
 	
-	discardFactory(actor,ActorFactory)
-			discardFactory(actuator,ActuatorFactory)
-			discardFactory(brain,BrainFactory)
-			discardFactory(sensor,SensorFactory)
-			discardFactory(event,EventFactory)
-			discardFactory(reflex,ReflexFactory)
-			
-		#	undef	discardFactory
+	discardFactory(actor,ActorFactory);
+	discardFactory(actuator,ActuatorFactory);
+	discardFactory(brain,BrainFactory);
+	discardFactory(sensor,SensorFactory);
+	discardFactory(event,EventFactory);
+	discardFactory(reflex,ReflexFactory);
+	
+#	undef	discardFactory
+	
+	QMap<ID,EventLine*>::ConstIterator itr_event_lines = event_lines_.constBegin();
+	QMap<ID,EventLine*>::ConstIterator itr_end_event_lines = event_lines_.constEnd();
+	while ( itr_event_lines != itr_end_event_lines )
+	{
+		DEC_REF( itr_event_lines.value(), this );
+		itr_event_lines++;
+	}
+	
 }
 /* ========================================================================= */
 
@@ -168,6 +177,15 @@ void				World::advance				( void )
 	{
 		a->doSteps( 1 );
 		a = nextActor_( a );
+	}
+	
+	/* iterate in event lines and remove old ones */
+	QMap<ID,EventLine*>::ConstIterator itr_event_lines = event_lines_.constBegin();
+	QMap<ID,EventLine*>::ConstIterator itr_end_event_lines = event_lines_.constEnd();
+	while ( itr_event_lines != itr_end_event_lines )
+	{
+		itr_event_lines.value()->discardOldEntries();
+		itr_event_lines++;
 	}
 	
 }
