@@ -262,6 +262,9 @@ protected:
 	//! make the actor alive
 	void				makeAlive				( void );
 
+	//! total energy packed in this agent (the agent itself and the compoenets)
+	quint64				totalEnergy				( void );
+
 
 	/*  FUNCTIONS    ======================================================= */
 	//

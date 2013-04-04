@@ -99,6 +99,10 @@ protected:
 
 public:
 
+	//! tell if this is a valid instance
+	inline bool			isValid		( void ) const
+	{ return ( ( cost_ > 0 ) && ( energy_ > 0 ) ); }
+
 	//! parent actor
 	inline Actor *		actor		( void ) const
 	{ return actor_; }
@@ -113,6 +117,12 @@ public:
 	 */
 	inline quint64		cost		( void ) const
 	{ return cost_; }
+
+
+	//! ammount of energy packed inside this component
+	inline quint64		energy		( void ) const
+	{ return energy_; }
+
 
 protected:
 

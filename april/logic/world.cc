@@ -179,7 +179,7 @@ bool				World::addActor				( Actor * act )
 bool				World::remActor				( Actor * act )
 {
 	Q_ASSERT( actors_.contains( act ) == true );
-	
+	energy_free_ += act->totalEnergy();
 	actors_.remove( act );
 	DEC_REF( act, this );
 	return true;

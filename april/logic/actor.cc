@@ -278,6 +278,7 @@ void				Actor::doSteps					( int steps )
 	Sensor * itr_sens = firstSensor_(this);
 	while ( itr_sens != NULL )
 	{
+		Q_ASSERT( itr_sens->isValid() );
 		itr_sens->doSteps( steps );
 		itr_sens = nextSensor_(itr_sens);
 	}
@@ -285,6 +286,7 @@ void				Actor::doSteps					( int steps )
 	Reflex * itr_refl = firstReflex_(this);
 	while ( itr_refl != NULL )
 	{
+		Q_ASSERT( itr_refl->isValid() );
 		itr_refl->doSteps( steps );
 		itr_refl = nextReflex_(itr_refl);
 	}
@@ -292,6 +294,7 @@ void				Actor::doSteps					( int steps )
 	Brain * itr_brn = firstBrain_(this);
 	while ( itr_brn != NULL )
 	{
+		Q_ASSERT( itr_brn->isValid() );
 		itr_brn->doSteps( steps );
 		itr_brn = nextBrain_(itr_brn);
 	}
@@ -299,12 +302,48 @@ void				Actor::doSteps					( int steps )
 	Actuator * itr_act = firstActuator_(this);
 	while ( itr_act != NULL )
 	{
+		Q_ASSERT( itr_act->isValid() );
 		itr_act->doSteps( steps );
 		itr_act = nextActuator_(itr_act);
 	}
 
 }
 /* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+quint64				Actor::totalEnergy				( void )
+{
+	quint64 ret = energy_;
+	Sensor * itr_sens = firstSensor_(this);
+	while ( itr_sens != NULL )
+	{
+		ret += itr_sens->energy();
+		itr_sens = nextSensor_(itr_sens);
+	}
+	
+	Reflex * itr_refl = firstReflex_(this);
+	while ( itr_refl != NULL )
+	{
+		ret += itr_refl->energy();
+		itr_refl = nextReflex_(itr_refl);
+	}
+	
+	Brain * itr_brn = firstBrain_(this);
+	while ( itr_brn != NULL )
+	{
+		ret += itr_brn->energy();
+		itr_brn = nextBrain_(itr_brn);
+	}
+	
+	Actuator * itr_act = firstActuator_(this);
+	while ( itr_act != NULL )
+	{
+		ret += itr_act->energy();
+		itr_act = nextActuator_(itr_act);
+	}	
+}
+/* ========================================================================= */
+
 
 /*  CLASS    =============================================================== */
 //
