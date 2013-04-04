@@ -263,6 +263,7 @@ void				Actor::doSteps					( int steps )
 	if ( dies() )
 	{
 		world_->actorDies( this );
+		alive_ = false;
 		return;
 	}
 	
@@ -270,6 +271,7 @@ void				Actor::doSteps					( int steps )
 	if ( energy_ < cost_ )
 	{
 		world_->actorDies( this );
+		alive_ = false;
 		return;
 	}
 	energy_ -= cost_;

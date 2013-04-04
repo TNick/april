@@ -156,18 +156,18 @@ protected:
 	/**
 	*	@brief	destructor;
 	*/
-	virtual				~World		( void );
+	virtual				~World				( void );
 
 
 public:
 
 	//! current time in this world
-	quint64			currentTime			( void ) const
+	quint64				currentTime			( void ) const
 	{ return time_; }
 	
 	//! one unit of time passed
-	void			advance				( void );
-
+	void				advance				( void );
+	
 
 
 	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
@@ -180,21 +180,19 @@ public:
 	/**
 	*	@brief	starts this world
 	*/
-	bool				start			( void )
+	bool				start				( void )
 	{ b_running_ = true; return true; }
-
 
 	/**
 	*	@brief	stops this world
 	*/
-	void				stop			( void )
+	void				stop				( void )
 	{ b_running_ = false; }
-
 
 	/**
 	*	@brief	tell if this world is running
 	*/
-	bool				isRunning		( void )
+	bool				isRunning			( void )
 	{ return b_running_; }
 
 
@@ -211,19 +209,19 @@ public:
 
 	
 	//! ammount of energy in this world
-	quint64			energy				( void ) const
+	quint64				energy				( void ) const
 	{ return energy_all_; }
 	
 	//! ammount of free energy in this world
-	quint64			energyFree			( void ) const
+	quint64				energyFree			( void ) const
 	{ return energy_free_; }	
 	
 	//! ammount of bounded energy in this world
-	quint64			energyBounded		( void ) const
+	quint64				energyBounded		( void ) const
 	{ return energy_all_ - energy_free_; }	
 	
 	//! sets the total ammout of energy in this world
-	bool			setTotEnergy		( quint64 new_val );
+	bool				setTotEnergy		( quint64 new_val );
 	
 protected:
 	
@@ -236,7 +234,7 @@ protected:
 	 * @param cost energy consumed on each step by this component
 	 * @return true if the opperation succeded
 	 */
-	bool			setEnergy		(
+	bool				setEnergy			(
 			ActorComp *				comp, 
 			quint64					energy, 
 			quint64					cost 

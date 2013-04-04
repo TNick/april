@@ -93,6 +93,8 @@ public:
 	virtual				~Event		( void );
 
 
+	//! perform steps (called by the World)
+	virtual void		doSteps		( int steps  = 1 ) = 0;
 
 	/*  FUNCTIONS    ======================================================= */
 	//

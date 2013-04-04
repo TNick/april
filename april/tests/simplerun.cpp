@@ -139,13 +139,17 @@ TEST(SimpleRun, init) {
 	
 	w->start();
 	
-	for ( int i = 0; i < 10; i++ )
+	int i = 0;
+	while ( a->isAlive() )
 	{
 		w->advance();
+		i++;
 	}
-	
+	EXPECT_GE( i, 0 );
+	EXPECT_LE( i, 20 );
+
 	w->stop();
+	DEC_REF( a, a );
 	
 	endAprilLibrary();
-	
 }

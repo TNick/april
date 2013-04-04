@@ -48,6 +48,11 @@ class	Event;
 
 /**
 *	@brief	Factory class for events
+*
+*	Each such class may be capable of creating one or more
+*	types or events. At construction time each such type (ID)
+*	must be associated with this instance in the World with 
+*	World::addEventFactory().
 */
 class
 	APRILSHARED_EXPORT

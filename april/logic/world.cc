@@ -152,6 +152,14 @@ void				World::advance				( void )
 	
 	time_++;
 	
+	/* iterate in events and advance them */
+	Event * e = firstEvent_(this);
+	while ( e != NULL )
+	{
+		e->doSteps( 1 );
+		e = nextEvent_( e );
+	}
+	
 	/* iterate in actors and advance them */
 	Actor * a = firstActor_(this);
 	while ( a != NULL )
@@ -159,6 +167,7 @@ void				World::advance				( void )
 		a->doSteps( 1 );
 		a = nextActor_( a );
 	}
+	
 }
 /* ========================================================================= */
 
