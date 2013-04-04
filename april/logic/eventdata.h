@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			eventline.h
+  \file			eventdata.h
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the definition for EventLine class
+  \brief		Contains the definition for EventData class
 
 
 *//*
@@ -17,8 +17,8 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __EVENTLINE_INC__
-#define __EVENTLINE_INC__
+#ifndef __EVENTDATA_INC__
+#define __EVENTDATA_INC__
 //
 //
 //
@@ -27,9 +27,6 @@
 
 #include    <april/april.h>
 #include    <april/logic/component.h>
-#include    <april/logic/uniqueid.h>
-#include    <april/logic/eventdata.h>
-#include    <libbbb/1/list2d.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -40,7 +37,6 @@
 
 namespace   april    {
 class	World;
-class	EventData;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -50,18 +46,16 @@ class	EventData;
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief	Buffers between events and sensors
+*	@brief	A packet in an EventLine
 */
-class EventLine		: public Component		{
-	BBM_TRACK( EventLine );
+class EventData		: public Component		{
+	BBM_TRACK( EventData );
 
 	//
 	//
 	//
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
-
-	friend class	World;
 
 	/*  DEFINITIONS    ===================================================== */
 	//
@@ -72,18 +66,9 @@ class EventLine		: public Component		{
 
 private:
 
-	//! the world where this belongs
-	World *				world_;
+	//! the time when this should be discarded
+	quint64				discard_time_;
 
-	//! the ID of this line
-	ID					id_;
-	
-	//! the data
-	List2Dh				event_data_;
-	
-	//! cache last in chain
-	EventData *			last_;
-	
 	/*  DATA    ============================================================ */
 	//
 	//
@@ -93,50 +78,36 @@ private:
 
 public:
 
-
 	//! constructor;
-	EventLine			( World * w, ID id );
+	EventData			( void );
 
 protected:
 
 	//! destructor;
-	virtual				~EventLine		( void );
+	virtual				~EventData		( void );
 
 public:
 
-	//! the world where this belongs
-	inline World *		world			( void ) const
-	{ return world_; }
+	//! the time when this should be discarded
+	inline quint64		discardTime		( void ) const
+	{ return discard_time_; }
 
-	//! the ID of this line
-	inline ID			identificator	( void ) const
-	{ return id_; }
+protected:
 
-	//! tell the number of packets
-	inline int			dataCount		( void ) const
-	{ return event_data_.count(); }
+	//! set the time when this should be discarded
+	inline void			setDiscardTime	( quint64 t )
+	{ discard_time_ = t; }
 
-	//! post activity on this event line
-	void				postActivity	( EventData * ed );
-	
-	//! iterate and discard old entries
-	void				discardOldEntries	( void );
+	//! set how long this data should stay in the lines
+	void				setDuration		( World * w, quint64 dt );
 
-	//! get first (newest) packet
-	inline EventData *	firstEventData	( void ) const
-	{ return firstEventData_(this); }
-	
-	//! get last (oldest) packet
-	EventData *			lastEventData	( void );
-	
-	
 	/*  FUNCTIONS    ======================================================= */
 	//
 	//
 	//
 	//
 
-};	/*	class EventLine	*/
+};	/*	class EventData	*/
 
 /*  CLASS    =============================================================== */
 //
@@ -146,6 +117,6 @@ public:
 
 }   //  namespace   april
 
-#endif // __EVENTLINE_INC__
+#endif // __EVENTDATA_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */

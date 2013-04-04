@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			eventline.cc
+  \file			eventdata.cc
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the implementation of EventLine class
+  \brief		Contains the implementation of EventData class
 
 
 *//*
@@ -23,7 +23,7 @@
 //
 /*  INCLUDES    ------------------------------------------------------------ */
 
-#include	"eventline.h"
+#include	"eventdata.h"
 #include	"world.h"
 
 /*  INCLUDES    ============================================================ */
@@ -50,20 +50,8 @@ using namespace april;
 /*  CLASS    --------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------------- */
-EventLine::EventLine	( World * w, ID id )
-	: Component(),
-	world_( w ),
-	id_( id ),
-	event_data_(),
-	last_( NULL )
-{
-	APRDBG_CDTOR;
-	w->addEventLine( this, id );
-}
-/* ========================================================================= */
-
-/* ------------------------------------------------------------------------- */
-EventLine::~EventLine	( void )
+EventData::EventData	( void )
+	: Component()
 {
 	APRDBG_CDTOR;
 	/* stub */
@@ -71,47 +59,17 @@ EventLine::~EventLine	( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void					EventLine::discardOldEntries		( void )
+EventData::~EventData	( void )
 {
-	EventData *	itr = firstEventData_(this);
-	quint64 t = world_->time_;
-	while ( itr != NULL )
-	{
-		if ( t >= itr->discardTime() )
-		{
-			event_data_.remove( itr );
-			DEC_REF( itr, this );
-			if ( last_ == itr )
-			{
-				last_ = NULL;
-			}
-		}
-		itr = nextEventData_( itr );
-	}
+	APRDBG_CDTOR;
+	/* stub */
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void					EventLine::postActivity				( EventData * ed )
-{ 
-	Q_ASSERT( event_data_.contains( ed ) == false ); 
-	INC_REF( ed, this );
-	if ( event_data_.count() == 0 )
-	{
-		last_ = ed;
-	}
-	event_data_.prepend( ed );
-}
-/* ========================================================================= */
-
-/* ------------------------------------------------------------------------- */
-EventData *				EventLine::lastEventData			( void )
+void			EventData::setDuration		( World * w, quint64 dt )
 {
-	if ( last_ == NULL && event_data_.count() > 0 )
-	{
-		last_ = static_cast<EventData*>( event_data_.last() );
-	}
-	return NULL;
+	setDiscardTime( w->currentTime() + dt );
 }
 /* ========================================================================= */
 

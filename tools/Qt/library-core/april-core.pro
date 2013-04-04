@@ -83,7 +83,8 @@ SOURCES += \
     ../../../april/logic/brainfactory.cc \
     ../../../april/logic/reflexfactory.cc \
     ../../../april/logic/actorcomp.cc \
-    ../../../april/logic/eventline.cc
+    ../../../april/logic/eventline.cc \
+    ../../../april/logic/eventdata.cc
 
 HEADERS += \
     ../../../april/april_version.h \
@@ -111,7 +112,8 @@ HEADERS += \
     ../../../april/logic/brainfactory.h \
     ../../../april/logic/reflexfactory.h \
     ../../../april/logic/actorcomp.h \
-    ../../../april/logic/eventline.h
+    ../../../april/logic/eventline.h \
+    ../../../april/logic/eventdata.h
 
 OTHER_FILES += \
     ../../../april/april.dox
