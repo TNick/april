@@ -64,5 +64,15 @@ RC_FILE = ../../../april/aprildream/win-res.rc
 # MacOSX specific icon
 ICON = ../../../april/aprildream/aprildream.icns
 
+FORMS += \
+    ../../../april/AprilDream/gui/mw.ui
+
+HEADERS += \
+    ../../../april/AprilDream/gui/mw.h
+
+SOURCES += \
+    ../../../april/AprilDream/gui/mw.cc \
+    ../../../april/AprilDream/aprildream-main.cc
+
 
 
