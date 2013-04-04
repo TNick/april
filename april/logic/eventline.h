@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			event.h
+  \file			eventline.h
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the definition for Event class
+  \brief		Contains the definition for EventLine class
 
 
 *//*
@@ -17,8 +17,8 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __EVENT_INC__
-#define __EVENT_INC__
+#ifndef __EVENTLINE_INC__
+#define __EVENTLINE_INC__
 //
 //
 //
@@ -27,6 +27,7 @@
 
 #include    <april/april.h>
 #include    <april/logic/component.h>
+#include    <april/logic/uniqueid.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -46,23 +47,10 @@ class	World;
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief	An event is a way to stimulate agents from a world.
-*
-*	Events may stimulate certain kinds of sensors. They may have a placement
-*	and a range and the intensity of the stimulation may be a function
-*	of distance from source. Events may exists that have no placement.
-*
-*	Events may stay alive a long time and generate activity from time to time
-*	or they may be single-shoots.
-*
-*	A world has EventLine's, each with an ID. An Event posts activity on the
-*	EventLine's that are then checked by the Sensor's. Each Event may post
-*	to one or more EventLine's.
+*	@brief	Buffers between events and sensors
 */
-class
-	APRILSHARED_EXPORT
-	Event		: public Component		{
-	BBM_TRACK( Event );
+class EventLine		: public Component		{
+	BBM_TRACK( EventLine );
 
 	//
 	//
@@ -84,6 +72,9 @@ private:
 	//! the world where this belongs
 	World *				world_;
 
+	//! the ID of this line
+	ID					id_;
+	
 	/*  DATA    ============================================================ */
 	//
 	//
@@ -93,22 +84,24 @@ private:
 
 public:
 
+
 	//! constructor;
-	Event				( World * w );
+	EventLine			( World * w, ID id );
 
 protected:
 
 	//! destructor;
-	virtual				~Event		( void );
-
-	//! perform steps (called by the World)
-	virtual void		doSteps		( int steps  = 1 ) = 0;
+	virtual				~EventLine		( void );
 
 public:
 
 	//! the world where this belongs
-	inline World *		world		( void ) const
+	inline World *		world			( void ) const
 	{ return world_; }
+
+	//! the ID of this line
+	inline ID			identificator	( void ) const
+	{ return id_; }
 
 	/*  FUNCTIONS    ======================================================= */
 	//
@@ -116,7 +109,7 @@ public:
 	//
 	//
 
-};	/*	class Event	*/
+};	/*	class EventLine	*/
 
 /*  CLASS    =============================================================== */
 //
@@ -126,6 +119,6 @@ public:
 
 }   //  namespace   april
 
-#endif // __EVENT_INC__
+#endif // __EVENTLINE_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */

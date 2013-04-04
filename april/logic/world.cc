@@ -36,6 +36,7 @@
 #include	"brainfactory.h"
 #include	"reflex.h"
 #include	"reflexfactory.h"
+#include	"eventline.h"
 
 #include	<april/aprillibrary.h>
 
@@ -75,7 +76,8 @@ World::World	( const QString & name, quint64 tot_energ )
 	  actor_factories_(),
 	  actuator_factories_(),
 	  brain_factories_(),
-	  sensor_factories_()
+	  sensor_factories_(),
+	  event_lines_()
 {
 	APRDBG_CDTOR;
 	
@@ -191,6 +193,41 @@ bool				World::remActor				( Actor * act )
 	energy_free_ += act->totalEnergy();
 	actors_.remove( act );
 	DEC_REF( act, this );
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				World::addEventLine			( EventLine * el, ID id  )
+{
+	if ( el == NULL )
+		return false;
+	Q_ASSERT( event_lines_.contains( id ) == false );
+	
+	INC_REF( el, this );
+	event_lines_.insert( id, el );
+	el->inserted();
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				World::remEventLine			( EventLine * el, ID id  )
+{
+	if ( el == NULL )
+		return false;
+	QMap<ID,EventLine*>::Iterator itr = event_lines_.find( id );
+	if ( itr == event_lines_.end() )
+	{
+		return false;
+	}
+	if ( itr.value() != el )
+	{
+		return false;
+	}
+	DEC_REF( el, this );
+	event_lines_.erase( itr );
+	el->inserted();
 	return true;
 }
 /* ========================================================================= */

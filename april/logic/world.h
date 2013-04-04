@@ -46,6 +46,7 @@ class Actuator;
 class Brain;
 class Sensor;
 class Reflex;
+class EventLine;
 
 class ActorFactory;
 class ActuatorFactory;
@@ -78,6 +79,7 @@ class
 	friend class Actor;
 	friend class Event;
 	friend class Factory;
+	friend class EventLine;
 	friend class ActorFactory;
 	friend class ActuatorFactory;
 	friend class BrainFactory;
@@ -135,6 +137,9 @@ private:
 		
 	//! the list of reflex factories
 	QMap<ID,ReflexFactory*>		reflex_factories_;
+	
+	//! the list of event lines
+	QMap<ID,EventLine*>			event_lines_;
 
 	/*  DATA    ============================================================ */
 	//
@@ -359,7 +364,6 @@ protected:
 	//! used by the Actor class to remove itself
 	bool			remActor			( Actor * act );
 
-
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
 	
@@ -368,13 +372,11 @@ protected:
 	/** @name Event related methods
 	 */
 	///@{
-
 	
 	//! first in the list of events (alive or recently dead)
 	Event *			firstEvent			( void ) const;
 
 protected:
-
 
 	//! used by the Event class to insert itself
 	bool			addEvent			( Event * act );
@@ -382,6 +384,23 @@ protected:
 	//! used by the Event class to remove itself
 	bool			remEvent			( Event * act );
 	
+	///@}
+	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
+
+	
+	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
+	/** @name Event related methods
+	 */
+	///@{
+	
+protected:
+
+	//! used by the EventLine class to insert itself
+	bool			addEventLine		( EventLine * el, ID id );
+	
+	//! used by the EventLine class to remove itself
+	bool			remEventLine		( EventLine * el, ID id );
+
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
 
@@ -481,7 +500,7 @@ public:
 	//
 	//
 	//
-
+	
 };	/*	class World	*/
 
 /*  CLASS    =============================================================== */
