@@ -26,7 +26,7 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include    <april/april.h>
-#include    <april/logic/component.h>
+#include    <april/logic/actorcomp.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -36,7 +36,6 @@
 /*  DEFINITIONS    --------------------------------------------------------- */
 
 namespace   april    {
-class	Actor;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -53,7 +52,7 @@ class	Actor;
 */
 class
 	APRILSHARED_EXPORT
-	Actuator		: public Component		{
+	Actuator		: public ActorComp		{
 	BBM_TRACK( Actuator );
 
 	//
@@ -71,8 +70,7 @@ class
 
 private:
 
-	//! parent actor
-	Actor *					actor_;
+
 
 	/*  DATA    ============================================================ */
 	//
@@ -96,11 +94,6 @@ protected:
 	*/
 	virtual				~Actuator		( void );
 
-public:
-
-	//! parent actor
-	inline Actor *		actor		( void ) const
-	{ return actor_; }
 
 
 	/*  FUNCTIONS    ======================================================= */

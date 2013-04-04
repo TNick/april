@@ -52,8 +52,7 @@ using namespace april;
 
 /* ------------------------------------------------------------------------- */
 Brain::Brain	( Actor * actor )
-	: Component(), 
-	actor_( actor )
+	: ActorComp( actor )
 {
 	APRDBG_CDTOR;
 	actor->addBrain( this );

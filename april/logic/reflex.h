@@ -26,7 +26,7 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include    <april/april.h>
-#include    <april/logic/component.h>
+#include    <april/logic/actorcomp.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -46,11 +46,11 @@ class	Actor;
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief	A base class fir a reflex
+*	@brief	A base class for a reflex
 */
 class
 	APRILSHARED_EXPORT
-	Reflex		: public Component		{
+	Reflex		: public ActorComp		{
 	BBM_TRACK( Reflex );
 
 	//
@@ -68,8 +68,6 @@ class
 
 private:
 
-	//! parent actor
-	Actor *					actor_;
 
 	/*  DATA    ============================================================ */
 	//
@@ -96,9 +94,6 @@ protected:
 
 public:
 
-	//! parent actor
-	inline Actor *		actor		( void ) const
-	{ return actor_; }
 
 
 	/*  FUNCTIONS    ======================================================= */

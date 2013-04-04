@@ -52,8 +52,7 @@ using namespace april;
 
 /* ------------------------------------------------------------------------- */
 Actuator::Actuator	( Actor * actor )
-	: Component(), 
-	actor_( actor )
+	: ActorComp(actor)
 {
 	APRDBG_CDTOR;
 	actor->addActuator( this );

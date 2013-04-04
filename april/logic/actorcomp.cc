@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			sensor.cc
+  \file			actorcomp.cc
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the implementation of Sensor class
+  \brief		Contains the implementation of ActorComp class
 
 
 *//*
@@ -23,7 +23,7 @@
 //
 /*  INCLUDES    ------------------------------------------------------------ */
 
-#include	"sensor.h"
+#include	"actorcomp.h"
 #include	"actor.h"
 
 
@@ -51,16 +51,17 @@ using namespace april;
 /*  CLASS    --------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------------- */
-Sensor::Sensor	( Actor * actor )
-	: ActorComp( actor )
+ActorComp::ActorComp	( Actor * actor )
+	: Component(), 
+	actor_( actor )
 {
 	APRDBG_CDTOR;
-	actor->addSensor( this );
+	/* stub */
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-Sensor::~Sensor	( void )
+ActorComp::~ActorComp	( void )
 {
 	APRDBG_CDTOR;
 	/* stub */

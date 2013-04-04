@@ -52,8 +52,7 @@ using namespace april;
 
 /* ------------------------------------------------------------------------- */
 Reflex::Reflex	( Actor * actor )
-	: Component(),
-	actor_(actor)
+	: ActorComp( actor )
 {
 	APRDBG_CDTOR;
 	actor->addReflex( this );
