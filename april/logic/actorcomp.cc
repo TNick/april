@@ -54,7 +54,20 @@ using namespace april;
 ActorComp::ActorComp	( Actor * actor )
 	: Component(), 
 	actor_( actor ),
-	cost_( 0 )
+	cost_( 0 ),
+	energy_( 0 )
+{
+	APRDBG_CDTOR;
+	/* stub */
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+ActorComp::ActorComp	( Actor * actor, quint64 cost, quint64 energy )
+	: Component(), 
+	actor_( actor ),
+	cost_( cost ),
+	energy_( energy )
 {
 	APRDBG_CDTOR;
 	/* stub */

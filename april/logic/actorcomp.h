@@ -86,17 +86,15 @@ private:
 
 public:
 
-
-	/**
-	*	@brief	constructor;
-	*/
+	//! constructor;
 	ActorComp			( Actor * actor );
+
+	//! constructor; sets energy related values
+	ActorComp			( Actor * actor, quint64 cost, quint64 energy );
 
 protected:
 
-	/**
-	*	@brief	destructor;
-	*/
+	//! destructor;
 	virtual				~ActorComp		( void );
 
 public:
