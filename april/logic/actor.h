@@ -218,7 +218,7 @@ public:
 
 protected:
 
-	//! ste the DNA to provided sequence (intended for ActorFactory)
+	//! set the DNA to provided sequence (intended for ActorFactory)
 	inline void			setDNA					( const DNA & src )
 	{ dna_ = src; }
 

@@ -53,7 +53,8 @@ using namespace april;
 /* ------------------------------------------------------------------------- */
 ActorComp::ActorComp	( Actor * actor )
 	: Component(), 
-	actor_( actor )
+	actor_( actor ),
+	cost_( 0 )
 {
 	APRDBG_CDTOR;
 	/* stub */

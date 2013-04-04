@@ -69,6 +69,8 @@ private:
 	//! parent actor
 	Actor *					actor_;
 
+	//! cost per time unit
+	quint64					cost_;
 
 	/*  DATA    ============================================================ */
 	//
@@ -98,6 +100,15 @@ public:
 	inline Actor *		actor		( void ) const
 	{ return actor_; }
 
+	//! cost per time unit
+	inline quint64		cost		( void ) const
+	{ return cost_; }
+
+protected:
+
+	//! set cost per time unit
+	void				setCost		( quint64 new_val )
+	{ cost_ = new_val; }
 
 	/*  FUNCTIONS    ======================================================= */
 	//
