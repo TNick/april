@@ -171,6 +171,7 @@ void			AprilLibrary::internalAddWorld			( World * world )
 	}
 	uniq_->worlds_.prepend( world );
 	INC_REF( world, this );
+	world->inserted();
 }
 /* ========================================================================= */
 

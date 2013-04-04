@@ -407,7 +407,7 @@ void			DNA::mergeParts		(
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void			DNA::mergePart		( 
+void			DNA::mergePart			( 
 		const Partition & part, const DNA & p  )
 {
 	int i_max = part.count_;
@@ -431,7 +431,7 @@ void			DNA::mergePart		(
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-DNAView			DNA::getView	( ID id, Factory * f )
+DNAView			DNA::getView			( ID id, Factory * f )
 {
 	DNAView		view(this,InvalidId);
 	
@@ -443,32 +443,8 @@ DNAView			DNA::getView	( ID id, Factory * f )
 	}
 	else
 	{ /* id was not found inside our parts */
-		if ( f == NULL )
-		{ /* no factory provided */
+		if ( getViewNotFound( view, id, f ) == false )
 			return view;
-		}
-		else
-		{ /* a factory was provided; attempt to request defaults */
-			QList<qreal> vals = f->defaultDNA( id );
-			Partition part;
-			if ( vals.count() == 0 )
-			{ /* no return */
-				return view;
-			}
-			
-			/* factory gave us the defaults; create new partition */
-			part.id_ = id;
-			part.count_ = vals.count();
-			part.start_ = values_.count();
-			parts_.append( part );
-			
-			/* append the values */
-			values_.append( vals );
-			
-			/* and return a view to them */
-			view.setBegin( part.start_ );
-			view.setCount( part.count_ );
-		}
 	}
 	view.setIdentificator( id );
 	return view;
@@ -476,7 +452,100 @@ DNAView			DNA::getView	( ID id, Factory * f )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-ID				DNA::kind		( void ) const
+DNAView			DNA::getView			( ID id, int sz, Factory * f )
+{
+	DNAView		view(this,InvalidId);
+	int i = findID( id );
+	if ( i != -1 )
+	{ /* id found in a partition */
+		Partition & part = parts_[i];
+		if ( part.count_ >= sz )
+		{
+			view.setBegin( part.start_ );
+			view.setCount( part.count_ );
+		}
+		else
+		{
+			QList<qreal> vals = f->averageDNA( id );
+			Partition newpart;
+			int i;
+			int i_max = vals.count();
+			newpart.id_ = id;
+			newpart.start_ = values_.count();
+			
+			/* copy old values */
+			for ( i = 0; i < part.count_; i++ )
+			{
+				values_.append( values_.at( part.start_+i ) );
+			}
+			
+			/* copy defaults in other places */
+			while ( i < i_max )
+			{
+				values_.append( vals.at( i ) );
+				i++;
+			}
+			
+			/* fill random if that's not enough */
+			while ( i < sz )
+			{
+				values_.append( RAND_ARROUND_0 );
+				i++;
+			}
+			
+			newpart.count_ = i;
+			part.id_ = InvalidId; // discard old
+			parts_.append( newpart );
+			
+			view.setBegin( newpart.start_ );
+			view.setCount( newpart.count_ );
+		}
+	}
+	else
+	{ /* id was not found inside our parts */
+		if ( getViewNotFound( view, id, f ) == false )
+			return view;
+	}
+	view.setIdentificator( id );
+	return view;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			DNA::getViewNotFound	( DNAView & view, ID id, Factory * f )
+{
+	if ( f == NULL )
+	{ /* no factory provided */
+		return false;
+	}
+	else
+	{ /* a factory was provided; attempt to request defaults */
+		QList<qreal> vals = f->averageDNA( id );
+		Partition part;
+		if ( vals.count() == 0 )
+		{ /* no return */
+			return false;
+		}
+		
+		/* factory gave us the defaults; create new partition */
+		part.id_ = id;
+		part.count_ = vals.count();
+		part.start_ = values_.count();
+		parts_.append( part );
+		
+		/* append the values */
+		values_.append( vals );
+		
+		/* and return a view to them */
+		view.setBegin( part.start_ );
+		view.setCount( part.count_ );
+	}
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+ID				DNA::kind				( void ) const
 {
 	quint64 sz = values_i_.length();
 	if ( sz < OffMax )
@@ -486,7 +555,7 @@ ID				DNA::kind		( void ) const
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-QList<ID>		DNA::brains			( void ) const
+QList<ID>		DNA::brains				( void ) const
 {
 	QList<ID>	ret_l;
 	quint64 sz = values_i_.length();
@@ -508,7 +577,7 @@ QList<ID>		DNA::brains			( void ) const
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-QList<ID>		DNA::actuators		( void ) const
+QList<ID>		DNA::actuators			( void ) const
 {
 	QList<ID>	ret_l;
 	quint64 sz = values_i_.length();

@@ -107,7 +107,7 @@ public:
 	{ Q_UNUSED( id ); return s_name_for_id_; }
 
 	//! get the default DNA sequence for a particular ID
-	virtual QList<qreal>		defaultDNA		( ID id ) const
+	virtual QList<qreal>		averageDNA		( ID id ) const
 	{ Q_UNUSED( id ); return QList<qreal>(); }
 
 protected:

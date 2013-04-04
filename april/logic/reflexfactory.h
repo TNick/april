@@ -48,9 +48,11 @@ class	Reflex;
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief
+*	@brief	Base class for reflex factories
 */
-class ReflexFactory		: public Factory		{
+class
+	APRILSHARED_EXPORT
+	ReflexFactory		: public Factory		{
 	BBM_TRACK( ReflexFactory );
 
 	//

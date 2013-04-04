@@ -62,6 +62,10 @@ class
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
 
+	friend class AprilLibrary;
+	friend class World;
+	friend class Actor;
+	
 	/*  DEFINITIONS    ===================================================== */
 	//
 	//
@@ -102,6 +106,14 @@ public:
 	Amorph &			payload					( void )
 	{ return payload_; }
 
+protected:
+	
+	//! the instance is informed that the parent attached it
+	/**
+	 *	The method signals that insertion process ended succesfully.
+	 */
+	virtual void		inserted				( void )
+	{ }
 
 	/*  FUNCTIONS    ======================================================= */
 	//

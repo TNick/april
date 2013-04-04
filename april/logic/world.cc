@@ -127,6 +127,7 @@ bool				World::addActor				( Actor * act )
 	
 	INC_REF( act, this );
 	actors_.append( act );
+	/* act->inserted(); is called by the method that inserts it */
 	return true;
 }
 /* ========================================================================= */
@@ -154,7 +155,9 @@ bool				World::addEvent				( Event * ev )
 {
 	Q_ASSERT( events_.contains( ev ) == false );
 	
+	INC_REF( ev, this );
 	events_.append( ev );
+	ev->inserted();
 	return true;
 }
 /* ========================================================================= */
@@ -165,6 +168,7 @@ bool				World::remEvent				( Event * ev )
 	Q_ASSERT( events_.contains( ev ) == true );
 	
 	events_.remove( ev );
+	DEC_REF( ev, this );
 	return true;
 }
 /* ========================================================================= */
@@ -386,7 +390,7 @@ Actor *				World::createActor			( ID id_kind )
 		}
 		else
 		{ /* we have a proper actor */
-			
+			ret->inserted();			
 		}
 	}
 	

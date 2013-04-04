@@ -180,11 +180,11 @@ public:
 	//! tell if this instance s valid or not
 	bool			isValid			( void ) const;
 	
-	
 	//! energy cost
 	quint64			cost			( void ) const
 	{ Q_ASSERT(values_i_.length() >= OffMax ); return values_i_.at( OffCost ); }
-	
+
+
 	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
 	/** @name examine components
 	 */
@@ -198,6 +198,20 @@ public:
 	 *	If that does not work the DNAView will be invalid.
 	 */
 	DNAView			getView			( ID id, Factory * f = NULL );
+
+	//! get a view for a particular id
+	/**
+	 *	This variant is for the callers that assert a certain minimum size for
+	 *	returned view. If the id is not to be found and a factory is 
+	 *	provided then it is asked for a default for this ID.
+	 *	If that does not work the DNAView will be invalid.
+	 *
+	 *	If the id is found but its size is smaller than requested a new
+	 *	portion large enough is allocated at the end of the dna array. Old 
+	 *	values are copied in their respective spots and new spots are filled
+	 *	by requesting the averageDNA values from the factory.
+	 */
+	DNAView			getView			( ID id, int sz, Factory * f = NULL );
 
 	//! get the kind
 	ID				kind			( void ) const;
@@ -287,7 +301,6 @@ protected:
 	 */
 	void			initDNA			( ID id_kind );
 	
-private:
 	
 	
 	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
@@ -295,6 +308,7 @@ private:
 	 */
 	///@{
 
+private:
 
 	bool			mergeAllVals	(
 			const DNA &			p1,
@@ -347,6 +361,15 @@ public:
 	{ values_i_ = new_val; }
 #endif
 	
+private:
+
+	//! helper for getView()
+	bool			getViewNotFound			(
+			DNAView &			view,
+			ID					id,
+			Factory *			f
+			);
+
 	
 	/*  FUNCTIONS    ======================================================= */
 	//

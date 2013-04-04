@@ -48,9 +48,11 @@ class	Actor;
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief
+*	@brief Base class for brain factories
 */
-class BrainFactory		: public Factory		{
+class
+	APRILSHARED_EXPORT
+	BrainFactory		: public Factory		{
 	BBM_TRACK( BrainFactory );
 
 	//

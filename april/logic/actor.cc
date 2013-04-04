@@ -211,6 +211,7 @@ bool				Actor::addActuator				( Actuator * itm )
 		return false;
 	INC_REF( itm, this );
 	actuators_.prepend( itm );
+	itm->inserted();
 	return true;
 }
 /* ========================================================================= */
@@ -222,6 +223,7 @@ bool				Actor::addSensor				( Sensor * itm )
 		return false;
 	INC_REF( itm, this );
 	sensors_.prepend( itm );
+	itm->inserted();
 	return true;
 }
 /* ========================================================================= */
@@ -233,6 +235,7 @@ bool				Actor::addReflex				( Reflex * itm )
 		return false;
 	INC_REF( itm, this );
 	reflexes_.prepend( itm );
+	itm->inserted();
 	return true;
 }
 /* ========================================================================= */
@@ -244,6 +247,7 @@ bool				Actor::addBrain					( Brain * itm )
 		return false;
 	INC_REF( itm, this );
 	brains_.prepend( itm );
+	itm->inserted();
 	return true;
 }
 /* ========================================================================= */

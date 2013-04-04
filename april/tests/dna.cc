@@ -247,13 +247,11 @@ TEST(DNA, complexMerge) {
 	endAprilLibrary();
 }
 
-class TstFactory	: public Factory {
+class TstFactory1	: public Factory {
 public:
-	
-	TstFactory() : Factory( NULL ) {  }
-
-	virtual QList<qreal>		defaultDNA		( ID id ) const
-	{ 
+	TstFactory1() : Factory( NULL ) 
+	{  }
+	virtual QList<qreal> averageDNA ( ID id ) const { 
 		Q_UNUSED( id );
 		QList<qreal>	l;
 		l.append( 13.3 );
@@ -262,8 +260,42 @@ public:
 		l.append( 0.34848 );
 		return l; 
 	}
-
 };
+class TstFactory2	: public Factory {
+public:
+	TstFactory2() : Factory( NULL ) 
+	{  }
+	virtual QList<qreal> averageDNA ( ID id ) const { 
+		Q_UNUSED( id );
+		QList<qreal>	l;
+		l.append( 0.17201 );
+		l.append( -78.3 );
+		l.append( 13.3333 );
+		l.append( 4450.3 );
+		return l; 
+	}
+};
+class TstFactory1_2	: public Factory {
+public:
+	TstFactory1_2() : Factory( NULL ) 
+	{  }
+	virtual QList<qreal> averageDNA ( ID id ) const { 
+		Q_UNUSED( id );
+		QList<qreal>	l;
+		
+		l.append( 17.3 );
+		l.append( -89.3 );
+		l.append( 1425.3 );
+		l.append( 0.1188997 );
+		l.append( 778899.3 );
+		l.append( -0.1188997 );
+		l.append( -778899.3 );
+		return l; 
+	}
+};
+
+
+
 
 
 TEST(DNA, getView) {
@@ -283,8 +315,9 @@ TEST(DNA, getView) {
 	l1.append( 4 ); // cost
 	dnap1.setValuesI( l1 );
 	
-	TstFactory * tf = new TstFactory();
-	DNAView view1 = dnap1.getView( 1, tf );
+	TstFactory1 * tf1 = new TstFactory1();
+	// will request default values from the factory
+	DNAView view1 = dnap1.getView( 1, tf1 );
 	EXPECT_TRUE( view1.isValid() );
 	EXPECT_EQ( view1.value(0), (qreal)13.3 );
 	EXPECT_EQ( view1.value(1), (qreal)-113.3 );
@@ -292,7 +325,34 @@ TEST(DNA, getView) {
 	EXPECT_EQ( view1.value(3), (qreal)0.34848 );
 	EXPECT_EQ( view1.identificator(), (quint64)1 );
 	
-	REMOVE_CONSTRUCTOR_REF(tf);
+	TstFactory2 * tf2 = new TstFactory2();
+	// will request default values from the factory
+	DNAView view2 = dnap1.getView( 2, tf2 );
+	EXPECT_TRUE( view2.isValid() );
+	EXPECT_EQ( view2.value(0), (qreal)0.17201 );
+	EXPECT_EQ( view2.value(1), (qreal)-78.3 );
+	EXPECT_EQ( view2.value(2), (qreal)13.3333 );
+	EXPECT_EQ( view2.value(3), (qreal)4450.3 );
+	EXPECT_EQ( view2.identificator(), (quint64)2 );
+
+	TstFactory1_2 * tf1_2 = new TstFactory1_2();
+	// will need reposition op
+	DNAView view1_2 = dnap1.getView( 1, 7, tf1_2 );
+	EXPECT_TRUE( view1_2.isValid() );
+	// old intact
+	EXPECT_EQ( view1_2.value(0), (qreal)13.3 );
+	EXPECT_EQ( view1_2.value(1), (qreal)-113.3 );
+	EXPECT_EQ( view1_2.value(2), (qreal)913.3 );
+	EXPECT_EQ( view1_2.value(3), (qreal)0.34848 );
+	// new
+	EXPECT_EQ( view1_2.value(4), (qreal)778899.3 );
+	EXPECT_EQ( view1_2.value(5), (qreal)-0.1188997 );
+	EXPECT_EQ( view1_2.value(6), (qreal)-778899.3 );
+
+	EXPECT_EQ( view1_2.identificator(), (quint64)1 );
+
+	REMOVE_CONSTRUCTOR_REF(tf1);
+	REMOVE_CONSTRUCTOR_REF(tf2);
 	endAprilLibrary();
 }
 
