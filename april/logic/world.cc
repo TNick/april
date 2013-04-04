@@ -123,6 +123,7 @@ World::~World	( void )
 	discardFactory(event,EventFactory)
 	discardFactory(reflex,ReflexFactory)
 	
+#	undef	discardFactory
 }
 /* ========================================================================= */
 
@@ -152,7 +153,12 @@ void				World::advance				( void )
 	time_++;
 	
 	/* iterate in actors and advance them */
-	
+	Actor * a = firstActor_(this);
+	while ( a != NULL )
+	{
+		a->doSteps( 1 );
+		a = nextActor_( a );
+	}
 }
 /* ========================================================================= */
 
@@ -484,6 +490,14 @@ Reflex *			World::createReflex			( Actor * actor, ID id )
 	}
 	Q_ASSERT( itr.value() != NULL );
 	return itr.value()->create( actor, id );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void				World::actorDies			( Actor * actor )
+{
+	/* may decide to keep it arround */
+	remActor( actor );
 }
 /* ========================================================================= */
 

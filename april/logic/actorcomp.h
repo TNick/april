@@ -57,6 +57,8 @@ class ActorComp		: public Component		{
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
 
+	friend class Actor;
+	
 	/*  DEFINITIONS    ===================================================== */
 	//
 	//
@@ -72,6 +74,9 @@ private:
 	//! cost per time unit
 	quint64					cost_;
 
+	//! ammount of energy packed inside this component
+	quint64					energy_;
+	
 	/*  DATA    ============================================================ */
 	//
 	//
@@ -101,6 +106,13 @@ public:
 	{ return actor_; }
 
 	//! cost per time unit
+	/**
+	 *	This value is requested by the actor when started
+	 *	and then cached. Changing this value after this (like using
+	 *	setCost()) has no effect on the actor.
+	 *
+	 *	@return the cost
+	 */
 	inline quint64		cost		( void ) const
 	{ return cost_; }
 
@@ -109,6 +121,12 @@ protected:
 	//! set cost per time unit
 	void				setCost		( quint64 new_val )
 	{ cost_ = new_val; }
+
+	//! perform steps (called by the Actor)
+	virtual void		doSteps		( int steps )
+	{ Q_UNUSED( steps ); }
+
+
 
 	/*  FUNCTIONS    ======================================================= */
 	//

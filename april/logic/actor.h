@@ -54,6 +54,25 @@ class Reflex;
 
 /**
 *	@brief	An active ocupier of the world
+*
+*	When an actor is first constructed it is not alive. This allows the
+*	caller to initialise it, decode, DNA, ... Once the actor is made alive
+*	using makeAlive() it will recieve time ticks from the World via
+*	doSteps(). Because the world may be runned in a multi-thread 
+*	environment doSteps() also recieves the number of time units that passed
+*	since the actor was last called.
+*
+*	doSteps() substracts the constant cost from the current energy and
+*	if the energy is exhausted the actor dies (sends World::actorDies() to
+*	parent world). Same happens if the actor reaches its \b death_ age.
+*
+*	doSteps() iterates components and sends them ActorComp::doSteps(). 
+*	The order is following:
+*	- sensors (may generate input for reflexes and brains)
+*	- reflexes (may generate input for brains and actuators)
+*	- brains (may generate input for actuators)
+*	- actuators (may alter outside world)
+*
 */
 class
 	APRILSHARED_EXPORT
@@ -239,6 +258,10 @@ protected:
 
 	//! perform steps (called by the World)
 	void				doSteps					( int steps  = 1 );
+
+	//! make the actor alive
+	void				makeAlive				( void );
+
 
 	/*  FUNCTIONS    ======================================================= */
 	//

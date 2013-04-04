@@ -454,6 +454,11 @@ public:
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
 
 
+	//! informed when the life of an actor ended
+	void			actorDies			( Actor * actor );
+
+
+
 
 	/*  FUNCTIONS    ======================================================= */
 	//

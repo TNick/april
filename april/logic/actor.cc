@@ -252,6 +252,60 @@ bool				Actor::addBrain					( Brain * itm )
 }
 /* ========================================================================= */
 
+/* ------------------------------------------------------------------------- */
+void				Actor::doSteps					( int steps )
+{
+	if ( isAlive() == false )
+		return;
+
+	/* check if this is it */
+	age_ += steps;
+	if ( dies() )
+	{
+		world_->actorDies( this );
+		return;
+	}
+	
+	/* do we have energy to live another time unit? */
+	if ( energy_ < cost_ )
+	{
+		world_->actorDies( this );
+		return;
+	}
+	energy_ -= cost_;
+	
+	/* allow components to do their thing */
+	Sensor * itr_sens = firstSensor_(this);
+	while ( itr_sens != NULL )
+	{
+		itr_sens->doSteps( steps );
+		itr_sens = nextSensor_(itr_sens);
+	}
+	
+	Reflex * itr_refl = firstReflex_(this);
+	while ( itr_refl != NULL )
+	{
+		itr_refl->doSteps( steps );
+		itr_refl = nextReflex_(itr_refl);
+	}
+	
+	Brain * itr_brn = firstBrain_(this);
+	while ( itr_brn != NULL )
+	{
+		itr_brn->doSteps( steps );
+		itr_brn = nextBrain_(itr_brn);
+	}
+	
+	Actuator * itr_act = firstActuator_(this);
+	while ( itr_act != NULL )
+	{
+		itr_act->doSteps( steps );
+		itr_act = nextActuator_(itr_act);
+	}
+
+}
+/* ========================================================================= */
+
 /*  CLASS    =============================================================== */
 //
 //
