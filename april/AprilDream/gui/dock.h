@@ -118,6 +118,10 @@ public:
 	MW *				mainWindow	( void ) const
 	{ return mw_; }
 	
+	//! the action used to show-hide the widget
+	QDockWidget *		dock		( void ) const
+	{ return wdok_; }
+
 	
 
 private slots:
@@ -134,7 +138,12 @@ private slots:
 private:
 	
 	//! timer to find out if we've been really hidden
-	void	timerEvent	( QTimerEvent * );
+	void				timerEvent				( QTimerEvent * );
+	
+protected:
+	
+	//! used to construct the widget
+	virtual void		construct				( void ) = 0;
 	
 	/*  FUNCTIONS    ======================================================= */
 	//

@@ -84,12 +84,15 @@ public:
 	*/
 	DockCrtSel			( MW * mw );
 
-
 	/**
 	*	@brief	destructor;
 	*/
-	virtual				~DockCrtSel		( void );
+	virtual				~DockCrtSel				( void );
 
+protected:
+
+	//! used to construct the widget
+	void				construct				( void );
 
 
 	/*  FUNCTIONS    ======================================================= */

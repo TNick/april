@@ -84,12 +84,15 @@ public:
 	*/
 	DockIds				( MW * mw );
 
-
 	/**
 	*	@brief	destructor;
 	*/
-	virtual				~DockIds		( void );
+	virtual				~DockIds				( void );
 
+protected:
+
+	//! used to construct the widget
+	void				construct				( void );
 
 
 	/*  FUNCTIONS    ======================================================= */

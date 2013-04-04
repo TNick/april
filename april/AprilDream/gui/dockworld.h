@@ -78,18 +78,20 @@ private:
 
 public:
 
-
 	/**
 	*	@brief	constructor;
 	*/
 	DockWorld			( MW * mw );
 
-
 	/**
 	*	@brief	destructor;
 	*/
-	virtual				~DockWorld		( void );
+	virtual				~DockWorld				( void );
 
+protected:
+
+	//! used to construct the widget
+	void				construct				( void );
 
 
 	/*  FUNCTIONS    ======================================================= */

@@ -78,18 +78,20 @@ private:
 
 public:
 
-
 	/**
 	*	@brief	constructor;
 	*/
 	DockTree			( MW * mw );
 
-
 	/**
 	*	@brief	destructor;
 	*/
-	virtual				~DockTree		( void );
+	virtual				~DockTree				( void );
 
+protected:
+
+	//! used to construct the widget
+	void				construct				( void );
 
 
 	/*  FUNCTIONS    ======================================================= */
