@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			dock.h
+  \file			dockworld.h
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the definition for Dock class
+  \brief		Contains the definition for DockWorld class
 
 
 *//*
@@ -17,8 +17,8 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __DOCK_INC__
-#define __DOCK_INC__
+#ifndef __DOCKWORLD_INC__
+#define __DOCKWORLD_INC__
 //
 //
 //
@@ -26,8 +26,7 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include    <april/april.h>
-#include	<QDockWidget>
-#include	<QAction>
+#include    <april/AprilDream/gui/dock.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -37,9 +36,7 @@
 /*  DEFINITIONS    --------------------------------------------------------- */
 
 namespace   april	{
-
-namespace   Gui		{
-
+namespace	Gui		{
 class	MW;
 
 /*  DEFINITIONS    ========================================================= */
@@ -50,11 +47,10 @@ class	MW;
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief	Represents the base class for a docking panel
+*	@brief	Informations about the world
 */
-class Dock		: public QObject, public MemTrack		{
-	Q_OBJECT
-	BBM_TRACK( Dock );
+class DockWorld		: public Dock		{
+	BBM_TRACK( DockWorld );
 
 	//
 	//
@@ -71,24 +67,8 @@ class Dock		: public QObject, public MemTrack		{
 
 private:
 
-	//! parent widget
-	MW *					mw_;
 
-	//! the action used to show-hide the widget
-	QDockWidget *			wdok_;
-	
-	//! embedded action for showing/hiding the widget
-	QAction					act_sh_;
 
-	//! the side where it should be shown
-	Qt::DockWidgetArea		side_;
-
-	//! prevent overlapping
-	bool					b_flip_;
-
-	//! timer id
-	int						id_;
-	
 	/*  DATA    ============================================================ */
 	//
 	//
@@ -102,47 +82,23 @@ public:
 	/**
 	*	@brief	constructor;
 	*/
-	Dock				( MW * mw, const QString & s_text );
+	DockWorld			( MW * mw );
 
 
 	/**
 	*	@brief	destructor;
 	*/
-	virtual				~Dock		( void );
+	virtual				~DockWorld		( void );
 
-	//! the embedded action
-	QAction *			action		( void )
-	{ return &act_sh_; }
 
-	//! parent main window
-	MW *				mainWindow	( void ) const
-	{ return mw_; }
-	
-	
 
-private slots:
-
-	//! informed about the change in visibility
-	void				changeVisibility		( bool b_vis );
-	
-	//! we're saving the side using this slot
-	void				saveDockLoc				( Qt::DockWidgetArea );
-	
-	//! only used when the dock is hidden
-	void				dockVisibilityChanged	( bool b );
-	
-private:
-	
-	//! timer to find out if we've been really hidden
-	void	timerEvent	( QTimerEvent * );
-	
 	/*  FUNCTIONS    ======================================================= */
 	//
 	//
 	//
 	//
 
-};	/*	class Dock	*/
+};	/*	class DockWorld	*/
 
 /*  CLASS    =============================================================== */
 //
@@ -153,6 +109,6 @@ private:
 }   //  namespace   Gui
 }   //  namespace   april
 
-#endif // __DOCK_INC__
+#endif // __DOCKWORLD_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */

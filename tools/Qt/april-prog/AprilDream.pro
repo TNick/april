@@ -77,7 +77,11 @@ HEADERS += \
     ../../../april/AprilDream/propertybrowser/qtgroupboxpropertybrowser.h \
     ../../../april/AprilDream/propertybrowser/qteditorfactory.h \
     ../../../april/AprilDream/propertybrowser/qtbuttonpropertybrowser.h \
-    ../../../april/AprilDream/gui/dock.h
+    ../../../april/AprilDream/gui/dock.h \
+    ../../../april/AprilDream/gui/dockworld.h \
+    ../../../april/AprilDream/gui/docktree.h \
+    ../../../april/AprilDream/gui/dockids.h \
+    ../../../april/AprilDream/gui/dockcrtsel.h
 
 SOURCES += \
     ../../../april/AprilDream/gui/mw.cc \
@@ -90,7 +94,11 @@ SOURCES += \
     ../../../april/AprilDream/propertybrowser/qtgroupboxpropertybrowser.cpp \
     ../../../april/AprilDream/propertybrowser/qteditorfactory.cpp \
     ../../../april/AprilDream/propertybrowser/qtbuttonpropertybrowser.cpp \
-    ../../../april/AprilDream/gui/dock.cc
+    ../../../april/AprilDream/gui/dock.cc \
+    ../../../april/AprilDream/gui/dockworld.cc \
+    ../../../april/AprilDream/gui/docktree.cc \
+    ../../../april/AprilDream/gui/dockids.cc \
+    ../../../april/AprilDream/gui/dockcrtsel.cc
 
 
 

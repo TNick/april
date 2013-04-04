@@ -28,6 +28,10 @@
 #include    <QMainWindow>
 #include    <april/april.h>
 #include	"ui_mw.h"
+#include    <april/AprilDream/gui/dockcrtsel.h>
+#include    <april/AprilDream/gui/dockids.h>
+#include    <april/AprilDream/gui/docktree.h>
+#include    <april/AprilDream/gui/dockworld.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -72,6 +76,15 @@ private:
 	//! GUI components embedded here
 	Ui::MW         ui;
 
+	//!@{ 
+	//! dock widget
+	DockCrtSel		d_crt_sel_;
+	DockIds			d_ids_;
+	DockTree		d_tree_;
+	DockWorld		d_world_;
+	//!@}
+	
+	
 	/*  DATA    ============================================================ */
 	//
 	//

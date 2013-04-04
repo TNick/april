@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			mw.cc
+  \file			dockworld.cc
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the implementation for MW class
+  \brief		Contains the implementation of DockWorld class
 
 
 *//*
@@ -23,9 +23,8 @@
 //
 /*  INCLUDES    ------------------------------------------------------------ */
 
+#include	"dockworld.h"
 
-#include	"mw.h"
-#include	"ui_mw.h"
 
 /*  INCLUDES    ============================================================ */
 //
@@ -52,27 +51,8 @@ using namespace april::Gui;
 /*  CLASS    --------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------------- */
-MW::MW	( QWidget *parent ) :
-	QMainWindow( parent ), MemTrack(),
-	ui(),
-	d_crt_sel_(this),
-	d_ids_(this),
-	d_tree_(this),
-	d_world_(this)
-{
-	APRDBG_CDTOR;
-	ui.setupUi( this );
-	
-	ui.menuView->addAction( d_crt_sel_.action() );
-	ui.menuView->addAction( d_ids_.action() );
-	ui.menuView->addAction( d_tree_.action() );
-	ui.menuView->addAction( d_world_.action() );
-	
-}
-/* ========================================================================= */
-
-/* ------------------------------------------------------------------------- */
-MW::~MW	( void )
+DockWorld::DockWorld	( MW * mw )
+	: Dock( mw, "World properties" )
 {
 	APRDBG_CDTOR;
 	/* stub */
@@ -80,16 +60,10 @@ MW::~MW	( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void					MW::changeEvent			( QEvent * e )
+DockWorld::~DockWorld	( void )
 {
-	QMainWindow::changeEvent( e );
-	switch ( e->type() ) {
-	case QEvent::LanguageChange:	{
-		ui.retranslateUi( this );
-		break;}
-	default:						{
-		break;}
-	}
+	APRDBG_CDTOR;
+	/* stub */
 }
 /* ========================================================================= */
 
