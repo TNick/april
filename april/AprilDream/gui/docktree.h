@@ -36,8 +36,11 @@
 /*  DEFINITIONS    --------------------------------------------------------- */
 
 namespace   april	{
+
 namespace	Gui		{
+
 class	MW;
+class	DockTree_p;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -67,6 +70,8 @@ class DockTree		: public Dock		{
 
 private:
 
+	//! data only allocated when visible
+	DockTree_p *		d_;
 
 
 	/*  DATA    ============================================================ */
@@ -92,6 +97,9 @@ protected:
 
 	//! used to construct the widget
 	void				construct				( void );
+
+	//! used to destruct the widget
+	void				deconstruct				( void );
 
 
 	/*  FUNCTIONS    ======================================================= */

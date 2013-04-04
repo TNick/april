@@ -62,6 +62,21 @@ class Dock		: public QObject, public MemTrack		{
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
 
+	//! add an integer unbounded property
+#	define DOCK_ADD_IPROP(id,name) \
+	d_->props_[id] = d_->intManager->addProperty(name); \
+	d_->props_[id]->setEnabled( false ); \
+	d_->tree_->addProperty( d_->props_[id] );
+	
+	//! add an integer bounded property
+#	define DOCK_ADD_IPROP_B(id,name,i_min,i_max) \
+	d_->props_[id] = d_->intManager->addProperty( name ); \
+	d_->props_[id]->setEnabled( false ); \
+	d_->tree_->addProperty( d_->props_[id] ); \
+	d_->intManager->setMinimum( d_->props_[id], i_min ); \
+	d_->intManager->setMaximum( d_->props_[id], i_max );
+ 
+
 	/*  DEFINITIONS    ===================================================== */
 	//
 	//
@@ -144,6 +159,9 @@ protected:
 	
 	//! used to construct the widget
 	virtual void		construct				( void ) = 0;
+	
+	//! used to destruct the widget
+	virtual void		deconstruct				( void ) = 0;
 	
 	/*  FUNCTIONS    ======================================================= */
 	//

@@ -36,8 +36,11 @@
 /*  DEFINITIONS    --------------------------------------------------------- */
 
 namespace   april	{
+
 namespace	Gui		{
+
 class	MW;
+class	DockWorld_p;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -67,6 +70,8 @@ class DockWorld		: public Dock		{
 
 private:
 
+	//! data only allocated when visible
+	DockWorld_p *		d_;
 
 
 	/*  DATA    ============================================================ */
@@ -92,6 +97,9 @@ protected:
 
 	//! used to construct the widget
 	void				construct				( void );
+
+	//! used to destruct the widget
+	void				deconstruct				( void );
 
 
 	/*  FUNCTIONS    ======================================================= */

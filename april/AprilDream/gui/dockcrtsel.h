@@ -35,9 +35,31 @@
 //
 /*  DEFINITIONS    --------------------------------------------------------- */
 
+//class QtBoolPropertyManager;
+//class QtIntPropertyManager;
+//class QtStringPropertyManager;
+//class QtSizePropertyManager;
+//class QtRectPropertyManager;
+//class QtSizePolicyPropertyManager;
+//class QtEnumPropertyManager;
+//class QtGroupPropertyManager;
+//class QtTreePropertyBrowser;
+
+//class QtProperty;
+
+//class	QtCheckBoxFactory;
+//class	QtSpinBoxFactory;
+//class	QtLineEditFactory;
+//class	QtSliderFactory;
+//class	QtScrollBarFactory;
+//class	QtEnumEditorFactory;
+
 namespace   april	{
+
 namespace	Gui		{
+
 class	MW;
+class	DockCrtSel_p;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -58,6 +80,8 @@ class DockCrtSel		: public Dock		{
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
 
+
+	
 	/*  DEFINITIONS    ===================================================== */
 	//
 	//
@@ -67,7 +91,8 @@ class DockCrtSel		: public Dock		{
 
 private:
 
-
+	//! data only allocated when visible
+	DockCrtSel_p *		d_;
 
 	/*  DATA    ============================================================ */
 	//
@@ -93,6 +118,9 @@ protected:
 
 	//! used to construct the widget
 	void				construct				( void );
+
+	//! used to destruct the widget
+	void				deconstruct				( void );
 
 
 	/*  FUNCTIONS    ======================================================= */

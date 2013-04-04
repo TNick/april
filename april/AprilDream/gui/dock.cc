@@ -101,7 +101,7 @@ void				Dock::changeVisibility		( bool b_vis )
 					 this, SLOT( saveDockLoc(Qt::DockWidgetArea) ) );
 			connect( wdok_, SIGNAL( visibilityChanged(bool) ),
 					 this, SLOT( dockVisibilityChanged(bool) ) );
-					 
+			construct();
 		}
 		else
 		{
@@ -118,6 +118,7 @@ void				Dock::changeVisibility		( bool b_vis )
 		else
 		{
 			wdok_->hide();
+			deconstruct();
 			wdok_->deleteLater();
 			wdok_ = NULL;
 		}
@@ -151,6 +152,7 @@ void				Dock::timerEvent			( QTimerEvent * )
 	id_ = 0;
 	if ( ( b_flip_ == false ) && ( wdok_ != NULL ) )
 	{
+		deconstruct();
 		wdok_->deleteLater();
 		wdok_ = NULL;
 	}

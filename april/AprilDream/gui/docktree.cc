@@ -52,7 +52,8 @@ using namespace april::Gui;
 
 /* ------------------------------------------------------------------------- */
 DockTree::DockTree	( MW * mw )
-	: Dock( mw, "World tree" )
+	: Dock( mw, "World tree" ),
+	d_( NULL )
 {
 	APRDBG_CDTOR;
 	/* stub */
@@ -63,12 +64,22 @@ DockTree::DockTree	( MW * mw )
 DockTree::~DockTree	( void )
 {
 	APRDBG_CDTOR;
-	/* stub */
+	if ( d_ != NULL )
+	{
+		deconstruct();
+	}
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 void				DockTree::construct			( void )
+{
+	
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void				DockTree::deconstruct			( void )
 {
 	
 }

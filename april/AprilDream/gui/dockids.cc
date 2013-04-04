@@ -52,7 +52,8 @@ using namespace april::Gui;
 
 /* ------------------------------------------------------------------------- */
 DockIds::DockIds	( MW * mw )
-	: Dock( mw, "Defined identificators" )
+	: Dock( mw, "Defined identificators" ),
+	d_( NULL )
 {
 	APRDBG_CDTOR;
 	/* stub */
@@ -63,12 +64,22 @@ DockIds::DockIds	( MW * mw )
 DockIds::~DockIds	( void )
 {
 	APRDBG_CDTOR;
-	/* stub */
+	if ( d_ != NULL )
+	{
+		deconstruct();
+	}
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 void				DockIds::construct			( void )
+{
+	
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void				DockIds::deconstruct			( void )
 {
 	
 }
