@@ -87,6 +87,42 @@ World::World	( const QString & name, quint64 tot_energ )
 World::~World	( void )
 {
 	APRDBG_CDTOR;
+	
+	Actor * a = firstActor_(this);
+	Actor * a_n;
+	while ( a != NULL )
+	{
+		a_n = nextActor_( a );
+		DEC_REF( a, this );
+		a = a_n;
+	}
+	
+	Event * e = firstEvent_(this);
+	Event * e_n;
+	while ( e != NULL )
+	{
+		e_n = nextEvent_( e );
+		DEC_REF( e, this );
+		e = e_n;
+	}
+	
+	/* ...... */
+#	define	discardFactory(f,F) \
+	QMap<ID,F*>::ConstIterator itr_##f =f##_factories_.constBegin();\
+	QMap<ID,F*>::ConstIterator itr_end_##f = f##_factories_.constEnd();\
+	while ( itr_##f != itr_end_##f )	{\
+		DEC_REF( itr_##f.value(), this );\
+		itr_##f++;\
+	}
+	/* ...... */
+	
+	discardFactory(actor,ActorFactory)
+	discardFactory(actuator,ActuatorFactory)
+	discardFactory(brain,BrainFactory)
+	discardFactory(sensor,SensorFactory)
+	discardFactory(event,EventFactory)
+	discardFactory(reflex,ReflexFactory)
+	
 }
 /* ========================================================================= */
 
@@ -115,6 +151,7 @@ void				World::advance				( void )
 	
 	time_++;
 	
+	/* iterate in actors and advance them */
 	
 }
 /* ========================================================================= */

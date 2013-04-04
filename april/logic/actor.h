@@ -237,7 +237,8 @@ protected:
 	//! add a Brain
 	bool				addBrain				( Brain * act );
 
-
+	//! perform steps (called by the World)
+	void				doSteps					( int steps  = 1 );
 
 	/*  FUNCTIONS    ======================================================= */
 	//

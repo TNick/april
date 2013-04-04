@@ -104,7 +104,7 @@ Actor::~Actor	( void )
 	Reflex * itr_refl_n;
 	while ( itr_refl != NULL )
 	{
-		itr_refl_n = nextReflex_(itr_act);
+		itr_refl_n = nextReflex_(itr_refl);
 		DEC_REF(itr_refl,this);
 		itr_refl = itr_refl_n;
 	}
