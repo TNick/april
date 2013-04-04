@@ -265,6 +265,10 @@ protected:
 	//! total energy packed in this agent (the agent itself and the compoenets)
 	quint64				totalEnergy				( void );
 
+	//! make the actor alive (used by the world to initialise actor)
+	void				setEnergy				( quint64 new_val )
+	{ energy_ = new_val; }
+
 
 	/*  FUNCTIONS    ======================================================= */
 	//

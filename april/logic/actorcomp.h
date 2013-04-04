@@ -37,6 +37,7 @@
 
 namespace   april    {
 class	Actor;
+class	World;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -58,6 +59,7 @@ class ActorComp		: public Component		{
 	/*  DEFINITIONS    ----------------------------------------------------- */
 
 	friend class Actor;
+	friend class World;
 	
 	/*  DEFINITIONS    ===================================================== */
 	//
@@ -129,6 +131,10 @@ protected:
 	//! set cost per time unit
 	void				setCost		( quint64 new_val )
 	{ cost_ = new_val; }
+
+	//! set cost per time unit
+	void				setEnergy	( quint64 new_val )
+	{ energy_ = new_val; }
 
 	//! perform steps (called by the Actor)
 	virtual void		doSteps		( int steps )

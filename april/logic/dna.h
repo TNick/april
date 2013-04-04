@@ -101,7 +101,8 @@ public:
 		OffReflexes,	/**< number of reflexes in the list that follows */
 		
 		OffCost,		/**< the cost for running the Actor per time unit */
-		
+		OffAge,			/**< average age */
+		OffStartEnergy,	/**< energy at birth */
 		
 		
 		OffMax,
@@ -183,6 +184,14 @@ public:
 	//! energy cost
 	quint64			cost			( void ) const
 	{ Q_ASSERT(values_i_.length() >= OffMax ); return values_i_.at( OffCost ); }
+	
+	//! average age for this kind of actor
+	quint64			age				( void ) const
+	{ Q_ASSERT(values_i_.length() >= OffMax ); return values_i_.at( OffAge ); }
+	
+	//! birth energy
+	quint64			energy			( void ) const
+	{ Q_ASSERT(values_i_.length() >= OffMax ); return values_i_.at( OffStartEnergy ); }
 
 
 	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */

@@ -30,6 +30,8 @@ TEST(DNA, basic) {
 	l1.append( 0 );
 	l1.append( 0 );
 	l1.append( 4 ); // cost
+	l1.append( 80 ); // age
+	l1.append( 150 ); // birth energy
 	dna.setValuesI( l1 );
 	EXPECT_EQ( dna.kind(), (quint64)1 );
 	EXPECT_EQ( dna.brains().length(), 0 );
@@ -151,6 +153,8 @@ TEST(DNA, basicMerge) {
 	l1.append( 0 );
 	l1.append( 0 );
 	l1.append( 4 ); // cost
+	l1.append( 80 ); // age
+	l1.append( 150 ); // birth energy
 	
 	dna.setValuesI( l1 ); // values are clerared by the merge
 	EXPECT_EQ( dna.fromMerge( dnap1, dnap2 ), false );
@@ -189,6 +193,8 @@ TEST(DNA, complexMerge) {
 	l1.append( 0 );
 	l1.append( 0 );
 	l1.append( 4 ); // cost
+	l1.append( 80 ); // age
+	l1.append( 150 ); // birth energy
 	dnap1.setValuesI( l1 );
 	dnap2.setValuesI( l1 );
 	
@@ -313,6 +319,8 @@ TEST(DNA, getView) {
 	l1.append( 0 );
 	l1.append( 0 );
 	l1.append( 4 ); // cost
+	l1.append( 80 ); // age
+	l1.append( 150 ); // birth energy
 	dnap1.setValuesI( l1 );
 	
 	TstFactory1 * tf1 = new TstFactory1();

@@ -38,6 +38,7 @@
 
 namespace   april    {
 
+class ActorComp;
 class Actor;
 class World;
 class Event;
@@ -76,6 +77,7 @@ class
 
 	friend class Actor;
 	friend class Event;
+	friend class Factory;
 	friend class ActorFactory;
 	friend class ActuatorFactory;
 	friend class BrainFactory;
@@ -222,7 +224,23 @@ public:
 	
 	//! sets the total ammout of energy in this world
 	bool			setTotEnergy		( quint64 new_val );
-
+	
+protected:
+	
+	//! set the packed energy and the ammount of energy consumed on each time unit
+	/**
+	 * If the world does not have that much energy the opperation is dropped.
+	 *
+	 * @param comp the component where this is to be set
+	 * @param energy packed energy (will be substracted from world's free energy)
+	 * @param cost energy consumed on each step by this component
+	 * @return true if the opperation succeded
+	 */
+	bool			setEnergy		(
+			ActorComp *				comp, 
+			quint64					energy, 
+			quint64					cost 
+			);
 
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */

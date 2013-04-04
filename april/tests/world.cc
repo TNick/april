@@ -88,7 +88,6 @@ TEST(World, time) {
 
 
 TEST(World, factories) {
-	/** @todo factories */
 	
 	initAprilLibrary();
 	World * w = new World( "test-world", 1000 );

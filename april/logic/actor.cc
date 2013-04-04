@@ -306,7 +306,54 @@ void				Actor::doSteps					( int steps )
 		itr_act->doSteps( steps );
 		itr_act = nextActuator_(itr_act);
 	}
+	
+}
+/* ========================================================================= */
 
+/* ------------------------------------------------------------------------- */
+void				Actor::makeAlive				( void )
+{
+	if ( alive_ )
+		return;
+	
+	alive_ = true;
+	
+	cost_ = dna_.cost();
+	birth_ = world_->time_;
+	quint64 age = dna_.age();
+	if ( age == 0 )
+		age = 100;
+	death_ = birth_ + dna_.age() + RANDINT_0_MAX( age * 16 / 256 );
+	age_ = 0;
+	
+	Sensor * itr_sens = firstSensor_(this);
+	while ( itr_sens != NULL )
+	{
+		cost_ += itr_sens->cost();
+		itr_sens = nextSensor_(itr_sens);
+	}
+	
+	Reflex * itr_refl = firstReflex_(this);
+	while ( itr_refl != NULL )
+	{
+		cost_ += itr_refl->cost();
+		itr_refl = nextReflex_(itr_refl);
+	}
+	
+	Brain * itr_brn = firstBrain_(this);
+	while ( itr_brn != NULL )
+	{
+		cost_ += itr_brn->cost();
+		itr_brn = nextBrain_(itr_brn);
+	}
+	
+	Actuator * itr_act = firstActuator_(this);
+	while ( itr_act != NULL )
+	{
+		cost_ += itr_act->cost();
+		itr_act = nextActuator_(itr_act);
+	}
+	
 }
 /* ========================================================================= */
 
@@ -340,7 +387,8 @@ quint64				Actor::totalEnergy				( void )
 	{
 		ret += itr_act->energy();
 		itr_act = nextActuator_(itr_act);
-	}	
+	}
+	return ret;
 }
 /* ========================================================================= */
 

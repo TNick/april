@@ -71,5 +71,6 @@ SOURCES += \
     ../../../april/tests/sensor.cc \
     ../../../april/tests/reflex.cc \
     ../../../april/tests/event.cc \
-    ../../../april/tests/brain.cc
+    ../../../april/tests/brain.cc \
+    ../../../april/tests/simplerun.cpp
 

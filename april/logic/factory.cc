@@ -4,10 +4,10 @@
   \file			factory.cc
   \date			Apr 2013
   \author		TNick
-
+  
   \brief		Contains the implementation of Factory class
-
-
+  
+  
 *//*
 
 
@@ -24,6 +24,7 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include	"factory.h"
+#include	"world.h"
 
 
 /*  INCLUDES    ============================================================ */
@@ -52,7 +53,7 @@ using namespace april;
 /* ------------------------------------------------------------------------- */
 Factory::Factory	( World * w )
 	: libbbb::RefCnt(), MemTrack(),
-	w_( w )
+	  w_( w )
 {
 	APRDBG_CDTOR;
 	/* stub */
@@ -64,6 +65,14 @@ Factory::~Factory	( void )
 {
 	APRDBG_CDTOR;
 	/* stub */
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			Factory::setEnergy		(
+		ActorComp * comp, quint64 energy, quint64 cost )
+{
+	return w_->setEnergy( comp, energy, cost );
 }
 /* ========================================================================= */
 

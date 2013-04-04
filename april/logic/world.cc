@@ -111,19 +111,19 @@ World::~World	( void )
 	QMap<ID,F*>::ConstIterator itr_##f =f##_factories_.constBegin();\
 	QMap<ID,F*>::ConstIterator itr_end_##f = f##_factories_.constEnd();\
 	while ( itr_##f != itr_end_##f )	{\
-		DEC_REF( itr_##f.value(), this );\
-		itr_##f++;\
-	}
+	DEC_REF( itr_##f.value(), this );\
+	itr_##f++;\
+}
 	/* ...... */
 	
 	discardFactory(actor,ActorFactory)
-	discardFactory(actuator,ActuatorFactory)
-	discardFactory(brain,BrainFactory)
-	discardFactory(sensor,SensorFactory)
-	discardFactory(event,EventFactory)
-	discardFactory(reflex,ReflexFactory)
-	
-#	undef	discardFactory
+			discardFactory(actuator,ActuatorFactory)
+			discardFactory(brain,BrainFactory)
+			discardFactory(sensor,SensorFactory)
+			discardFactory(event,EventFactory)
+			discardFactory(reflex,ReflexFactory)
+			
+		#	undef	discardFactory
 }
 /* ========================================================================= */
 
@@ -433,7 +433,19 @@ Actor *				World::createActor			( ID id_kind )
 		}
 		else
 		{ /* we have a proper actor */
-			ret->inserted();			
+			quint64 e = ret->dna().energy();
+			if ( e > energy_free_ )
+			{
+				DEC_REF( ret, ret );
+				remActor( ret ); /* was added by the constructor */
+				ret = NULL;
+			}
+			else
+			{
+				ret->setEnergy( e );
+				ret->makeAlive();
+				ret->inserted();
+			}
 		}
 	}
 	
@@ -514,6 +526,20 @@ Event *				World::createEvent			( ID id )
 }
 /* ========================================================================= */
 
+/* ------------------------------------------------------------------------- */
+bool				World::setEnergy			(
+		ActorComp * comp, quint64 energy, quint64 cost )
+{
+	Q_ASSERT( comp != NULL );
+	if ( energy_free_ < energy )
+	{
+		return false;
+	}
+	comp->setCost( cost );
+	comp->setEnergy( energy );
+	return true;
+}
+/* ========================================================================= */
 
 /*  CLASS    =============================================================== */
 //
