@@ -13,7 +13,7 @@ CONFIG += warn_on
 INCLUDEPATH += ../../..
 QT += core gui
 greaterThan( QT_MAJOR_VERSION, 4 ): QT += widgets
-
+DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0
 
 #######################################################
 #              Use the dynamic library                #
@@ -68,11 +68,29 @@ FORMS += \
     ../../../april/AprilDream/gui/mw.ui
 
 HEADERS += \
-    ../../../april/AprilDream/gui/mw.h
+    ../../../april/AprilDream/gui/mw.h \
+    ../../../april/AprilDream/propertybrowser/qtvariantproperty.h \
+    ../../../april/AprilDream/propertybrowser/qttreepropertybrowser.h \
+    ../../../april/AprilDream/propertybrowser/qtpropertymanager.h \
+    ../../../april/AprilDream/propertybrowser/qtpropertybrowserutils_p.h \
+    ../../../april/AprilDream/propertybrowser/qtpropertybrowser.h \
+    ../../../april/AprilDream/propertybrowser/qtgroupboxpropertybrowser.h \
+    ../../../april/AprilDream/propertybrowser/qteditorfactory.h \
+    ../../../april/AprilDream/propertybrowser/qtbuttonpropertybrowser.h \
+    ../../../april/AprilDream/gui/dock.h
 
 SOURCES += \
     ../../../april/AprilDream/gui/mw.cc \
-    ../../../april/AprilDream/aprildream-main.cc
+    ../../../april/AprilDream/aprildream-main.cc \
+    ../../../april/AprilDream/propertybrowser/qtvariantproperty.cpp \
+    ../../../april/AprilDream/propertybrowser/qttreepropertybrowser.cpp \
+    ../../../april/AprilDream/propertybrowser/qtpropertymanager.cpp \
+    ../../../april/AprilDream/propertybrowser/qtpropertybrowserutils.cpp \
+    ../../../april/AprilDream/propertybrowser/qtpropertybrowser.cpp \
+    ../../../april/AprilDream/propertybrowser/qtgroupboxpropertybrowser.cpp \
+    ../../../april/AprilDream/propertybrowser/qteditorfactory.cpp \
+    ../../../april/AprilDream/propertybrowser/qtbuttonpropertybrowser.cpp \
+    ../../../april/AprilDream/gui/dock.cc
 
 
 
