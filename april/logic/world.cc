@@ -24,6 +24,7 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include	"world.h"
+#include	"director.h"
 #include	"actor.h"
 #include	"actorfactory.h"
 #include	"event.h"
@@ -77,7 +78,8 @@ World::World	( const QString & name, quint64 tot_energ )
 	  actuator_factories_(),
 	  brain_factories_(),
 	  sensor_factories_(),
-	  event_lines_()
+	  event_lines_(),
+	  director_( NULL )
 {
 	APRDBG_CDTOR;
 	
@@ -135,6 +137,10 @@ World::~World	( void )
 		itr_event_lines++;
 	}
 	
+	if ( director_ != NULL )
+	{
+		DEC_REF( director_, this );
+	}
 }
 /* ========================================================================= */
 
@@ -161,33 +167,7 @@ void				World::advance				( void )
 	if  ( b_running_ == false )
 		return;
 	
-	time_++;
-	
-	/* iterate in events and advance them */
-	Event * e = firstEvent_(this);
-	while ( e != NULL )
-	{
-		e->doSteps( 1 );
-		e = nextEvent_( e );
-	}
-	
-	/* iterate in actors and advance them */
-	Actor * a = firstActor_(this);
-	while ( a != NULL )
-	{
-		a->doSteps( 1 );
-		a = nextActor_( a );
-	}
-	
-	/* iterate in event lines and remove old ones */
-	QMap<ID,EventLine*>::ConstIterator itr_event_lines = event_lines_.constBegin();
-	QMap<ID,EventLine*>::ConstIterator itr_end_event_lines = event_lines_.constEnd();
-	while ( itr_event_lines != itr_end_event_lines )
-	{
-		itr_event_lines.value()->discardOldEntries();
-		itr_event_lines++;
-	}
-	
+	director_->advance();
 }
 /* ========================================================================= */
 
@@ -602,6 +582,27 @@ bool				World::setEnergy			(
 	comp->setCost( cost );
 	comp->setEnergy( energy );
 	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				World::start			( void )
+{
+	if ( director_ == NULL )
+	{
+		director_ = new Director( this );
+		OWN_CREF(director_,this);
+	}
+	b_running_ = director_->start();
+	return b_running_;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void				World::stop				( void )
+{
+	director_->stop();
+	b_running_ = false;
 }
 /* ========================================================================= */
 

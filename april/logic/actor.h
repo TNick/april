@@ -44,6 +44,7 @@ class Actuator;
 class Brain;
 class Actor;
 class Reflex;
+class Director;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -85,6 +86,7 @@ class
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
 
+	friend class Director;
 	friend class Sensor;
 	friend class Actuator;
 	friend class World;

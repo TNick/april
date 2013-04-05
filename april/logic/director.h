@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			event.h
+  \file			director.h
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the definition for Event class
+  \brief		Contains the definition for Director class
 
 
 *//*
@@ -17,8 +17,8 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __EVENT_INC__
-#define __EVENT_INC__
+#ifndef __DIRECTOR_INC__
+#define __DIRECTOR_INC__
 //
 //
 //
@@ -27,6 +27,7 @@
 
 #include    <april/april.h>
 #include    <april/logic/component.h>
+#include    <april/logic/uniqueid.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -36,7 +37,9 @@
 /*  DEFINITIONS    --------------------------------------------------------- */
 
 namespace   april    {
+
 class	World;
+class	EventLine;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -46,32 +49,16 @@ class	World;
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief	An event is a way to stimulate agents from a world.
-*
-*	Events may stimulate certain kinds of sensors. They may have a placement
-*	and a range and the intensity of the stimulation may be a function
-*	of distance from source. Events may exists that have no placement.
-*
-*	Events may stay alive a long time and generate activity from time to time
-*	or they may be single-shoots.
-*
-*	A world has EventLine's, each with an ID. An Event posts activity on the
-*	EventLine's that are then checked by the Sensor's. Each Event may post
-*	to one or more EventLine's.
+*	@brief	manages the runnings of a world
 */
-class
-	APRILSHARED_EXPORT
-	Event		: public Component		{
-	BBM_TRACK( Event );
+class Director		: public libbbb::RefCnt, public MemTrack		{
+	BBM_TRACK( Director );
 
 	//
 	//
 	//
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
-
-	friend class	World;
-	friend class	Director;
 
 	/*  DEFINITIONS    ===================================================== */
 	//
@@ -82,8 +69,8 @@ class
 
 private:
 
-	//! the world where this belongs
-	World *				world_;
+	//! the world we're managing
+	World *				w_;
 
 	/*  DATA    ============================================================ */
 	//
@@ -95,21 +82,34 @@ private:
 public:
 
 	//! constructor;
-	Event				( World * w );
+	Director			( World * w );
+
+	//! destructor;
+	virtual				~Director		( void );
+
+	//! the world we're managing
+	inline World *		world			( void ) const
+	{ return w_; }
+
+	//! start the world
+	virtual bool		start			( void )
+	{ return true; }
+
+	//! stop the world
+	virtual void		stop			( void )
+	{}
+
+	//! advance the world
+	virtual void		advance			( void );
 
 protected:
 
-	//! destructor;
-	virtual				~Event		( void );
+	//! access to event lines in the world - first
+	QMap<ID,EventLine*>::ConstIterator	firstEventLine		( void );
 
-	//! perform steps (called by the World)
-	virtual void		doSteps		( int steps  = 1 ) = 0;
-
-public:
-
-	//! the world where this belongs
-	inline World *		world		( void ) const
-	{ return world_; }
+	//! access to event lines in the world - end
+	QMap<ID,EventLine*>::ConstIterator	endEventLine		( void );
+	
 
 	/*  FUNCTIONS    ======================================================= */
 	//
@@ -117,7 +117,7 @@ public:
 	//
 	//
 
-};	/*	class Event	*/
+};	/*	class Director	*/
 
 /*  CLASS    =============================================================== */
 //
@@ -127,6 +127,6 @@ public:
 
 }   //  namespace   april
 
-#endif // __EVENT_INC__
+#endif // __DIRECTOR_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */

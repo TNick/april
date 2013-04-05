@@ -40,6 +40,7 @@ namespace   april    {
 
 class ActorComp;
 class Actor;
+class Director;
 class World;
 class Event;
 class Actuator;
@@ -77,6 +78,7 @@ class
 	/*  DEFINITIONS    ----------------------------------------------------- */
 
 	friend class Actor;
+	friend class Director;
 	friend class Event;
 	friend class Factory;
 	friend class EventLine;
@@ -140,6 +142,9 @@ private:
 	
 	//! the list of event lines
 	QMap<ID,EventLine*>			event_lines_;
+	
+	//! the instance that manages the show
+	Director *					director_;
 
 	/*  DATA    ============================================================ */
 	//
@@ -185,20 +190,24 @@ public:
 	/**
 	*	@brief	starts this world
 	*/
-	bool				start				( void )
-	{ b_running_ = true; return true; }
+	bool				start				( void );
 
 	/**
 	*	@brief	stops this world
 	*/
-	void				stop				( void )
-	{ b_running_ = false; }
+	void				stop				( void );
 
 	/**
 	*	@brief	tell if this world is running
 	*/
 	bool				isRunning			( void )
 	{ return b_running_; }
+
+protected:
+
+	//! director uses this method to update the time
+	void				stepTime			( void )
+	{ time_++; }
 
 
 	///@}
@@ -400,6 +409,14 @@ protected:
 	
 	//! used by the EventLine class to remove itself
 	bool			remEventLine		( EventLine * el, ID id );
+
+	//! access to event lines in the world - first
+	QMap<ID,EventLine*>::ConstIterator	firstEventLine		( void )
+	{ return event_lines_.constBegin(); }
+
+	//! access to event lines in the world - end
+	QMap<ID,EventLine*>::ConstIterator	endEventLine		( void )
+	{ return event_lines_.constEnd(); }
 
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */

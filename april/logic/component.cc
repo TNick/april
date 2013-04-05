@@ -51,7 +51,7 @@ using namespace april;
 
 /* ------------------------------------------------------------------------- */
 Component::Component	( void )
-	: libbbb::RefCnt(), MemTrack(),
+	: List2De(), libbbb::RefCnt(), MemTrack(),
 	payload_()
 {
 	APRDBG_CDTOR;
