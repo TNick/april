@@ -117,7 +117,8 @@ public:
 
 /* ------------------------------------------------------------------------- */
 DockCrtSel::DockCrtSel	( MW * mw )
-	: Dock( mw, "Current selection" )
+	: Dock( mw, "Current selection" ),
+	d_( NULL )
 {
 	APRDBG_CDTOR;
 	/* stub */
