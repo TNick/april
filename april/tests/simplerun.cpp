@@ -12,23 +12,26 @@
 #include	<april/logic/sensor.h>
 #include	<april/logic/sensorfactory.h>
 
-
 using namespace april;
 
+/* ----------------------------------------------------- */
+namespace	simplerun_cc		{
 
-enum TestIds {
-	TestIdKind = 1,
-	TestIdBrain,
-	TestIdReflex,
-	TestIdActuator,
-	TestIdSensor
+
+
+enum Ids {
+	IdKind = 1,
+	IdBrain,
+	IdReflex,
+	IdActuator,
+	IdSensor
 };
 
-class BrainTstFactSR : public BrainFactory {
+class FBrn : public BrainFactory {
 public:
-	BrainTstFactSR( World * w ): BrainFactory( w ) {
-		w->insertId( TestIdBrain, "brains.test" );
-		addMyself( TestIdBrain );
+	FBrn( World * w ): BrainFactory( w ) {
+		w->insertId( IdBrain, "brains.test" );
+		addMyself( IdBrain );
 	}
 	virtual Brain * create ( Actor * a, ID id ) {
 		Q_UNUSED( id );
@@ -38,11 +41,11 @@ public:
 	}
 };
 
-class ActuatorTstFactSR : public ActuatorFactory {
+class FActu : public ActuatorFactory {
 public:
-	ActuatorTstFactSR( World * w ): ActuatorFactory( w ) {
-		w->insertId( TestIdActuator, "actuators.test" );
-		addMyself( TestIdActuator );
+	FActu( World * w ): ActuatorFactory( w ) {
+		w->insertId( IdActuator, "actuators.test" );
+		addMyself( IdActuator );
 	}
 	virtual Actuator * create ( Actor * a, ID id ) {
 		Q_UNUSED( id );
@@ -52,11 +55,11 @@ public:
 	}
 };
 
-class ReflexTstFactSR : public ReflexFactory {
+class FRefx : public ReflexFactory {
 public:
-	ReflexTstFactSR( World * w ): ReflexFactory( w ) {
-		w->insertId( TestIdReflex, "reflexes.test" );
-		addMyself( TestIdReflex );
+	FRefx( World * w ): ReflexFactory( w ) {
+		w->insertId( IdReflex, "reflexes.test" );
+		addMyself( IdReflex );
 	}
 	virtual Reflex * create ( Actor * a, ID id ) {
 		Q_UNUSED( id );
@@ -66,11 +69,11 @@ public:
 	}
 };
 
-class SensorTstFactSR : public SensorFactory {
+class FSens : public SensorFactory {
 public:
-	SensorTstFactSR( World * w ): SensorFactory( w ) {
-		w->insertId( TestIdSensor, "sensors.test" );
-		addMyself( TestIdSensor );
+	FSens( World * w ): SensorFactory( w ) {
+		w->insertId( IdSensor, "sensors.test" );
+		addMyself( IdSensor );
 	}
 	virtual Sensor * create ( Actor * a, ID id ) {
 		Q_UNUSED( id );
@@ -80,13 +83,13 @@ public:
 	}
 };
 
-class TstFactSR : public ActorFactory	{
+class FAgent : public ActorFactory	{
 public:
 	
-	TstFactSR( World * w ) : ActorFactory( w ) {
-		w->insertId( TestIdKind, "kinds.test" );
-		addMyself( TestIdKind );
-		initDNA( TestIdKind );
+	FAgent( World * w ) : ActorFactory( w ) {
+		w->insertId( IdKind, "kinds.test" );
+		addMyself( IdKind );
+		initDNA( IdKind );
 		
 		QList<quint64>	l1;
 		l1.reserve( DNA::OffMax );
@@ -100,14 +103,14 @@ public:
 		l1.append( 150 ); // birth energy
 		defaultDNA().setValuesI( l1 );
 		
-		EXPECT_TRUE( defaultDNA().addBrain( TestIdBrain) );
-		EXPECT_TRUE( defaultDNA().addActuator( TestIdActuator ) );
-		EXPECT_TRUE( defaultDNA().addReflex( TestIdReflex ) );
-		EXPECT_TRUE( defaultDNA().addSensor( TestIdSensor ) );
+		EXPECT_TRUE( defaultDNA().addBrain( IdBrain) );
+		EXPECT_TRUE( defaultDNA().addActuator( IdActuator ) );
+		EXPECT_TRUE( defaultDNA().addReflex( IdReflex ) );
+		EXPECT_TRUE( defaultDNA().addSensor( IdSensor ) );
 	}
 	virtual Actor * create ( ID id ) {
 		Q_UNUSED( id );
-		Q_ASSERT( id == TestIdKind );
+		Q_ASSERT( id == IdKind );
 		/* create new instance that gets inserted in the world */
 		Actor * ret = new Actor( world() ); 
 		/* set a default dan */
@@ -116,25 +119,29 @@ public:
 	}
 };
 
+}	/* namespace simplerun_cc */
+/* ----------------------------------------------------- */
+
+
 TEST(SimpleRun, init) {
 	
 	initAprilLibrary();
 	World * w = new World( __FUNCTION__, 1000 );
 	DEC_REF( w, w );
 	
-	BrainTstFactSR * bf = new BrainTstFactSR( w );
+	simplerun_cc::FBrn * bf = new simplerun_cc::FBrn( w );
 	DEC_REF( bf, bf );
-	ActuatorTstFactSR * af = new ActuatorTstFactSR( w );
+	simplerun_cc::FActu * af = new simplerun_cc::FActu( w );
 	DEC_REF( af, af );
-	ReflexTstFactSR * rf = new ReflexTstFactSR( w );
+	simplerun_cc::FRefx * rf = new simplerun_cc::FRefx( w );
 	DEC_REF( rf, rf );
-	SensorTstFactSR * sf = new SensorTstFactSR( w );
+	simplerun_cc::FSens * sf = new simplerun_cc::FSens( w );
 	DEC_REF( sf, sf );
 	
-	TstFactSR * fact = new TstFactSR( w );
+	simplerun_cc::FAgent * fact = new simplerun_cc::FAgent( w );
 	DEC_REF( fact, fact );
 	
-	Actor * a = w->createActor( TestIdKind );
+	Actor * a = w->createActor( simplerun_cc::IdKind );
 	Q_UNUSED( a );
 	
 	w->start();

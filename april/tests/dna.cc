@@ -6,6 +6,61 @@
 
 using namespace april;
 
+/* ----------------------------------------------------- */
+namespace	dna_cc		{
+
+
+class TF1	: public Factory {
+public:
+	TF1() : Factory( NULL ) 
+	{  }
+	virtual QList<qreal> averageDNA ( ID id ) const { 
+		Q_UNUSED( id );
+		QList<qreal>	l;
+		l.append( 13.3 );
+		l.append( -113.3 );
+		l.append( 913.3 );
+		l.append( 0.34848 );
+		return l; 
+	}
+};
+class TF2	: public Factory {
+public:
+	TF2() : Factory( NULL ) 
+	{  }
+	virtual QList<qreal> averageDNA ( ID id ) const { 
+		Q_UNUSED( id );
+		QList<qreal>	l;
+		l.append( 0.17201 );
+		l.append( -78.3 );
+		l.append( 13.3333 );
+		l.append( 4450.3 );
+		return l; 
+	}
+};
+class TF1_2	: public Factory {
+public:
+	TF1_2() : Factory( NULL ) 
+	{  }
+	virtual QList<qreal> averageDNA ( ID id ) const { 
+		Q_UNUSED( id );
+		QList<qreal>	l;
+		
+		l.append( 17.3 );
+		l.append( -89.3 );
+		l.append( 1425.3 );
+		l.append( 0.1188997 );
+		l.append( 778899.3 );
+		l.append( -0.1188997 );
+		l.append( -778899.3 );
+		return l; 
+	}
+};
+
+}	/* namespace event_cc */
+/* ----------------------------------------------------- */
+
+
 TEST(DNA, basic) {
 	initAprilLibrary();
 	
@@ -38,8 +93,6 @@ TEST(DNA, basic) {
 	EXPECT_EQ( dna.actuators().length(), 0 );
 	EXPECT_EQ( dna.sensors().length(), 0 );
 	EXPECT_EQ( dna.reflexes().length(), 0 );
-	
-	
 	
 	endAprilLibrary();
 }
@@ -253,57 +306,6 @@ TEST(DNA, complexMerge) {
 	endAprilLibrary();
 }
 
-class TstFactory1	: public Factory {
-public:
-	TstFactory1() : Factory( NULL ) 
-	{  }
-	virtual QList<qreal> averageDNA ( ID id ) const { 
-		Q_UNUSED( id );
-		QList<qreal>	l;
-		l.append( 13.3 );
-		l.append( -113.3 );
-		l.append( 913.3 );
-		l.append( 0.34848 );
-		return l; 
-	}
-};
-class TstFactory2	: public Factory {
-public:
-	TstFactory2() : Factory( NULL ) 
-	{  }
-	virtual QList<qreal> averageDNA ( ID id ) const { 
-		Q_UNUSED( id );
-		QList<qreal>	l;
-		l.append( 0.17201 );
-		l.append( -78.3 );
-		l.append( 13.3333 );
-		l.append( 4450.3 );
-		return l; 
-	}
-};
-class TstFactory1_2	: public Factory {
-public:
-	TstFactory1_2() : Factory( NULL ) 
-	{  }
-	virtual QList<qreal> averageDNA ( ID id ) const { 
-		Q_UNUSED( id );
-		QList<qreal>	l;
-		
-		l.append( 17.3 );
-		l.append( -89.3 );
-		l.append( 1425.3 );
-		l.append( 0.1188997 );
-		l.append( 778899.3 );
-		l.append( -0.1188997 );
-		l.append( -778899.3 );
-		return l; 
-	}
-};
-
-
-
-
-
 TEST(DNA, getView) {
 	initAprilLibrary();
 	
@@ -323,7 +325,7 @@ TEST(DNA, getView) {
 	l1.append( 150 ); // birth energy
 	dnap1.setValuesI( l1 );
 	
-	TstFactory1 * tf1 = new TstFactory1();
+	dna_cc::TF1 * tf1 = new dna_cc::TF1();
 	// will request default values from the factory
 	DNAView view1 = dnap1.getView( 1, tf1 );
 	EXPECT_TRUE( view1.isValid() );
@@ -333,7 +335,7 @@ TEST(DNA, getView) {
 	EXPECT_EQ( view1.value(3), (qreal)0.34848 );
 	EXPECT_EQ( view1.identificator(), (quint64)1 );
 	
-	TstFactory2 * tf2 = new TstFactory2();
+	dna_cc::TF2 * tf2 = new dna_cc::TF2();
 	// will request default values from the factory
 	DNAView view2 = dnap1.getView( 2, tf2 );
 	EXPECT_TRUE( view2.isValid() );
@@ -343,7 +345,7 @@ TEST(DNA, getView) {
 	EXPECT_EQ( view2.value(3), (qreal)4450.3 );
 	EXPECT_EQ( view2.identificator(), (quint64)2 );
 
-	TstFactory1_2 * tf1_2 = new TstFactory1_2();
+	dna_cc::TF1_2 * tf1_2 = new dna_cc::TF1_2();
 	// will need reposition op
 	DNAView view1_2 = dnap1.getView( 1, 7, tf1_2 );
 	EXPECT_TRUE( view1_2.isValid() );

@@ -398,9 +398,14 @@ protected:
 
 	
 	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
-	/** @name Event related methods
+	/** @name Eventlines related methods
 	 */
 	///@{
+	
+public:
+	
+	inline EventLine *	eventLine			( ID id )
+	{ return event_lines_.value( id, NULL ); }
 	
 protected:
 

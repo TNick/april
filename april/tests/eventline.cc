@@ -9,22 +9,28 @@
 
 using namespace april;
 
-enum TestIds {
-	TestIdKind = 1,
-	TestIdBrain,
-	TestIdReflex,
-	TestIdActuator,
-	TestIdSensor,
-	TestIdSound
+/* ----------------------------------------------------- */
+namespace	eventline_cc		{
+
+enum Ids {
+	IdKind = 1,
+	IdBrain,
+	IdReflex,
+	IdActuator,
+	IdSensor,
+	IdSound
 };
+
+}	/* namespace eventline_cc */
+/* ----------------------------------------------------- */
 
 TEST(EventLine, factory) {
 
 	initAprilLibrary();
 	World * w = new World( "test-world", 1000 );
 	DEC_REF( w, w );
-	w->insertId( TestIdSound, "eventline.sound" );
-	EventLine * el = new EventLine( w, TestIdSound );
+	w->insertId( eventline_cc::IdSound, "eventline.sound" );
+	EventLine * el = new EventLine( w, eventline_cc::IdSound );
 	DEC_REF( el, el );
 	EventData * ed = new EventData( w, 4 );
 	
@@ -37,7 +43,7 @@ TEST(EventLine, factory) {
 	el->postActivity( ed );
 	
 	EXPECT_TRUE( el->world() == w );
-	EXPECT_TRUE( el->identificator() == TestIdSound );
+	EXPECT_TRUE( el->identificator() == eventline_cc::IdSound );
 	EXPECT_EQ( el->dataCount(), 1 );
 	EXPECT_TRUE( el->firstEventData() == ed );
 	EXPECT_TRUE( el->lastEventData() == ed );

@@ -8,6 +8,50 @@
 
 using namespace april;
 
+/* ----------------------------------------------------- */
+namespace	brain_cc		{
+
+enum Ids {
+	IdKind = 1,
+	IdBrain = 2
+};
+
+class FBrn : public BrainFactory {
+public:
+	FBrn( World * w ): BrainFactory( w ) {
+		w->insertId( IdBrain, "brains.test" );
+		addMyself( IdBrain );
+	}
+	virtual Brain * create ( Actor * a, ID id ) {
+		Q_UNUSED( id );
+		Brain * ret = new Brain( a );
+		return ret;
+	}
+};
+
+class FAgent : public ActorFactory {
+public:
+	FAgent( World * w ) : ActorFactory( w ) {
+		w->insertId( IdKind, "kinds.test" );
+		addMyself( IdKind );
+		initDNA( IdKind );
+		EXPECT_TRUE( defaultDNA().addBrain( IdBrain ) );
+	}
+	virtual Actor * create ( ID id ) {
+		Q_UNUSED( id );
+		Q_ASSERT( id == IdKind );
+		Actor * ret = new Actor( world() );
+		setDNA( ret );
+		return ret;
+	}
+	virtual void copyDefaultDNA ( DNA & destination ) { 
+		destination = defaultDNA();
+	}
+};
+
+}	/* namespace brain_cc */
+/* ----------------------------------------------------- */
+
 TEST(Brain, init) {
 
 	initAprilLibrary();
@@ -19,47 +63,8 @@ TEST(Brain, init) {
 	Brain * act = new Brain( a );
 	DEC_REF(act,act);
 	
-	
 	endAprilLibrary();
 }
-
-enum TestIds {
-	TestIdKind = 1,
-	TestIdBrain = 2
-};
-
-class BrainTstFact : public BrainFactory {
-public:
-	BrainTstFact( World * w ): BrainFactory( w ) {
-		w->insertId( TestIdBrain, "brains.test" );
-		addMyself( TestIdBrain );
-	}
-	virtual Brain * create ( Actor * a, ID id ) {
-		Q_UNUSED( id );
-		Brain * ret = new Brain( a );
-		return ret;
-	}
-};
-
-class ActorBrainTstFact : public ActorFactory {
-public:
-	ActorBrainTstFact( World * w ) : ActorFactory( w ) {
-		w->insertId( TestIdKind, "kinds.test" );
-		addMyself( TestIdKind );
-		initDNA( TestIdKind );
-		EXPECT_TRUE( defaultDNA().addBrain( TestIdBrain ) );
-	}
-	virtual Actor * create ( ID id ) {
-		Q_UNUSED( id );
-		Q_ASSERT( id == TestIdKind );
-		Actor * ret = new Actor( world() );
-		setDNA( ret );
-		return ret;
-	}
-	virtual void copyDefaultDNA ( DNA & destination ) { 
-		destination = defaultDNA();
-	}
-};
 
 TEST(Brain, factory) {
 	initAprilLibrary();
@@ -67,20 +72,20 @@ TEST(Brain, factory) {
 	World * w = new World( __FUNCTION__, 1000 );
 	DEC_REF( w, w );
 
-	BrainTstFact * brain_fact = new BrainTstFact( w );
+	brain_cc::FBrn * brain_fact = new brain_cc::FBrn( w );
 	DEC_REF( brain_fact, brain_fact );
 	
-	ActorBrainTstFact * actor_fact = new ActorBrainTstFact( w );
+	brain_cc::FAgent * actor_fact = new brain_cc::FAgent( w );
 	DEC_REF( actor_fact, actor_fact );
 	
-	Actor * a = w->createActor( TestIdKind );
+	Actor * a = w->createActor( brain_cc::IdKind );
 	DEC_REF( a, a );
 	EXPECT_TRUE( a != NULL );
 	EXPECT_TRUE( a->firstSensor() == NULL );
 	EXPECT_TRUE( a->firstActuator() == NULL );
 	EXPECT_TRUE( a->firstReflex() == NULL );
 	EXPECT_TRUE( a->firstBrain() != NULL );
-	EXPECT_EQ( a->kind(), TestIdKind );
+	EXPECT_EQ( a->kind(), brain_cc::IdKind );
 	EXPECT_EQ( a->kindName(), "kinds.test" );
 
 	Brain * b = a->firstBrain();
