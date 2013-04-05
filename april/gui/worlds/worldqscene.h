@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			actorcomp.h
+  \file			worldqscene.h
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the definition for ActorComp class
+  \brief		Contains the definition for WorldQScene class
 
 
 *//*
@@ -17,8 +17,8 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __ACTORCOMP_INC__
-#define __ACTORCOMP_INC__
+#ifndef __WORLDQSCENE_INC__
+#define __WORLDQSCENE_INC__
 //
 //
 //
@@ -26,7 +26,8 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include    <april/april.h>
-#include    <april/logic/component.h>
+#include    <QGraphicsScene>
+#include	<april/logic/world.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -35,9 +36,9 @@
 //
 /*  DEFINITIONS    --------------------------------------------------------- */
 
-namespace   april    {
-class	Actor;
-class	World;
+namespace   april	{
+
+namespace   Gui		{
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -47,12 +48,12 @@ class	World;
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief
+*	@brief	A world in a QGraphicsScene
 */
 class
 	APRILSHARED_EXPORT
-	ActorComp		: public Component		{
-	BBM_TRACK( ActorComp );
+	WorldQScene		: public QGraphicsScene, public MemTrack		{
+	BBM_TRACK( WorldQScene );
 
 	//
 	//
@@ -60,9 +61,6 @@ class
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
 
-	friend class Actor;
-	friend class World;
-	
 	/*  DEFINITIONS    ===================================================== */
 	//
 	//
@@ -72,15 +70,8 @@ class
 
 private:
 
-	//! parent actor
-	Actor *					actor_;
-
-	//! cost per time unit
-	quint64					cost_;
-
-	//! ammount of energy packed inside this component
-	quint64					energy_;
 	
+
 	/*  DATA    ============================================================ */
 	//
 	//
@@ -90,57 +81,17 @@ private:
 
 public:
 
-	//! constructor;
-	ActorComp			( Actor * actor );
 
-	//! constructor; sets energy related values
-	ActorComp			( Actor * actor, quint64 cost, quint64 energy );
-
-protected:
-
-	//! destructor;
-	virtual				~ActorComp		( void );
-
-public:
-
-	//! tell if this is a valid instance
-	inline bool			isValid		( void ) const
-	{ return ( ( cost_ > 0 ) && ( energy_ > 0 ) ); }
-
-	//! parent actor
-	inline Actor *		actor		( void ) const
-	{ return actor_; }
-
-	//! cost per time unit
 	/**
-	 *	This value is requested by the actor when started
-	 *	and then cached. Changing this value after this (like using
-	 *	setCost()) has no effect on the actor.
-	 *
-	 *	@return the cost
-	 */
-	inline quint64		cost		( void ) const
-	{ return cost_; }
+	*	@brief	constructor;
+	*/
+	WorldQScene			( QObject * parent = NULL );
 
 
-	//! ammount of energy packed inside this component
-	inline quint64		energy		( void ) const
-	{ return energy_; }
-
-
-protected:
-
-	//! set cost per time unit
-	void				setCost		( quint64 new_val )
-	{ cost_ = new_val; }
-
-	//! set cost per time unit
-	void				setEnergy	( quint64 new_val )
-	{ energy_ = new_val; }
-
-	//! perform steps (called by the Actor)
-	virtual void		doSteps		( int steps )
-	{ Q_UNUSED( steps ); }
+	/**
+	*	@brief	destructor;
+	*/
+	virtual				~WorldQScene		( void );
 
 
 
@@ -150,7 +101,7 @@ protected:
 	//
 	//
 
-};	/*	class ActorComp	*/
+};	/*	class WorldQScene	*/
 
 /*  CLASS    =============================================================== */
 //
@@ -158,8 +109,10 @@ protected:
 //
 //
 
-}   //  namespace   april
+}   //  namespace Gui
 
-#endif // __ACTORCOMP_INC__
+}   //  namespace april
+
+#endif // __WORLDQSCENE_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */

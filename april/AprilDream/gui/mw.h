@@ -28,10 +28,14 @@
 #include    <QMainWindow>
 #include    <april/april.h>
 #include	"ui_mw.h"
+#include    <april/gui/worlds/worldqscene.h>
+
 #include    <april/AprilDream/gui/dockcrtsel.h>
 #include    <april/AprilDream/gui/dockids.h>
 #include    <april/AprilDream/gui/docktree.h>
 #include    <april/AprilDream/gui/dockworld.h>
+#include    <april/AprilDream/gui/sceneviewer.h>
+
 
 /*  INCLUDES    ============================================================ */
 //
@@ -84,6 +88,11 @@ private:
 	DockWorld		d_world_;
 	//!@}
 	
+	//! the scene 
+	WorldQScene		w_scene_;
+	
+	//! the scene viewer
+	SceneViewer		viever_;
 	
 	/*  DATA    ============================================================ */
 	//

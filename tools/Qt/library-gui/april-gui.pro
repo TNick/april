@@ -62,3 +62,9 @@ isEmpty( UI_DIR ) {
 #                    Components                       #
 #######################################################
 
+SOURCES += \
+    ../../../april/gui/worlds/worldqscene.cc
+
+HEADERS += \
+    ../../../april/gui/worlds/worldqscene.h
+

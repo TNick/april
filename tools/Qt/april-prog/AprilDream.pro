@@ -81,7 +81,8 @@ HEADERS += \
     ../../../april/AprilDream/gui/dockworld.h \
     ../../../april/AprilDream/gui/docktree.h \
     ../../../april/AprilDream/gui/dockids.h \
-    ../../../april/AprilDream/gui/dockcrtsel.h
+    ../../../april/AprilDream/gui/dockcrtsel.h \
+    ../../../april/AprilDream/gui/sceneviewer.h
 
 SOURCES += \
     ../../../april/AprilDream/gui/mw.cc \
@@ -98,7 +99,8 @@ SOURCES += \
     ../../../april/AprilDream/gui/dockworld.cc \
     ../../../april/AprilDream/gui/docktree.cc \
     ../../../april/AprilDream/gui/dockids.cc \
-    ../../../april/AprilDream/gui/dockcrtsel.cc
+    ../../../april/AprilDream/gui/dockcrtsel.cc \
+    ../../../april/AprilDream/gui/sceneviewer.cc
 
 
 

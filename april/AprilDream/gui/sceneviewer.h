@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			actorcomp.h
+  \file			sceneviewer.h
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the definition for ActorComp class
+  \brief		Contains the definition for SceneViewer class
 
 
 *//*
@@ -17,8 +17,8 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __ACTORCOMP_INC__
-#define __ACTORCOMP_INC__
+#ifndef __SCENEVIEWER_INC__
+#define __SCENEVIEWER_INC__
 //
 //
 //
@@ -26,7 +26,7 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include    <april/april.h>
-#include    <april/logic/component.h>
+#include    <QGraphicsView>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -35,9 +35,9 @@
 //
 /*  DEFINITIONS    --------------------------------------------------------- */
 
-namespace   april    {
-class	Actor;
-class	World;
+namespace	april	{
+
+namespace	Gui		{
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -49,10 +49,8 @@ class	World;
 /**
 *	@brief
 */
-class
-	APRILSHARED_EXPORT
-	ActorComp		: public Component		{
-	BBM_TRACK( ActorComp );
+class SceneViewer		: public QGraphicsView, public MemTrack		{
+	BBM_TRACK( SceneViewer );
 
 	//
 	//
@@ -60,9 +58,6 @@ class
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
 
-	friend class Actor;
-	friend class World;
-	
 	/*  DEFINITIONS    ===================================================== */
 	//
 	//
@@ -72,15 +67,8 @@ class
 
 private:
 
-	//! parent actor
-	Actor *					actor_;
 
-	//! cost per time unit
-	quint64					cost_;
 
-	//! ammount of energy packed inside this component
-	quint64					energy_;
-	
 	/*  DATA    ============================================================ */
 	//
 	//
@@ -91,56 +79,10 @@ private:
 public:
 
 	//! constructor;
-	ActorComp			( Actor * actor );
-
-	//! constructor; sets energy related values
-	ActorComp			( Actor * actor, quint64 cost, quint64 energy );
-
-protected:
+	SceneViewer			( QWidget * parent = NULL );
 
 	//! destructor;
-	virtual				~ActorComp		( void );
-
-public:
-
-	//! tell if this is a valid instance
-	inline bool			isValid		( void ) const
-	{ return ( ( cost_ > 0 ) && ( energy_ > 0 ) ); }
-
-	//! parent actor
-	inline Actor *		actor		( void ) const
-	{ return actor_; }
-
-	//! cost per time unit
-	/**
-	 *	This value is requested by the actor when started
-	 *	and then cached. Changing this value after this (like using
-	 *	setCost()) has no effect on the actor.
-	 *
-	 *	@return the cost
-	 */
-	inline quint64		cost		( void ) const
-	{ return cost_; }
-
-
-	//! ammount of energy packed inside this component
-	inline quint64		energy		( void ) const
-	{ return energy_; }
-
-
-protected:
-
-	//! set cost per time unit
-	void				setCost		( quint64 new_val )
-	{ cost_ = new_val; }
-
-	//! set cost per time unit
-	void				setEnergy	( quint64 new_val )
-	{ energy_ = new_val; }
-
-	//! perform steps (called by the Actor)
-	virtual void		doSteps		( int steps )
-	{ Q_UNUSED( steps ); }
+	virtual				~SceneViewer		( void );
 
 
 
@@ -150,7 +92,7 @@ protected:
 	//
 	//
 
-};	/*	class ActorComp	*/
+};	/*	class SceneViewer	*/
 
 /*  CLASS    =============================================================== */
 //
@@ -160,6 +102,8 @@ protected:
 
 }   //  namespace   april
 
-#endif // __ACTORCOMP_INC__
+}   //  namespace   Gui
+
+#endif // __SCENEVIEWER_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
