@@ -4,10 +4,10 @@
   \file			mw.cc
   \date			Apr 2013
   \author		TNick
-
+  
   \brief		Contains the implementation for MW class
-
-
+  
+  
 *//*
 
 
@@ -72,6 +72,12 @@ MW::MW	( QWidget *parent ) :
 	
 	setCentralWidget( &viever_ );
 	viever_.setScene( &w_scene_ );
+	
+	connect( ui.actionStart, SIGNAL(triggered()),
+			 this, SLOT( startWorld() ) );
+	connect( ui.actionStop, SIGNAL(triggered()),
+			 this, SLOT( stopWorld() ) );
+	
 }
 /* ========================================================================= */
 
@@ -96,6 +102,21 @@ void					MW::changeEvent			( QEvent * e )
 	}
 }
 /* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void					MW::startWorld			( void )
+{
+
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void					MW::stopWorld			( void )
+{
+
+}
+/* ========================================================================= */
+
 
 /*  CLASS    =============================================================== */
 //

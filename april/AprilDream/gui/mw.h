@@ -104,15 +104,24 @@ private:
 public:
 
 	//! constructor
-	explicit			MW		( QWidget *parent = 0 );
+	explicit				MW					( QWidget *parent = 0 );
 
 	//! destructor
-	~MW					(void);
+	~MW						( void );
 
 protected:
 
 	//! examine change events for run-time language change
-	void				changeEvent		( QEvent *e );
+	void					changeEvent			( QEvent *e );
+
+private slots:
+	
+	//! start the world
+	void					startWorld			( void );
+	
+	//!  stop the world
+	void					stopWorld			( void );
+	
 
 
 	/*  FUNCTIONS    ======================================================= */

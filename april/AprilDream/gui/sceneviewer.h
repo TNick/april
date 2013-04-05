@@ -50,6 +50,7 @@ namespace	Gui		{
 *	@brief
 */
 class SceneViewer		: public QGraphicsView, public MemTrack		{
+	Q_OBJECT
 	BBM_TRACK( SceneViewer );
 
 	//
@@ -67,7 +68,8 @@ class SceneViewer		: public QGraphicsView, public MemTrack		{
 
 private:
 
-
+	//! zoom helper
+	int			num_scheduled_scalings_;
 
 	/*  DATA    ============================================================ */
 	//
@@ -84,6 +86,27 @@ public:
 	//! destructor;
 	virtual				~SceneViewer		( void );
 
+protected:
+
+	//! zooming using this one
+	void		wheelEvent				( QWheelEvent *event );
+
+	//! mouse press
+	void		mousePressEvent			( QMouseEvent * me );
+
+	//! mouse release
+	void		mouseReleaseEvent		( QMouseEvent * me );
+
+	//! mouse move
+	void		mouseMoveEvent			( QMouseEvent * me );
+
+private slots:
+
+	//! zooming utility
+	void		scalingTime				( qreal x );
+
+	//! zooming utility
+	void		animFinished			( void );
 
 
 	/*  FUNCTIONS    ======================================================= */

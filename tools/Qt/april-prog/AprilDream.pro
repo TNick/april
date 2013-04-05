@@ -102,5 +102,8 @@ SOURCES += \
     ../../../april/AprilDream/gui/dockcrtsel.cc \
     ../../../april/AprilDream/gui/sceneviewer.cc
 
+RESOURCES += \
+    ../../../april/AprilDream/aprildream.qrc
+
 
 

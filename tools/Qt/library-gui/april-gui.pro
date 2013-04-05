@@ -34,10 +34,11 @@ VERSION=
 
 }
 
+LIBS += -L../../../build
 CONFIG(debug, debug|release) {
-	LIBS += -lbbb_debug
+	LIBS += -lbbb_debug -lapril_debug
 } else {
-	LIBS += -lbbb
+	LIBS += -lbbb -lapril
 }
 
 

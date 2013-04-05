@@ -1,0 +1,35 @@
+The icons from this directory are a subset of those provided for free by ﻿
+fatcow.org on the page at http://www.fatcow.com/free-icons
+
+On this page today, 11 december 2012, it reads that:
+
+
+	Who's That Cow?
+	===============
+
+	FatCow is a leading provider of web hosting, domain registration and related marketing services, and continuously provides great value to its customers, while making a difference inside and outside of the web hosting world. Recently, FatCow committed to powering its offices and data centers with 100% wind energy, and now FatCow is contributing to the web design community!
+
+	Terms of Use
+	============
+
+	These icon sets are licensed under a Creative Commons Attribution 3.0 License. This means you can freely use these icons for any purpose, private and commercial, including online services, templates, themes and software. However, you should include a link to this page in your credits. The icons may not be resold, sub-licensed, rented, transferred or otherwise made available for use. Please link to this page on fatcow.com if you would like to spread the word.
+
+
+The Creative Commons Attribution 3.0 licence content was copied into the COPYING file inside this directory.
+
+The original package contains two types of icons in two directories: 16x16 and 32x32. From the set of 32x32 icons a new set was generated using ImageMagick[1] and following script:
+
+
+#!/bin/bash
+
+mkdir ./24x24
+pushd ./32x32
+for f in *.png; do
+	convert $f -scale 24x24! ../24x24/$f
+done
+popd
+
+
+
+
+1 - http://www.imagemagick.org/script/index.php

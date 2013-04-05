@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/" >
+        <file alias="pause.png">../res/fatcow-hosting-icons-3000/control_pause_blue.png</file>
+        <file alias="play.png">../res/fatcow-hosting-icons-3000/control_play_blue.png</file>
+    </qresource>
+</RCC>
