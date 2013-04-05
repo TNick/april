@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			worldqscene.h
+  \file			agui3d.h
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the definition for WorldQScene class
+  \brief		Contains the definition for AGui3D class
 
 
 *//*
@@ -17,8 +17,8 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __WORLDQSCENE_INC__
-#define __WORLDQSCENE_INC__
+#ifndef __AGUI3D_INC__
+#define __AGUI3D_INC__
 //
 //
 //
@@ -26,8 +26,7 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include    <april/april.h>
-#include    <QGraphicsScene>
-#include	<april/logic/world.h>
+#include    <april/gui/actors/agui2d.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -36,9 +35,9 @@
 //
 /*  DEFINITIONS    --------------------------------------------------------- */
 
-namespace   april	{
+namespace	april	{
 
-namespace   Gui		{
+namespace	Gui		{
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -48,12 +47,12 @@ namespace   Gui		{
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief	A world in a QGraphicsScene
+*	@brief
 */
 class
 	APRILSHARED_EXPORT
-	WorldQScene		: public QGraphicsScene, public MemTrack		{
-	BBM_TRACK( WorldQScene );
+	AGui3D		: public AGui2D		{
+	BBM_TRACK( AGui3D );
 
 	//
 	//
@@ -70,8 +69,7 @@ class
 
 private:
 
-	//! the world
-	World *			w_;
+
 
 	/*  DATA    ============================================================ */
 	//
@@ -83,15 +81,18 @@ private:
 public:
 
 
-	//! constructor;
-	WorldQScene			( QObject * parent = NULL );
+	/**
+	*	@brief	constructor;
+	*/
+	AGui3D				( World * w );
 
-	//! destructor;
-	virtual				~WorldQScene		( void );
+protected:
 
-	//! underlying world object
-	inline World *		world				( void ) const 
-	{ return w_; }
+	/**
+	*	@brief	destructor;
+	*/
+	virtual				~AGui3D		( void );
+
 
 
 	/*  FUNCTIONS    ======================================================= */
@@ -100,7 +101,7 @@ public:
 	//
 	//
 
-};	/*	class WorldQScene	*/
+};	/*	class AGui3D	*/
 
 /*  CLASS    =============================================================== */
 //
@@ -112,6 +113,6 @@ public:
 
 }   //  namespace april
 
-#endif // __WORLDQSCENE_INC__
+#endif // __AGUI3D_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */

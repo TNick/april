@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			worldqscene.h
-  \date			Apr 2013
+  \file			abox3d.h
+  \date			Apr 2012
   \author		TNick
 
-  \brief		Contains the definition for WorldQScene class
+  \brief		Contains the definition for ABOX3D class
 
 
 *//*
@@ -17,30 +17,15 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __WORLDQSCENE_INC__
-#define __WORLDQSCENE_INC__
+#ifndef __ABOX3D_INC__
+#define __ABOX3D_INC__
 //
 //
 //
 //
 /*  INCLUDES    ------------------------------------------------------------ */
 
-#include    <april/april.h>
-#include    <QGraphicsScene>
-#include	<april/logic/world.h>
-
 /*  INCLUDES    ============================================================ */
-//
-//
-//
-//
-/*  DEFINITIONS    --------------------------------------------------------- */
-
-namespace   april	{
-
-namespace   Gui		{
-
-/*  DEFINITIONS    ========================================================= */
 //
 //
 //
@@ -48,12 +33,9 @@ namespace   Gui		{
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief	A world in a QGraphicsScene
+*	@brief
 */
-class
-	APRILSHARED_EXPORT
-	WorldQScene		: public QGraphicsScene, public MemTrack		{
-	BBM_TRACK( WorldQScene );
+struct ABOX3D				{
 
 	//
 	//
@@ -68,11 +50,6 @@ class
 	//
 	/*  DATA    ------------------------------------------------------------ */
 
-private:
-
-	//! the world
-	World *			w_;
-
 	/*  DATA    ============================================================ */
 	//
 	//
@@ -83,15 +60,12 @@ private:
 public:
 
 
-	//! constructor;
-	WorldQScene			( QObject * parent = NULL );
+	/**
+	*	@brief	constructor;
+	*/
+	ABOX3D			( void )
+	{ }
 
-	//! destructor;
-	virtual				~WorldQScene		( void );
-
-	//! underlying world object
-	inline World *		world				( void ) const 
-	{ return w_; }
 
 
 	/*  FUNCTIONS    ======================================================= */
@@ -100,18 +74,13 @@ public:
 	//
 	//
 
-};	/*	class WorldQScene	*/
+};	/*	class ABOX3D	*/
 
 /*  CLASS    =============================================================== */
 //
 //
 //
 //
-
-}   //  namespace Gui
-
-}   //  namespace april
-
-#endif // __WORLDQSCENE_INC__
+#endif // __ABOX3D_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */

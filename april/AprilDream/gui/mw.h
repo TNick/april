@@ -28,7 +28,7 @@
 #include    <QMainWindow>
 #include    <april/april.h>
 #include	"ui_mw.h"
-#include    <april/gui/worlds/worldqscene.h>
+#include    <april/gui/worlds/wqstauto.h>
 
 #include    <april/AprilDream/gui/dockcrtsel.h>
 #include    <april/AprilDream/gui/dockids.h>
@@ -89,7 +89,7 @@ private:
 	//!@}
 	
 	//! the scene 
-	WorldQScene		w_scene_;
+	WqsTAuto		w_scene_;
 	
 	//! the scene viewer
 	SceneViewer		viever_;

@@ -105,7 +105,11 @@ WorldQScene::WorldQScene	( QObject * parent )
 	  w_( new World( "AprilDream", 100000 ) )
 {
 	APRDBG_CDTOR;
+	
+	setItemIndexMethod( QGraphicsScene::NoIndex );
+
 	OWN_CREF( w_, this );
+
 	/** @todo switch for showing this */
 	WQS_Unit * origin = new WQS_Unit();
 	addItem( origin );

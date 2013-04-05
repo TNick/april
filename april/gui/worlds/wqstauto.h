@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			worldqscene.h
+  \file			wqstauto.h
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the definition for WorldQScene class
+  \brief		Contains the definition for WqsTAuto class
 
 
 *//*
@@ -17,8 +17,8 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __WORLDQSCENE_INC__
-#define __WORLDQSCENE_INC__
+#ifndef __WQSTAUTO_INC__
+#define __WQSTAUTO_INC__
 //
 //
 //
@@ -26,8 +26,7 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include    <april/april.h>
-#include    <QGraphicsScene>
-#include	<april/logic/world.h>
+#include    <april/gui/worlds/worldqscene.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -36,9 +35,9 @@
 //
 /*  DEFINITIONS    --------------------------------------------------------- */
 
-namespace   april	{
+namespace	april	{
 
-namespace   Gui		{
+namespace	Gui		{
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -48,12 +47,12 @@ namespace   Gui		{
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief	A world in a QGraphicsScene
+*	@brief	A world in a QGraphicsScene with a timer
 */
 class
 	APRILSHARED_EXPORT
-	WorldQScene		: public QGraphicsScene, public MemTrack		{
-	BBM_TRACK( WorldQScene );
+	WqsTAuto		: public WorldQScene		{
+	BBM_TRACK( WqsTAuto );
 
 	//
 	//
@@ -70,8 +69,17 @@ class
 
 private:
 
-	//! the world
-	World *			w_;
+	//! counter for updating the gui
+	int			update_counter_;
+	
+	//! number of steps after which the gui is updated
+	int			update_len_;
+	
+	//! frequency of the timer
+	int			frequency_;
+	
+	//! the id of the timer (0 if not running)
+	int			timer_id_;
 
 	/*  DATA    ============================================================ */
 	//
@@ -82,16 +90,42 @@ private:
 
 public:
 
-
 	//! constructor;
-	WorldQScene			( QObject * parent = NULL );
+	WqsTAuto			( QObject * parent = NULL );
 
 	//! destructor;
-	virtual				~WorldQScene		( void );
+	virtual				~WqsTAuto		( void );
 
-	//! underlying world object
-	inline World *		world				( void ) const 
-	{ return w_; }
+	//! tell if the timer is running
+	inline bool			isRunning		( void ) const
+	{ return timer_id_ != 0; }
+
+	//! tell the frequency of the timer
+	inline int			frequency		( void ) const
+	{ return frequency_; }
+
+	//! number of ticks after which worldTick() is fired
+	inline int			interval		( void ) const
+	{ return update_len_; }
+	
+private:
+
+	//! used to generate events in the underlying world object
+	void				timerEvent		( QTimerEvent * );
+	
+public slots:
+	
+	//! change the frequency of the timer
+	bool				changeFrequency	( int new_val );
+	
+	//! change number of ticks after which worldTick() is fired
+	bool				changeInterval	( int new_val );
+
+	//! start the internal timer
+	bool				start			( void );
+	
+	//! stop the internal timer
+	bool				stop			( void );
 
 
 	/*  FUNCTIONS    ======================================================= */
@@ -100,7 +134,7 @@ public:
 	//
 	//
 
-};	/*	class WorldQScene	*/
+};	/*	class WqsTAuto	*/
 
 /*  CLASS    =============================================================== */
 //
@@ -112,6 +146,6 @@ public:
 
 }   //  namespace april
 
-#endif // __WORLDQSCENE_INC__
+#endif // __WQSTAUTO_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */

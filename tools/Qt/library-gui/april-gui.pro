@@ -64,8 +64,25 @@ isEmpty( UI_DIR ) {
 #######################################################
 
 SOURCES += \
-    ../../../april/gui/worlds/worldqscene.cc
+    ../../../april/gui/worlds/worldqscene.cc \
+    ../../../april/gui/worlds/wqstauto.cc \
+    ../../../april/gui/actors/agui.cc \
+    ../../../april/gui/actors/agui3d.cc \
+    ../../../april/gui/actors/agui2d.cc \
+    ../../../april/gui/geometry/p3d.cc \
+    ../../../april/gui/geometry/p2d.cc \
+    ../../../april/gui/geometry/abox3d.cc \
+    ../../../april/gui/geometry/abox2d.cc
 
 HEADERS += \
-    ../../../april/gui/worlds/worldqscene.h
+    ../../../april/gui/worlds/worldqscene.h \
+    ../../../april/gui/worlds/wqstauto.h \
+    ../../../april/gui/actors/agui.h \
+    ../../../april/gui/actors/agui3d.h \
+    ../../../april/gui/actors/agui2d.h \
+    ../../../april/gui/geometry/p3d.h \
+    ../../../april/gui/geometry/p2d.h \
+    ../../../april/gui/geometry/abox3d.h \
+    ../../../april/gui/geometry/abox2d.h \
+    ../../../april/gui/geometry/geometry.h
 

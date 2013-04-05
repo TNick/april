@@ -1,13 +1,13 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			mw.cc
+  \file			wqstauto.cc
   \date			Apr 2013
   \author		TNick
-  
-  \brief		Contains the implementation for MW class
-  
-  
+
+  \brief		Contains the implementation of WqsTAuto class
+
+
 *//*
 
 
@@ -23,9 +23,8 @@
 //
 /*  INCLUDES    ------------------------------------------------------------ */
 
+#include	"wqstauto.h"
 
-#include	"mw.h"
-#include	"ui_mw.h"
 
 /*  INCLUDES    ============================================================ */
 //
@@ -52,37 +51,12 @@ using namespace april::Gui;
 /*  CLASS    --------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------------- */
-MW::MW	( QWidget *parent ) :
-	QMainWindow( parent ), MemTrack(),
-	ui(),
-	d_crt_sel_(this),
-	d_ids_(this),
-	d_tree_(this),
-	d_world_(this),
-	w_scene_(),
-	viever_()
-{
-	APRDBG_CDTOR;
-	ui.setupUi( this );
-	
-	ui.menuView->addAction( d_crt_sel_.action() );
-	ui.menuView->addAction( d_ids_.action() );
-	ui.menuView->addAction( d_tree_.action() );
-	ui.menuView->addAction( d_world_.action() );
-	
-	setCentralWidget( &viever_ );
-	viever_.setScene( &w_scene_ );
-	
-	connect( ui.actionStart, SIGNAL(triggered()),
-			 this, SLOT( startWorld() ) );
-	connect( ui.actionStop, SIGNAL(triggered()),
-			 this, SLOT( stopWorld() ) );
-	
-}
-/* ========================================================================= */
-
-/* ------------------------------------------------------------------------- */
-MW::~MW	( void )
+WqsTAuto::WqsTAuto	( QObject * parent )
+	: WorldQScene( parent ),
+	update_counter_( 16 ),
+	update_len_( 16 ),
+	frequency_( 1000 / 33 ),
+	timer_id_( 0 )
 {
 	APRDBG_CDTOR;
 	/* stub */
@@ -90,35 +64,94 @@ MW::~MW	( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void					MW::changeEvent			( QEvent * e )
+WqsTAuto::~WqsTAuto	( void )
 {
-	QMainWindow::changeEvent( e );
-	switch ( e->type() ) {
-	case QEvent::LanguageChange:	{
-		ui.retranslateUi( this );
-		break;}
-	default:						{
-		break;}
-	}
+	APRDBG_CDTOR;
+	/* stub */
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void					MW::startWorld			( void )
+bool		WqsTAuto::changeInterval		( int new_val )
 {
-	if ( w_scene_.start() )
+	if ( new_val <= 0 || new_val > 10000 )
 	{
-		/* stub */
+		return false;
 	}
+	
+	update_len_ = new_val;
+	return true;
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void					MW::stopWorld			( void )
+bool		WqsTAuto::changeFrequency		( int new_val )
 {
-	if ( w_scene_.stop() )
+	bool b_start = false;
+	if ( new_val <= 0 || new_val > 10000 )
 	{
-		/* stub */
+		return false;
+	}
+	if ( isRunning() )
+	{
+		killTimer( timer_id_ );
+		b_start = true;
+	}
+	frequency_ = new_val;
+	update_counter_ = 0; // so that we generate an event right away
+	if ( b_start )
+	{
+		timer_id_ = startTimer( frequency_ );
+	}
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			WqsTAuto::start			( void )
+{
+	bool b;
+	if ( isRunning() )
+		return true;
+	
+	timer_id_ = startTimer( frequency_ );
+	if ( timer_id_ == 0 )
+		return false;
+	
+	update_counter_ = 0; // so that we generate an event right away
+	b = world()->start();
+	if ( b == false )
+	{
+		killTimer( timer_id_ );
+		timer_id_ = 0;
+	}
+	return b;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			WqsTAuto::stop			( void )
+{
+	if ( !isRunning() )
+		return true;
+	killTimer( timer_id_ );
+	timer_id_ = 0;
+	world()->stop();
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void			WqsTAuto::timerEvent	( QTimerEvent * )
+{
+	/* advance the world one step */
+	world()->advance();
+	//advance();
+	update_counter_--;
+	if ( update_counter_ <= 0 )
+	{
+		update_counter_ = update_len_;
+		//emit worldTick();
 	}
 }
 /* ========================================================================= */

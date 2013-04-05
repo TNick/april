@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			worldqscene.h
-  \date			Apr 2013
+  \file			p3d.h
+  \date			Apr 2012
   \author		TNick
 
-  \brief		Contains the definition for WorldQScene class
+  \brief		Contains the definition for P3D class
 
 
 *//*
@@ -17,30 +17,17 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __WORLDQSCENE_INC__
-#define __WORLDQSCENE_INC__
+#ifndef __P3D_INC__
+#define __P3D_INC__
 //
 //
 //
 //
 /*  INCLUDES    ------------------------------------------------------------ */
 
-#include    <april/april.h>
-#include    <QGraphicsScene>
-#include	<april/logic/world.h>
+#include	"p2d.h"
 
 /*  INCLUDES    ============================================================ */
-//
-//
-//
-//
-/*  DEFINITIONS    --------------------------------------------------------- */
-
-namespace   april	{
-
-namespace   Gui		{
-
-/*  DEFINITIONS    ========================================================= */
 //
 //
 //
@@ -48,12 +35,9 @@ namespace   Gui		{
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief	A world in a QGraphicsScene
+*	@brief	a point in 3D space
 */
-class
-	APRILSHARED_EXPORT
-	WorldQScene		: public QGraphicsScene, public MemTrack		{
-	BBM_TRACK( WorldQScene );
+struct P3D				{
 
 	//
 	//
@@ -68,10 +52,50 @@ class
 	//
 	/*  DATA    ------------------------------------------------------------ */
 
-private:
+	union	{
 
-	//! the world
-	World *			w_;
+
+		/**
+		*	@brief	coordinates in an array of 3 values: X, Y and Z
+		*/
+		COORDV		pts_[3];
+
+
+		struct	{
+
+			/**
+			*	@brief	X component
+			*/
+			COORDV		x_;
+
+
+			/**
+			*	@brief	Y component
+			*/
+			COORDV		y_;
+
+
+			/**
+			*	@brief	Y component
+			*/
+			COORDV		z_;
+		};
+
+
+		/* 2d point is just a matter of casting */
+		struct	{
+
+			/**
+			*	@brief	projection to X0Y plane
+			*/
+			P2D			d2_;
+
+			/* no need for a dummy value here */
+
+		};
+
+	};
+
 
 	/*  DATA    ============================================================ */
 	//
@@ -83,15 +107,33 @@ private:
 public:
 
 
-	//! constructor;
-	WorldQScene			( QObject * parent = NULL );
+	/**
+	*	@brief	bring the internal variables to their ground state
+	*/
+	inline void			reset		( void )
+	{ x_ = 0; y_ = 0; }
 
-	//! destructor;
-	virtual				~WorldQScene		( void );
 
-	//! underlying world object
-	inline World *		world				( void ) const 
-	{ return w_; }
+	/**
+	*	@brief	compares two points and compares their coorsinates
+	*/
+	inline bool operator ==			(const P3D & other) const
+	{
+		if ( ( COORDV_EQ( x_, other.x_ ) ) &&
+			 ( COORDV_EQ( y_, other.y_ ) ) &&
+			 ( COORDV_EQ( z_, other.z_ ) ) )
+			return true;
+		return false;
+	}
+
+
+	/**
+	*	@brief	compares two points and compares their coorsinates
+	*/
+	inline bool operator !=			(const P3D & other) const
+	{
+		return !( *this == other );
+	}
 
 
 	/*  FUNCTIONS    ======================================================= */
@@ -100,18 +142,13 @@ public:
 	//
 	//
 
-};	/*	class WorldQScene	*/
+};	/*	class P3D	*/
 
 /*  CLASS    =============================================================== */
 //
 //
 //
 //
-
-}   //  namespace Gui
-
-}   //  namespace april
-
-#endif // __WORLDQSCENE_INC__
+#endif // __P3D_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
