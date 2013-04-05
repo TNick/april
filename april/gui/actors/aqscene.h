@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			abox3d.h
-  \date			Apr 2012
+  \file			aqscene.h
+  \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the definition for ABOX3D class
+  \brief		Contains the definition for AQScene class
 
 
 *//*
@@ -17,17 +17,30 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __ABOX3D_INC__
-#define __ABOX3D_INC__
+#ifndef __AQSCENE_INC__
+#define __AQSCENE_INC__
 //
 //
 //
 //
 /*  INCLUDES    ------------------------------------------------------------ */
 
-#include	"abox2d.h"
+#include    <april/april.h>
+#include    <april/logic/actor.h>
+#include	<QGraphicsItem>
 
 /*  INCLUDES    ============================================================ */
+//
+//
+//
+//
+/*  DEFINITIONS    --------------------------------------------------------- */
+
+namespace	april	{
+
+namespace	Gui		{
+
+/*  DEFINITIONS    ========================================================= */
 //
 //
 //
@@ -35,9 +48,10 @@
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief
+*	@brief	An actor in a QGraphicsScene
 */
-struct ABOX3D				{
+class AQScene		: public QGraphicsItem, public Actor		{
+	BBM_TRACK( AQScene );
 
 	//
 	//
@@ -52,11 +66,9 @@ struct ABOX3D				{
 	//
 	/*  DATA    ------------------------------------------------------------ */
 
-	//! top rectangle
-	ABOX2D			box2d_;
-	
-	//! depth
-	COORDV			depth_;
+private:
+
+
 
 	/*  DATA    ============================================================ */
 	//
@@ -71,8 +83,13 @@ public:
 	/**
 	*	@brief	constructor;
 	*/
-	ABOX3D			( void )
-	{ }
+	AQScene				( World * w );
+
+
+	/**
+	*	@brief	destructor;
+	*/
+	virtual				~AQScene		( void );
 
 
 
@@ -82,13 +99,18 @@ public:
 	//
 	//
 
-};	/*	class ABOX3D	*/
+};	/*	class AQScene	*/
 
 /*  CLASS    =============================================================== */
 //
 //
 //
 //
-#endif // __ABOX3D_INC__
+
+}   //  namespace Gui
+
+}   //  namespace april
+
+#endif // __AQSCENE_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */

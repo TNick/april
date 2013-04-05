@@ -27,6 +27,7 @@
 
 #include    <april/april.h>
 #include    <april/gui/actors/agui2d.h>
+#include    <april/gui/geometry/abox3d.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -51,7 +52,7 @@ namespace	Gui		{
 */
 class
 	APRILSHARED_EXPORT
-	AGui3D		: public AGui2D		{
+	AGui3D		: public AGui2D, public ABOX3D		{
 	BBM_TRACK( AGui3D );
 
 	//

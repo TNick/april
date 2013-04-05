@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			agui2d.cc
+  \file			aqscene.cc
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the implementation of AGui2D class
+  \brief		Contains the implementation of AQScene class
 
 
 *//*
@@ -23,7 +23,7 @@
 //
 /*  INCLUDES    ------------------------------------------------------------ */
 
-#include	"agui2d.h"
+#include	"aqscene.h"
 
 
 /*  INCLUDES    ============================================================ */
@@ -51,8 +51,8 @@ using namespace april::Gui;
 /*  CLASS    --------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------------- */
-AGui2D::AGui2D	( World * w )
-	: AGui( w )
+AQScene::AQScene	( World * w )
+	: QGraphicsItem(), Actor( w )
 {
 	APRDBG_CDTOR;
 	/* stub */
@@ -60,7 +60,7 @@ AGui2D::AGui2D	( World * w )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-AGui2D::~AGui2D	( void )
+AQScene::~AQScene	( void )
 {
 	APRDBG_CDTOR;
 	/* stub */

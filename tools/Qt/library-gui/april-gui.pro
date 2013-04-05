@@ -72,7 +72,8 @@ SOURCES += \
     ../../../april/gui/geometry/p3d.cc \
     ../../../april/gui/geometry/p2d.cc \
     ../../../april/gui/geometry/abox3d.cc \
-    ../../../april/gui/geometry/abox2d.cc
+    ../../../april/gui/geometry/abox2d.cc \
+    ../../../april/gui/actors/aqscene.cc
 
 HEADERS += \
     ../../../april/gui/worlds/worldqscene.h \
@@ -84,5 +85,6 @@ HEADERS += \
     ../../../april/gui/geometry/p2d.h \
     ../../../april/gui/geometry/abox3d.h \
     ../../../april/gui/geometry/abox2d.h \
-    ../../../april/gui/geometry/geometry.h
+    ../../../april/gui/geometry/geometry.h \
+    ../../../april/gui/actors/aqscene.h
 
