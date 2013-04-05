@@ -24,7 +24,8 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include	"dockids.h"
-
+#include	<QTreeWidget>
+#include	<QStringList>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -35,6 +36,20 @@
 
 using namespace april;
 using namespace april::Gui;
+
+namespace   april	{
+
+namespace	Gui		{
+
+class	DockIds_p		{
+public:
+	QTreeWidget *		tv_;
+	
+}; /* class	DockIds_p */
+
+}   //  namespace   Gui
+
+}   //  namespace   april
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -74,6 +89,14 @@ DockIds::~DockIds	( void )
 /* ------------------------------------------------------------------------- */
 void				DockIds::construct			( void )
 {
+	d_ = new DockIds_p();
+	d_->tv_ = new QTreeWidget( dock() );
+	dock()->setWidget( d_->tv_ );
+	
+	QStringList sl;
+	sl.append( "Value" );
+	sl.append( "Description" );
+	d_->tv_->setHeaderLabels( sl );
 	
 }
 /* ========================================================================= */
@@ -81,7 +104,9 @@ void				DockIds::construct			( void )
 /* ------------------------------------------------------------------------- */
 void				DockIds::deconstruct			( void )
 {
-	
+	d_->tv_->deleteLater();
+	delete d_;
+	d_ = NULL;
 }
 /* ========================================================================= */
 

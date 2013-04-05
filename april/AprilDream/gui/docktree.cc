@@ -24,7 +24,7 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include	"docktree.h"
-
+#include	<QTreeWidget>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -35,6 +35,20 @@
 
 using namespace april;
 using namespace april::Gui;
+
+namespace   april	{
+
+namespace	Gui		{
+
+class	DockTree_p		{
+public:
+	QTreeWidget *		tv_;
+	
+}; /* class	DockTree_p */
+
+}   //  namespace   Gui
+
+}   //  namespace   april
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -74,14 +88,20 @@ DockTree::~DockTree	( void )
 /* ------------------------------------------------------------------------- */
 void				DockTree::construct			( void )
 {
+	d_ = new DockTree_p();
+	d_->tv_ = new QTreeWidget( dock() );
+	dock()->setWidget( d_->tv_ );
 	
+	d_->tv_->setHeaderHidden( true );
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 void				DockTree::deconstruct			( void )
 {
-	
+	d_->tv_->deleteLater();
+	delete d_;
+	d_ = NULL;
 }
 /* ========================================================================= */
 
