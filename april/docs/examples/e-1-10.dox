@@ -1,0 +1,15 @@
+namespace   april    {
+
+/**
+
+\page	e_1_10   Example 10 - The Brain
+
+The brain acts like the reflexes, taking input from sensors and 
+generating output on actuators.
+
+<br><br><hr>
+<table width=100%><tr><td> \ref e_1_10 </td><td align=right>  </td>
+*/
+
+}   //  namespace   april
+

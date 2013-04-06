@@ -1,14 +1,13 @@
 TEMPLATE = subdirs
 
-SUBDIRS += \
-    e-1-1  \
-    e-1-2  \
-    e-1-3 \
-    e-1-4
+SUBDIRS += e-1-1
+SUBDIRS += e-1-2
+SUBDIRS += e-1-3
+SUBDIRS += e-1-4
 SUBDIRS += e-1-5
 SUBDIRS += e-1-6
-
 SUBDIRS += e-1-7
-
 SUBDIRS += e-1-8
+SUBDIRS += e-1-9
+SUBDIRS += e-1-10
 
