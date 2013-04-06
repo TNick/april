@@ -81,11 +81,11 @@ private:
 
 public:
 
-
-	/**
-	*	@brief	constructor;
-	*/
+	//! constructor; sets cost and packed energy to 0
 	Actuator			( Actor * actor );
+	
+	//! constructor; sets cost and packed energy
+	Actuator			( Actor * actor, quint64 cost, quint64 energy );
 
 protected:
 

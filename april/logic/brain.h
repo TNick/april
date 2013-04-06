@@ -79,10 +79,11 @@ private:
 public:
 
 
-	/**
-	*	@brief	constructor;
-	*/
+	//! constructor; sets cost and packed energy to 0
 	Brain				( Actor * actor );
+	
+	//! constructor; sets cost and packed energy
+	Brain				( Actor * actor, quint64 cost, quint64 energy );
 
 protected:
 

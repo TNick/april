@@ -4,8 +4,51 @@ namespace   april    {
 
 \page	e_1_8   Example 8 - Events and event lines
 
-Events are things that happen in the world.
+Events are things that happen in the world. To help generate events
+the library provides the EventSource class. Its inheritants recieve 
+regular calls from the world and may generate events in the world.
 
+The actual events are instances of EventData or of classes that inherit
+from it. Once created and set-up they are placed in the world in something
+called event lines, in the world.
+
+An EventLine is a kind of buffer that may contain a limited number of 
+ordered EventData instances. Various components (EventSources, Actuators, ... )
+post messages to an EventLine using EventLine::postActivity().
+
+A world may have any number of event lines. Each one is identified by an ID and
+may be asimilated to a sense :sounds are posted to hearing event line and
+picked up by specialised Sensor (ear), smells are posted to smell event line
+and picked up by specialised Sensor (nose) and so on. There is no restriction
+in that event lines should follow real-world senses - these are only used as
+examples. The format of the data in EventData is not part of the specification
+nor it must be the same in different event lines They may be anything the user
+whishes. Sensors must be designed flexible enough to survive corrupt data or
+unknown formats even in well established event lines.
+
+So lets see an example:
+\snippet e-1-8/e-1-8.cc mainloop
+So after the initialisation (world and factories) has been done we create 
+an EventLine and assign it an ID. Then we create an actor and an custom 
+EventSource and we let the world spin twenty times.
+
+This is our custom event source class:
+\snippet e-1-8/e-1-8.cc evsrc
+It recieves time ticks with its doSteps() method. On each tick we create a new 
+EventData and set some simple data to send. In a real life implementation
+EventData may need to be extended for various data types.
+Notice that welocate the event line using World::eventLine().
+
+So on each time tick an event gets generated and posted to a event line.
+It just so happens that our Actor has a sensor tuned on this kind of input:
+\snippet e-1-8/e-1-8.cc sens
+The actor recieves regulate time ticks that it forwards to its components
+including our sensor. The sensor obtains a pointer to the event line 
+and iterates the events that it had not seen before. 
+
+If you run the program you will see that only a part of the posted events
+get sensed. This is because the Actor exhausts its energy and dies
+half way to the end.
 
 <br><br><hr>
 <table width=100%><tr><td> \ref e_1_7 </td><td align=right> \ref e_1_9 </td>

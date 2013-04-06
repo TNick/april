@@ -405,7 +405,7 @@ protected:
 	///@{
 	
 	//! first in the list of events (alive or recently dead)
-	EventSource *			firstEvent			( void ) const;
+	EventSource *	firstEvent			( void ) const;
 
 protected:
 

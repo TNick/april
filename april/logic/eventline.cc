@@ -50,14 +50,16 @@ using namespace april;
 /*  CLASS    --------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------------- */
-EventLine::EventLine	( World * w, ID id )
+EventLine::EventLine	( World * w, ID id, unsigned int max_count )
 	: Component(),
 	world_( w ),
 	id_( id ),
 	event_data_(),
-	last_( NULL )
+	last_( NULL ),
+	max_count_( max_count )
 {
 	APRDBG_CDTOR;
+	Q_ASSERT( max_count > 0 );
 	w->addEventLine( this, id );
 }
 /* ========================================================================= */
@@ -92,15 +94,43 @@ void					EventLine::discardOldEntries		( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void					EventLine::postActivity				( EventData * ed )
+bool					EventLine::postActivity				( EventData * ed )
 { 
 	Q_ASSERT( event_data_.contains( ed ) == false ); 
+	if ( world()->isRunning() == false )
+	{
+		return false;
+	}
+	
+	/* discard old entries to make room for new ones */
+	if ( dataCount() >= max_count_ )
+	{
+		if ( last_ == NULL )
+		{
+			last_ = static_cast<EventData*>( event_data_.last() );
+		}
+		EventData * itr;
+		do {
+			if ( last_ == NULL )
+				break;
+			itr = prevEventData_( last_ );
+			event_data_.remove( last_ );
+			DEC_REF(last_,this);
+			last_ = itr;
+		} while ( dataCount() >= max_count_ );
+	}
+	
 	INC_REF( ed, this );
+	if ( ed->discardTime() == 0 )
+	{
+		ed->setDuration( world(), 1 );
+	}
 	if ( event_data_.count() == 0 )
 	{
 		last_ = ed;
 	}
 	event_data_.prepend( ed );
+	return true;
 }
 /* ========================================================================= */
 

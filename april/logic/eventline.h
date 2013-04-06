@@ -86,6 +86,9 @@ private:
 	//! cache last in chain
 	EventData *			last_;
 	
+	//! maximum number of entries to keep
+	unsigned int		max_count_;
+	
 	/*  DATA    ============================================================ */
 	//
 	//
@@ -97,7 +100,7 @@ public:
 
 
 	//! constructor;
-	EventLine			( World * w, ID id );
+	EventLine			( World * w, ID id, unsigned int max_count = 100 );
 
 protected:
 
@@ -115,13 +118,21 @@ public:
 	{ return id_; }
 
 	//! tell the number of packets
-	inline int			dataCount		( void ) const
-	{ return event_data_.count(); }
+	inline unsigned int	dataCount		( void ) const
+	{ return (unsigned int) event_data_.count(); }
 
 	//! post activity on this event line
-	void				postActivity	( EventData * ed );
+	/**
+	 * The method fails if the world is not started.
+	 * @param ed the data to post (asserted to be non-null)
+	 * @return false if the opperation failed
+	 */
+	bool				postActivity	( EventData * ed );
 	
 	//! iterate and discard old entries
+	/**
+	 * @brief the world may be running or not
+	 */
 	void				discardOldEntries	( void );
 
 	//! get first (newest) packet
@@ -131,7 +142,10 @@ public:
 	//! get last (oldest) packet
 	EventData *			lastEventData	( void );
 	
-	
+	//! maximum number of entries to keep
+	unsigned int		maxEntries		( void ) const
+	{ return max_count_; }
+
 	/*  FUNCTIONS    ======================================================= */
 	//
 	//

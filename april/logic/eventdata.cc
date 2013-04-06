@@ -51,7 +51,8 @@ using namespace april;
 
 /* ------------------------------------------------------------------------- */
 EventData::EventData	( void )
-	: Component()
+	: Component(),
+	discard_time_(0)
 {
 	APRDBG_CDTOR;
 	/* stub */

@@ -79,10 +79,11 @@ private:
 public:
 
 
-	/**
-	*	@brief	constructor;
-	*/
+	//! constructor; sets cost and packed energy to 0
 	Reflex				( Actor * actor );
+
+	//! constructor; sets cost and packed energy
+	Reflex				( Actor * actor, quint64 cost, quint64 energy );
 
 protected:
 
