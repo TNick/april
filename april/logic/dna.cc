@@ -295,7 +295,7 @@ void			DNA::mergeAllParts		(
 	int i_max_1 = p1.parts_.count();
 	int i_max_2 = p2.parts_.count();
 	int i_max_me;
-	bool b_found;
+	bool b_found = false;
 	
 	/* iterate in partitions from first parent */
 	for ( int i = 0; i < i_max_1; i++ )

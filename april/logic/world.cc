@@ -147,6 +147,8 @@ World::~World	( void )
 /* ------------------------------------------------------------------------- */
 bool				World::setTotEnergy			( quint64 new_val )
 {
+	if ( isRunning() )
+		return false;
 	if ( energy_free_ > new_val )
 		return false;
 	energy_all_ = new_val;
@@ -168,6 +170,22 @@ void				World::advance				( void )
 		return;
 	
 	director_->advance();
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				World::setDirector			( Director * new_val )
+{
+	if ( isRunning() )
+		return false;
+	if ( director_ != NULL )
+		DEC_REF(director_,this);
+	
+	if ( new_val != NULL )
+		INC_REF(new_val,this);
+	
+	director_ = new_val;
+	return true;
 }
 /* ========================================================================= */
 

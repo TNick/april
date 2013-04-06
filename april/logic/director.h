@@ -110,6 +110,8 @@ protected:
 	//! access to event lines in the world - end
 	QMap<ID,EventLine*>::ConstIterator	endEventLine		( void );
 	
+	//! advance the time in the world
+	void				stepTime		( void );
 
 	/*  FUNCTIONS    ======================================================= */
 	//

@@ -55,49 +55,14 @@ UniqueId::UniqueId( const QString & s_name )
 	  map_(),
 	  first_free_(InvalidId)
 {
-	
-	QSettings	stg;
-	ID key;
-	QString s;
-	stg.beginGroup( s_name );
-	
-	first_free_ = stg.value( "first_free_", InvalidId+1 ).toULongLong();
-	
-	quint64 i_max = stg.beginReadArray( "map_" );
-	for ( quint64 i = 0; i < i_max; i++ )
-	{
-		stg.setArrayIndex( i );
-		key = stg.value( "id", InvalidId ).toLongLong();
-		s = stg.value( "value", QString() ).toString();
-		map_.insert( key, s );
-	}
-	stg.endArray();
-	
-	stg.endGroup();
+	/* stub */
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 UniqueId::~UniqueId()
 {
-	QSettings	stg;
-	quint64 i = 0;
-	stg.beginGroup( my_name_ );
-	stg.setValue( "first_free_", first_free_ );
-	stg.beginWriteArray( "map_" );
-	QMap<ID,QString>::ConstIterator itr = map_.constBegin();
-	QMap<ID,QString>::ConstIterator itr_e = map_.constEnd();
-	while ( itr != itr_e )
-	{
-		stg.setArrayIndex( i );
-		stg.setValue( "id", itr.key() );
-		stg.setValue( "value", itr.value() );
-		itr++;
-		i++;
-	}
-	stg.endArray();
-	stg.endGroup();
-	
+	/* stub */
 }
 /* ========================================================================= */
 
@@ -111,6 +76,8 @@ QString			UniqueId::name		( ID id )
 /* ------------------------------------------------------------------------- */
 ID				UniqueId::value		( const QString & s_name )
 {
+	if ( s_name.isEmpty() )
+		return InvalidId;
 	return map_.key( s_name, InvalidId );
 }
 /* ========================================================================= */
@@ -146,6 +113,66 @@ ID				UniqueId::checkAdd	( const QString & s_name )
 		i =  addNew( s_name );
 	}
 	return i;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void			UniqueId::checkAdd	( ID id, const QString & s_name )
+{
+	QMap<ID,QString>::Iterator itr = map_.find( id );
+	if ( itr == map_.end() )
+	{
+		insert( id, s_name );
+	}
+	else if ( itr.value().isEmpty() )
+	{
+		itr.value() = s_name;
+	}
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void			UniqueId::save		( QSettings & stg )
+{
+	ID key;
+	QString s;
+	stg.beginGroup( my_name_ );
+	
+	first_free_ = stg.value( "first_free_", InvalidId+1 ).toULongLong();
+	
+	quint64 i_max = stg.beginReadArray( "map_" );
+	for ( quint64 i = 0; i < i_max; i++ )
+	{
+		stg.setArrayIndex( i );
+		key = stg.value( "id", InvalidId ).toLongLong();
+		s = stg.value( "value", QString() ).toString();
+		map_.insert( key, s );
+	}
+	stg.endArray();
+	
+	stg.endGroup();
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void			UniqueId::load		( QSettings & stg )
+{
+	quint64 i = 0;
+	stg.beginGroup( my_name_ );
+	stg.setValue( "first_free_", first_free_ );
+	stg.beginWriteArray( "map_" );
+	QMap<ID,QString>::ConstIterator itr = map_.constBegin();
+	QMap<ID,QString>::ConstIterator itr_e = map_.constEnd();
+	while ( itr != itr_e )
+	{
+		stg.setArrayIndex( i );
+		stg.setValue( "id", itr.key() );
+		stg.setValue( "value", itr.value() );
+		itr++;
+		i++;
+	}
+	stg.endArray();
+	stg.endGroup();
 }
 /* ========================================================================= */
 

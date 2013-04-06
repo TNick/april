@@ -84,7 +84,7 @@ Director::~Director	( void )
 void				Director::advance				( void )
 {
 	/* update time */
-	w_->stepTime();
+	stepTime();
 	
 	/* iterate in events and advance them */
 	Event * e = w_->firstEvent();
@@ -125,6 +125,13 @@ QMap<ID,EventLine*>::ConstIterator	Director::firstEventLine	( void )
 QMap<ID,EventLine*>::ConstIterator	Director::endEventLine		( void )
 {
 	return w_->endEventLine();
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void				Director::stepTime			( void )
+{
+	w_->stepTime();
 }
 /* ========================================================================= */
 

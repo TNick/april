@@ -26,6 +26,7 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include    <april/april.h>
+#include	<QMap>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -33,6 +34,8 @@
 //
 //
 /*  DEFINITIONS    --------------------------------------------------------- */
+
+class	QSettings;
 
 namespace   april    {
 
@@ -130,7 +133,16 @@ public:
 	
 	//! check if provided description exists; create a new one if not
 	ID				checkAdd		( const QString & s_name );
+	
+	//! check if provided description exists; set this one if not
+	void			checkAdd		( ID id, const QString & s_name );
 
+	//! save the list of values and strings
+	void			save			( QSettings & stg );
+
+	//! load the list of values and strings; current content is wiped out
+	void			load			( QSettings & stg );
+	
 
 	/*  FUNCTIONS    ======================================================= */
 	//

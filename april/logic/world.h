@@ -179,6 +179,24 @@ public:
 	void				advance				( void );
 	
 
+	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
+	/** @name Director
+	 */
+	///@{
+	
+public:
+
+	//! get the director
+	inline Director *			director			( void ) const
+	{ return director_; }
+	
+	//! change the director (the world will get a new reference for it)
+	bool						setDirector			( Director * new_val );
+	
+	
+	///@}
+	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
+
 
 	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
 	/** @name Running
@@ -338,13 +356,17 @@ public:
 	void			insertId		( ID id, const QString & s_name )
 	{ uid_.insert( id, s_name ); }
 	
-	//! allocate a new unique id and assigne provided description
+	//! allocate a new unique id and assign provided description
 	ID				addNewId		( const QString & s_name = QString() )
 	{ return uid_.addNew( s_name ); }
 	
 	//! check if provided description exists; create a new one if not
 	ID				checkAddId		( const QString & s_name )
 	{ return uid_.checkAdd( s_name ); }
+	
+	//! check if provided description exists; set this one if not
+	void			checkAddId		( ID id, const QString & s_name )
+	{ uid_.checkAdd( id, s_name ); }
 
 	//! get the string associated with an identifier
 	QString			nameForId		( ID id )

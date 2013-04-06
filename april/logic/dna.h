@@ -30,6 +30,7 @@
 #include	<april/logic/dnaview.h>
 
 #include	<QSettings>
+#include	<QVector>
 
 /*  INCLUDES    ============================================================ */
 //
