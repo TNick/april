@@ -8,3 +8,5 @@ SUBDIRS += \
 SUBDIRS += e-1-5
 SUBDIRS += e-1-6
 
+SUBDIRS += e-1-7
+
