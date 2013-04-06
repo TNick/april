@@ -1,0 +1,45 @@
+namespace   april    {
+
+/**
+
+\page	e_1_6   Example 6 - Factories
+
+The ID based components require classes to create the actual instances.
+These are the \ref Factory factories.
+
+\snippet e-1-6/e-1-6.cc incdirfactory
+
+The library provides base classes for all required kinds of factories.
+The user often needs to specialise these base classes for its particular 
+needs. Below a specialisation is presented for each factory class. 
+Notice that the content for each class is similar:
+- we have a constructor that requires a World instance; that is because the
+factory gets inserted in the world right from the constructor via addMyself()
+methods. The constructor also registers the ID that it uses (there may be
+multiple IDs, not just one as in these examples).
+- a create() method also needs to be implemented. This is the principal 
+method - the reason for the Factory class. The method recieves an ID as 
+argument because each factory may be used to create any number of different
+objects that inherit the target type.
+
+\snippet e-1-6/e-1-6.cc fproxy
+
+Not shown in previous example is that each factory has a averageDNA() method
+that the factory may use to initialise chunks of DNA for their respective types.
+
+Once the world is created we create and insert an instance of each of 
+these factories. 
+\snippet e-1-6/e-1-6.cc new
+The world takes a reference for each factory so we can get rid of the 
+constructor reference. When the world gets destructed these references are 
+also released, causing the factories to be destroyed.
+
+
+
+
+<br><br><hr>
+<table width=100%><tr><td> \ref e_1_5 </td><td align=right> \ref e_1_7 </td>
+*/
+
+}   //  namespace   april
+
