@@ -77,7 +77,6 @@ SOURCES += \
     ../../../april/logic/actorfactory.cc \
     ../../../april/logic/sensor.cc \
     ../../../april/logic/reflex.cc \
-    ../../../april/logic/event.cc \
     ../../../april/logic/brain.cc \
     ../../../april/logic/actuator.cc \
     ../../../april/logic/brainfactory.cc \
@@ -85,7 +84,8 @@ SOURCES += \
     ../../../april/logic/actorcomp.cc \
     ../../../april/logic/eventline.cc \
     ../../../april/logic/eventdata.cc \
-    ../../../april/logic/director.cc
+    ../../../april/logic/director.cc \
+    ../../../april/logic/eventsource.cc
 
 HEADERS += \
     ../../../april/april_version.h \
@@ -106,7 +106,6 @@ HEADERS += \
     ../../../april/logic/sensorfactory.h \
     ../../../april/logic/actorfactory.h \
     ../../../april/logic/reflex.h \
-    ../../../april/logic/event.h \
     ../../../april/logic/brain.h \
     ../../../april/logic/actuator.h \
     ../../../april/logic/sensor.h \
@@ -115,7 +114,8 @@ HEADERS += \
     ../../../april/logic/actorcomp.h \
     ../../../april/logic/eventline.h \
     ../../../april/logic/eventdata.h \
-    ../../../april/logic/director.h
+    ../../../april/logic/director.h \
+    ../../../april/logic/eventsource.h
 
 OTHER_FILES += \
     ../../../april/april.dox

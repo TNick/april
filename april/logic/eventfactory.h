@@ -37,7 +37,7 @@
 
 namespace   april    {
 
-class	Event;
+class	EventSource;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -103,7 +103,7 @@ protected:
 public:
 
 	//! create an actuator;
-	virtual Event *			create				( ID id ) = 0;
+	virtual EventSource *			create				( ID id ) = 0;
 
 protected:
 

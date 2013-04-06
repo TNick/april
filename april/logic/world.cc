@@ -27,7 +27,7 @@
 #include	"director.h"
 #include	"actor.h"
 #include	"actorfactory.h"
-#include	"event.h"
+#include	"eventsource.h"
 #include	"eventfactory.h"
 #include	"actuator.h"
 #include	"actuatorfactory.h"
@@ -101,8 +101,8 @@ World::~World	( void )
 		a = a_n;
 	}
 	
-	Event * e = firstEvent_(this);
-	Event * e_n;
+	EventSource * e = firstEvent_(this);
+	EventSource * e_n;
 	while ( e != NULL )
 	{
 		e_n = nextEvent_( e );
@@ -249,14 +249,14 @@ bool				World::remEventLine			( EventLine * el, ID id  )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-Event*				World::firstEvent			( void ) const
+EventSource*				World::firstEvent			( void ) const
 {
 	return firstEvent_( this );
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-bool				World::addEvent				( Event * ev )
+bool				World::addEvent				( EventSource * ev )
 {
 	Q_ASSERT( events_.contains( ev ) == false );
 	
@@ -268,7 +268,7 @@ bool				World::addEvent				( Event * ev )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-bool				World::remEvent				( Event * ev )
+bool				World::remEvent				( EventSource * ev )
 {
 	Q_ASSERT( events_.contains( ev ) == true );
 	
@@ -576,7 +576,7 @@ void				World::actorDies			( Actor * actor )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-Event *				World::createEvent			( ID id )
+EventSource *				World::createEvent			( ID id )
 {
 	QMap<ID,EventFactory*>::Iterator itr = event_factories_.find( id );
 	if ( itr == event_factories_.end() )

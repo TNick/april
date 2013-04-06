@@ -2,7 +2,7 @@
 #include	<april/aprillibrary.h>
 #include	<april/logic/world.h>
 #include	<april/logic/actuator.h>
-#include	<april/logic/event.h>
+#include	<april/logic/eventsource.h>
 #include	<april/logic/eventfactory.h>
 #include	<april/logic/eventline.h>
 #include	<april/logic/eventdata.h>

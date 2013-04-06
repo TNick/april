@@ -5,7 +5,7 @@
 #include	<april/logic/actorfactory.h>
 #include	<april/logic/sensor.h>
 #include	<april/logic/sensorfactory.h>
-#include	<april/logic/event.h>
+#include	<april/logic/eventsource.h>
 #include	<april/logic/eventfactory.h>
 #include	<april/logic/eventdata.h>
 #include	<april/logic/eventline.h>
@@ -93,10 +93,10 @@ public:
 	}
 };
 
-class	Ev : public Event	{
+class	Ev : public EventSource	{
 	int i_counter;
 public:
-	Ev( World * w ) : Event( w )	{
+	Ev( World * w ) : EventSource( w )	{
 		i_counter = 0;
 	}
 	void		doSteps		( int steps )
@@ -122,7 +122,7 @@ public:
 		w->insertId( IdEvent, "events.test" );
 		addMyself( IdEvent );
 	}
-	virtual Event *			create				( ID id ) {
+	virtual EventSource *			create				( ID id ) {
 		Q_UNUSED( id );
 		Ev * ret = new Ev( world() );
 		return ret;

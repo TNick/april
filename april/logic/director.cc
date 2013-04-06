@@ -27,7 +27,7 @@
 #include	"world.h"
 #include	"actor.h"
 #include	"actorfactory.h"
-#include	"event.h"
+#include	"eventsource.h"
 #include	"eventfactory.h"
 #include	"actuator.h"
 #include	"actuatorfactory.h"
@@ -87,7 +87,7 @@ void				Director::advance				( void )
 	stepTime();
 	
 	/* iterate in events and advance them */
-	Event * e = w_->firstEvent();
+	EventSource * e = w_->firstEvent();
 	while ( e != NULL )
 	{
 		e->doSteps( 1 );

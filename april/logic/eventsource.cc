@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			event.cc
+  \file			eventsource.cc
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the implementation of Event class
+  \brief		Contains the implementation of EventSource class
 
 
 *//*
@@ -23,7 +23,7 @@
 //
 /*  INCLUDES    ------------------------------------------------------------ */
 
-#include	"event.h"
+#include	"eventsource.h"
 #include	"world.h"
 
 /*  INCLUDES    ============================================================ */
@@ -50,7 +50,7 @@ using namespace april;
 /*  CLASS    --------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------------- */
-Event::Event	( World * w )
+EventSource::EventSource	( World * w )
 	: Component(),
 	world_( w )
 {
@@ -60,7 +60,7 @@ Event::Event	( World * w )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-Event::~Event	( void )
+EventSource::~EventSource	( void )
 {
 	APRDBG_CDTOR;
 	/* stub */

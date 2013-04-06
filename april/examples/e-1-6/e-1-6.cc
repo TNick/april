@@ -14,7 +14,7 @@
 //! [incdirfactory]
 
 #include <april/logic/sensor.h>
-#include <april/logic/event.h>
+#include <april/logic/eventsource.h>
 #include <april/logic/actuator.h>
 #include <april/logic/actor.h>
 #include <april/logic/brain.h>
@@ -35,9 +35,9 @@ enum	Constants		{
 
 
 //! [evproxy]
-class	Ev : public Event	{
+class	Ev : public EventSource	{
 public:
-	Ev( World * w ) : Event( w ) { }
+	Ev( World * w ) : EventSource( w ) { }
 	void		doSteps		( int steps ) { }
 };
 //! [evproxy]
@@ -76,7 +76,7 @@ public:
 		w->insertId( IdEvent, "events.test" );
 		addMyself( IdEvent );
 	}
-	virtual Event * create ( ID id ) {
+	virtual EventSource * create ( ID id ) {
 		Ev * ret = new Ev( world() );
 		return ret;
 	}

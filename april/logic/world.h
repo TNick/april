@@ -42,7 +42,7 @@ class ActorComp;
 class Actor;
 class Director;
 class World;
-class Event;
+class EventSource;
 class Actuator;
 class Brain;
 class Sensor;
@@ -79,7 +79,7 @@ class
 
 	friend class Actor;
 	friend class Director;
-	friend class Event;
+	friend class EventSource;
 	friend class Factory;
 	friend class EventLine;
 	friend class ActorFactory;
@@ -400,20 +400,20 @@ protected:
 	
 	
 	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
-	/** @name Event related methods
+	/** @name EventSource related methods
 	 */
 	///@{
 	
 	//! first in the list of events (alive or recently dead)
-	Event *			firstEvent			( void ) const;
+	EventSource *			firstEvent			( void ) const;
 
 protected:
 
-	//! used by the Event class to insert itself
-	bool			addEvent			( Event * act );
+	//! used by the EventSource class to insert itself
+	bool			addEvent			( EventSource * act );
 
-	//! used by the Event class to remove itself
-	bool			remEvent			( Event * act );
+	//! used by the EventSource class to remove itself
+	bool			remEvent			( EventSource * act );
 	
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
@@ -524,7 +524,7 @@ public:
 	Sensor *		createSensor		( Actor * actor, ID id );
 	
 	//! create a brain
-	Event *			createEvent			( ID id );
+	EventSource *			createEvent			( ID id );
 	
 	//! create a reflex
 	Reflex *		createReflex		( Actor * actor, ID id );

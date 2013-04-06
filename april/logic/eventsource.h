@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			event.h
+  \file			eventsource.h
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the definition for Event class
+  \brief		Contains the definition for EventSource class
 
 
 *//*
@@ -55,14 +55,14 @@ class	World;
 *	Events may stay alive a long time and generate activity from time to time
 *	or they may be single-shoots.
 *
-*	A world has EventLine's, each with an ID. An Event posts activity on the
-*	EventLine's that are then checked by the Sensor's. Each Event may post
+*	A world has EventLine's, each with an ID. An EventSource posts activity on the
+*	EventLine's that are then checked by the Sensor's. Each EventSource may post
 *	to one or more EventLine's.
 */
 class
 	APRILSHARED_EXPORT
-	Event		: public Component		{
-	BBM_TRACK( Event );
+	EventSource		: public Component		{
+	BBM_TRACK( EventSource );
 
 	//
 	//
@@ -95,12 +95,12 @@ private:
 public:
 
 	//! constructor;
-	Event				( World * w );
+	EventSource				( World * w );
 
 protected:
 
 	//! destructor;
-	virtual				~Event		( void );
+	virtual				~EventSource		( void );
 
 	//! perform steps (called by the World)
 	virtual void		doSteps		( int steps  = 1 ) = 0;
@@ -117,7 +117,7 @@ public:
 	//
 	//
 
-};	/*	class Event	*/
+};	/*	class EventSource	*/
 
 /*  CLASS    =============================================================== */
 //

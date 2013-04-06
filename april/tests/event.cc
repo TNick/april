@@ -2,7 +2,7 @@
 #include	<april/aprillibrary.h>
 #include	<april/logic/world.h>
 #include	<april/logic/actuator.h>
-#include	<april/logic/event.h>
+#include	<april/logic/eventsource.h>
 #include	<april/logic/eventfactory.h>
 
 using namespace april;
@@ -19,9 +19,9 @@ enum Ids {
 	IdEvent
 };
 
-class	Ev : public Event	{
+class	Ev : public EventSource	{
 public:
-	Ev( World * w ) : Event( w )	{
+	Ev( World * w ) : EventSource( w )	{
 		hit_times_ = 0;
 	}
 	void		doSteps		( int steps )
@@ -38,7 +38,7 @@ public:
 		w->insertId( IdEvent, "events.test" );
 		addMyself( IdEvent );
 	}
-	virtual Event *			create				( ID id ) {
+	virtual EventSource *			create				( ID id ) {
 		Q_UNUSED( id );
 		Ev * ret = new Ev( world() );
 		return ret;
@@ -48,7 +48,7 @@ public:
 }	/* namespace event_cc */
 /* ----------------------------------------------------- */
 
-TEST(Event, init) {
+TEST(EventSource, init) {
 
 	initAprilLibrary();
 	World * w = new World( "test-world", 1000 );
@@ -60,7 +60,7 @@ TEST(Event, init) {
 	endAprilLibrary();
 }
 
-TEST(Event, factory) {
+TEST(EventSource, factory) {
 
 	initAprilLibrary();
 	World * w = new World( __FUNCTION__, 1000 );

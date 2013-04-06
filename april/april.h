@@ -73,9 +73,9 @@ Object emit signals on certain actions if APRIL_SIGNALS is defined.
 #define prevBrain_(p)	static_cast<Brain*>(p->prev())
 #define nextBrain_(p)	static_cast<Brain*>(p->next())
 
-#define firstEvent_(p)	static_cast<Event*>(p->events_.first())
-#define prevEvent_(p)	static_cast<Event*>(p->prev())
-#define nextEvent_(p)	static_cast<Event*>(p->next())
+#define firstEvent_(p)	static_cast<EventSource*>(p->events_.first())
+#define prevEvent_(p)	static_cast<EventSource*>(p->prev())
+#define nextEvent_(p)	static_cast<EventSource*>(p->next())
 
 #define firstWorld_(p)	static_cast<World*>(p->worlds_.first())
 #define prevWorld_(p)	static_cast<World*>(p->prev())
