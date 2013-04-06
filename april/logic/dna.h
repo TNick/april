@@ -71,7 +71,7 @@ class
 	
 	friend class DNAView;
 	friend class ActorFactory;
-
+	
 protected:
 	
 	
@@ -188,22 +188,10 @@ public:
 			const DNA &			p2
 			);
 	
-	//! tell if this instance s valid or not
+	//! tell if this instance is valid or not
 	bool			isValid			( void ) const;
 	
-	//! energy cost
-	quint64			cost			( void ) const
-	{ Q_ASSERT(values_i_.length() >= OffMax ); return values_i_.at( OffCost ); }
 	
-	//! average age for this kind of actor
-	quint64			age				( void ) const
-	{ Q_ASSERT(values_i_.length() >= OffMax ); return values_i_.at( OffAge ); }
-	
-	//! birth energy
-	quint64			energy			( void ) const
-	{ Q_ASSERT(values_i_.length() >= OffMax ); return values_i_.at( OffStartEnergy ); }
-
-
 	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
 	/** @name examine components
 	 */
@@ -217,7 +205,7 @@ public:
 	 *	If that does not work the DNAView will be invalid.
 	 */
 	DNAView			getView			( ID id, Factory * f = NULL );
-
+	
 	//! get a view for a particular id
 	/**
 	 *	This variant is for the callers that assert a certain minimum size for
@@ -231,9 +219,30 @@ public:
 	 *	by requesting the averageDNA values from the factory.
 	 */
 	DNAView			getView			( ID id, int sz, Factory * f = NULL );
-
+	
 	//! get the kind
 	ID				kind			( void ) const;
+	
+	//! energy cost
+	quint64			cost			( void ) const
+	{ 
+		Q_ASSERT(values_i_.length() >= OffMax ); 
+		return values_i_.at( OffCost ); 
+	}
+	
+	//! average age for this kind of actor
+	quint64			age				( void ) const
+	{
+		Q_ASSERT(values_i_.length() >= OffMax ); 
+		return values_i_.at( OffAge ); 
+	}
+	
+	//! birth energy
+	quint64			energy			( void ) const
+	{ 
+		Q_ASSERT(values_i_.length() >= OffMax ); 
+		return values_i_.at( OffStartEnergy );
+	}
 	
 	//! get the list of brains
 	QList<ID>		brains			( void ) const;
@@ -249,13 +258,13 @@ public:
 	
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
-
-
+	
+	
 	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
 	/** @name add components
 	 */
 	///@{
-
+	
 	//! append a brain
 	/**
 	 * May fail because id is invalid. The id is inserted in
@@ -273,7 +282,7 @@ public:
 	 * @return true for success
 	 */
 	bool			addActuator		( ID id );
-		
+	
 	//! append a sensor
 	/**
 	 * May fail because id is invalid. The id is inserted in
@@ -282,7 +291,7 @@ public:
 	 * @return true for success
 	 */
 	bool			addSensor		( ID id );
-		
+	
 	//! append a reflex
 	/**
 	 * May fail because id is invalid. The id is inserted in
@@ -291,12 +300,12 @@ public:
 	 * @return true for success
 	 */
 	bool			addReflex		( ID id );
-
+	
 	
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
-
-
+	
+	
 	
 	//! save the content of this DNA to indicated object
 	bool			save			( QSettings & stg ) const;
@@ -326,9 +335,9 @@ protected:
 	/** @name Merge helpers
 	 */
 	///@{
-
+	
 private:
-
+	
 	bool			mergeAllVals	(
 			const DNA &			p1,
 			const DNA &			p2
@@ -381,14 +390,14 @@ public:
 #endif
 	
 private:
-
+	
 	//! helper for getView()
 	bool			getViewNotFound			(
 			DNAView &			view,
 			ID					id,
 			Factory *			f
 			);
-
+	
 	
 	/*  FUNCTIONS    ======================================================= */
 	//

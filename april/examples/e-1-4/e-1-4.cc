@@ -3,9 +3,6 @@
 
 #include <april/aprillibrary.h>
 #include <april/logic/world.h>
-//! [incdir]
-#include <april/logic/factory.h>
-//! [incdir]
 
 using namespace std;
 using namespace april;
