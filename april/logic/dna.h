@@ -76,7 +76,7 @@ protected:
 	
 	
 	//! an entry in the list of partitions
-	struct	Partition {
+	struct	Partition	{
 		
 		//! the unique ID of the component
 		ID			id_;
@@ -88,6 +88,15 @@ protected:
 		int			count_;
 	};
 	
+public:
+	
+	//! the initialisation data 
+	struct	InitData	{
+		ID			kind_;	/**< ID of the factory that creates this kind of agent */
+		quint64		cost_;	/**< the cost of running this agent */
+		quint64		age_;	/**< average age of death */
+		quint64		energy_;/**< energy required at birth */
+	};
 	
 public:
 	
@@ -304,12 +313,12 @@ protected:
 	//! get the index of the ID or -1 if not found
 	int				findID			( ID id ) const;
 	
-	//! initialise an empty DNA with a kind; the instance becomes valid
+	//! initialise an empty DNA; the instance becomes valid
 	/**
 	 * This is usefull for ActorFactory to create a default DNA
 	 * @param id_kind the ID to set inside
 	 */
-	void			initDNA			( ID id_kind );
+	void			initDNA			( const InitData & init );
 	
 	
 	

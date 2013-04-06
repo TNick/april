@@ -86,9 +86,10 @@ void				ActorFactory::setDNA			(
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void				ActorFactory::initDNA			( DNA & dna, ID id_kind )
+void				ActorFactory::initDNA			( 
+	DNA & dna, const DNA::InitData & init )
 {
-	dna.initDNA( id_kind );
+	dna.initDNA( init );
 }
 /* ========================================================================= */
 

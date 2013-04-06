@@ -103,7 +103,7 @@ int				DNA::findID			( ID id ) const
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void			DNA::initDNA		( ID id_kind )
+void			DNA::initDNA		( const InitData & init )
 {
 	parts_.clear();
 	values_.clear();
@@ -111,11 +111,14 @@ void			DNA::initDNA		( ID id_kind )
 	
 	/* initialise the header */
 	values_i_.reserve( OffMax );
-	values_i_.append( id_kind );
+	values_i_.append( init.kind_ );
 	for ( int i = OffKind+1; i < OffMax; i++ )
 	{
 		values_i_.append( 0 );
 	}
+	values_i_[OffCost] = init.cost_;
+	values_i_[OffAge] = init.age_;
+	values_i_[OffStartEnergy] = init.energy_;
 }
 /* ========================================================================= */
 
@@ -125,8 +128,18 @@ bool			DNA::fromMerge		( const DNA & p1, const DNA & p2 )
 	Q_UNUSED( p1 );
 	Q_UNUSED( p2 );
 	
-	initDNA( InvalidId );
+	parts_.clear();
+	values_.clear();
+	values_i_.clear();
 	
+	/* initialise the header */
+	values_i_.reserve( OffMax );
+	values_i_.append( InvalidId );
+	for ( int i = OffKind+1; i < OffMax; i++ )
+	{
+		values_i_.append( 0 );
+	}
+
 	/* check compatibility */
 	if ( p1.values_i_.count() < OffMax )
 	{

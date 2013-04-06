@@ -131,11 +131,14 @@ protected:
 	 * @param dna target structure
 	 * @param id_kind the id to set in target structure
 	 */
-	void					initDNA				( DNA & dna, ID id_kind );
+	void					initDNA				(
+			DNA &					dna,
+			const DNA::InitData &	init
+			);
 	
 	//! initialise default DNA instance
-	void					initDNA				( ID id_kind )
-	{ initDNA( default_dna_, id_kind ); }
+	void					initDNA				( const DNA::InitData & init )
+	{ initDNA( default_dna_, init ); }
 	
 	/*  FUNCTIONS    ======================================================= */
 	//

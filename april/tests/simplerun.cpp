@@ -89,7 +89,12 @@ public:
 	FAgent( World * w ) : ActorFactory( w ) {
 		w->insertId( IdKind, "kinds.test" );
 		addMyself( IdKind );
-		initDNA( IdKind );
+		DNA::InitData	idata;
+		idata.kind_ = IdKind;
+		idata.cost_ = 1;
+		idata.age_= 100;
+		idata.energy_= 10;
+		initDNA( idata );
 		
 		QList<quint64>	l1;
 		l1.reserve( DNA::OffMax );

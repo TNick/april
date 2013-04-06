@@ -83,7 +83,12 @@ public:
 	FAgent( World * w ) : ActorFactory( w ) {
 		w->insertId( IdKind, "kinds.test" );
 		addMyself( IdKind );
-		initDNA( IdKind );
+		DNA::InitData	idata;
+		idata.kind_ = IdKind;
+		idata.cost_ = 1;
+		idata.age_= 100;
+		idata.energy_= 10;
+		initDNA( idata );
 		EXPECT_TRUE( defaultDNA().addBrain( IdBrain) );
 		EXPECT_TRUE( defaultDNA().addActuator( IdActuator ) );
 		EXPECT_TRUE( defaultDNA().addReflex( IdReflex ) );
