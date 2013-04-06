@@ -1,0 +1,15 @@
+namespace   april    {
+
+/**
+
+\page	e_1_8   Example 8 - Events and event lines
+
+Events are things that happen in the world.
+
+
+<br><br><hr>
+<table width=100%><tr><td> \ref e_1_7 </td><td align=right> \ref e_1_9 </td>
+*/
+
+}   //  namespace   april
+

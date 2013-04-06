@@ -117,8 +117,6 @@ int main ()
 	DEC_REF(f_actor,f_actor);
 	FSensor * f_sensor = new FSensor( w );
 	DEC_REF(f_sensor,f_sensor);
-	FEvent * f_event = new FEvent( w );
-	DEC_REF(f_event,f_event);
 	FActuator * f_actuator = new FActuator( w );
 	DEC_REF(f_actuator,f_actuator);
 	FBrain * f_brain = new FBrain( w );
