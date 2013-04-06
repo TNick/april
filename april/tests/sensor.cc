@@ -30,7 +30,7 @@ class Sens : public Sensor	{
 	int i_counter;
 public:	
 	
-	Sens( Actor * actor ) : Sensor( actor )
+	Sens( Actor * actor ) : Sensor( actor, 1, 1 )
 	{
 		i_counter = 0;
 	}
@@ -41,7 +41,7 @@ public:
 		EventLine * el = actor()->world()->eventLine( IdScanLine );
 		if ( el != NULL )
 		{
-			EventData * ed = el->lastEventData();
+			EventData * ed = el->firstEventData();
 			INC_REF(ed,this);
 			
 			EXPECT_EQ( ed->payload().i_, (quint64)i_counter );
@@ -62,6 +62,7 @@ public:
 	virtual Sensor * create ( Actor * a, ID id ) {
 		Q_UNUSED( id );
 		Sens * ret = new Sens( a );
+		
 		return ret;
 	}
 	

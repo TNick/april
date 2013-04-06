@@ -90,10 +90,10 @@ private:
 
 public:
 
-	//! constructor;
+	//! constructor; sets cost and packed energy to 0
 	ActorComp			( Actor * actor );
 
-	//! constructor; sets energy related values
+	//! constructor; sets cost and packed energy
 	ActorComp			( Actor * actor, quint64 cost, quint64 energy );
 
 protected:

@@ -78,17 +78,15 @@ private:
 
 public:
 
-
-	/**
-	*	@brief	constructor;
-	*/
+	//! constructor; sets cost and packed energy to 0
 	Sensor				( Actor * actor );
+	
+	//! constructor; sets cost and packed energy
+	Sensor				( Actor * actor, quint64 cost, quint64 energy );
 
 protected:
 
-	/**
-	*	@brief	destructor;
-	*/
+	//! destructor;
 	virtual				~Sensor			( void );
 
 
