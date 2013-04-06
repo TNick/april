@@ -1,0 +1,67 @@
+
+namespace   april    {
+
+/**
+
+\page	e_1_2   Example 2 - Creating a world
+
+To actually use the library various headers need to be included.
+For this example we use:
+\snippet e-1-2/e-1-2.cc include
+
+aprillibrary.h defines our library class and the initialisation functions.
+Also, since we've decided to create a world in this example we also include
+world.h for the definition of World class.
+
+All the definitions in the library are wrapped in following namespace:
+\snippet e-1-2/e-1-2.cc namespace
+
+As a final preparation we also define a constant:
+\snippet e-1-2/e-1-2.cc const
+to be the total ammount of energy in our world.
+
+initAprilLibrary() needs to be called before making use of 
+the library and will be latter matched by a endAprilLibrary().
+\snippet e-1-2/e-1-2.cc init
+It makes sure to load additional components that the library uses and
+creates the library singleton that will track resources. The library
+will fail to work without this initial step.
+
+We are now ready to create our first world:
+\snippet e-1-2/e-1-2.cc w
+We're required to provide a name and the total amount of energy 
+that this world has. The name is used when saving settings and to 
+identify the world in the messages that the library generates.
+The energy will be a hard limit for all actions that take place in 
+the world. Creating things and performing actions will be limited by
+this factor.
+
+Now that we have a world let's do something with it:
+\snippet e-1-2/e-1-2.cc querry
+
+Most of the objects in april library are reference-counted using
+the implementation in 
+<a href="http://sourceforge.net/projects/libbbb/">libbbb</a>.
+The macros simply increment/decrement a counter in release builds, while in
+debug builds they maintain a list of references with the file, line,
+function name and pointer address all stored.
+The constructor creates a reference that is transmitted to the caller,
+so we have a reference for the World object.
+\snippet e-1-2/e-1-2.cc refc
+However, the library also owns a reference to the object, so previous 
+opperation will not cause the library to be destroyed. To achieve that goal
+we may use
+\snippet e-1-2/e-1-2.cc remw
+or we can let endAprilLibrary() take care of this.
+
+The last step is optional - terminate the library. However, it is 
+recomended, mostly in debug builds when the memory tracking is in
+effect and may spot memory leaks:
+\snippet e-1-2/e-1-2.cc end
+
+
+<br><br><hr>
+<table width=100%><tr><td> \ref e_1_1 </td><td align=right> \ref e_1_3 </td>
+*/
+
+}   //  namespace   april

@@ -1,0 +1,80 @@
+
+namespace   april    {
+
+/**
+
+\page	e_1_3   Example 3 - Running a world
+
+At any given time a world may be running or not. The world itself
+does not advances itself - it needs an external entity to call its
+\ref World::advance() "advance()" method. However, the world will
+refuse to do anything if it is not started. Various methods
+are only available in only one of the two states.
+
+To start the world use:
+\snippet e-1-3/e-1-3.cc start
+One can always tell if the world is running or not:
+\snippet e-1-3/e-1-3.cc isr
+
+Now the \ref World::advance() "advance()" method is available to use.
+\snippet e-1-3/e-1-3.cc advance
+
+It updates the time in the world and sends signals to all internal
+components that they should do a a step. The time in a world is a
+simple 64-bit unsigned counter. It starts from 0 when the world
+is created and it ever increases with each step. There is no 
+corespondence between the time defined like so and the real time 
+on the running machine.
+
+We can pause a world with
+\snippet e-1-3/e-1-3.cc stop
+and start it again with the same \ref World::start() "start()".
+
+
+\section e_1_3_dir  Advanced topic - The director
+
+Internally, a World uses a Director to start, stop and advance it.
+When a World is started, if no director is set the default one is
+being used. It simply iterates the components of the World
+and advances them as described in previous section. However, this 
+behaviour may be customised (maybe in a multithreading environment)
+by inheriting from default Director and reimplementing virtual 
+functions.
+
+First, the definition for the director is included with:
+\snippet e-1-3/e-1-3.cc incdir
+
+Then, a custom director class needs to be defined that inherits
+default Director class:
+\snippet e-1-3/e-1-3.cc class
+
+\snippet e-1-3/e-1-3.cc ctor
+
+There are three methods to be implemented:
+\snippet e-1-3/e-1-3.cc cd_start
+\snippet e-1-3/e-1-3.cc cd_stop
+In this case \ref Director::start() "start()" and \ref Director::stop() "stop()"
+only inform us about the call. \ref Director::start() "start()" may
+also return false to indicate that it can't start the World right now.
+Notice that World manages its status so we don't have to change it from 
+Stopped to Running and the other way arround.
+
+\snippet e-1-3/e-1-3.cc cd_adv
+At the very minimum the \ref Director::advance() "advance()" method must
+update the time. It should also advance other components in the world.
+
+Now to go ahead and test this custom director we can use following code:
+\snippet e-1-3/e-1-3.cc test_cst
+Notice that we release our reference to the custom director pretty early. 
+This is because the World will take its own reference with the call
+to World::setDirector(). Same call will release the reference for previous
+director, if any. Passing NULL as the director discards current one
+and leaves nothing in its place. As previously stated, World::start()
+will create a new, default one.
+
+
+<br><br><hr>
+<table width=100%><tr><td> \ref e_1_2 </td><td align=right> \ref e_1_4 </td>
+*/
+
+}   //  namespace   april

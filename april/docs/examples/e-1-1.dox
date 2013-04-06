@@ -1,0 +1,37 @@
+
+namespace   april    {
+
+/**
+
+\page	e_1_1   Example 1 - Hello world
+
+We will start with a basic "Hello world" program 
+and build up from there:
+\snippet e-1-1/e-1-1.cc 1
+
+The file may be saved as e-1-1.cc. As the project uses 
+qmake to build itself a qmake project is recomended. Here is
+an example project:
+@code
+TARGET = e-1-1
+SOURCES += e-1-1.cc
+CONFIG += console
+@endcode
+
+This may be saved in a file, say e-1-1.pro, then open a console and type:
+@code
+qmake
+make
+e-1-1
+@endcode
+
+However, for the needs of this tutorial, the project file needs to 
+be adjusted so that the compiler finds include files and the linker finds
+the libraries we use (april and bbb - http://sourceforge.net/projects/libbbb/).
+
+
+<br><br><hr>
+<table width=100%><tr><td>  </td><td align=right> \ref e_1_2 </td>
+*/
+
+}   //  namespace   april

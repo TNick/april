@@ -1,0 +1,58 @@
+
+namespace   april    {
+
+/**
+
+\page	e_1_4   Example 4 - IDs
+
+While some of the components of a world may be created by hand,
+the focus is on being able to create and recreate components.
+To be able to do so we use a centralised system of IDs and a 
+set of factories described below.
+
+The management of the IDs is govern by the UniqueId class. However, 
+since an instance is embedded in the World, we will discuss it 
+in this context.
+
+We are basically storing a list of 64-bit numbers associated or not 
+with a describing string. Setting the value for an ID (that is 
+created if it does not exist) is done as follows:
+\snippet e-1-4/e-1-4.cc ins1
+In this case the ID 1 is created if it does not exists and the label 
+\b "some-text" is associated with it. 
+
+Somehow similar is:
+\snippet e-1-4/e-1-4.cc inscond
+This attempts to locate the string just like World::nameForId() does but,
+if it not found, next free ID is allocated and the string is associated 
+with it.
+
+Blindly adding an ID with or without an associated string uses an internaly
+cached counter so that the search for a free ID is fast. This also means 
+that the values may have gaps, with some low order IDs not used.
+\snippet e-1-4/e-1-4.cc addNewId
+
+Retrieving the text associated with a particular ID done as so:
+\snippet e-1-4/e-1-4.cc get1
+will return an empty string if the ID has not been defined, yet.
+
+Following method only sets the text if the id is not defined. In our case,
+because 1 was already present the text is not modified. ID 2, however, 
+does not exists, yet, so the text associated with ID 2 is \b "default-text"
+\snippet e-1-4/e-1-4.cc ins2
+
+Finding an ID based on the string is also possible. First ID that matches
+the search is returned or InvalidId if none is found. Note that the
+search is case sensitive and there is no pattern support.
+\snippet e-1-4/e-1-4.cc idValue
+
+It should also be noted that UniqueId is capable of storing and loading
+the list of values and associated strings, capability that is used in
+saving/restoring a a world.
+
+
+<br><br><hr>
+<table width=100%><tr><td> \ref e_1_3 </td><td align=right> \ref e_1_5 </td>
+*/
+
+}   //  namespace   april
