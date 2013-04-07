@@ -524,13 +524,31 @@ public:
 	Sensor *		createSensor		( Actor * actor, ID id );
 	
 	//! create a brain
-	EventSource *			createEvent			( ID id );
+	EventSource *	createEvent			( ID id );
 	
 	//! create a reflex
 	Reflex *		createReflex		( Actor * actor, ID id );
 	
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
+
+
+	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
+	/** @name Save and load the world
+	 */
+	///@{
+
+public:
+
+	//! save the world (only when the world is stopped)
+	virtual bool	save				( QSettings & stg );
+	
+	//! load the world (only when the world is stopped)
+	virtual bool	load				( QSettings & stg );
+
+	///@}
+	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
+
 
 
 	//! informed when the life of an actor ended

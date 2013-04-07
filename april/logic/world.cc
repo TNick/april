@@ -624,6 +624,74 @@ void				World::stop				( void )
 }
 /* ========================================================================= */
 
+/* ------------------------------------------------------------------------- */
+bool				World::save				( QSettings & stg )
+{
+	if ( isRunning() )
+		return false;
+	
+	Actor * a = firstActor_(this);
+	while ( a != NULL )
+	{
+		a->save( stg );
+		a = nextActor_( a );
+	}
+	
+	EventSource * e = firstEvent_(this);
+	while ( e != NULL )
+	{
+		e->save( stg );
+		e = nextEvent_( e );
+	}
+	
+	/* ...... */
+#	define	saveFactory(f,F) \
+	QMap<ID,F*>::ConstIterator itr_##f =f##_factories_.constBegin();\
+	QMap<ID,F*>::ConstIterator itr_end_##f = f##_factories_.constEnd();\
+	while ( itr_##f != itr_end_##f )	{\
+	if ( itr_##f.save(stg) == false ) return false; \
+	itr_##f++;\
+	}
+	/* ...... */
+	
+	saveFactory(actor,ActorFactory);
+	saveFactory(actuator,ActuatorFactory);
+	saveFactory(brain,BrainFactory);
+	saveFactory(sensor,SensorFactory);
+	saveFactory(event,EventFactory);
+	saveFactory(reflex,ReflexFactory);
+	
+#	undef	saveFactory
+	
+	QMap<ID,EventLine*>::ConstIterator itr_event_lines = event_lines_.constBegin();
+	QMap<ID,EventLine*>::ConstIterator itr_end_event_lines = event_lines_.constEnd();
+	while ( itr_event_lines != itr_end_event_lines )
+	{
+		itr_event_lines.value().save( stg );
+		itr_event_lines++;
+	}
+	
+	if ( director_ != NULL )
+	{
+		director_.save( stg );
+	}
+	
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				World::load				( QSettings & stg )
+{
+	if ( isRunning() )
+		return false;
+	
+	
+	
+	return true;
+}
+/* ========================================================================= */
+
 /*  CLASS    =============================================================== */
 //
 //
