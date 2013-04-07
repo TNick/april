@@ -3,7 +3,7 @@
 PROJECT_NAME           = "april"
 PROJECT_NUMBER         = 1.0.0
 PROJECT_BRIEF          = "..."
-OUTPUT_DIRECTORY       = ../../build/doxydocs
+OUTPUT_DIRECTORY       = ../../ignore-doxydocs
 INPUT                  = ../../april
 
 EXAMPLE_PATH           = ../../april/examples
