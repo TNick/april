@@ -37,6 +37,9 @@
 //
 /*  DEFINITIONS    --------------------------------------------------------- */
 
+class	AprilPluginInterf;
+class	AprilPluginLoader;
+
 namespace   april    {
 
 class	World;
@@ -102,6 +105,11 @@ private:
 	List2Dh							worlds_;
 
 	/**
+	*	@brief	list of loaded plug-ins
+	*/
+	List2Dh							plugins_;
+
+	/**
 	*	@brief	default world
 	*/
 	World *							def_world_;
@@ -143,7 +151,6 @@ public:
 
 
 
-
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
 	/** @name Properties related functionality
 	 */
@@ -166,17 +173,13 @@ public:
 	*/
 	void					saveProps			( void );
 
-
-	/**
-	*	@brief	the properties
-	*/
+	//! the properties
 	static LibProps &		properties			( void )
 	{ Q_ASSERT( uniq_ != NULL ); return uniq_->props_; }
 
 
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
-
 
 
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
@@ -186,17 +189,12 @@ public:
 
 public:
 
-
-	/**
-	*	@brief	tell if an world is inside the chain
-	*/
+	//! tell if an world is inside the chain
 	static bool		hasWorld			(
 			World *			world
 			);
 
-	/**
-	*	@brief	remove a world
-	*/
+	//! remove a world
 	static void		remWorld			(
 			World *			world
 			);
@@ -216,21 +214,42 @@ protected:
 
 private:
 
-
-	/**
-	*	@brief	adds the world
-	*/
+	//! adds the world
 	void			internalAddWorld		( World * world );
 
-
-	/**
-	*	@brief	removes the world
-	*/
+	//! removes the world
 	void			internalRemWorld		( World * world );
 
 
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
+
+
+	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
+	/** @name Plug-in related functionality
+	 */
+	///@{
+
+public:
+
+	//! load a plug-in from the file indicated (may be relative to cuurrent directory)
+	static AprilPluginInterf *	loadPlugIn			( const QString & s );
+	
+	//! unload a plug-in based on file name (may be relative to cuurrent directory)
+	static bool					unloadPlugIn		( const QString & s );
+	
+	//! unload a plug-in
+	static bool					unloadPlugIn		( AprilPluginInterf * p );
+	
+	//! get the plug-in for a certain file (must be absolute path)
+	static AprilPluginInterf *	findPlugIn			( const QString & s );
+	
+	//! get the plug-in for a certain file (may be relative to cuurrent directory)
+	static AprilPluginInterf *	findPlugInRel		( const QString & s );
+
+	///@}
+	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
+
 
 	/*  FUNCTIONS    ======================================================= */
 	//

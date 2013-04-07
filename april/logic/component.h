@@ -28,6 +28,7 @@
 #include    <april/april.h>
 #include	<libbbb/1/list2d.h>
 #include	<libbbb/1/amorph.h>
+#include	<april/logic/uniqueid.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -105,6 +106,11 @@ public:
 	//! associated data
 	Amorph &			payload					( void )
 	{ return payload_; }
+
+	//! associated ID, if any
+	virtual ID			identificator			( void )
+	{ return InvalidId; }
+
 
 protected:
 	

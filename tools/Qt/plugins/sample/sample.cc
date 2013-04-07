@@ -1,13 +1,13 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			mw.cc
+  \file			sample.cc
   \date			Apr 2013
   \author		TNick
-  
-  \brief		Contains the implementation for MW class
-  
-  
+
+  \brief		Contains the implementation of Sample class
+
+
 *//*
 
 
@@ -23,10 +23,7 @@
 //
 /*  INCLUDES    ------------------------------------------------------------ */
 
-
-#include	"mw.h"
-#include	"ui_mw.h"
-#include	<QLabel>
+#include	"sample.h"
 
 /*  INCLUDES    ============================================================ */
 //
@@ -36,7 +33,6 @@
 /*  DEFINITIONS    --------------------------------------------------------- */
 
 using namespace april;
-using namespace april::Gui;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -53,89 +49,48 @@ using namespace april::Gui;
 /*  CLASS    --------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------------- */
-MW::MW	( QWidget *parent ) :
-	QMainWindow( parent ), MemTrack(),
-	ui(),
-	d_crt_sel_(this),
-	d_ids_(this),
-	d_tree_(this),
-	d_world_(this),
-	w_scene_(),
-	viever_(),
-	l_run(NULL)
+Sample::Sample	( void )
+	: AprilPluginInterf()
 {
 	APRDBG_CDTOR;
-	ui.setupUi( this );
-	
-	ui.menuView->addAction( d_crt_sel_.action() );
-	ui.menuView->addAction( d_ids_.action() );
-	ui.menuView->addAction( d_tree_.action() );
-	ui.menuView->addAction( d_world_.action() );
-	
-	setCentralWidget( &viever_ );
-	viever_.setScene( &w_scene_ );
-	
-	connect( ui.actionStart, SIGNAL(triggered()),
-			 this, SLOT( startWorld() ) );
-	connect( ui.actionStop, SIGNAL(triggered()),
-			 this, SLOT( stopWorld() ) );
-	
-	l_run = new QLabel( ui.statusbar );
-	ui.statusbar->addWidget( l_run );
-	l_run->setTextFormat(Qt::RichText);
-    l_run->setText("<img src=\":/pause.png\">");
+	qDebug() << "Sample plug-in was constructed\n";
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-MW::~MW	( void )
+Sample::~Sample	( void )
 {
 	APRDBG_CDTOR;
-	/* stub */
+	qDebug() << "Sample plug-in was desstructed\n";
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void					MW::changeEvent			( QEvent * e )
+bool			Sample::initialised	( void )
 {
-	QMainWindow::changeEvent( e );
-	switch ( e->type() ) {
-	case QEvent::LanguageChange:	{
-		ui.retranslateUi( this );
-		break;}
-	default:						{
-		break;}
-	}
+	qDebug() << "Sample plug-in was initialised\n";
+	return true;
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void					MW::startWorld			( void )
+void			Sample::unloading	( void )
 {
-	if ( w_scene_.start() )
-	{
-		l_run->setTextFormat(Qt::RichText);
-		l_run->setText("<img src=\":/play.png\">");
-	}
+	qDebug() << "Sample plug-in was terminated\n";
 }
 /* ========================================================================= */
-
-/* ------------------------------------------------------------------------- */
-void					MW::stopWorld			( void )
-{
-	if ( w_scene_.stop() )
-	{
-		l_run->setTextFormat(Qt::RichText);
-		l_run->setText("<img src=\":/pause.png\">");
-	}
-}
-/* ========================================================================= */
-
 
 /*  CLASS    =============================================================== */
 //
 //
 //
 //
+
+#if QT_VERSION < 0x050000
+Q_EXPORT_PLUGIN2(sample, Sample);
+#endif
+
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
+
+

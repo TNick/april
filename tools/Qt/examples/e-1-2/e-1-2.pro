@@ -6,7 +6,7 @@ SOURCES += \
 OTHER_FILES += \
     ../../../../april/docs/examples/e-1-2.dox
 
-LIBS += -L$$PWD/../../../../build
+LIBS += -L../../build
 
 CONFIG(debug, debug|release) {
 	LIBS += -lapril_debug -lbbb_debug

@@ -19,7 +19,7 @@ greaterThan( QT_MAJOR_VERSION, 4 ): QT += widgets
 #######################################################
 #              Use the dynamic library                #
 #######################################################
-LIBS += -L../../../build
+LIBS += -L../build
 CONFIG(debug, debug|release) {
 	LIBS += -lbbb_debug -lapril_debug -lapril-gui_debug
 } else {
@@ -42,7 +42,7 @@ LIBS += -lgtest_main -lgtest
 #       Where to output the files we generate?        #
 #######################################################
 isEmpty( DESTDIR ) {
-	DESTDIR	= ../../../build
+	DESTDIR	= ../build
 }
 isEmpty( OBJECTS_DIR ) {
 	OBJECTS_DIR = ./tmp
@@ -73,5 +73,6 @@ SOURCES += \
     ../../../april/tests/event.cc \
     ../../../april/tests/brain.cc \
     ../../../april/tests/simplerun.cpp \
-    ../../../april/tests/eventline.cc
+    ../../../april/tests/eventline.cc \
+    ../../../april/tests/plugins.cc
 

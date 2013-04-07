@@ -394,6 +394,70 @@ quint64				Actor::totalEnergy				( void )
 }
 /* ========================================================================= */
 
+/* ------------------------------------------------------------------------- */
+Sensor *			Actor::findSensor				( ID id ) const
+{
+	Sensor * iter = firstSensor_(this);
+	while ( iter != NULL )
+	{
+		if  ( iter->identificator() == id )
+		{
+			return iter;
+		}
+		iter = nextSensor_(iter);
+	}
+	return NULL;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+Actuator *			Actor::findActuator				( ID id ) const
+{
+	Actuator * iter = firstActuator_(this);
+	while ( iter != NULL )
+	{
+		if  ( iter->identificator() == id )
+		{
+			return iter;
+		}
+		iter = nextActuator_(iter);
+	}
+	return NULL;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+Reflex *			Actor::findReflex				( ID id ) const
+{
+	Reflex * iter = firstReflex_(this);
+	while ( iter != NULL )
+	{
+		if  ( iter->identificator() == id )
+		{
+			return iter;
+		}
+		iter = nextReflex_(iter);
+	}
+	return NULL;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+Brain *				Actor::findBrain				( ID id ) const
+{
+	Brain * iter = firstBrain_(this);
+	while ( iter != NULL )
+	{
+		if  ( iter->identificator() == id )
+		{
+			return iter;
+		}
+		iter = nextBrain_(iter);
+	}
+	return NULL;
+}
+/* ========================================================================= */
+
 
 /*  CLASS    =============================================================== */
 //

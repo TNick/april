@@ -171,16 +171,15 @@ protected:
 	*/
 	virtual				~Actor					( void );
 
+
+	
+	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
+	/** @name Allow access to components
+	 */
+	///@{
+	
 public:
 
-	//! the world where we belong
-	inline World *		world					( void ) const
-	{ return world_; }
-
-
-public:
-	
-	
 	//! first sensor in internal list
 	Sensor *			firstSensor				( void ) const;
 	
@@ -193,6 +192,43 @@ public:
 	//! first brain in internal list
 	Brain *				firstBrain				( void ) const;
 
+	///@}
+	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
+
+
+	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
+	/** @name find components based on their ID
+	 */
+	///@{
+	
+public:
+
+	//! first sensor in internal list
+	Sensor *			findSensor				( ID id ) const;
+	
+	//! first actuator in internal list
+	Actuator *			findActuator			( ID id ) const;
+	
+	//! first reflex in internal list
+	Reflex *			findReflex				( ID id ) const;
+	
+	//! first brain in internal list
+	Brain *				findBrain				( ID id ) const;
+
+	///@}
+	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
+
+
+	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
+	/** @name infromation about the actor
+	 */
+	///@{
+
+public:
+
+	//! the world where we belong
+	inline World *		world					( void ) const
+	{ return world_; }
 
 	//! tell the kind
 	inline ID			kind					( void ) const
@@ -237,6 +273,15 @@ public:
 	inline bool			dies					( void ) const
 	{ return (birth_+age_ >= death_); }
 
+	///@}
+	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
+
+
+	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
+	/** @name Changing the actor's internals
+	 */
+	///@{
+
 protected:
 
 	//! set the DNA to provided sequence (intended for ActorFactory)
@@ -270,6 +315,9 @@ protected:
 	//! make the actor alive (used by the world to initialise actor)
 	void				setEnergy				( quint64 new_val )
 	{ energy_ = new_val; }
+
+	///@}
+	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
 
 
 	/*  FUNCTIONS    ======================================================= */

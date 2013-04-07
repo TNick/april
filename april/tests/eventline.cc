@@ -36,7 +36,7 @@ TEST(EventLine, factory) {
 	
 	w->start();
 	
-	EXPECT_EQ( el->dataCount(), 0 );
+	EXPECT_EQ( el->dataCount(), (unsigned int)0 );
 	EXPECT_TRUE( el->firstEventData() == NULL );
 	EXPECT_TRUE( el->lastEventData() == NULL );
 
@@ -44,19 +44,19 @@ TEST(EventLine, factory) {
 	
 	EXPECT_TRUE( el->world() == w );
 	EXPECT_TRUE( el->identificator() == eventline_cc::IdSound );
-	EXPECT_EQ( el->dataCount(), 1 );
+	EXPECT_EQ( el->dataCount(), (unsigned int)1 );
 	EXPECT_TRUE( el->firstEventData() == ed );
 	EXPECT_TRUE( el->lastEventData() == ed );
 	
 	for ( int i = 0; i < 3; i++ )
 	{
 		w->advance();
-		EXPECT_EQ( el->dataCount(), 1 );
+		EXPECT_EQ( el->dataCount(), (unsigned int)1 );
 		EXPECT_TRUE( el->firstEventData() == ed );
 		EXPECT_TRUE( el->lastEventData() == ed );
 	}
 	w->advance();
-	EXPECT_EQ( el->dataCount(), 0 );
+	EXPECT_EQ( el->dataCount(), (unsigned int)0 );
 	EXPECT_TRUE( el->firstEventData() == NULL );
 	EXPECT_TRUE( el->lastEventData() == NULL );
 	

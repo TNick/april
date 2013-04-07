@@ -4,10 +4,10 @@
   \file			aprillibrary.cc
   \date			Jan 2013
   \author		TNick
-
+  
   \brief		Contains the implementation of AprilLibrary class
-
-
+  
+  
 *//*
 
 
@@ -27,7 +27,11 @@
 
 #include	<libbbb/bbblibrary.h>
 #include	<april/logic/world.h>
+#include	<april/plugins/aprilplugininterf.h>
 #include	<QSettings>
+#include	<QPluginLoader>
+#include	<QDir>
+#include	<QDebug>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -56,12 +60,16 @@ AprilLibrary *	AprilLibrary::uniq_ = NULL;
 
 /* ------------------------------------------------------------------------- */
 AprilLibrary::AprilLibrary	( QObject * parent )
-	: QObject(parent), MemTrack()
+	: QObject(parent), MemTrack(),
+	  props_(),
+	  worlds_(),
+	  plugins_(),
+	  def_world_(NULL)
 {
 	APRDBG_CDTOR;
 	Q_ASSERT( uniq_ == NULL );
 	uniq_ = this;
-
+	
 	loadProps();
 }
 /* ========================================================================= */
@@ -70,7 +78,22 @@ AprilLibrary::AprilLibrary	( QObject * parent )
 AprilLibrary::~AprilLibrary	( void )
 {
 	APRDBG_CDTOR;
-
+	
+	AprilPluginLoader * itr = firstPlugin_(unique());
+	AprilPluginLoader * itr_n;
+	while ( itr != NULL )
+	{
+		itr_n = nextPlugin_( itr );
+		AprilPluginInterf * plg = static_cast<AprilPluginInterf*>( 
+					itr->instance() );
+		plg->unloading();
+		itr->unload();
+		unique()->plugins_.remove( itr );
+		itr->deleteLater();
+		
+		itr = itr_n;
+	}
+	
 	World * itr_w = firstWorld_( this );
 	World * itr_w_n;
 	while ( itr_w != NULL )
@@ -79,7 +102,7 @@ AprilLibrary::~AprilLibrary	( void )
 		DEC_REF(itr_w,this);
 		itr_w = itr_w_n;
 	}
-
+	
 	Q_ASSERT( uniq_ == this );
 	uniq_ = NULL;
 }
@@ -134,7 +157,7 @@ APRILSHARED_EXPORT void	endAprilLibrary			( void )
 void			AprilLibrary::LibProps::save			( QSettings & s )
 {
 	s.beginGroup( "LibProps" );
-
+	
 	s.endGroup();
 }
 /* ========================================================================= */
@@ -143,7 +166,7 @@ void			AprilLibrary::LibProps::save			( QSettings & s )
 void			AprilLibrary::LibProps::load			( QSettings & s )
 {
 	s.beginGroup( "LibProps" );
-
+	
 	s.endGroup();
 }
 /* ========================================================================= */
@@ -202,7 +225,7 @@ void			AprilLibrary::internalRemWorld			( World * world )
 	{
 		world->stop();
 	}
-
+	
 	if ( def_world_ == world )
 	{
 		if ( worlds_.count() == 1 )
@@ -229,6 +252,97 @@ bool			AprilLibrary::hasWorld						( World * world )
 }
 /* ========================================================================= */
 
+/* ------------------------------------------------------------------------- */
+AprilPluginInterf *	AprilLibrary::loadPlugIn		( const QString & s )
+{
+	QString s_file = QDir().absoluteFilePath( s );
+	AprilPluginInterf * ret = findPlugIn( s_file );
+	if ( ret  != NULL )
+	{
+		return ret;
+	}
+	AprilPluginLoader * ldr = new AprilPluginLoader( s_file );
+	ret = static_cast<AprilPluginInterf*>( ldr->instance() );
+	if ( ( ret == NULL ) || ( ret->initialised() == false ) )
+	{
+		qDebug() << ldr->errorString();
+		ldr->deleteLater();
+		return NULL;
+	}
+	
+	unique()->plugins_.prepend( ldr );
+	return ret;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				AprilLibrary::unloadPlugIn		( const QString & s )
+{
+	QString s_file = QDir().absoluteFilePath( s );
+	AprilPluginLoader * itr = firstPlugin_(unique());
+	while ( itr != NULL )
+	{
+		if ( QString::compare( itr->fileName(), s_file, Qt::CaseInsensitive ) == 0 )
+		{
+			AprilPluginInterf * plg = static_cast<AprilPluginInterf*>(
+						itr->instance() );
+			plg->unloading();
+			itr->unload();
+			unique()->plugins_.remove( itr );
+			itr->deleteLater();
+			return true;
+		}
+		itr = nextPlugin_( itr );
+	}
+	return false;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				AprilLibrary::unloadPlugIn		( AprilPluginInterf * p )
+{
+	AprilPluginLoader * itr = firstPlugin_(unique());
+	while ( itr != NULL )
+	{
+		AprilPluginInterf * plg = static_cast<AprilPluginInterf*>( 
+					itr->instance() );
+		if ( plg == p )
+		{
+			plg->unloading();
+			itr->unload();
+			unique()->plugins_.remove( itr );
+			itr->deleteLater();
+			return true;
+		}
+		itr = nextPlugin_( itr );
+	}
+	return false;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+AprilPluginInterf *	AprilLibrary::findPlugIn		( const QString & s )
+{
+	AprilPluginLoader * itr = firstPlugin_(unique());
+	while ( itr != NULL )
+	{
+		if ( QString::compare( itr->fileName(), s, Qt::CaseInsensitive ) == 0 )
+		{
+			return static_cast<AprilPluginInterf*>( itr->instance() );
+		}
+		itr = nextPlugin_( itr );
+	}
+	return NULL;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+AprilPluginInterf *	AprilLibrary::findPlugInRel		( const QString & s )
+{
+	QString s_file = QDir().absoluteFilePath( s );
+	return findPlugIn( s_file );
+}
+/* ========================================================================= */
 
 #ifdef	APRIL_SIGNALS
 

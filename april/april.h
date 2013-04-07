@@ -85,7 +85,9 @@ Object emit signals on certain actions if APRIL_SIGNALS is defined.
 #define prevEventData_(p)	static_cast<EventData*>(p->prev())
 #define nextEventData_(p)	static_cast<EventData*>(p->next())
 
-
+#define firstPlugin_(p)	static_cast<AprilPluginLoader*>(p->plugins_.first())
+#define prevPlugin_(p)	static_cast<AprilPluginLoader*>(p->prev())
+#define nextPlugin_(p)	static_cast<AprilPluginLoader*>(p->next())
 
 /*  DEFINITIONS    ========================================================= */
 //

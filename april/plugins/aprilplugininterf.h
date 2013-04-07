@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			mw.h
+  \file			aprilplugininterf.h
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the definition for MW class
+  \brief		Contains the definition for AprilPluginInterf class
 
 
 *//*
@@ -17,25 +17,18 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __MW_INC__
-#define __MW_INC__
+#ifndef __APRILPLUGININTERF_INC__
+#define __APRILPLUGININTERF_INC__
 //
 //
 //
 //
 /*  INCLUDES    ------------------------------------------------------------ */
 
-#include    <QMainWindow>
 #include    <april/april.h>
-#include	"ui_mw.h"
-#include    <april/gui/worlds/wqstauto.h>
-
-#include    <april/AprilDream/gui/dockcrtsel.h>
-#include    <april/AprilDream/gui/dockids.h>
-#include    <april/AprilDream/gui/docktree.h>
-#include    <april/AprilDream/gui/dockworld.h>
-#include    <april/AprilDream/gui/sceneviewer.h>
-
+#include    <libbbb/1/list2d.h>
+#include	<QtPlugin>
+#include	<QPluginLoader>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -44,11 +37,19 @@
 //
 /*  DEFINITIONS    --------------------------------------------------------- */
 
-class	QLabel;
+//! class to load and manage plug-ins
+class
+	APRILSHARED_EXPORT
+	AprilPluginLoader	: public QPluginLoader, public List2De, public MemTrack {
+	BBM_TRACK( AprilPluginInterf );
+public:
+	AprilPluginLoader( const QString & s ) : QPluginLoader( s ), List2De(), MemTrack()
+	{}
+};
 
-namespace   april    {
-
-namespace	Gui		{
+namespace april {
+class	AprilLibrary;
+}
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -58,17 +59,20 @@ namespace	Gui		{
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief	Form that represents the main widget for the application
+*	@brief	Interface for plugins used with April
 */
-class MW : public QMainWindow, public MemTrack		{
-	Q_OBJECT
-	BBM_TRACK( MW );
+class
+	APRILSHARED_EXPORT
+	AprilPluginInterf		: public QObject, public MemTrack		{
+	BBM_TRACK( AprilPluginInterf );
 
 	//
 	//
 	//
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
+
+	friend class april::AprilLibrary;
 
 	/*  DEFINITIONS    ===================================================== */
 	//
@@ -79,27 +83,7 @@ class MW : public QMainWindow, public MemTrack		{
 
 private:
 
-	//! GUI components embedded here
-	Ui::MW         ui;
 
-	//!@{ 
-	//! dock widget
-	DockCrtSel		d_crt_sel_;
-	DockIds			d_ids_;
-	DockTree		d_tree_;
-	DockWorld		d_world_;
-	//!@}
-	
-	//! the scene 
-	WqsTAuto		w_scene_;
-	
-	//! the scene viewer
-	SceneViewer		viever_;
-	
-	//! the label showing run/stop status
-	QLabel *		l_run;
-	
-	
 	/*  DATA    ============================================================ */
 	//
 	//
@@ -109,26 +93,36 @@ private:
 
 public:
 
-	//! constructor
-	explicit				MW					( QWidget *parent = 0 );
+	//! constructor;
+	AprilPluginInterf							( void );
 
-	//! destructor
-	~MW						( void );
+	//! destructor;
+	virtual				~AprilPluginInterf		( void );
 
+	//! identify yourself;
+	virtual QString 	name					( void ) = 0;
+	
 protected:
 
-	//! examine change events for run-time language change
-	void					changeEvent			( QEvent *e );
-
-private slots:
+	//! called after the plug-in is loaded
+	/**
+	 * The plug-in system allows initialisation after the
+	 * plug-in is succesfully loaded. The plug-in may initialise
+	 * itself and, if certain errors occur it may return false
+	 * to indicate to the system that it failed and should 
+	 * be unloaded.
+	 *
+	 * @return true to keep the plug-in, false to unload
+	 */
+	virtual bool		initialised	( void )
+	{ return true; }
 	
-	//! start the world
-	void					startWorld			( void );
-	
-	//!  stop the world
-	void					stopWorld			( void );
-	
-
+	//! called before the plug-in is unloaded
+	/**
+	 * This method is called only if initialised() returned true.
+	 */
+	virtual void		unloading	( void )
+	{}
 
 	/*  FUNCTIONS    ======================================================= */
 	//
@@ -136,7 +130,7 @@ private slots:
 	//
 	//
 
-};	/*	class MW	*/
+};	/*	class AprilPluginInterf	*/
 
 /*  CLASS    =============================================================== */
 //
@@ -144,10 +138,8 @@ private slots:
 //
 //
 
-}	//	namespace	Gui
+Q_DECLARE_INTERFACE(AprilPluginInterf,  "org.april.PluginInterface/1.0")
 
-}   //  namespace   april
-
-#endif // __MW_INC__
+#endif // __APRILPLUGININTERF_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */

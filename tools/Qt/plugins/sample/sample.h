@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			mw.h
+  \file			sample.h
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the definition for MW class
+  \brief		Contains the definition for Sample class
 
 
 *//*
@@ -17,25 +17,16 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __MW_INC__
-#define __MW_INC__
+#ifndef __SAMPLEPLUGIN_INC__
+#define __SAMPLEPLUGIN_INC__
 //
 //
 //
 //
 /*  INCLUDES    ------------------------------------------------------------ */
 
-#include    <QMainWindow>
 #include    <april/april.h>
-#include	"ui_mw.h"
-#include    <april/gui/worlds/wqstauto.h>
-
-#include    <april/AprilDream/gui/dockcrtsel.h>
-#include    <april/AprilDream/gui/dockids.h>
-#include    <april/AprilDream/gui/docktree.h>
-#include    <april/AprilDream/gui/dockworld.h>
-#include    <april/AprilDream/gui/sceneviewer.h>
-
+#include	<april/plugins/aprilplugininterf.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -44,11 +35,7 @@
 //
 /*  DEFINITIONS    --------------------------------------------------------- */
 
-class	QLabel;
-
 namespace   april    {
-
-namespace	Gui		{
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -58,18 +45,23 @@ namespace	Gui		{
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief	Form that represents the main widget for the application
+*	@brief	Sample plug-in
 */
-class MW : public QMainWindow, public MemTrack		{
-	Q_OBJECT
-	BBM_TRACK( MW );
+class Sample		: public AprilPluginInterf		{
+	BBM_TRACK( Sample );
 
 	//
 	//
 	//
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
-
+	
+	Q_OBJECT
+	Q_INTERFACES(AprilPluginInterf)
+#if QT_VERSION >= 0x050000
+	Q_PLUGIN_METADATA(IID "org.april.sample" FILE  "sample.json")
+#endif
+	
 	/*  DEFINITIONS    ===================================================== */
 	//
 	//
@@ -79,27 +71,6 @@ class MW : public QMainWindow, public MemTrack		{
 
 private:
 
-	//! GUI components embedded here
-	Ui::MW         ui;
-
-	//!@{ 
-	//! dock widget
-	DockCrtSel		d_crt_sel_;
-	DockIds			d_ids_;
-	DockTree		d_tree_;
-	DockWorld		d_world_;
-	//!@}
-	
-	//! the scene 
-	WqsTAuto		w_scene_;
-	
-	//! the scene viewer
-	SceneViewer		viever_;
-	
-	//! the label showing run/stop status
-	QLabel *		l_run;
-	
-	
 	/*  DATA    ============================================================ */
 	//
 	//
@@ -109,34 +80,43 @@ private:
 
 public:
 
-	//! constructor
-	explicit				MW					( QWidget *parent = 0 );
+	//! constructor;
+	Sample							( void );
 
-	//! destructor
-	~MW						( void );
+	//! destructor;
+	virtual				~Sample		( void );
+
+	//! identify yourself;
+	QString				name		( void )
+	{ return tr( "Sample PlugIn" ); }
 
 protected:
 
-	//! examine change events for run-time language change
-	void					changeEvent			( QEvent *e );
-
-private slots:
+	//! called after the plug-in is loaded
+	/**
+	 * The plug-in system allows initialisation after the
+	 * plug-in is succesfully loaded. The plug-in may initialise
+	 * itself and, if certain errors occur it may return false
+	 * to indicate to the system that it failed and should 
+	 * be unloaded.
+	 *
+	 * @return true to keep the plug-in, false to unload
+	 */
+	virtual bool		initialised	( void );
 	
-	//! start the world
-	void					startWorld			( void );
+	//! called before the plug-in is unloaded
+	/**
+	 * This method is called only if initialised() returned true.
+	 */
+	virtual void		unloading	( void );
 	
-	//!  stop the world
-	void					stopWorld			( void );
-	
-
-
 	/*  FUNCTIONS    ======================================================= */
 	//
 	//
 	//
 	//
 
-};	/*	class MW	*/
+};	/*	class Sample	*/
 
 /*  CLASS    =============================================================== */
 //
@@ -144,10 +124,9 @@ private slots:
 //
 //
 
-}	//	namespace	Gui
-
 }   //  namespace   april
 
-#endif // __MW_INC__
+
+#endif // __SAMPLEPLUGIN_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */

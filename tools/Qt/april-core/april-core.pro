@@ -44,7 +44,7 @@ CONFIG(debug, debug|release) {
 #       Where to output the files we generate?        #
 #######################################################
 isEmpty( DESTDIR ) {
-	DESTDIR	= ../../../build
+	DESTDIR	= ../build
 }
 isEmpty( OBJECTS_DIR ) {
 	OBJECTS_DIR = ./tmp
@@ -85,7 +85,8 @@ SOURCES += \
     ../../../april/logic/eventline.cc \
     ../../../april/logic/eventdata.cc \
     ../../../april/logic/director.cc \
-    ../../../april/logic/eventsource.cc
+    ../../../april/logic/eventsource.cc \
+    ../../../april/plugins/aprilplugininterf.cc
 
 HEADERS += \
     ../../../april/april_version.h \
@@ -115,7 +116,8 @@ HEADERS += \
     ../../../april/logic/eventline.h \
     ../../../april/logic/eventdata.h \
     ../../../april/logic/director.h \
-    ../../../april/logic/eventsource.h
+    ../../../april/logic/eventsource.h \
+    ../../../april/plugins/aprilplugininterf.h
 
 OTHER_FILES += \
     ../../../april/april.dox

@@ -18,7 +18,7 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0
 #######################################################
 #              Use the dynamic library                #
 #######################################################
-LIBS += -L../../../build
+LIBS += -L../build
 CONFIG(debug, debug|release) {
 	LIBS += -lbbb_debug -lapril_debug -lapril-gui_debug
 } else {
@@ -40,7 +40,7 @@ LIBS += -largtable2
 #       Where to output the files we generate?        #
 #######################################################
 isEmpty( DESTDIR ) {
-	DESTDIR	= ../../../build
+	DESTDIR	= ../build
 }
 isEmpty( OBJECTS_DIR ) {
 	OBJECTS_DIR = ./tmp
