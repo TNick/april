@@ -1,8 +1,16 @@
 Introduction
 ===========================
 
-This library is ... tbd.
+The April project defines a set of C++ objects (World, Actor, Sensor, Reflex, Brain, Actuator, Event) that help simulate various environments.
 
+The world has an amount of energy that the user may use to create Actors and components while Actors may also create other Actors from their own energy.
+
+The code is structured in several layers:
+- april-core simply defines the library and the objects
+- april-gui builds on the concepts in april-core, giving a visual interpretation to the concepts
+- AprilDream is a GUI program that uses april-gui objects to display a World in evolution.
+
+The code base also contains a test suite based on Google test and a set of ever-growing commented examples.
 
 Licence
 ===========================
