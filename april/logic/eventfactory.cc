@@ -25,7 +25,7 @@
 
 #include	"eventfactory.h"
 #include	"world.h"
-
+#include	<QSettings>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -78,17 +78,37 @@ bool				EventFactory::addMyself			( ID id )
 /* ------------------------------------------------------------------------- */
 bool				EventFactory::save				( QSettings & stg ) const
 {
+	bool b = true;
+	stg.beginGroup( "april-EventFactory" );
 	
-	return true;
+	for (;;)	{
+		b = b & Factory::save( stg );
+		if ( !b ) break;
+		
+		break;
+	}
+	stg.endGroup();
+	
+	return b;
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 bool				EventFactory::load				( QSettings & stg )
 {
+	bool b = true;
+	stg.beginGroup( "april-EventFactory" );
 	
+	for (;;)	{
+		b = b & Factory::load( stg );
+		if ( !b ) break;
+		
+		break;
+	}
 	
-	return true;
+	stg.endGroup();
+	
+	return b;
 }
 /* ========================================================================= */
 

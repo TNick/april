@@ -24,7 +24,7 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include	"component.h"
-
+#include	<QSettings>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -64,6 +64,40 @@ Component::~Component	( void )
 {
 	APRDBG_CDTOR;
 	/* stub */
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				Component::save				( QSettings & stg ) const
+{
+	bool b = true;
+	stg.beginGroup( "april-Component" );
+	
+	for (;;)	{
+		stg.setValue( "payload_", payload_.i_ );
+		break;
+	}
+	stg.endGroup();
+	
+	return b;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				Component::load				( QSettings & stg )
+{
+	bool b = true;
+	stg.beginGroup( "april-Component" );
+	
+	for (;;)	{
+		payload_.i_ = stg.value( "payload_", 0 ).toULongLong( &b );
+		
+		break;
+	}
+	
+	stg.endGroup();
+	
+	return b;
 }
 /* ========================================================================= */
 

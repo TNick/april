@@ -112,6 +112,7 @@ bool			EventData::save				( QSettings & stg ) const
 	
 	for (;;)	{	
 		stg.setValue( "discard_time_", discard_time_ );
+		b = b & Component::save( stg );
 		break;
 	}
 	stg.endGroup();
@@ -130,6 +131,8 @@ bool			EventData::load				( QSettings & stg )
 	
 		discard_time_ = stg.value( "discard_time_" ).toULongLong( &b );
 		if ( !b ) break;
+		
+		b = b & Component::load( stg );
 		
 		break;
 	}

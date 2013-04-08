@@ -25,7 +25,7 @@
 
 #include	"actorcomp.h"
 #include	"actor.h"
-
+#include	<QSettings>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -79,6 +79,52 @@ ActorComp::~ActorComp	( void )
 {
 	APRDBG_CDTOR;
 	/* stub */
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				ActorComp::save				( QSettings & stg ) const
+{
+	bool b = true;
+	stg.beginGroup( "april-ActorComp" );
+	
+	for (;;)	{
+		b = b & Component::save( stg );
+		if ( !b ) break;
+		
+		/* it may not worth the trouble as these are cached */
+		stg.setValue( "cost_", cost_ );
+		stg.setValue( "energy_", energy_ );
+
+		break;
+	}
+	stg.endGroup();
+	
+	return b;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				ActorComp::load				( QSettings & stg )
+{
+	bool b = true;
+	stg.beginGroup( "april-ActorComp" );
+	
+	for (;;)	{
+		b = b & Component::load( stg );
+		if ( !b ) break;
+		
+		cost_ = stg.value( "cost_" ).toULongLong( &b );
+		if ( !b ) break;
+		energy_ = stg.value( "energy_" ).toULongLong( &b );
+		if ( !b ) break;
+		
+		break;
+	}
+	
+	stg.endGroup();
+	
+	return b;
 }
 /* ========================================================================= */
 

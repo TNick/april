@@ -100,10 +100,10 @@ public:
 	virtual Sensor *		create				( Actor * ag, ID id ) = 0;
 
 	//! save to a QSettings object
-	virtual bool		save					( QSettings & s ) const;
+	virtual bool			save				( QSettings & s ) const;
 	
 	//! load from a QSettings object
-	virtual bool		load					( QSettings & s );
+	virtual bool			load				( QSettings & s );
 
 protected:
 

@@ -96,17 +96,43 @@ void				ActorFactory::initDNA			(
 /* ------------------------------------------------------------------------- */
 bool				ActorFactory::save				( QSettings & stg ) const
 {
+	bool b = true;
+	stg.beginGroup( "april-ActorFactory" );
 	
-	return true;
+	for (;;)	{
+		b = b & Factory::save( stg );
+		if ( !b ) break;
+		
+		b = b & default_dna_.save( stg );
+		if ( !b ) break;
+		
+		break;
+	}
+	stg.endGroup();
+	
+	return b;
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 bool				ActorFactory::load				( QSettings & stg )
 {
+	bool b = true;
+	stg.beginGroup( "april-ActorFactory" );
 	
+	for (;;)	{
+		b = b & Factory::load( stg );
+		if ( !b ) break;
+		
+		b = b & default_dna_.load( stg );
+		if ( !b ) break;
+		
+		break;
+	}
 	
-	return true;
+	stg.endGroup();
+	
+	return b;
 }
 /* ========================================================================= */
 

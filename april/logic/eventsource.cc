@@ -25,6 +25,7 @@
 
 #include	"eventsource.h"
 #include	"world.h"
+#include	<QSettings>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -85,19 +86,28 @@ EventSource::~EventSource	( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-bool				EventSource::save			( QSettings & stg ) const
+bool				EventSource::save				( QSettings & stg ) const
 {
+	bool b = true;
+	stg.beginGroup( "april-EventSource" );
+
+	b = b & Component::save( stg );
 	
-	return true;
+	stg.endGroup();
+	return b;
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-bool				EventSource::load			( QSettings & stg )
+bool				EventSource::load				( QSettings & stg )
 {
+	bool b = true;
+	stg.beginGroup( "april-EventSource" );
+
+	b = b & Component::load( stg );
 	
-	
-	return true;
+	stg.endGroup();
+	return b;
 }
 /* ========================================================================= */
 

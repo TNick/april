@@ -534,6 +534,9 @@ bool				Actor::save						( QSettings & stg ) const
 		stg.setValue( "energy_", energy_ );
 		stg.setValue( "alive_", alive_ );
 		
+		b = b & Component::save( stg );
+		
+		
 		break;
 	}
 	stg.endGroup();
@@ -549,6 +552,7 @@ bool				Actor::load						( QSettings & stg )
 	stg.beginGroup( "april-Actor" );
 	
 	for (;;)	{
+		b = b & Component::load( stg );
 		
 		b = b & dna_.load( stg );
 		if ( !b ) break;

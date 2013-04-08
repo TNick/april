@@ -113,6 +113,12 @@ public:
 	virtual QList<qreal>		averageDNA		( ID id ) const
 	{ Q_UNUSED( id ); return QList<qreal>(); }
 	
+	//! save to a QSettings object
+	virtual bool				save			( QSettings & s ) const;
+	
+	//! load from a QSettings object
+	virtual bool				load			( QSettings & s );
+
 protected:
 	
 	//! chang the name of the element represented by provided ID

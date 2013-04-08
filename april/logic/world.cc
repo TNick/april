@@ -731,6 +731,8 @@ bool				World::save				( QSettings & stg ) const
 		{
 			b = b & director_->save( stg );
 		}
+		
+		b = b & Component::save( stg );
 		break;
 	}
 	stg.endGroup();
@@ -750,6 +752,7 @@ bool				World::load				( QSettings & stg )
 	
 	stg.beginGroup( "april-World" );
 	for(;;)		{
+		b = b & Component::load( stg );
 		
 		s_name_ = stg.value( "s_name_" ).toString();
 		time_ = stg.value( "time_" ).toULongLong( &b );
@@ -841,7 +844,7 @@ bool				World::load				( QSettings & stg )
 			director_ = new Director( this );
 		}
 		b = b & director_->load( stg );
-		
+				
 		break;
 	}
 	stg.endGroup();

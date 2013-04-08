@@ -79,17 +79,26 @@ Brain::~Brain	( void )
 /* ------------------------------------------------------------------------- */
 bool				Brain::save				( QSettings & stg ) const
 {
+	bool b = true;
+	stg.beginGroup( "april-Brain" );
+
+	b = b & ActorComp::save( stg );
 	
-	return true;
+	stg.endGroup();
+	return b;
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 bool				Brain::load				( QSettings & stg )
 {
+	bool b = true;
+	stg.beginGroup( "april-Brain" );
+
+	b = b & ActorComp::load( stg );
 	
-	
-	return true;
+	stg.endGroup();
+	return b;
 }
 /* ========================================================================= */
 

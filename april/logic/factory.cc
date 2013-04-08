@@ -25,7 +25,7 @@
 
 #include	"factory.h"
 #include	"world.h"
-
+#include	<QSettings>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -69,10 +69,49 @@ Factory::~Factory	( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-bool			Factory::setEnergy		(
+bool			Factory::setEnergy			(
 		ActorComp * comp, quint64 energy, quint64 cost )
 {
 	return w_->setEnergy( comp, energy, cost );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			Factory::save				( QSettings & stg ) const
+{
+	bool b = true;
+	stg.beginGroup( "april-Factory" );
+	
+	for (;;)	{
+		
+		stg.setValue( "s_name_for_id_", s_name_for_id_ );
+		
+		break;
+	}
+	stg.endGroup();
+	
+	return b;
+
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			Factory::load				( QSettings & stg )
+{
+	bool b = true;
+	stg.beginGroup( "april-Factory" );
+	
+	for (;;)	{
+		
+		s_name_for_id_ = stg.value( "s_name_for_id_" ).toString();
+		
+		break;
+	}
+	
+	stg.endGroup();
+	
+	return b;
 }
 /* ========================================================================= */
 

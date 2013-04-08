@@ -85,7 +85,7 @@ public:
 	/**
 	*	@brief	constructor;
 	*/
-	BrainFactory			( World * w );
+	BrainFactory		( World * w );
 
 protected:
 
@@ -109,7 +109,7 @@ public:
 protected:
 
 	//! add this class to the world
-	bool					addMyself			( ID id );
+	bool				addMyself				( ID id );
 
 
 	/*  FUNCTIONS    ======================================================= */

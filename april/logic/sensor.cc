@@ -79,17 +79,26 @@ Sensor::~Sensor	( void )
 /* ------------------------------------------------------------------------- */
 bool				Sensor::save				( QSettings & stg ) const
 {
+	bool b = true;
+	stg.beginGroup( "april-Sensor" );
+
+	b = b & ActorComp::save( stg );
 	
-	return true;
+	stg.endGroup();
+	return b;
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 bool				Sensor::load				( QSettings & stg )
 {
+	bool b = true;
+	stg.beginGroup( "april-Sensor" );
+
+	b = b & ActorComp::load( stg );
 	
-	
-	return true;
+	stg.endGroup();
+	return b;
 }
 /* ========================================================================= */
 

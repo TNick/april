@@ -103,6 +103,12 @@ protected:
 
 public:
 
+	//! save to a QSettings object
+	virtual bool		save					( QSettings & s ) const;
+	
+	//! load from a QSettings object
+	virtual bool		load					( QSettings & s );
+
 	//! tell if this is a valid instance
 	inline bool			isValid		( void ) const
 	{ return ( ( cost_ > 0 ) && ( energy_ > 0 ) ); }

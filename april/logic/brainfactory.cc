@@ -25,6 +25,7 @@
 
 #include	"brainfactory.h"
 #include	"world.h"
+#include	<QSettings>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -77,17 +78,37 @@ bool				BrainFactory::addMyself			( ID id )
 /* ------------------------------------------------------------------------- */
 bool				BrainFactory::save				( QSettings & stg ) const
 {
+	bool b = true;
+	stg.beginGroup( "april-BrainFactory" );
 	
-	return true;
+	for (;;)	{
+		b = b & Factory::save( stg );
+		if ( !b ) break;
+		
+		break;
+	}
+	stg.endGroup();
+	
+	return b;
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 bool				BrainFactory::load				( QSettings & stg )
 {
+	bool b = true;
+	stg.beginGroup( "april-BrainFactory" );
 	
+	for (;;)	{
+		b = b & Factory::load( stg );
+		if ( !b ) break;
+		
+		break;
+	}
 	
-	return true;
+	stg.endGroup();
+	
+	return b;
 }
 /* ========================================================================= */
 

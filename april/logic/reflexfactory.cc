@@ -25,7 +25,7 @@
 
 #include	"reflexfactory.h"
 #include	"world.h"
-
+#include	<QSettings>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -78,17 +78,37 @@ bool				ReflexFactory::addMyself			( ID id )
 /* ------------------------------------------------------------------------- */
 bool				ReflexFactory::save				( QSettings & stg ) const
 {
+	bool b = true;
+	stg.beginGroup( "april-ReflexFactory" );
 	
-	return true;
+	for (;;)	{
+		b = b & Factory::save( stg );
+		if ( !b ) break;
+		
+		break;
+	}
+	stg.endGroup();
+	
+	return b;
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 bool				ReflexFactory::load				( QSettings & stg )
 {
+	bool b = true;
+	stg.beginGroup( "april-ReflexFactory" );
 	
+	for (;;)	{
+		b = b & Factory::load( stg );
+		if ( !b ) break;
+		
+		break;
+	}
 	
-	return true;
+	stg.endGroup();
+	
+	return b;
 }
 /* ========================================================================= */
 

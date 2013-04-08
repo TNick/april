@@ -79,17 +79,26 @@ Reflex::~Reflex	( void )
 /* ------------------------------------------------------------------------- */
 bool				Reflex::save				( QSettings & stg ) const
 {
+	bool b = true;
+	stg.beginGroup( "april-Reflex" );
+
+	b = b & ActorComp::save( stg );
 	
-	return true;
+	stg.endGroup();
+	return b;
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 bool				Reflex::load				( QSettings & stg )
 {
+	bool b = true;
+	stg.beginGroup( "april-Reflex" );
+
+	b = b & ActorComp::load( stg );
 	
-	
-	return true;
+	stg.endGroup();
+	return b;
 }
 /* ========================================================================= */
 

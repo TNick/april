@@ -25,6 +25,7 @@
 
 #include	"actuatorfactory.h"
 #include	"world.h"
+#include	<QSettings>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -77,17 +78,37 @@ bool				ActuatorFactory::addMyself			( ID id )
 /* ------------------------------------------------------------------------- */
 bool				ActuatorFactory::save				( QSettings & stg ) const
 {
+	bool b = true;
+	stg.beginGroup( "april-ActuatorFactory" );
 	
-	return true;
+	for (;;)	{
+		b = b & Factory::save( stg );
+		if ( !b ) break;
+		
+		break;
+	}
+	stg.endGroup();
+	
+	return b;
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 bool				ActuatorFactory::load				( QSettings & stg )
 {
+	bool b = true;
+	stg.beginGroup( "april-ActuatorFactory" );
 	
+	for (;;)	{
+		b = b & Factory::load( stg );
+		if ( !b ) break;
+		
+		break;
+	}
 	
-	return true;
+	stg.endGroup();
+	
+	return b;
 }
 /* ========================================================================= */
 

@@ -202,6 +202,7 @@ bool					EventLine::save				( QSettings & stg ) const
 		stg.endArray();
 		if ( !b ) break;
 		
+		b = b & Component::save( stg );
 		break;
 	}
 	stg.endGroup();
@@ -218,6 +219,7 @@ bool					EventLine::load				( QSettings & stg )
 
 	stg.beginGroup( "april-EventLine" );
 	for(;;)		{
+		b = b & Component::load( stg );
 	
 		id_ = stg.value( "id_" ).toULongLong( &b );
 		if ( !b ) break;
