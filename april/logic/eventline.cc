@@ -84,7 +84,7 @@ EventLine *		EventLine::fromStg		( World * w, QSettings & stg )
 	EventLine * ret = new EventLine( w );
 	
 	for ( ;; )	{
-		if ( ret->load( stg ) == NULL )
+		if ( ret->load( stg ) == false )
 			break;
 		
 		w->addEventLine( ret, ret->id_ );

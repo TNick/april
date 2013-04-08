@@ -53,7 +53,7 @@ public:
 		defaultDNA().addReflex( IdReflex );
 		defaultDNA().addSensor( IdSensor );
 	}
-	virtual Actor * create ( ID id ) {
+	virtual Actor * create ( ID  ) {
 		Actor * ret = new Actor( world() ); 
 		setDNA( ret );
 		return ret;
@@ -69,7 +69,7 @@ public:
 		w->insertId( IdActuator, "actuators.test" );
 		addMyself( IdActuator );
 	}
-	virtual Actuator * create ( Actor * a, ID id ) {
+	virtual Actuator * create ( Actor * a, ID  ) {
 		Actuator * ret = new Actuator( a, 1, 10 );
 		return ret;
 	}
@@ -80,7 +80,7 @@ public:
 		w->insertId( IdBrain, "brains.test" );
 		addMyself( IdBrain );
 	}
-	virtual Brain * create ( Actor * a, ID id ) {
+	virtual Brain * create ( Actor * a, ID  ) {
 		Brain * ret = new Brain( a, 1, 10 );
 		return ret;
 	}
@@ -93,7 +93,7 @@ public:
 	{
 		ss = NULL;
 	}
-	void doSteps ( int steps )
+	void doSteps ( int  )
 	{
 		if ( ss == NULL )
 		{
@@ -114,7 +114,7 @@ public:
 		w->insertId( IdReflex, "reflexes.test" );
 		addMyself( IdReflex );
 	}
-	virtual Reflex * create ( Actor * a, ID id ) {
+	virtual Reflex * create ( Actor * a, ID  ) {
 		Refl * ret = new Refl( a );
 		return ret;
 	}
@@ -146,7 +146,7 @@ public:
 		w->insertId( IdEvent, "events.test" );
 		addMyself( IdEvent );
 	}
-	virtual EventSource * create ( ID id ) {
+	virtual EventSource * create ( ID  ) {
 		Ev * ret = new Ev( world() );
 		return ret;
 	}
@@ -160,7 +160,7 @@ public:
 		cout << "Created custom sensor;\n";
 		ed_prev = NULL;
 	}
-	void doSteps(int steps)
+	void doSteps(int )
 	{
 		EventLine * eline = actor()->world()->eventLine( IdEventLine );
 		if ( eline != NULL )
@@ -188,7 +188,7 @@ public:
 		w->insertId( IdSensor, "sensors.test" );
 		addMyself( IdSensor );
 	}
-	virtual Sensor * create ( Actor * a, ID id ) {
+	virtual Sensor * create ( Actor * a, ID  ) {
 		Sens * ret = new Sens( a );
 		return ret;
 	}
