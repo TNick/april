@@ -172,10 +172,10 @@ TEST(SaveLoad, basic) {
 	w->advance();
 	w->stop();
 	
-//	saveload_cc::saveTest( w, tf.fileName() );
-//	saveload_cc::loadTest( w, tf.fileName() );
-	saveload_cc::saveTest( w, "D:\\qt\\april-build-Desktop_Qt_5_0_1_MinGW_32bit-Debug\\build\\t.ini");
-	saveload_cc::loadTest( w, "D:\\qt\\april-build-Desktop_Qt_5_0_1_MinGW_32bit-Debug\\build\\t.ini" );
+	saveload_cc::saveTest( w, tf.fileName() );
+	saveload_cc::loadTest( w, tf.fileName() );
+//	saveload_cc::saveTest( w, "D:\\qt\\april-build-Desktop_Qt_5_0_1_MinGW_32bit-Debug\\build\\t.ini");
+//	saveload_cc::loadTest( w, "D:\\qt\\april-build-Desktop_Qt_5_0_1_MinGW_32bit-Debug\\build\\t.ini" );
 	
 	DEC_REF( a, a );
 	
