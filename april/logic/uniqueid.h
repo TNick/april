@@ -138,10 +138,10 @@ public:
 	void			checkAdd		( ID id, const QString & s_name );
 
 	//! save the list of values and strings
-	void			save			( QSettings & stg );
+	bool			save			( QSettings & stg ) const;
 
 	//! load the list of values and strings; current content is wiped out
-	void			load			( QSettings & stg );
+	bool			load			( QSettings & stg );
 	
 
 	/*  FUNCTIONS    ======================================================= */

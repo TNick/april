@@ -97,13 +97,17 @@ public:
 	//! constructor;
 	EventSource				( World * w );
 
+	//! constructor method; creates and loads an event source from QSettings
+	static EventSource *fromStg			( World * w, QSettings & s );
+
 protected:
 
 	//! destructor;
 	virtual				~EventSource		( void );
 
 	//! perform steps (called by the World)
-	virtual void		doSteps		( int steps  = 1 ) = 0;
+	virtual void		doSteps		( int steps  = 1 )
+	{ Q_UNUSED(steps); }
 
 public:
 

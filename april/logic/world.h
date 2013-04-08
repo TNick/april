@@ -155,12 +155,12 @@ private:
 
 public:
 
-
-	/**
-	*	@brief	constructor;
-	*/
+	//! constructor; general use
 	World				( const QString & name, quint64 tot_energ );
 
+	//! constructor method; creates and loads a world from QSettings
+	static World *		fromStg				( QSettings & s );
+	
 protected:
 
 	/**

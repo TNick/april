@@ -37,6 +37,7 @@
 
 namespace   april    {
 class	World;
+class	EventLine;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -88,6 +89,9 @@ public:
 	//! constructor; sets how long this data should stay in the lines
 	EventData			( World * w, quint64 dt );
 
+	//! constructor method; creates and loads an event line from QSettings
+	static EventData *	fromStg			( EventLine * line, QSettings & stg );
+
 protected:
 
 	//! destructor;
@@ -111,12 +115,10 @@ protected:
 private:
 
 	//! save to a QSettings object
-	virtual bool		save					( QSettings & s ) const
-	{ Q_UNUSED(s); return true; }
+	virtual bool		save			( QSettings & s ) const;
 	
 	//! load from a QSettings object
-	virtual bool		load					( QSettings & s )
-	{ Q_UNUSED(s); return false; }
+	virtual bool		load			( QSettings & s );
 
 	/*  FUNCTIONS    ======================================================= */
 	//

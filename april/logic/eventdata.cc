@@ -25,6 +25,8 @@
 
 #include	"eventdata.h"
 #include	"world.h"
+#include	"eventline.h"
+#include	<QSettings>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -69,6 +71,25 @@ EventData::EventData	( World * w, quint64 dt )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+EventData *		EventData::fromStg			( EventLine * line, QSettings & stg )
+{
+	EventData * ret = new EventData();
+	
+	for ( ;; )	{
+		if ( ret->load( stg ) == false )
+			break;
+		
+		line->postActivity( ret );
+		DEC_REF(ret,ret);
+		return ret;
+	}
+	
+	DEC_REF(ret,ret);
+	return NULL;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
 EventData::~EventData	( void )
 {
 	APRDBG_CDTOR;
@@ -80,6 +101,40 @@ EventData::~EventData	( void )
 void			EventData::setDuration		( World * w, quint64 dt )
 {
 	setDiscardTime( w->currentTime() + dt );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			EventData::save				( QSettings & stg ) const
+{
+	bool	b = true;
+	stg.beginGroup( "april-EventData" );
+	
+	for (;;)	{	
+		stg.setValue( "discard_time_", discard_time_ );
+		break;
+	}
+	stg.endGroup();
+	
+	return b;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			EventData::load				( QSettings & stg )
+{
+	bool	b = true;
+
+	stg.beginGroup( "april-EventData" );
+	for(;;)		{
+	
+		discard_time_ = stg.value( "discard_time_" ).toULongLong( &b );
+		if ( !b ) break;
+		
+		break;
+	}
+	stg.endGroup();
+	return b;
 }
 /* ========================================================================= */
 

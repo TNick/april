@@ -61,7 +61,7 @@ Sample::Sample	( void )
 Sample::~Sample	( void )
 {
 	APRDBG_CDTOR;
-	qDebug() << "Sample plug-in was desstructed\n";
+	qDebug() << "Sample plug-in was destructed\n";
 }
 /* ========================================================================= */
 

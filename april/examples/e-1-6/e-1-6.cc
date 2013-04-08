@@ -38,7 +38,7 @@ enum	Constants		{
 class	Ev : public EventSource	{
 public:
 	Ev( World * w ) : EventSource( w ) { }
-	void		doSteps		( int steps ) { }
+	void		doSteps		( int ) { }
 };
 //! [evproxy]
 
@@ -49,7 +49,7 @@ public:
 		w->insertId( IdKind, "kinds.test" );
 		addMyself( IdKind );
 	}
-	virtual Actor * create ( ID id ) {
+	virtual Actor * create ( ID ) {
 		Actor * ret = new Actor( world() ); 
 		setDNA( ret );
 		return ret;
@@ -65,7 +65,7 @@ public:
 		w->insertId( IdSensor, "sensors.test" );
 		addMyself( IdSensor );
 	}
-	virtual Sensor * create ( Actor * a, ID id ) {
+	virtual Sensor * create ( Actor * a, ID ) {
 		Sensor * ret = new Sensor( a );
 		return ret;
 	}
@@ -76,7 +76,7 @@ public:
 		w->insertId( IdEvent, "events.test" );
 		addMyself( IdEvent );
 	}
-	virtual EventSource * create ( ID id ) {
+	virtual EventSource * create ( ID ) {
 		Ev * ret = new Ev( world() );
 		return ret;
 	}
@@ -87,7 +87,7 @@ public:
 		w->insertId( IdActuator, "actuators.test" );
 		addMyself( IdActuator );
 	}
-	virtual Actuator * create ( Actor * a, ID id ) {
+	virtual Actuator * create ( Actor * a, ID ) {
 		Actuator * ret = new Actuator( a );
 		return ret;
 	}
@@ -98,7 +98,7 @@ public:
 		w->insertId( IdBrain, "brains.test" );
 		addMyself( IdBrain );
 	}
-	virtual Brain * create ( Actor * a, ID id ) {
+	virtual Brain * create ( Actor * a, ID ) {
 		Brain * ret = new Brain( a );
 		return ret;
 	}
@@ -109,7 +109,7 @@ public:
 		w->insertId( IdReflex, "reflexes.test" );
 		addMyself( IdReflex );
 	}
-	virtual Reflex * create ( Actor * a, ID id ) {
+	virtual Reflex * create ( Actor * a, ID ) {
 		Reflex * ret = new Reflex( a );
 		return ret;
 	}

@@ -25,6 +25,7 @@
 
 #include	"eventline.h"
 #include	"world.h"
+#include	<QSettings>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -61,6 +62,38 @@ EventLine::EventLine	( World * w, ID id, unsigned int max_count )
 	APRDBG_CDTOR;
 	Q_ASSERT( max_count > 0 );
 	w->addEventLine( this, id );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+EventLine::EventLine	( World * w )
+	: Component(),
+	world_( w ),
+	id_( InvalidId ),
+	event_data_(),
+	last_( NULL ),
+	max_count_( 0 )
+{
+	APRDBG_CDTOR;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+EventLine *		EventLine::fromStg		( World * w, QSettings & stg )
+{
+	EventLine * ret = new EventLine( w );
+	
+	for ( ;; )	{
+		if ( ret->load( stg ) == NULL )
+			break;
+		
+		w->addEventLine( ret, ret->id_ );
+		DEC_REF(ret,ret);
+		return ret;
+	}
+	
+	DEC_REF(ret,ret);
+	return NULL;
 }
 /* ========================================================================= */
 
@@ -148,17 +181,66 @@ EventData *				EventLine::lastEventData			( void )
 /* ------------------------------------------------------------------------- */
 bool					EventLine::save				( QSettings & stg ) const
 {
+	int		i_cnt;
+	bool	b = true;
+	stg.beginGroup( "april-EventLine" );
 	
-	return true;
+	for (;;)	{	
+		stg.setValue( "id_", id_ );
+		stg.setValue( "max_count_", max_count_ );
+		
+		stg.beginWriteArray( "event_data_", event_data_.count() );
+		i_cnt = 0;
+		EventData * ed = firstEventData_(this);
+		while ( ed != NULL )
+		{
+			stg.setArrayIndex( i_cnt );
+			b = b & ed->save( stg );
+			ed = nextEventData_( ed );
+			i_cnt++;
+		}
+		stg.endArray();
+		if ( !b ) break;
+		
+		break;
+	}
+	stg.endGroup();
+	
+	return b;
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 bool					EventLine::load				( QSettings & stg )
 {
+	bool	b = true;
+	int		i_cnt;
+
+	stg.beginGroup( "april-EventLine" );
+	for(;;)		{
 	
-	
-	return true;
+		id_ = stg.value( "id_" ).toULongLong( &b );
+		if ( !b ) break;
+		max_count_ = stg.value( "max_count_" ).toULongLong( &b );
+		if ( !b ) break;
+
+		i_cnt = stg.beginReadArray( "event_data_" );
+		for ( int i = 0; i < i_cnt; i++ )
+		{
+			stg.setArrayIndex( i );
+			if ( EventData::fromStg( this, stg ) == NULL )
+			{
+				b = false;
+				break;
+			}
+		}
+		stg.endArray();
+		if ( !b ) break;
+		
+		break;
+	}
+	stg.endGroup();
+	return b;
 }
 /* ========================================================================= */
 

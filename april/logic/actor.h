@@ -164,6 +164,9 @@ public:
 	*/
 	Actor				( World * w );
 
+	//! constructor method; creates and loads an actor from QSettings
+	static Actor *		fromStg					( World * w, QSettings & s );
+
 protected:
 
 	/**

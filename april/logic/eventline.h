@@ -102,7 +102,14 @@ public:
 	//! constructor;
 	EventLine			( World * w, ID id, unsigned int max_count = 100 );
 
+	//! constructor method; creates and loads an event line from QSettings
+	static EventLine *	fromStg			( World * w, QSettings & s );
+
 protected:
+
+	//! constructor; used by the fromStg() method
+	EventLine			( World * w );
+
 
 	//! destructor;
 	virtual				~EventLine		( void );

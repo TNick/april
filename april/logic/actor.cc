@@ -4,10 +4,10 @@
   \file			actor.cc
   \date			Apr 2013
   \author		TNick
-
+  
   \brief		Contains the implementation of Actor class
-
-
+  
+  
 *//*
 
 
@@ -56,24 +56,41 @@ using namespace april;
 /* ------------------------------------------------------------------------- */
 Actor::Actor	( World * w )
 	: Component(),
-	world_( w ),
-	sensors_(),
-	actuators_(),
-	reflexes_(),
-	brains_(),
-	dna_(),
-	kind_(InvalidId),
-	birth_(0),
-	death_(0),
-	age_(0),
-	energy_(0),
-	cost_(0),
-	alive_(false)
+	  world_( w ),
+	  sensors_(),
+	  actuators_(),
+	  reflexes_(),
+	  brains_(),
+	  dna_(),
+	  kind_(InvalidId),
+	  birth_(0),
+	  death_(0),
+	  age_(0),
+	  energy_(0),
+	  cost_(0),
+	  alive_(false)
 {
 	APRDBG_CDTOR;
 	Q_ASSERT( w != NULL );
 	
 	w->addActor( this );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+Actor *		Actor::fromStg		( World * w, QSettings & stg )
+{
+	Actor * ret = new Actor( w );
+	
+	for ( ;; )	{
+		if ( ret->load( stg ) == false )
+			break;
+		return ret;
+	}
+	
+	DEC_REF(ret,ret);
+	w->remActor( ret );
+	return NULL;
 }
 /* ========================================================================= */
 
@@ -116,8 +133,7 @@ Actor::~Actor	( void )
 		itr_brn_n = nextBrain_(itr_brn);
 		DEC_REF(itr_brn,this);
 		itr_brn = itr_brn_n;
-	}
-	
+	}	
 }
 /* ========================================================================= */
 
@@ -257,7 +273,7 @@ void				Actor::doSteps					( int steps )
 {
 	if ( isAlive() == false )
 		return;
-
+	
 	/* check if this is it */
 	age_ += steps;
 	if ( dies() )
@@ -461,17 +477,90 @@ Brain *				Actor::findBrain				( ID id ) const
 /* ------------------------------------------------------------------------- */
 bool				Actor::save						( QSettings & stg ) const
 {
+	bool b = true;
+	stg.beginGroup( "april-Actor" );
 	
-	return true;
+	for (;;)	{
+		
+		b = b & dna_.save( stg );
+		if ( !b ) break;
+		
+		stg.beginWriteArray( "sensors_", sensors_.count() );
+		Sensor * itr_sens = firstSensor_(this);
+		while ( itr_sens != NULL )
+		{
+			b = b & itr_sens->save( stg );
+			itr_sens = nextSensor_(itr_sens);
+		}
+		stg.endArray();
+		if ( !b ) break;
+
+		stg.beginWriteArray( "actuators_", actuators_.count() );
+		Actuator * itr_act = firstActuator_(this);
+		while ( itr_act != NULL )
+		{
+			b = b & itr_act->save( stg );
+			itr_act = nextActuator_(itr_act);
+		}
+		stg.endArray();
+		if ( !b ) break;
+		
+		stg.beginWriteArray( "reflexes_", reflexes_.count() );
+		Reflex * itr_refl = firstReflex_(this);
+		while ( itr_refl != NULL )
+		{
+			b = b & itr_refl->save( stg );
+			itr_refl = nextReflex_(itr_refl);
+		}
+		stg.endArray();
+		if ( !b ) break;
+		
+		stg.beginWriteArray( "brains_", brains_.count() );
+		Brain * itr_brn = firstBrain_(this);
+		while ( itr_brn != NULL )
+		{
+			b = b & itr_brn->save( stg );
+			itr_brn = nextBrain_(itr_brn);
+		}
+		stg.endArray();
+		if ( !b ) break;
+		
+		// the kind is present in DNA
+		// the cost is present in DNA
+		
+		stg.setValue( "birth_", birth_ );
+		stg.setValue( "death_", death_ );
+		stg.setValue( "age_", age_ );
+		stg.setValue( "energy_", energy_ );
+		stg.setValue( "alive_", alive_ );
+		
+		break;
+	}
+	stg.endGroup();
+	
+	return b;
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 bool				Actor::load						( QSettings & stg )
 {
+	bool b = true;
+	stg.beginGroup( "april-Actor" );
 	
+	for (;;)	{
+		
+		b = b & dna_.load( stg );
+		if ( !b ) break;
+		
+		
+		
+		break;
+	}
 	
-	return true;
+	stg.endGroup();
+	
+	return b;
 }
 /* ========================================================================= */
 

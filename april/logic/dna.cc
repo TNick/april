@@ -674,7 +674,7 @@ bool			DNA::save				( QSettings & stg ) const
 {
 	int i_max;
 	
-	if ( isValid() )
+	if ( isValid() == false )
 		return false;
 	stg.beginGroup( "DNA" );
 	

@@ -88,6 +88,24 @@ World::World	( const QString & name, quint64 tot_energ )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+World *			World::fromStg			( QSettings & stg )
+{
+	World * ret =  new World( "", 0 );
+	
+	for ( ;; )
+	{
+		if ( ret->load( stg ) == false )
+			break;
+		return ret;
+	}
+	
+	DEC_REF(ret,ret);
+	AprilLibrary::remWorld( ret );
+	return NULL;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
 World::~World	( void )
 {
 	APRDBG_CDTOR;
@@ -629,66 +647,205 @@ bool				World::save				( QSettings & stg ) const
 {
 	if ( isRunning() )
 		return false;
+	int		i_cnt;
 	
-	Actor * a = firstActor_(this);
-	while ( a != NULL )
-	{
-		a->save( stg );
-		a = nextActor_( a );
-	}
+	bool b = true;
+	stg.beginGroup( "april-World" );
 	
-	EventSource * e = firstEvent_(this);
-	while ( e != NULL )
-	{
-		e->save( stg );
-		e = nextEvent_( e );
-	}
-	
-	/* ...... */
+	for (;;)	{
+		
+		stg.setValue( "s_name_", s_name_ );
+		stg.setValue( "time_", time_ );
+		stg.setValue( "energy_all_", energy_all_ );
+		stg.setValue( "energy_free_", energy_free_ );
+		
+		b = b & uid_.save( stg );
+		if ( !b ) break;
+		
+		stg.beginWriteArray( "actors_", actors_.count() );
+		i_cnt = 0;
+		Actor * a = firstActor_(this);
+		while ( a != NULL )
+		{
+			stg.setArrayIndex( i_cnt );
+			b = b & a->save( stg );
+			a = nextActor_( a );
+			i_cnt++;
+		}
+		stg.endArray();
+		if ( !b ) break;
+		
+		stg.beginWriteArray( "events_", events_.count() );
+		i_cnt = 0;
+		EventSource * e = firstEvent_(this);
+		while ( e != NULL )
+		{
+			stg.setArrayIndex( i_cnt );
+			b = b & e->save( stg );
+			e = nextEvent_( e );
+			i_cnt++;
+		}
+		stg.endArray();
+		if ( !b ) break;
+		
+		/* ...... */
 #	define	saveFactory(f,F) \
+	stg.beginWriteArray( stringify(f) "_factories_" ); \
+	i_cnt = 0; \
 	QMap<ID,F*>::ConstIterator itr_##f =f##_factories_.constBegin();\
 	QMap<ID,F*>::ConstIterator itr_end_##f = f##_factories_.constEnd();\
 	while ( itr_##f != itr_end_##f )	{\
-	if ( itr_##f.value()->save(stg) == false ) return false; \
+	stg.setArrayIndex( i_cnt ); \
+	b = b & itr_##f.value()->save(stg); \
 	itr_##f++;\
-	}
-	/* ...... */
-	
-	saveFactory(actor,ActorFactory);
-	saveFactory(actuator,ActuatorFactory);
-	saveFactory(brain,BrainFactory);
-	saveFactory(sensor,SensorFactory);
-	saveFactory(event,EventFactory);
-	saveFactory(reflex,ReflexFactory);
-	
+	i_cnt++; \
+	} \
+	stg.endArray(); \
+	if ( !b ) break
+		/* ...... */
+		
+		saveFactory(actor,ActorFactory);
+		saveFactory(actuator,ActuatorFactory);
+		saveFactory(brain,BrainFactory);
+		saveFactory(sensor,SensorFactory);
+		saveFactory(event,EventFactory);
+		saveFactory(reflex,ReflexFactory);
+		
 #	undef	saveFactory
-	
-	QMap<ID,EventLine*>::ConstIterator itr_event_lines = event_lines_.constBegin();
-	QMap<ID,EventLine*>::ConstIterator itr_end_event_lines = event_lines_.constEnd();
-	while ( itr_event_lines != itr_end_event_lines )
-	{
-		itr_event_lines.value()->save( stg );
-		itr_event_lines++;
+		
+		stg.beginWriteArray( "event_lines_", event_lines_.count() );
+		i_cnt = 0;
+		QMap<ID,EventLine*>::ConstIterator itr_event_lines = event_lines_.constBegin();
+		QMap<ID,EventLine*>::ConstIterator itr_end_event_lines = event_lines_.constEnd();
+		while ( itr_event_lines != itr_end_event_lines )
+		{
+			stg.setArrayIndex( i_cnt );
+			b = b & itr_event_lines.value()->save( stg );
+			itr_event_lines++;
+			i_cnt++;
+		}
+		stg.endArray();
+		if ( !b ) break;
+		
+		if ( director_ != NULL )
+		{
+			b = b & director_->save( stg );
+		}
+		break;
 	}
+	stg.endGroup();
 	
-	if ( director_ != NULL )
-	{
-		director_->save( stg );
-	}
-	
-	return true;
+	return b;
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 bool				World::load				( QSettings & stg )
 {
+	bool	b = true;
+	int		i_cnt;
+	
 	if ( isRunning() )
 		return false;
 	
-	
-	
-	return true;
+	stg.beginGroup( "april-World" );
+	for(;;)		{
+		
+		s_name_ = stg.value( "s_name_" ).toString();
+		time_ = stg.value( "time_" ).toULongLong( &b );
+		if ( !b ) break;
+		energy_all_ = stg.value( "energy_all_" ).toULongLong( &b );
+		if ( !b ) break;
+		energy_free_ = stg.value( "energy_free_" ).toULongLong( &b );
+		if ( !b ) break;
+		
+		b = b & uid_.load( stg );
+		if ( !b ) break;
+		
+		/** @todo factories */
+		
+#	define	loadFactory(f,F) \
+	i_cnt = stg.beginReadArray( stringify(f) "_factories_" ); \
+	QMap<ID,F*>::ConstIterator itr_##f =f##_factories_.constBegin();\
+	QMap<ID,F*>::ConstIterator itr_end_##f = f##_factories_.constEnd();\
+	while ( itr_##f != itr_end_##f )	{\
+	b = b & itr_##f.value()->load(stg); \
+	itr_##f++;\
+	} \
+	stg.endArray(); \
+	if ( !b ) break
+		/* ...... */
+		
+		loadFactory(actor,ActorFactory);
+		loadFactory(actuator,ActuatorFactory);
+		loadFactory(brain,BrainFactory);
+		loadFactory(sensor,SensorFactory);
+		loadFactory(event,EventFactory);
+		loadFactory(reflex,ReflexFactory);
+		
+#	undef	loadFactory
+
+		Actor * ret_a;
+		i_cnt = stg.beginReadArray( "actors_" );
+		for ( int i = 0; i < i_cnt; i++ )
+		{
+			stg.setArrayIndex( i );
+			ret_a = Actor::fromStg( this, stg );
+			if ( ret_a == NULL )
+			{
+				b = false;
+				break;
+			}
+			DEC_REF(ret_a,ret_a);
+		}
+		stg.endArray();
+		if ( !b ) break;
+		
+		
+		EventSource * ret_es;
+		i_cnt = stg.beginReadArray( "events_" );
+		for ( int i = 0; i < i_cnt; i++ )
+		{
+			stg.setArrayIndex( i );
+			ret_es = EventSource::fromStg( this, stg );
+			if ( ret_es == NULL )
+			{
+				b = false;
+				break;
+			}
+			DEC_REF(ret_es,ret_es);
+		}
+		stg.endArray();
+		if ( !b ) break;
+		
+		
+		EventLine * ret_el;
+		i_cnt = stg.beginReadArray( "event_lines_" );
+		for ( int i = 0; i < i_cnt; i++ )
+		{
+			stg.setArrayIndex( i );
+			ret_el = EventLine::fromStg( this, stg );
+			if ( ret_el == NULL )
+			{
+				b = false;
+				break;
+			}
+			DEC_REF(ret_el,ret_el);
+		}
+		stg.endArray();
+		if ( !b ) break;
+		
+		
+		if ( director_ == NULL )
+		{
+			director_ = new Director( this );
+		}
+		b = b & director_->load( stg );
+		
+		break;
+	}
+	stg.endGroup();
+	return b;
 }
 /* ========================================================================= */
 

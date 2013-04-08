@@ -132,13 +132,40 @@ void			UniqueId::checkAdd	( ID id, const QString & s_name )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void			UniqueId::save		( QSettings & stg )
+bool			UniqueId::save		( QSettings & stg ) const
 {
-	ID key;
-	QString s;
-	stg.beginGroup( my_name_ );
+	quint64 i = 0;
+	stg.beginGroup( "UniqueId" );
+	stg.setValue( "first_free_", first_free_ );
+	stg.setValue( "my_name_", my_name_ );
 	
+	stg.beginWriteArray( "map_" );
+	QMap<ID,QString>::ConstIterator itr = map_.constBegin();
+	QMap<ID,QString>::ConstIterator itr_e = map_.constEnd();
+	while ( itr != itr_e )
+	{
+		stg.setArrayIndex( i );
+		stg.setValue( "id", itr.key() );
+		stg.setValue( "value", itr.value() );
+	
+		itr++;
+		i++;
+	}
+	stg.endArray();
+	
+	stg.endGroup();
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			UniqueId::load		( QSettings & stg )
+{
+	QString s;
+	ID key;
+	stg.beginGroup( "UniqueId" );
 	first_free_ = stg.value( "first_free_", InvalidId+1 ).toULongLong();
+	my_name_ = stg.value( "my_name_" ).toString();
 	
 	quint64 i_max = stg.beginReadArray( "map_" );
 	for ( quint64 i = 0; i < i_max; i++ )
@@ -151,28 +178,7 @@ void			UniqueId::save		( QSettings & stg )
 	stg.endArray();
 	
 	stg.endGroup();
-}
-/* ========================================================================= */
-
-/* ------------------------------------------------------------------------- */
-void			UniqueId::load		( QSettings & stg )
-{
-	quint64 i = 0;
-	stg.beginGroup( my_name_ );
-	stg.setValue( "first_free_", first_free_ );
-	stg.beginWriteArray( "map_" );
-	QMap<ID,QString>::ConstIterator itr = map_.constBegin();
-	QMap<ID,QString>::ConstIterator itr_e = map_.constEnd();
-	while ( itr != itr_e )
-	{
-		stg.setArrayIndex( i );
-		stg.setValue( "id", itr.key() );
-		stg.setValue( "value", itr.value() );
-		itr++;
-		i++;
-	}
-	stg.endArray();
-	stg.endGroup();
+	return true;
 }
 /* ========================================================================= */
 

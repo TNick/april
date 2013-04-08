@@ -60,6 +60,23 @@ EventSource::EventSource	( World * w )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+EventSource *		EventSource::fromStg		( World * w, QSettings & stg )
+{
+	EventSource * ret = new EventSource( w );
+	
+	for ( ;; )	{
+		if ( ret->load( stg ) == false )
+			break;
+		return ret;
+	}
+	
+	DEC_REF(ret,ret);
+	w->remEvent( ret );
+	return NULL;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
 EventSource::~EventSource	( void )
 {
 	APRDBG_CDTOR;
@@ -68,7 +85,7 @@ EventSource::~EventSource	( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-bool				EventSource::save				( QSettings & stg ) const
+bool				EventSource::save			( QSettings & stg ) const
 {
 	
 	return true;
@@ -76,7 +93,7 @@ bool				EventSource::save				( QSettings & stg ) const
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-bool				EventSource::load				( QSettings & stg )
+bool				EventSource::load			( QSettings & stg )
 {
 	
 	

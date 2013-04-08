@@ -89,6 +89,14 @@ Object emit signals on certain actions if APRIL_SIGNALS is defined.
 #define prevPlugin_(p)	static_cast<AprilPluginLoader*>(p->prev())
 #define nextPlugin_(p)	static_cast<AprilPluginLoader*>(p->next())
 
+
+#ifndef stringify
+#define xstringify(s) #s
+#define stringify(s) xstringify(s)
+#endif
+
+
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
