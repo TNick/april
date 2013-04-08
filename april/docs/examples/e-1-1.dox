@@ -31,7 +31,11 @@ the libraries we use (april and bbb - http://sourceforge.net/projects/libbbb/).
 
 
 <br><br><hr>
-<table width=100%><tr><td>  </td><td align=right> \ref e_1_2 </td>
+<table width=100%><tr>
+<td align=left> \ref april-core </td>
+<td align=center>  </td>
+<td align=right> \ref e_1_2 </td>
+</tr></table>
 */
 
 }   //  namespace   april

@@ -1,0 +1,19 @@
+
+namespace   april    {
+
+/**
+
+\page	april-gui   april-gui library
+
+Extending the april-core library is the <strong>april-gui library</strong>.
+This provides classes that inherit the building blocks, adding 2D or 3D
+locality, graphical representation and so on.
+
+<br><br><hr>
+<table width=100%><tr><td> \ref april-core </td>
+<td align=center> <a href="index.html">Documentation root</a> </td>
+<td align=right> \ref AprilDream </td>
+</tr></table>
+*/
+
+}   //  namespace   april

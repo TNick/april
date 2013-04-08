@@ -1,0 +1,23 @@
+
+namespace   april    {
+
+/**
+
+\page	AprilDream  AprilDream application
+
+<strong>AprilDream application</strong> makes use of the april-gui library
+to present graphical worlds to the user. It can load a single world at a time,
+save and restore them and see their evolution in real time. Properties of
+the constituents (worlds, actors, events) are presented and some of them may
+be edited while the world rests.
+
+<br><br><hr>
+<table width=100%><tr><td> \ref april-gui </td>
+<td align=center> <a href="index.html">Documentation root</a> </td>
+<td align=right> \ref abstract-april </td>
+</tr></table>
+
+*/
+
+
+}   //  namespace   april

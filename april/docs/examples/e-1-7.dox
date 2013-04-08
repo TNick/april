@@ -41,7 +41,11 @@ Do not forget to release the reference that is passed to the caller by
 World::createActor().
 
 <br><br><hr>
-<table width=100%><tr><td> \ref e_1_6 </td><td align=right> \ref e_1_8 </td>
+<table width=100%><tr>
+<td align=left> \ref e_1_6 </td>
+<td align=center> \ref april-core </td>
+<td align=right> \ref e_1_8 </td>
+</tr></table>
 */
 
 }   //  namespace   april

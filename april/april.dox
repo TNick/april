@@ -5,10 +5,77 @@ namespace   april    {
 
 \mainpage	april
 
-TBD
+The april project is structured into parts. The basic part is the
+<strong>april-core library</strong>. This contains the building blocks as C++
+classes: World, Actor, EventSource, Sensor, Reflex, Actuator, Brain to name the
+prominent ones.
 
+Extending the april-core library is the <strong>april-gui library</strong>.
+This provides classes that inherit the building blocks, adding 2D or 3D
+locality, graphical representation and so on.
+
+<strong>AprilDream application</strong> makes use of the april-gui library
+to present graphical worlds to the user. It can load a single world at a time,
+save and restore them and see their evolution in real time. Properties of
+the constituents (worlds, actors, events) are presented and some of them may
+be edited while the world rests.
+
+Another application is <strong>abstract-april</strong> - a command line 
+tool also capable of running worlds but without the overhead that
+AprilDreamer adds due to pretty GUI.
+
+April project should be regarded as something to build on, not necessary as a
+final product.
+
+\section	sec_links Resources
+
+Main page for the project is at <a href="http://aprilproject.sourceforge.net/">
+aprilproject.sourceforge.net</a>. The source code is hosted both at <a
+href="http://sourceforge.net/projects/aprilproject/">Sourceforge</a> and at <a
+href="http://github.com/TNick/april">GitHub</a> as a git repository. To
+retrieve it use either one of the comands below:
+
+@code
+git clone git://git.code.sf.net/p/aprilproject/code aprilproject-code
+git clone git://github.com/TNick/april.git aprilproject-code
+@endcode
+
+Once in the alpha stage the master branch is expected to be stable, with
+changes/bugfixes being worked at in side branches.
+
+Whatever binary files were released should be available in <a
+href="http://sourceforge.net/projects/aprilproject/files/">Sourceforge
+downloads section</a>.
+
+If you think that you've found a bug or there is something that you think
+should be added to the project head to <a
+href="http://github.com/TNick/april/issues">GitHub provided issue tracker</a>.
+
+\section	sec_legal License
+
+The project is distributed under the 3-clause BSD license ("Revised BSD
+License", "New BSD License", or "Modified BSD License") [1]. Read about it in
+the COPYING file at the root of the source distribution or on <a
+href="http://en.wikipedia.org/wiki/BSD_licenses#3-clause_license_.28.22Revised_BSD_License.22.2C_.22New_BSD_License.22.2C_or_.22Modified_BSD_License.22.29">Wikipedia</a>.
+
+If this license is keeping you from doing something with this project as a whole
+or with parts of it please let me know by filling an issue on <a
+href="http://github.com/TNick/april/issues">GitHub provided issue tracker</a>.
+
+
+
+\section	sec_guide_content The content of this guide
+
+- \subpage april-core
+- \subpage april-gui
+- \subpage AprilDream
+- \subpage abstract-april
+
+<br><br><hr>
+<table width=100%><tr><td> </td>
+<td align=center>  </td>
+<td align=right> \ref april-core </td>
+</tr></table>
 */
-
-// \section	sec_guide_content The content of this guide
 
 }   //  namespace   april

@@ -1,0 +1,126 @@
+
+namespace   april    {
+
+/**
+
+\page	building  Building the project from source
+
+The project in all its parts depends on the <a
+href="https://qt-project.org/">Qt framework</a>. Versions starting with 4.8 are
+known to work both in Windows and in Ubuntu. For a painless experience we also
+recomend using <a href="http://qt.digia.com/Product/Developer-Tools/">Qt
+Creator</a>.
+
+@todo In future versions the project (or at least \ref april-core "core library") 
+may be decoupled from Qt libraries for greather flexibility.
+
+The project uses <a href="http://en.wikipedia.org/wiki/Qmake">qmake</a> to 
+generate platform-specific make files.
+
+@todo In future versions the project may provide alternative build systems 
+like CMake.
+
+\section	sec_building_retrieve Getting the code
+
+The source code is hosted both at <a
+href="http://sourceforge.net/projects/aprilproject/">Sourceforge</a> and at <a
+href="http://github.com/TNick/april">GitHub</a> as a git repository. To
+retrieve it use either one of the comands below:
+
+@code
+git clone git://git.code.sf.net/p/aprilproject/code aprilproject-code
+git clone git://github.com/TNick/april.git aprilproject-code
+@endcode
+
+In the following paragraphs $ROOT may be replaced by the aprilproject-code
+directory.
+
+\section	sec_building_preps Preparing the code
+
+There are two files that need to be created from their templates
+so that everything runs smoothly:
+
+- april_config.h from april_config.h.in in $ROOT/april directory; this is the
+configuration file that gets included into main header. Note that the scripts
+that prepare distributions simply copy the template file, so its content is
+appropriate for a release buid. See instructions inside april_config.h.in for
+what can be defined and what effect it has.
+- local_defs.pri from local_defs.pri.template in $ROOT/tools/Qt directory;
+you may use this file to indicate location of the include files and libraries for 
+dependencies (see below). This is handy in Windows.
+
+\section	sec_building_deps Dependencies
+
+Apart from <a href="https://qt-project.org/">Qt framework</a> that was already
+mentioned the project also uses:
+- <a href="http://sourceforge.net/projects/libbbb/">libbbb</a> - a library
+with common code easy to build; you will need to download and build this;
+- <a href="http://doc.qt.digia.com/qq/qq18-propertybrowser.html">property browser</a>
+is already part of the source tree and used in \ref AprilDream AprilDream; you
+don't have to do anything special, is listed here only for reference;
+- <a href="http://argtable.sourceforge.net/">argtable library</a> is used for
+argument parsing in the applications; you will need to download and build this;
+
+@todo A script will be provided to do the tasks related to source
+initialisation in a future version
+
+\section	sec_building_creator Building using Qt Creator
+
+Open the file $ROOT/tools/Qt/april.pro in Qt Creator and direct it to place the
+build files in a location at your choice. To keep the source directory clean
+(and avoid useless information in git status) you can choose a directory at the
+same level as $ROOT.
+
+Now simply hit the build button in the bottom-right part of the IDE.
+
+\section	sec_building_running Running the executables
+
+In order to run the executables certain dynamic libraries listed below must
+be available to the executables. In Unix-like systems this may be easier
+because the search paths are well defined. In Windows, however,
+you might need to copy the libraries inside same directory.
+
+
+\subsection	sec_building_running_win Windows
+
+\subsubsection	sec_building_running_win_d Debug builds
+
+@todo list of libraries that need to be found in Windows for Debug builds
+
+\subsubsection	sec_building_running_win_r Release builds
+
+@todo list of libraries that need to be found in Windows for Release builds
+
+
+\subsection	sec_building_running_win Ubuntu
+
+\subsubsection	sec_building_running_win_d Debug builds
+
+@todo list of libraries that need to be found in Ubuntu for Debug builds
+
+\subsubsection	sec_building_running_win_r Release builds
+
+@todo list of libraries that need to be found in Ubuntu for Release builds
+
+
+\section	sec_building_packaging Packaging for distribution
+
+\subsection	sec_building_packaging_win Windows
+
+$ROOT/tools/nsis contains a script that is used in official builds for Windows.
+
+\subsection	sec_building_packaging_win Ubuntu
+
+$ROOT/tools/scripts contains a script that is used in official builds for Ubuntu.
+
+
+
+
+<br><br><hr>
+<table width=100%><tr><td> \ref AprilDream </td>
+<td align=center>  </td>
+<td align=right> <a href="index.html">Documentation root</a> </td>
+</tr></table>
+*/
+
+}   //  namespace   april

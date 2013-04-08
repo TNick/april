@@ -9,7 +9,11 @@ Reflexes are simple automated responses to certain stimuli.
 
 
 <br><br><hr>
-<table width=100%><tr><td> \ref e_1_8 </td><td align=right> \ref e_1_10 </td>
+<table width=100%><tr>
+<td align=left> \ref e_1_8 </td>
+<td align=center> \ref april-core </td>
+<td align=right> \ref e_1_10 </td>
+</tr></table>
 */
 
 }   //  namespace   april

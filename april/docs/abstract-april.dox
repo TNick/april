@@ -1,0 +1,19 @@
+
+namespace   april    {
+
+/**
+
+\page	abstract-april  abstract-april application
+
+<strong>abstract-april</strong> is a command line tool capable of running
+worlds but without the overhead that \ref AprilDream adds due to pretty GUI.
+
+<br><br><hr>
+<table width=100%><tr><td> \ref AprilDream </td>
+<td align=center> <a href="index.html">Documentation root</a> </td>
+<td align=right> \ref building </td>
+</tr></table>
+
+*/
+
+}   //  namespace   april
