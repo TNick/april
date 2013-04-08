@@ -218,7 +218,7 @@ public:
 	/**
 	*	@brief	tell if this world is running
 	*/
-	bool				isRunning			( void )
+	bool				isRunning			( void ) const
 	{ return b_running_; }
 
 protected:
@@ -541,7 +541,7 @@ public:
 public:
 
 	//! save the world (only when the world is stopped)
-	virtual bool	save				( QSettings & stg );
+	virtual bool	save				( QSettings & stg ) const;
 	
 	//! load the world (only when the world is stopped)
 	virtual bool	load				( QSettings & stg );

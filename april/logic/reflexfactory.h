@@ -99,6 +99,14 @@ public:
 	//! create an actuator;
 	virtual Reflex *		create				( Actor * ag, ID id ) = 0;
 
+public:
+
+	//! save to a QSettings object
+	virtual bool		save					( QSettings & s ) const;
+	
+	//! load from a QSettings object
+	virtual bool		load					( QSettings & s );
+
 protected:
 
 	//! add this class to the world

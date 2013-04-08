@@ -104,6 +104,13 @@ protected:
 	//! add this class to the world
 	bool					addMyself			( ID id );
 
+public:
+
+	//! save to a QSettings object
+	virtual bool		save					( QSettings & s ) const;
+	
+	//! load from a QSettings object
+	virtual bool		load					( QSettings & s );
 
 	/*  FUNCTIONS    ======================================================= */
 	//

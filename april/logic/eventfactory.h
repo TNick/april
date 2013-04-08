@@ -103,7 +103,13 @@ protected:
 public:
 
 	//! create an actuator;
-	virtual EventSource *			create				( ID id ) = 0;
+	virtual EventSource *	create				( ID id ) = 0;
+
+	//! save to a QSettings object
+	virtual bool			save				( QSettings & s ) const;
+	
+	//! load from a QSettings object
+	virtual bool			load				( QSettings & s );
 
 protected:
 

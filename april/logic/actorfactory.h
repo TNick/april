@@ -110,6 +110,12 @@ public:
 	//! create a new actor
 	virtual Actor *			create				( ID id ) = 0;
 
+	//! save to a QSettings object
+	virtual bool		save					( QSettings & s ) const;
+	
+	//! load from a QSettings object
+	virtual bool		load					( QSettings & s );
+
 protected:
 
 	//! allow access to default dna storage

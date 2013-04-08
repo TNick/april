@@ -89,8 +89,13 @@ protected:
 	//! destructor;
 	virtual				~Sensor			( void );
 
-
 public:
+
+	//! save to a QSettings object
+	virtual bool		save					( QSettings & s ) const;
+	
+	//! load from a QSettings object
+	virtual bool		load					( QSettings & s );
 
 	/*  FUNCTIONS    ======================================================= */
 	//

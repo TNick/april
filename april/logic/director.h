@@ -51,7 +51,9 @@ class	EventLine;
 /**
 *	@brief	manages the runnings of a world
 */
-class Director		: public libbbb::RefCnt, public MemTrack		{
+class
+	APRILSHARED_EXPORT
+	Director		: public libbbb::RefCnt, public MemTrack		{
 	BBM_TRACK( Director );
 
 	//
@@ -101,6 +103,12 @@ public:
 
 	//! advance the world
 	virtual void		advance			( void );
+
+	//! save to a QSettings object
+	virtual bool		save			( QSettings & s ) const;
+	
+	//! load from a QSettings object
+	virtual bool		load			( QSettings & s );
 
 protected:
 

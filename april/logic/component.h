@@ -37,6 +37,8 @@
 //
 /*  DEFINITIONS    --------------------------------------------------------- */
 
+class	QSettings;
+
 namespace   april    {
 
 /*  DEFINITIONS    ========================================================= */
@@ -111,6 +113,11 @@ public:
 	virtual ID			identificator			( void )
 	{ return InvalidId; }
 
+	//! save to a QSettings object
+	virtual bool		save					( QSettings & s ) const = 0;
+	
+	//! load from a QSettings object
+	virtual bool		load					( QSettings & s ) = 0;
 
 protected:
 	
@@ -120,6 +127,8 @@ protected:
 	 */
 	virtual void		inserted				( void )
 	{ }
+
+	
 
 	/*  FUNCTIONS    ======================================================= */
 	//

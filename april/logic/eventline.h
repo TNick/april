@@ -146,6 +146,12 @@ public:
 	unsigned int		maxEntries		( void ) const
 	{ return max_count_; }
 
+	//! save to a QSettings object
+	virtual bool		save			( QSettings & s ) const;
+	
+	//! load from a QSettings object
+	virtual bool		load			( QSettings & s );
+
 	/*  FUNCTIONS    ======================================================= */
 	//
 	//

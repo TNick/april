@@ -108,6 +108,16 @@ protected:
 	//! set how long this data should stay in the lines
 	void				setDuration		( World * w, quint64 dt );
 
+private:
+
+	//! save to a QSettings object
+	virtual bool		save					( QSettings & s ) const
+	{ Q_UNUSED(s); return true; }
+	
+	//! load from a QSettings object
+	virtual bool		load					( QSettings & s )
+	{ Q_UNUSED(s); return false; }
+
 	/*  FUNCTIONS    ======================================================= */
 	//
 	//

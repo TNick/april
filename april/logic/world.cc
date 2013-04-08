@@ -625,7 +625,7 @@ void				World::stop				( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-bool				World::save				( QSettings & stg )
+bool				World::save				( QSettings & stg ) const
 {
 	if ( isRunning() )
 		return false;
@@ -649,7 +649,7 @@ bool				World::save				( QSettings & stg )
 	QMap<ID,F*>::ConstIterator itr_##f =f##_factories_.constBegin();\
 	QMap<ID,F*>::ConstIterator itr_end_##f = f##_factories_.constEnd();\
 	while ( itr_##f != itr_end_##f )	{\
-	if ( itr_##f.save(stg) == false ) return false; \
+	if ( itr_##f.value()->save(stg) == false ) return false; \
 	itr_##f++;\
 	}
 	/* ...... */
@@ -667,13 +667,13 @@ bool				World::save				( QSettings & stg )
 	QMap<ID,EventLine*>::ConstIterator itr_end_event_lines = event_lines_.constEnd();
 	while ( itr_event_lines != itr_end_event_lines )
 	{
-		itr_event_lines.value().save( stg );
+		itr_event_lines.value()->save( stg );
 		itr_event_lines++;
 	}
 	
 	if ( director_ != NULL )
 	{
-		director_.save( stg );
+		director_->save( stg );
 	}
 	
 	return true;
