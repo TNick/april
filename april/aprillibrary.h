@@ -52,7 +52,7 @@ class	WorldFactory;
 *	The callback must provide a reference to the caller. The reference is 
 *	owned by the Factory.
 */
-typedef Factory *		(*FactoryCreator)	( const QString & s_name );
+typedef Factory *		(*FactoryCreator)	( World * w, const QString & s_name );
 
 
 /*  DEFINITIONS    ========================================================= */
@@ -278,6 +278,7 @@ public:
 	
 	//! get the factory that coresponds to given string
 	static Factory *			factoryForString	(
+			World *					w, 
 			const QString &			s_name
 			);
 
@@ -314,7 +315,10 @@ private:
 	 * @param s_name ignored
 	 * @return the factory instance
 	 */
-	static Factory *			defaultWorldFactoryCreator	( const QString & s_name );
+	static Factory *			defaultWorldFactoryCreator	( 
+			World *				w,
+			const QString &		s_name
+			);
 	
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */

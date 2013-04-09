@@ -103,8 +103,11 @@ bool				ActorFactory::save				( QSettings & stg ) const
 		b = b & Factory::save( stg );
 		if ( !b ) break;
 		
-		b = b & default_dna_.save( stg );
-		if ( !b ) break;
+		if ( default_dna_.isValid() )
+		{
+			b = b & default_dna_.save( stg );
+			if ( !b ) break;
+		}
 		
 		break;
 	}

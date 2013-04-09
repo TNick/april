@@ -93,7 +93,7 @@ World *			World::fromStg			( QSettings & stg )
 {
 	stg.beginGroup( "april-World" );
 	QString factory_name = stg.value( "factory_name" ).toString();
-	Factory * f = AprilLibrary::factoryForString( factory_name );
+	Factory * f = AprilLibrary::factoryForString( NULL, factory_name );
 	WorldFactory * wf;
 	if ( f == NULL )
 	{
@@ -659,6 +659,25 @@ void				World::stop				( void )
 }
 /* ========================================================================= */
 
+#define saveFactory(f,F)	                                          \
+	stg.beginWriteArray( stringify(f) "_factories_" );				  \
+	i_cnt = 0;														  \
+	QMap<ID,F*>::ConstIterator itr_##f =                              \
+	f##_factories_.constBegin();                                      \
+	QMap<ID,F*>::ConstIterator itr_end_##f =                          \
+	f##_factories_.constEnd();                                        \
+	while ( itr_##f != itr_end_##f )	{                             \
+	stg.setArrayIndex( i_cnt );                                       \
+	stg.setValue( "factory_name", itr_##f.value()->factoryName() );   \
+	stg.setValue( "factory_id", itr_##f.key() );                      \
+	b = b & itr_##f.value()->save( stg );                             \
+	itr_##f++;                                                        \
+	i_cnt++;                                                          \
+	}                                                                 \
+	stg.endArray();                                                   \
+	if ( !b ) break;
+
+
 /* ------------------------------------------------------------------------- */
 bool				World::save				( QSettings & stg ) const
 {
@@ -680,20 +699,12 @@ bool				World::save				( QSettings & stg ) const
 		b = b & uid_.save( stg );
 		if ( !b ) break;
 		
-		stg.beginWriteArray( "actor_factories_" ); 
-		i_cnt = 0; 
-		QMap<ID,ActorFactory*>::ConstIterator itr_actor = actor_factories_.constBegin();
-		QMap<ID,ActorFactory*>::ConstIterator itr_end_actor = actor_factories_.constEnd();
-		while ( itr_actor != itr_end_actor )	{
-			stg.setArrayIndex( i_cnt );
-			stg.setValue( "factory_name", itr_actor.value()->factoryName() );
-			stg.setValue( "factory_id", itr_actor.key() );
-			b = b & itr_actor.value()->save( stg );
-			itr_actor++;
-			i_cnt++;
-		}
-		stg.endArray(); 
-		if ( !b ) break;
+		saveFactory(actor,ActorFactory);
+		saveFactory(actuator,ActuatorFactory);
+		saveFactory(brain,BrainFactory);
+		saveFactory(sensor,SensorFactory);
+		saveFactory(event,EventFactory);
+		saveFactory(reflex,ReflexFactory);
 		
 		
 		
@@ -704,6 +715,7 @@ bool				World::save				( QSettings & stg ) const
 	stg.endGroup();
 	return b;
 	
+#	undef	saveFactory
 	
 	
 	
@@ -736,31 +748,7 @@ bool				World::save				( QSettings & stg ) const
 		stg.endArray();
 		if ( !b ) break;
 		
-		/* ...... */
-#	define	saveFactory(f,F) \
-	stg.beginWriteArray( stringify(f) "_factories_" ); \
-	i_cnt = 0; \
-	QMap<ID,F*>::ConstIterator itr_##f =f##_factories_.constBegin();\
-	QMap<ID,F*>::ConstIterator itr_end_##f = f##_factories_.constEnd();\
-	while ( itr_##f != itr_end_##f )	{\
-	stg.setArrayIndex( i_cnt ); \
-	b = b & itr_##f.value()->save(stg); \
-	itr_##f++;\
-	i_cnt++; \
-	} \
-	stg.endArray(); \
-	if ( !b ) break
-		/* ...... */
-		
-		saveFactory(actor,ActorFactory);
-		saveFactory(actuator,ActuatorFactory);
-		saveFactory(brain,BrainFactory);
-		saveFactory(sensor,SensorFactory);
-		saveFactory(event,EventFactory);
-		saveFactory(reflex,ReflexFactory);
-		
-#	undef	saveFactory
-		
+	
 		stg.beginWriteArray( "event_lines_", event_lines_.count() );
 		i_cnt = 0;
 		QMap<ID,EventLine*>::ConstIterator itr_event_lines = event_lines_.constBegin();
@@ -786,6 +774,26 @@ bool				World::save				( QSettings & stg ) const
 /* ========================================================================= */
 
 
+#	define	loadFactory(f,F,ty)												\
+	i_cnt = stg.beginReadArray( stringify(f) "_factories_" ); 				\
+	for ( int i = 0; i < i_cnt; i++ ) {							            \
+	stg.setArrayIndex( i );							                        \
+	factory_name = stg.value( "factory_name" ).toString();					\
+	id = stg.value( "factory_id" ).toULongLong( &b );						\
+	if ( !b ) break;							                            \
+	factory = AprilLibrary::factoryForString( this, factory_name );			\
+	if ( factory == NULL ) { b = false; break; }							\
+	else if ( factory->factoryType() != ty ){ DEC_REF(factory,factory); b = false; break; }	\
+	F * af = static_cast<F*>(factory);										\
+	add##F( af, id );														\
+	DEC_REF(factory,factory);												\
+	b = b & af->load( stg );												\
+	if ( !b ) break;													    \
+	}																		\
+	stg.endArray();															\
+	if ( !b ) break;
+
+
 
 /* ------------------------------------------------------------------------- */
 bool				World::load				( QSettings & stg )
@@ -793,8 +801,7 @@ bool				World::load				( QSettings & stg )
 	bool			b = true;
 	int				i_cnt;
 	QString			factory_name;
-	Factory *		f;
-	ActorFactory *	af;
+	Factory *		factory;
 	ID				id;
 	if ( isRunning() )
 		return false;
@@ -815,64 +822,42 @@ bool				World::load				( QSettings & stg )
 		b = b & uid_.load( stg );
 		if ( !b ) break;
 		
-		i_cnt = stg.beginReadArray( "actor_factories_" ); 
-		for ( int i = 0; i < i_cnt; i++ ) {
-			stg.setArrayIndex( i );
-			factory_name = stg.value( "factory_name" ).toString();
-			id = stg.value( "factory_id" ).toULongLong( &b );
-			if ( !b ) break;
-			f = AprilLibrary::factoryForString( factory_name );
-			if ( f == NULL )
-			{ b = false; break; }
-			else if ( f->factoryType() != FTyActor )
-			{ DEC_REF(f,f); b = false; break; }
-			af = static_cast<ActorFactory*>(f);
-			addActorFactory( af, id );
-		}
-		stg.endArray();
-		if ( !b ) break;
-		
-		
-		
+//		i_cnt = stg.beginReadArray( "actor_factories_" ); 
+//		for ( int i = 0; i < i_cnt; i++ ) {
+//			stg.setArrayIndex( i );
+//			factory_name = stg.value( "factory_name" ).toString();
+//			id = stg.value( "factory_id" ).toULongLong( &b );
+//			if ( !b ) break;
+//			f = AprilLibrary::factoryForString( this, factory_name );
+//			if ( f == NULL )
+//			{ b = false; break; }
+//			else if ( f->factoryType() != FTyActor )
+//			{ DEC_REF(f,f); b = false; break; }
+//			af = static_cast<ActorFactory*>(f);
+//			addActorFactory( af, id );
+//			DEC_REF(f,f);
+//			b = b & af->load( stg );
+//			if ( !b ) break;
+//		}
+//		stg.endArray();
+//		if ( !b ) break;
+
+		loadFactory(actor,ActorFactory,FTyActor);
+		loadFactory(actuator,ActuatorFactory,FTyActuator);
+		loadFactory(brain,BrainFactory,FTyBrain);
+		loadFactory(sensor,SensorFactory,FTySensor);
+		loadFactory(event,EventFactory,FTyEvent);
+		loadFactory(reflex,ReflexFactory,FTyReflex);
+
 		break;
 	}
 	stg.endGroup();
 	return b;
-	
-	
-	
-	
-	
-	
+
+#	undef	loadFactory
 	
 	
 	for(;;)		{
-		
-		
-		
-		
-		/** @todo factories */
-		
-#	define	loadFactory(f,F) \
-	i_cnt = stg.beginReadArray( stringify(f) "_factories_" ); \
-	QMap<ID,F*>::ConstIterator itr_##f =f##_factories_.constBegin();\
-	QMap<ID,F*>::ConstIterator itr_end_##f = f##_factories_.constEnd();\
-	while ( itr_##f != itr_end_##f )	{\
-	b = b & itr_##f.value()->load(stg); \
-	itr_##f++;\
-	} \
-	stg.endArray(); \
-	if ( !b ) break
-		/* ...... */
-		
-		loadFactory(actor,ActorFactory);
-		loadFactory(actuator,ActuatorFactory);
-		loadFactory(brain,BrainFactory);
-		loadFactory(sensor,SensorFactory);
-		loadFactory(event,EventFactory);
-		loadFactory(reflex,ReflexFactory);
-		
-#	undef	loadFactory
 		
 		Actor * ret_a;
 		i_cnt = stg.beginReadArray( "actors_" );

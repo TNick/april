@@ -407,9 +407,10 @@ bool				AprilLibrary::remWorldFactory	(
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-Factory *			AprilLibrary::defaultWorldFactoryCreator	( const QString & s_name )
+Factory *			AprilLibrary::defaultWorldFactoryCreator	( World * w, const QString & s_name )
 {
 	Q_UNUSED( s_name );
+	Q_UNUSED( w );
 	
 	/* we don't need to create one because the default factory creator is always there */
 	WorldFactory * ret = uniq_->world_factories_.value( default_factory_creator_name );
@@ -446,12 +447,12 @@ QString				AprilLibrary::defaultWorldFactoryName		( void )
 
 /* ------------------------------------------------------------------------- */
 Factory *			AprilLibrary::factoryForString				( 
-		const QString & s_name )
+		World * w, const QString & s_name )
 {
 	FactoryCreator fc = uniq_->factories_src_.value( s_name );
 	if ( fc == NULL )
 		return NULL;
-	Factory * ret = fc( s_name );
+	Factory * ret = fc( w, s_name );
 	return ret;
 }
 /* ========================================================================= */
