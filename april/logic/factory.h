@@ -120,6 +120,10 @@ public:
 	virtual FactoryType			factoryType		( void )
 	{ return FTyGeneric; }
 	
+	//! the name used to save this factory
+	virtual QString				factoryName		( void )
+	{ return "Generic.Factory.Default"; }
+	
 	//! the world that hosts us;
 	inline World *				world			( void ) const
 	{ return w_; }

@@ -103,8 +103,12 @@ protected:
 public:
 	
 	//! the generic type of the factory
-	virtual FactoryType			factoryType		( void )
+	virtual FactoryType		factoryType			( void )
 	{ return FTyActor; }
+	
+	//! the name used to save this factory
+	virtual QString			factoryName			( void )
+	{ return "Actor.Factory.Default"; }
 
 	//! copies default DNA from internal storage to destination
 	virtual void			copyDefaultDNA		( DNA & destination )
@@ -114,10 +118,10 @@ public:
 	virtual Actor *			create				( ID id ) = 0;
 
 	//! save to a QSettings object
-	virtual bool		save					( QSettings & s ) const;
+	virtual bool			save				( QSettings & s ) const;
 	
 	//! load from a QSettings object
-	virtual bool		load					( QSettings & s );
+	virtual bool			load				( QSettings & s );
 
 protected:
 

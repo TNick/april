@@ -110,7 +110,7 @@ World *			World::fromStg			( QSettings & stg )
 	wf = static_cast<WorldFactory*>(f);
 	World * world = wf->create( stg );
 	DEC_REF(f,f);
-
+	
 	return world;
 }
 /* ========================================================================= */
@@ -670,29 +670,6 @@ bool				World::save				( QSettings & stg ) const
 	stg.beginGroup( "april-World" );
 	stg.setValue( "factory_name", factoryName() );
 	
-	
-	
-	
-	stg.endGroup();
-	return b;
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	for (;;)	{
 		
 		stg.setValue( "s_name_", s_name_ );
@@ -702,6 +679,36 @@ bool				World::save				( QSettings & stg ) const
 		
 		b = b & uid_.save( stg );
 		if ( !b ) break;
+		
+		stg.beginWriteArray( "actor_factories_" ); 
+		i_cnt = 0; 
+		QMap<ID,ActorFactory*>::ConstIterator itr_actor = actor_factories_.constBegin();
+		QMap<ID,ActorFactory*>::ConstIterator itr_end_actor = actor_factories_.constEnd();
+		while ( itr_actor != itr_end_actor )	{
+			stg.setArrayIndex( i_cnt );
+			stg.setValue( "factory_name", itr_actor.value()->factoryName() );
+			stg.setValue( "factory_id", itr_actor.key() );
+			b = b & itr_actor.value()->save( stg );
+			itr_actor++;
+			i_cnt++;
+		}
+		stg.endArray(); 
+		if ( !b ) break;
+		
+		
+		
+		b = b & Component::save( stg );
+		break;
+	}
+	
+	stg.endGroup();
+	return b;
+	
+	
+	
+	
+	for (;;)	{
+		
 		
 		stg.beginWriteArray( "actors_", actors_.count() );
 		i_cnt = 0;
@@ -773,23 +780,25 @@ bool				World::save				( QSettings & stg ) const
 			b = b & director_->save( stg );
 		}
 		
-		b = b & Component::save( stg );
-		break;
 	}
-	stg.endGroup();
-	
 	return b;
 }
 /* ========================================================================= */
 
+
+
 /* ------------------------------------------------------------------------- */
 bool				World::load				( QSettings & stg )
 {
-	bool	b = true;
-	int		i_cnt;
-	
+	bool			b = true;
+	int				i_cnt;
+	QString			factory_name;
+	Factory *		f;
+	ActorFactory *	af;
+	ID				id;
 	if ( isRunning() )
 		return false;
+	
 	
 	stg.beginGroup( "april-World" );
 	for(;;)		{
@@ -805,6 +814,42 @@ bool				World::load				( QSettings & stg )
 		
 		b = b & uid_.load( stg );
 		if ( !b ) break;
+		
+		i_cnt = stg.beginReadArray( "actor_factories_" ); 
+		for ( int i = 0; i < i_cnt; i++ ) {
+			stg.setArrayIndex( i );
+			factory_name = stg.value( "factory_name" ).toString();
+			id = stg.value( "factory_id" ).toULongLong( &b );
+			if ( !b ) break;
+			f = AprilLibrary::factoryForString( factory_name );
+			if ( f == NULL )
+			{ b = false; break; }
+			else if ( f->factoryType() != FTyActor )
+			{ DEC_REF(f,f); b = false; break; }
+			af = static_cast<ActorFactory*>(f);
+			addActorFactory( af, id );
+		}
+		stg.endArray();
+		if ( !b ) break;
+		
+		
+		
+		break;
+	}
+	stg.endGroup();
+	return b;
+	
+	
+	
+	
+	
+	
+	
+	
+	for(;;)		{
+		
+		
+		
 		
 		/** @todo factories */
 		
@@ -828,7 +873,7 @@ bool				World::load				( QSettings & stg )
 		loadFactory(reflex,ReflexFactory);
 		
 #	undef	loadFactory
-
+		
 		Actor * ret_a;
 		i_cnt = stg.beginReadArray( "actors_" );
 		for ( int i = 0; i < i_cnt; i++ )
@@ -885,8 +930,6 @@ bool				World::load				( QSettings & stg )
 			director_ = new Director( this );
 		}
 		b = b & director_->load( stg );
-				
-		break;
 	}
 	stg.endGroup();
 	return b;

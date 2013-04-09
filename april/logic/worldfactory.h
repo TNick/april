@@ -85,8 +85,12 @@ public:
 	virtual					~WorldFactory		( void );
 	
 	//! the generic type of the factory
-	virtual FactoryType			factoryType		( void )
+	virtual FactoryType		factoryType			( void )
 	{ return FTyWorld; }
+	
+	//! the name used to save this factory
+	virtual QString			factoryName			( void )
+	{ return "World.Factory.Default"; }
 
 	//! create a world; the base class implementation creates a basic World
 	virtual World *			create				(

@@ -171,6 +171,10 @@ protected:
 
 public:
 
+	//! the name of this world
+	const QString &		name				( void ) const
+	{ return s_name_; }
+
 	//! current time in this world
 	quint64				currentTime			( void ) const
 	{ return time_; }
@@ -374,6 +378,9 @@ public:
 	QString			nameForId		( ID id )
 	{ return uid_.name( id ); }
 
+	//! tell if the two unique ID provides are the same
+	bool			sameUId			( World * other ) const
+	{ return uid_ == other->uid_; }
 
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */

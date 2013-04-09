@@ -99,6 +99,10 @@ public:
 	//! the generic type of the factory
 	virtual FactoryType			factoryType		( void )
 	{ return FTyActuator; }
+	
+	//! the name used to save this factory
+	virtual QString			factoryName			( void )
+	{ return "Actuator.Factory.Default"; }
 
 	//! create an actuator;
 	virtual Actuator *		create					( Actor * ag, ID id ) = 0;

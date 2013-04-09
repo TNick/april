@@ -103,8 +103,12 @@ protected:
 public:
 	
 	//! the generic type of the factory
-	virtual FactoryType			factoryType		( void )
+	virtual FactoryType		factoryType			( void )
 	{ return FTyEvent; }
+	
+	//! the name used to save this factory
+	virtual QString			factoryName			( void )
+	{ return "Event.Factory.Default"; }
 
 	//! create an actuator;
 	virtual EventSource *	create				( ID id ) = 0;

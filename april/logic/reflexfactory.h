@@ -97,8 +97,12 @@ protected:
 public:
 	
 	//! the generic type of the factory
-	virtual FactoryType			factoryType		( void )
+	virtual FactoryType		factoryType			( void )
 	{ return FTyReflex; }
+	
+	//! the name used to save this factory
+	virtual QString			factoryName			( void )
+	{ return "Reflex.Factory.Default"; }
 
 	//! create an actuator;
 	virtual Reflex *		create				( Actor * ag, ID id ) = 0;

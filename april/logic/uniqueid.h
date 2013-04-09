@@ -143,6 +143,8 @@ public:
 	//! load the list of values and strings; current content is wiped out
 	bool			load			( QSettings & stg );
 	
+	//! tell if two classes are equal
+	bool			operator ==		( const UniqueId & other ) const;
 
 	/*  FUNCTIONS    ======================================================= */
 	//

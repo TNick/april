@@ -4,10 +4,10 @@
   \file			uniqueid.cc
   \date			Apr 2013
   \author		TNick
-
+  
   \brief		Contains the implementation of UniqueId class
-
-
+  
+  
 *//*
 
 
@@ -147,7 +147,7 @@ bool			UniqueId::save		( QSettings & stg ) const
 		stg.setArrayIndex( i );
 		stg.setValue( "id", itr.key() );
 		stg.setValue( "value", itr.value() );
-	
+		
 		itr++;
 		i++;
 	}
@@ -179,6 +179,23 @@ bool			UniqueId::load		( QSettings & stg )
 	
 	stg.endGroup();
 	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			UniqueId::operator ==	( const UniqueId & other ) const
+{
+	if ( my_name_ == other.my_name_ )
+	{
+		if ( first_free_ == other.first_free_ )
+		{
+			if ( map_ == other.map_ )
+			{
+				return true;
+			}
+		}
+	}
+	return false;
 }
 /* ========================================================================= */
 
