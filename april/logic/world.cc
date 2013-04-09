@@ -24,6 +24,7 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include	"world.h"
+#include	"worldfactory.h"
 #include	"director.h"
 #include	"actor.h"
 #include	"actorfactory.h"
@@ -90,18 +91,27 @@ World::World	( const QString & name, quint64 tot_energ )
 /* ------------------------------------------------------------------------- */
 World *			World::fromStg			( QSettings & stg )
 {
-	World * ret =  new World( "", 0 );
-	
-	for ( ;; )
+	stg.beginGroup( "april-World" );
+	QString factory_name = stg.value( "factory_name" ).toString();
+	Factory * f = AprilLibrary::factoryForString( factory_name );
+	WorldFactory * wf;
+	if ( f == NULL )
 	{
-		if ( ret->load( stg ) == false )
-			break;
-		return ret;
+		stg.endGroup();
+		return NULL;
 	}
-	
-	DEC_REF(ret,ret);
-	AprilLibrary::remWorld( ret );
-	return NULL;
+	else if ( f->factoryType() != FTyWorld )
+	{
+		DEC_REF(f,f);
+		stg.endGroup();
+		return NULL;
+	}
+	stg.endGroup();
+	wf = static_cast<WorldFactory*>(f);
+	World * world = wf->create( stg );
+	DEC_REF(f,f);
+
+	return world;
 }
 /* ========================================================================= */
 
@@ -188,6 +198,13 @@ void				World::advance				( void )
 		return;
 	
 	director_->advance();
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+QString				World::factoryName			( void ) const
+{
+	return AprilLibrary::defaultWorldFactoryName();
 }
 /* ========================================================================= */
 
@@ -648,9 +665,33 @@ bool				World::save				( QSettings & stg ) const
 	if ( isRunning() )
 		return false;
 	int		i_cnt;
+	bool	b = true;
 	
-	bool b = true;
 	stg.beginGroup( "april-World" );
+	stg.setValue( "factory_name", factoryName() );
+	
+	
+	
+	
+	stg.endGroup();
+	return b;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	for (;;)	{
 		

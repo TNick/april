@@ -101,7 +101,10 @@ protected:
 	virtual					~ActorFactory		( void );
 
 public:
-
+	
+	//! the generic type of the factory
+	virtual FactoryType			factoryType		( void )
+	{ return FTyActor; }
 
 	//! copies default DNA from internal storage to destination
 	virtual void			copyDefaultDNA		( DNA & destination )

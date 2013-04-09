@@ -40,6 +40,21 @@ namespace   april    {
 class	World;
 class	ActorComp;
 
+//! types of factories
+enum	FactoryType		{
+	FTyGeneric = 0,
+	FTyActor,
+	FTyActuator,
+	FTyBrain,
+	FTyEvent,
+	FTyReflex,
+	FTySensor,
+	FTyWorld,
+	
+	FTyMax
+};
+
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -100,6 +115,10 @@ protected:
 	virtual						~Factory		( void );
 	
 public:
+	
+	//! the generic type of the factory
+	virtual FactoryType			factoryType		( void )
+	{ return FTyGeneric; }
 	
 	//! the world that hosts us;
 	inline World *				world			( void ) const

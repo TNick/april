@@ -75,5 +75,6 @@ SOURCES += \
     ../../../april/tests/simplerun.cpp \
     ../../../april/tests/eventline.cc \
     ../../../april/tests/plugins.cc \
-    ../../../april/tests/saveload.cc
+    ../../../april/tests/saveload.cc \
+    ../../../april/tests/saveload2.cc
 

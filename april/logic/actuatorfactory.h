@@ -95,6 +95,10 @@ protected:
 	virtual					~ActuatorFactory		( void );
 
 public:
+	
+	//! the generic type of the factory
+	virtual FactoryType			factoryType		( void )
+	{ return FTyActuator; }
 
 	//! create an actuator;
 	virtual Actuator *		create					( Actor * ag, ID id ) = 0;
@@ -102,15 +106,15 @@ public:
 protected:
 
 	//! add this class to the world
-	bool					addMyself			( ID id );
+	bool					addMyself				( ID id );
 
 public:
 
 	//! save to a QSettings object
-	virtual bool		save					( QSettings & s ) const;
+	virtual bool		save						( QSettings & s ) const;
 	
 	//! load from a QSettings object
-	virtual bool		load					( QSettings & s );
+	virtual bool		load						( QSettings & s );
 
 	/*  FUNCTIONS    ======================================================= */
 	//

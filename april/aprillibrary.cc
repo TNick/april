@@ -32,6 +32,7 @@
 #include	<QPluginLoader>
 #include	<QDir>
 #include	<QDebug>
+#include	<april/logic/worldfactory.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -50,6 +51,7 @@ using namespace april;
 /*  DATA    ---------------------------------------------------------------- */
 
 AprilLibrary *	AprilLibrary::uniq_ = NULL;
+static const char *	default_factory_creator_name = "World.Factory.Default";
 
 /*  DATA    ================================================================ */
 //
@@ -71,6 +73,14 @@ AprilLibrary::AprilLibrary	( QObject * parent )
 	uniq_ = this;
 	
 	loadProps();
+	
+	/* create the factory for the default World */
+	WorldFactory * wf = new WorldFactory( default_factory_creator_name );
+	DEC_REF(wf,wf);
+	registerFactory( 
+				default_factory_creator_name,
+				AprilLibrary::defaultWorldFactoryCreator );
+	
 }
 /* ========================================================================= */
 
@@ -170,7 +180,6 @@ void			AprilLibrary::LibProps::load			( QSettings & s )
 	s.endGroup();
 }
 /* ========================================================================= */
-
 
 /* ------------------------------------------------------------------------- */
 void			AprilLibrary::addWorld					( World * world )
@@ -343,6 +352,117 @@ AprilPluginInterf *	AprilLibrary::findPlugInRel		( const QString & s )
 	return findPlugIn( s_file );
 }
 /* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				AprilLibrary::registerFactory	(
+		const QString & s_name, FactoryCreator callback )
+{
+	if ( uniq_->factories_src_.contains( s_name ) )
+	{
+		return false;
+	}
+	uniq_->factories_src_.insert( s_name, callback );
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				AprilLibrary::unregisterFactory	(
+		const QString & s_name, FactoryCreator callback )
+{
+	if ( s_name.isEmpty() )
+		return false;
+	QMap<QString,FactoryCreator>::Iterator itr = uniq_->factories_src_.find( s_name );
+	if ( itr == uniq_->factories_src_.end() )
+	{
+		return false;
+	}
+	if ( itr.value() != callback )
+	{
+		return false;
+	}
+	uniq_->factories_src_.erase( itr );
+	return true;	
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				AprilLibrary::remWorldFactory	( 
+		const QString & s, WorldFactory * inst )
+{
+	if ( s.isEmpty() )
+		return false;
+	QMap<QString,WorldFactory*>::Iterator itr = uniq_->world_factories_.find( s );
+	if ( itr == uniq_->world_factories_.end() )
+	{
+		return false;
+	}
+	if ( itr.value() != inst )
+	{
+		return false;
+	}
+	uniq_->world_factories_.erase( itr );
+	return true;	
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+Factory *			AprilLibrary::defaultWorldFactoryCreator	( const QString & s_name )
+{
+	Q_UNUSED( s_name );
+	
+	/* we don't need to create one because the default factory creator is always there */
+	WorldFactory * ret = uniq_->world_factories_.value( default_factory_creator_name );
+	if ( ret == NULL )
+	{
+		Q_ASSERT( false );
+		return NULL;
+	}
+	INC_REF(ret,ret);
+	return ret;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				AprilLibrary::addWorldFactory	( 
+		const QString & s, WorldFactory * inst )
+{
+	if ( uniq_->world_factories_.contains( s ) )
+	{
+		return false;
+	}
+	INC_REF(inst,uniq_);
+	uniq_->world_factories_.insert( s, inst );
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+QString				AprilLibrary::defaultWorldFactoryName		( void )
+{
+	return default_factory_creator_name;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+Factory *			AprilLibrary::factoryForString				( 
+		const QString & s_name )
+{
+	FactoryCreator fc = uniq_->factories_src_.value( s_name );
+	if ( fc == NULL )
+		return NULL;
+	Factory * ret = fc( s_name );
+	return ret;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+WorldFactory *		AprilLibrary::findWorldFactory		( const QString & s )
+{
+	return uniq_->world_factories_.value( s );
+}
+/* ========================================================================= */
+
 
 #ifdef	APRIL_SIGNALS
 

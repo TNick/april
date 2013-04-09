@@ -96,6 +96,10 @@ protected:
 
 
 public:
+	
+	//! the generic type of the factory
+	virtual FactoryType			factoryType		( void )
+	{ return FTyBrain; }
 
 	//! create an actuator;
 	virtual Brain *		create					( Actor * ag, ID id ) = 0;

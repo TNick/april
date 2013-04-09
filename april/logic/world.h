@@ -178,6 +178,8 @@ public:
 	//! one unit of time passed
 	void				advance				( void );
 	
+	//! name of the factory that created this instance
+	virtual QString		factoryName			( void ) const;
 
 	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
 	/** @name Director

@@ -1,0 +1,39 @@
+
+namespace   april    {
+
+/**
+
+\page	saveload  Saving and loading
+
+The world may be saved and loaded through the use of factories.
+
+The save process is initiated with a call to World::save(). The only format 
+that is supported right now is the one using QSettings. If World class
+is subclassed then the new implementation may call World::save() as part of its
+run.
+
+For the components that are created using a Factory the initial creation and
+subsequent steps must be reproduced. As such, the factory that produced the
+component and the ID that was used is saved. When loading, the process is
+reversed by calling the Factory again. In order to be able to load their
+products, the factories must register themselves with the library.
+
+At library level (AprilLibrary class) a list of callbacks that are capable of
+creating/retrieving factories is maintained. Each entry in this list is
+associated with a string. Whenever a component needs to be created following
+steps are taken:
+- the item as saved in the file is querried for the string identifying the Factory
+- AprilLibrary::factoryForString() is called to identify a factory provider
+(callback) that is requested to create/retrieve a factory
+- the Factory is called and requested to create the new item
+
+
+
+<br><br><hr>
+<table width=100%><tr><td> \ref AprilDream </td>
+<td align=center> <a href="index.html">Documentation root</a> </td>
+<td align=right>  </td>
+</tr></table>
+*/
+
+}   //  namespace   april

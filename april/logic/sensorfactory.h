@@ -95,6 +95,10 @@ protected:
 	virtual					~SensorFactory		( void );
 
 public:
+	
+	//! the generic type of the factory
+	virtual FactoryType			factoryType		( void )
+	{ return FTySensor; }
 
 	//! create an actuator;
 	virtual Sensor *		create				( Actor * ag, ID id ) = 0;

@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			eventfactory.h
+  \file			worldfactory.h
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the definition for EventFactory class
+  \brief		Contains the definition for WorldFactory class
 
 
 *//*
@@ -17,8 +17,8 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __EVENTFACTORY_INC__
-#define __EVENTFACTORY_INC__
+#ifndef __WORLDFACTORY_INC__
+#define __WORLDFACTORY_INC__
 //
 //
 //
@@ -37,8 +37,6 @@
 
 namespace   april    {
 
-class	EventSource;
-
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -47,17 +45,12 @@ class	EventSource;
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief	Factory class for events
-*
-*	Each such class may be capable of creating one or more
-*	types or events. At construction time each such type (ID)
-*	must be associated with this instance in the World with 
-*	World::addEventFactory().
+*	@brief	Class capable of creating worlds
 */
 class
 	APRILSHARED_EXPORT
-	EventFactory		: public Factory		{
-	BBM_TRACK( EventFactory );
+	WorldFactory		: public Factory		{
+	BBM_TRACK( WorldFactory );
 
 	//
 	//
@@ -85,40 +78,25 @@ private:
 
 public:
 
+	//! constructor;
+	WorldFactory			( const QString & s );
 
-	/**
-	*	@brief	constructor;
-	*/
-	EventFactory			( World * w );
-
-
-protected:
-
-	/**
-	*	@brief	destructor;
-	*/
-	virtual					~EventFactory		( void );
-
-
-public:
+	//! destructor;
+	virtual					~WorldFactory		( void );
 	
 	//! the generic type of the factory
 	virtual FactoryType			factoryType		( void )
-	{ return FTyEvent; }
+	{ return FTyWorld; }
 
-	//! create an actuator;
-	virtual EventSource *	create				( ID id ) = 0;
+	//! create a world; the base class implementation creates a basic World
+	virtual World *			create				(
+			const QString &			name,
+			quint64					tot_energ
+			);
 
-	//! save to a QSettings object
-	virtual bool			save				( QSettings & s ) const;
-	
-	//! load from a QSettings object
-	virtual bool			load				( QSettings & s );
+	//! create a world from the settings object
+	virtual World *			create				( QSettings & stg );
 
-protected:
-
-	//! add this class to the world
-	bool					addMyself			( ID id );
 
 	/*  FUNCTIONS    ======================================================= */
 	//
@@ -126,7 +104,7 @@ protected:
 	//
 	//
 
-};	/*	class EventFactory	*/
+};	/*	class WorldFactory	*/
 
 /*  CLASS    =============================================================== */
 //
@@ -136,6 +114,6 @@ protected:
 
 }   //  namespace   april
 
-#endif // __EVENTFACTORY_INC__
+#endif // __WORLDFACTORY_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */

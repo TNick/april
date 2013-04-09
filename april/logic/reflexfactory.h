@@ -95,6 +95,10 @@ protected:
 	virtual					~ReflexFactory		( void );
 
 public:
+	
+	//! the generic type of the factory
+	virtual FactoryType			factoryType		( void )
+	{ return FTyReflex; }
 
 	//! create an actuator;
 	virtual Reflex *		create				( Actor * ag, ID id ) = 0;

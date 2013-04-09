@@ -28,6 +28,7 @@
 #include    <april/april.h>
 #include    <QObject>
 #include    <QSettings>
+#include    <QMap>
 #include    <libbbb/1/list2d.h>
 
 /*  INCLUDES    ============================================================ */
@@ -43,6 +44,16 @@ class	AprilPluginLoader;
 namespace   april    {
 
 class	World;
+class	Factory;
+class	WorldFactory;
+
+//! callback used to create factories
+/**
+*	The callback must provide a reference to the caller. The reference is 
+*	owned by the Factory.
+*/
+typedef Factory *		(*FactoryCreator)	( const QString & s_name );
+
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -67,17 +78,13 @@ class
 	/*  DEFINITIONS    ----------------------------------------------------- */
 
 	friend class World;
+	friend class WorldFactory;
 	
 
 public:
 
-
-	/**
-	*	@brief	entire set of properties
-	*/
+	//! entire set of properties
 	struct		LibProps			{
-
-
 
 		void save ( QSettings & s );
 		void load ( QSettings & s );
@@ -93,30 +100,26 @@ public:
 
 private:
 
-
-	/**
-	*	@brief	the properties
-	*/
+	//! the properties
 	LibProps						props_;
 
-	/**
-	*	@brief	associated worlds
-	*/
+	//! associated worlds
 	List2Dh							worlds_;
 
-	/**
-	*	@brief	list of loaded plug-ins
-	*/
+	//! list of loaded plug-ins
 	List2Dh							plugins_;
 
-	/**
-	*	@brief	default world
-	*/
+	//! default world
 	World *							def_world_;
 
-	/**
-	*	@brief	the one and only instance
-	*/
+	//! world factories
+	QMap<QString,WorldFactory*>		world_factories_;
+
+	//! factories creators
+	QMap<QString,FactoryCreator>	factories_src_;
+
+
+	//! the one and only instance
 	static AprilLibrary *			uniq_;
 
 
@@ -249,6 +252,73 @@ public:
 
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
+
+
+	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
+	/** @name Factory related functionality
+	 */
+	///@{
+
+public:
+	
+	//! register a callback for a particular Factory
+	static bool					registerFactory		( 
+			const QString &			s_name,
+			FactoryCreator			callback
+			);
+	
+	//! unregister a callback for a particular Factory
+	static bool					unregisterFactory		( 
+			const QString &			s_name,
+			FactoryCreator			callback
+			);
+
+	//! get the name used by the defalt WorldFactory
+	static QString				defaultWorldFactoryName	( void );
+	
+	//! get the factory that coresponds to given string
+	static Factory *			factoryForString	(
+			const QString &			s_name
+			);
+
+	//! find a world factory in internal list
+	/**
+	 * The method does not add a reference; the caller must do that itself
+	 * @param s the string to search
+	 * @return the pointer or NULL if not found
+	 */
+	static WorldFactory *		findWorldFactory		(
+			const QString &			s
+			);
+
+protected:
+
+	//! adds a world factory to internal list
+	static bool					addWorldFactory		(
+			const QString &			s,
+			WorldFactory *			inst
+			);
+			
+	//! removes a world factory from internal list
+	static bool					remWorldFactory		(
+			const QString &			s, 
+			WorldFactory *			inst
+			);
+	
+private:
+
+	//! factory creator for default worlds
+	/**
+	 * The caller recieves a reference to the Factory that it should release 
+	 * at some point
+	 * @param s_name ignored
+	 * @return the factory instance
+	 */
+	static Factory *			defaultWorldFactoryCreator	( const QString & s_name );
+	
+	///@}
+	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
+
 
 
 	/*  FUNCTIONS    ======================================================= */
