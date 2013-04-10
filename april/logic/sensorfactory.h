@@ -97,7 +97,7 @@ protected:
 public:
 	
 	//! the generic type of the factory
-	virtual FactoryType			factoryType		( void )
+	virtual FactoryType		factoryType			( void )
 	{ return FTySensor; }
 	
 	//! the name used to save this factory
@@ -105,7 +105,15 @@ public:
 	{ return "Sensor.Factory.Default"; }
 
 	//! create an actuator;
-	virtual Sensor *		create				( Actor * ag, ID id ) = 0;
+	/**
+	 * By default this method creates a simple Sensor.
+	 * The caller recieves a reference that should eventually discard.
+	 *
+	 * @param id The id that is requested; the implementation does 
+	 * not use this parameter
+	 * @return either a pointer or NULL
+	 */
+	virtual Sensor *		create				( Actor * ag, ID id );
 
 	//! save to a QSettings object
 	virtual bool			save				( QSettings & s ) const;

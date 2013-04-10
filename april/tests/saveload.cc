@@ -11,6 +11,8 @@
 #include	<april/logic/reflexfactory.h>
 #include	<april/logic/sensor.h>
 #include	<april/logic/sensorfactory.h>
+#include	<april/logic/eventsource.h>
+#include	<april/logic/eventfactory.h>
 
 #include	<QTemporaryFile>
 
@@ -131,61 +133,9 @@ public:
 /* ----------------------------------------------------- */
 
 
-Factory * factoryCreatorActor ( World * w, const QString & s_name )
-{
-	Q_UNUSED( s_name );
-	return new ActorFactory(w);
-}
-Factory * factoryCreatorEventSource ( World * w, const QString & s_name )
-{
-	Q_UNUSED( s_name );
-	return new EventFactory(w);
-}
-Factory * factoryCreatorSensor ( World * w, const QString & s_name )
-{
-	Q_UNUSED( s_name );
-	return new SensorFactory(w);
-}
-Factory * factoryCreatorActuator ( World * w, const QString & s_name )
-{
-	Q_UNUSED( s_name );
-	return new ActuatorFactory(w);
-}
-Factory * factoryCreatorReflex ( World * w, const QString & s_name )
-{
-	Q_UNUSED( s_name );
-	return new ReflexFactory(w);
-}
-Factory * factoryCreatorBrain ( World * w, const QString & s_name )
-{
-	Q_UNUSED( s_name );
-	return new BrainFactory(w);
-}
-
 void registerFactoryCreators()
 {
 	/* register factory creators so that they may be later retrieved */
-	AprilLibrary::registerFactory( 
-				saveload2_cc::f_world_name, 
-				saveload2_cc::factoryCreatorWorlds );
-	AprilLibrary::registerFactory( 
-				saveload2_cc::f_actor_name, 
-				saveload2_cc::factoryCreatorActor );
-	AprilLibrary::registerFactory( 
-				saveload2_cc::f_event_name, 
-				saveload2_cc::factoryCreatorEventSource );
-	AprilLibrary::registerFactory( 
-				saveload2_cc::f_sensor_name, 
-				saveload2_cc::factoryCreatorSensor );
-	AprilLibrary::registerFactory( 
-				saveload2_cc::f_actuator_name, 
-				saveload2_cc::factoryCreatorActuator );
-	AprilLibrary::registerFactory( 
-				saveload2_cc::f_reflex_name, 
-				saveload2_cc::factoryCreatorReflex );
-	AprilLibrary::registerFactory( 
-				saveload2_cc::f_brain_name, 
-				saveload2_cc::factoryCreatorBrain );
 }
 
 
@@ -255,11 +205,14 @@ TEST(SaveLoad, actor_factory) {
 	World * w = new World( __FUNCTION__, 1000 );
 	DEC_REF( w, w );
 	
-	Actor * a = new Actor( w );
+	ActorFactory * af = new ActorFactory( w );
+	Actor * a = af->create( 1 );
 	DEC_REF( a, a );
 	
-	EXPECT_FALSE( saveload_cc::saveTest( w, tf.fileName() ) );
-		
+	EXPECT_TRUE( saveload_cc::saveTest( w, tf.fileName() ) );
+	World * loaded_world = saveload_cc::loadTest( tf.fileName() );
+	EXPECT_TRUE( loaded_world != NULL );
+	
 	endAprilLibrary();
 }	
 

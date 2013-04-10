@@ -105,7 +105,15 @@ public:
 	{ return "Actuator.Factory.Default"; }
 
 	//! create an actuator;
-	virtual Actuator *		create					( Actor * ag, ID id ) = 0;
+	/**
+	 * By default this method creates a simple Actuator.
+	 * The caller recieves a reference that should eventually discard.
+	 *
+	 * @param id The id that is requested; the implementation does 
+	 * not use this parameter
+	 * @return either a pointer or NULL
+	 */
+	virtual Actuator *		create					( Actor * ag, ID id );
 
 protected:
 

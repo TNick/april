@@ -95,13 +95,11 @@ Sensor *			Sensor::fromStg				( Actor * a, QSettings & stg )
 	f = AprilLibrary::factoryForString( a->world(), factory_name );
 	if ( f == NULL )
 	{
-		stg.endGroup();
 		return NULL;
 	}
 	else if ( f->factoryType() != FTySensor )
 	{
 		DEC_REF(f,f);
-		stg.endGroup();
 		return NULL;
 	}
 	sensor_factory = static_cast<SensorFactory*>(f);

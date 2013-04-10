@@ -95,13 +95,11 @@ Reflex *			Reflex::fromStg				( Actor * a, QSettings & stg )
 	f = AprilLibrary::factoryForString( a->world(), factory_name );
 	if ( f == NULL )
 	{
-		stg.endGroup();
 		return NULL;
 	}
 	else if ( f->factoryType() != FTyReflex )
 	{
 		DEC_REF(f,f);
-		stg.endGroup();
 		return NULL;
 	}
 	reflex_factory = static_cast<ReflexFactory*>(f);

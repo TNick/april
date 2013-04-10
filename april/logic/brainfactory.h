@@ -106,7 +106,15 @@ public:
 	{ return "Brain.Factory.Default"; }
 
 	//! create an actuator;
-	virtual Brain *		create					( Actor * ag, ID id ) = 0;
+	/**
+	 * By default this method creates a simple Brain.
+	 * The caller recieves a reference that should eventually discard.
+	 *
+	 * @param id The id that is requested; the implementation does 
+	 * not use this parameter
+	 * @return either a pointer or NULL
+	 */
+	virtual Brain *		create					( Actor * ag, ID id );
 
 	//! save to a QSettings object
 	virtual bool		save					( QSettings & s ) const;

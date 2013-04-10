@@ -291,7 +291,7 @@ public:
 	static WorldFactory *		findWorldFactory		(
 			const QString &			s
 			);
-
+	
 protected:
 
 	//! adds a world factory to internal list
@@ -319,6 +319,10 @@ private:
 			World *				w,
 			const QString &		s_name
 			);
+	
+	//! register build-in factories
+	void						registerFactoryCreators		( void );
+
 	
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */

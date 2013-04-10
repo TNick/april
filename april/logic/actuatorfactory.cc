@@ -23,6 +23,7 @@
 //
 /*  INCLUDES    ------------------------------------------------------------ */
 
+#include	"actuator.h"
 #include	"actuatorfactory.h"
 #include	"world.h"
 #include	<QSettings>
@@ -70,6 +71,18 @@ ActuatorFactory::~ActuatorFactory	( void )
 {
 	APRDBG_CDTOR;
 	/* stub */
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+Actuator *			ActuatorFactory::create				( Actor * ag, ID id )
+{
+	Q_UNUSED( id );
+	if ( world() == NULL )
+		return NULL;
+	
+	Actuator * ret = new Actuator( ag, 1, 10 );
+	return ret;
 }
 /* ========================================================================= */
 

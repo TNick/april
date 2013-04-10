@@ -106,13 +106,11 @@ Actor *		Actor::fromStg		( World * w, QSettings & stg )
 	f = AprilLibrary::factoryForString( w, factory_name );
 	if ( f == NULL )
 	{
-		stg.endGroup();
 		return NULL;
 	}
 	else if ( f->factoryType() != FTyActor )
 	{
 		DEC_REF(f,f);
-		stg.endGroup();
 		return NULL;
 	}
 	actor_factory = static_cast<ActorFactory*>(f);

@@ -23,6 +23,7 @@
 //
 /*  INCLUDES    ------------------------------------------------------------ */
 
+#include	"eventsource.h"
 #include	"eventfactory.h"
 #include	"world.h"
 #include	<QSettings>
@@ -70,6 +71,16 @@ EventFactory::~EventFactory	( void )
 {
 	APRDBG_CDTOR;
 	/* stub */
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+EventSource *		EventFactory::create			( ID id )
+{
+	Q_UNUSED( id );
+	if ( world() == NULL )
+		return NULL;
+	return new EventSource( world() );
 }
 /* ========================================================================= */
 

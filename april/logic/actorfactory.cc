@@ -75,8 +75,39 @@ ActorFactory::~ActorFactory	( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+Actor *				ActorFactory::create			( ID id )
+{ FUNC_ENTRY;
+	if ( world() == NULL )
+		return NULL;
+	if ( default_dna_.isValid() == false )
+	{
+		DNA::InitData	idata;
+		idata.kind_ = id;
+		idata.cost_ = 1;
+		idata.age_= 100;
+		idata.energy_= 100;
+		initDNA( idata );
+	}
+	else
+	{
+		if ( default_dna_.kind() != id )
+			return NULL;
+	}
+	Actor * ret = new Actor( world() );
+	setDNA( ret );
+	if ( ret->decodeDNA() == false )
+	{
+		DEC_REF(ret,ret);
+		world()->remActor( ret );
+		ret = NULL;
+	}
+	return ret;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
 bool				ActorFactory::addMyself			( ID id )
-{
+{ FUNC_ENTRY;
 	Q_ASSERT( id != InvalidId );
 	return world()->addActorFactory( this, id );
 }
@@ -85,7 +116,7 @@ bool				ActorFactory::addMyself			( ID id )
 /* ------------------------------------------------------------------------- */
 void				ActorFactory::setDNA			( 
 	Actor * a, const DNA & dna )
-{
+{ FUNC_ENTRY;
 	Q_ASSERT( a != NULL );
 	a->setDNA( dna );
 }

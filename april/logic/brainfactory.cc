@@ -23,6 +23,7 @@
 //
 /*  INCLUDES    ------------------------------------------------------------ */
 
+#include	"brain.h"
 #include	"brainfactory.h"
 #include	"world.h"
 #include	<QSettings>
@@ -70,6 +71,18 @@ BrainFactory::~BrainFactory	( void )
 {
 	APRDBG_CDTOR;
 	/* stub */
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+Brain *				BrainFactory::create			( Actor * ag, ID id )
+{
+	Q_UNUSED( id );
+	if ( world() == NULL )
+		return NULL;
+	
+	Brain * ret = new Brain( ag, 1, 10 );
+	return ret;
 }
 /* ========================================================================= */
 

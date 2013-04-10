@@ -105,15 +105,23 @@ public:
 	{ return "Reflex.Factory.Default"; }
 
 	//! create an actuator;
-	virtual Reflex *		create				( Actor * ag, ID id ) = 0;
+	/**
+	 * By default this method creates a simple Reflex.
+	 * The caller recieves a reference that should eventually discard.
+	 *
+	 * @param id The id that is requested; the implementation does 
+	 * not use this parameter
+	 * @return either a pointer or NULL
+	 */
+	virtual Reflex *		create				( Actor * ag, ID id );
 
 public:
 
 	//! save to a QSettings object
-	virtual bool		save					( QSettings & s ) const;
+	virtual bool			save				( QSettings & s ) const;
 	
 	//! load from a QSettings object
-	virtual bool		load					( QSettings & s );
+	virtual bool			load				( QSettings & s );
 
 protected:
 

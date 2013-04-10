@@ -23,6 +23,7 @@
 //
 /*  INCLUDES    ------------------------------------------------------------ */
 
+#include	"reflex.h"
 #include	"reflexfactory.h"
 #include	"world.h"
 #include	<QSettings>
@@ -70,6 +71,18 @@ ReflexFactory::~ReflexFactory	( void )
 {
 	APRDBG_CDTOR;
 	/* stub */
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+Reflex *			ReflexFactory::create				( Actor * ag, ID id )
+{
+	Q_UNUSED( id );
+	if ( world() == NULL )
+		return NULL;
+	
+	Reflex * ret = new Reflex( ag, 1, 10 );
+	return ret;
 }
 /* ========================================================================= */
 

@@ -24,6 +24,7 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include	"sensorfactory.h"
+#include	"sensor.h"
 #include	"world.h"
 #include	<QSettings>
 
@@ -70,6 +71,18 @@ SensorFactory::~SensorFactory	( void )
 {
 	APRDBG_CDTOR;
 	/* stub */
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+Sensor *			SensorFactory::create			( Actor * ag, ID id )
+{
+	Q_UNUSED( id );
+	if ( world() == NULL )
+		return NULL;
+	
+	Sensor * ret = new Sensor( ag, 1, 10 );
+	return ret;
 }
 /* ========================================================================= */
 

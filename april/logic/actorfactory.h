@@ -115,12 +115,22 @@ public:
 	{ destination = default_dna_; }
 
 	//! create a new actor
-	virtual Actor *			create				( ID id ) = 0;
+	/**
+	 * By default this method creates a simple Actor based on the
+	 * default_dna_. The method fails if the id in DNA is not the 
+	 * same as the one that was required.
+	 *
+	 * The caller recieves a reference that should eventually discard.
+	 *
+	 * @param id The id that is requested
+	 * @return either a pointer or NULL
+	 */
+	virtual Actor *			create				( ID id );
 
-	//! create a new actor from saved settings
-	/** @deprecated */
-	virtual Actor *			create				( QSettings & stg )
-	{ Q_UNUSED(stg); return NULL;}
+//	//! create a new actor from saved settings
+//	/** @deprecated */
+//	virtual Actor *			create				( QSettings & stg )
+//	{ Q_UNUSED(stg); return NULL;}
 
 	//! save to a QSettings object
 	virtual bool			save				( QSettings & s ) const;

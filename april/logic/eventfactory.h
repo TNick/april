@@ -105,7 +105,15 @@ public:
 	{ return "Event.Factory.Default"; }
 
 	//! create an event source;
-	virtual EventSource *	create				( ID id ) = 0;
+	/**
+	 * By default this method creates a simple EventSource.
+	 * The caller recieves a reference that should eventually discard.
+	 *
+	 * @param id The id that is requested; the implementation does 
+	 * not use this parameter
+	 * @return either a pointer or NULL
+	 */
+	virtual EventSource *	create				( ID id );
 
 	//! create an event source;
 	/** @deprecated */

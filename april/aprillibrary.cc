@@ -26,13 +26,26 @@
 #include	"aprillibrary.h"
 
 #include	<libbbb/bbblibrary.h>
-#include	<april/logic/world.h>
 #include	<april/plugins/aprilplugininterf.h>
 #include	<QSettings>
 #include	<QPluginLoader>
 #include	<QDir>
 #include	<QDebug>
+
+#include	<april/logic/world.h>
 #include	<april/logic/worldfactory.h>
+#include	<april/logic/actor.h>
+#include	<april/logic/actorfactory.h>
+#include	<april/logic/brain.h>
+#include	<april/logic/brainfactory.h>
+#include	<april/logic/actuator.h>
+#include	<april/logic/actuatorfactory.h>
+#include	<april/logic/reflex.h>
+#include	<april/logic/reflexfactory.h>
+#include	<april/logic/sensor.h>
+#include	<april/logic/sensorfactory.h>
+#include	<april/logic/eventsource.h>
+#include	<april/logic/eventfactory.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -51,7 +64,14 @@ using namespace april;
 /*  DATA    ---------------------------------------------------------------- */
 
 AprilLibrary *	AprilLibrary::uniq_ = NULL;
-static const char *	default_factory_creator_name = "World.Factory.Default";
+
+static const char *	name_deffact_world = "World.Factory.Default";
+static const char *	name_deffact_actor = "Actor.Factory.Default";
+static const char *	name_deffact_sensor = "Sensor.Factory.Default";
+static const char *	name_deffact_actuator = "Actuator.Factory.Default";
+static const char *	name_deffact_brain = "Brain.Factory.Default";
+static const char *	name_deffact_reflex = "Reflex.Factory.Default";
+static const char *	name_deffact_event = "Event.Factory.Default";
 
 /*  DATA    ================================================================ */
 //
@@ -75,12 +95,9 @@ AprilLibrary::AprilLibrary	( QObject * parent )
 	loadProps();
 	
 	/* create the factory for the default World */
-	WorldFactory * wf = new WorldFactory( default_factory_creator_name );
+	WorldFactory * wf = new WorldFactory( name_deffact_world );
 	DEC_REF(wf,wf);
-	registerFactory( 
-				default_factory_creator_name,
-				AprilLibrary::defaultWorldFactoryCreator );
-	
+	registerFactoryCreators();
 }
 /* ========================================================================= */
 
@@ -413,7 +430,7 @@ Factory *			AprilLibrary::defaultWorldFactoryCreator	( World * w, const QString 
 	Q_UNUSED( w );
 	
 	/* we don't need to create one because the default factory creator is always there */
-	WorldFactory * ret = uniq_->world_factories_.value( default_factory_creator_name );
+	WorldFactory * ret = uniq_->world_factories_.value( name_deffact_world );
 	if ( ret == NULL )
 	{
 		Q_ASSERT( false );
@@ -441,7 +458,7 @@ bool				AprilLibrary::addWorldFactory	(
 /* ------------------------------------------------------------------------- */
 QString				AprilLibrary::defaultWorldFactoryName		( void )
 {
-	return default_factory_creator_name;
+	return name_deffact_world;
 }
 /* ========================================================================= */
 
@@ -464,6 +481,68 @@ WorldFactory *		AprilLibrary::findWorldFactory		( const QString & s )
 }
 /* ========================================================================= */
 
+/* ------------------------------------------------------------------------- */
+static Factory *		factoryCreatorActor			(
+		World * w, const QString & s_name )
+{
+	Q_UNUSED( s_name );
+	return new ActorFactory(w);
+}
+static Factory *		factoryCreatorEventSource	(
+	World * w, const QString & s_name )
+{
+	Q_UNUSED( s_name );
+	return new EventFactory(w);
+}
+static Factory *		factoryCreatorSensor		(
+	World * w, const QString & s_name )
+{
+	Q_UNUSED( s_name );
+	return new SensorFactory(w);
+}
+static Factory *		factoryCreatorActuator		(
+	World * w, const QString & s_name )
+{
+	Q_UNUSED( s_name );
+	return new ActuatorFactory(w);
+}
+static Factory *		factoryCreatorReflex		(
+	World * w, const QString & s_name )
+{
+	Q_UNUSED( s_name );
+	return new ReflexFactory(w);
+}
+static Factory *		factoryCreatorBrain			(
+	World * w, const QString & s_name )
+{
+	Q_UNUSED( s_name );
+	return new BrainFactory(w);
+}
+void		AprilLibrary::registerFactoryCreators		( void )
+{
+	AprilLibrary::registerFactory( 
+				name_deffact_world, 
+				AprilLibrary::defaultWorldFactoryCreator );
+	AprilLibrary::registerFactory( 
+				name_deffact_actor, 
+				factoryCreatorActor );
+	AprilLibrary::registerFactory( 
+				name_deffact_event, 
+				factoryCreatorEventSource );
+	AprilLibrary::registerFactory( 
+				name_deffact_sensor, 
+				factoryCreatorSensor );
+	AprilLibrary::registerFactory( 
+				name_deffact_actuator, 
+				factoryCreatorActuator );
+	AprilLibrary::registerFactory( 
+				name_deffact_reflex, 
+				factoryCreatorReflex );
+	AprilLibrary::registerFactory( 
+				name_deffact_brain, 
+				factoryCreatorBrain );
+}
+/* ========================================================================= */
 
 #ifdef	APRIL_SIGNALS
 
