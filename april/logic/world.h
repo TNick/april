@@ -463,7 +463,7 @@ protected:
 	 */
 	///@{
 	
-protected:
+public:
 
 	//! add one to the list of actor factories
 	bool			addActorFactory		( ActorFactory * factory, ID id );

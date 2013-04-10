@@ -202,48 +202,31 @@ TEST(SaveLoad, actor_factory) {
 	tf.open();
 	
 	initAprilLibrary();
-	World * w = new World( __FUNCTION__, 1000 );
-	DEC_REF( w, w );
+	World * test_world = new World( __FUNCTION__, 1000 );
+	DEC_REF( test_world, test_world );
+	test_world->payload().i_ = 11;
 	
-	ActorFactory * af = new ActorFactory( w );
-	Actor * a = af->create( 1 );
-	DEC_REF( a, a );
+	ActorFactory * af = new ActorFactory( test_world );
+	test_world->addActorFactory( af, 1 );
+	Actor * test_actor = test_world->createActor( 1 );
+	DEC_REF( test_actor, test_actor );
+	test_actor->payload().i_ = 11;
 	
-	EXPECT_TRUE( saveload_cc::saveTest( w, tf.fileName() ) );
+	EXPECT_TRUE( saveload_cc::saveTest( test_world, tf.fileName() ) );
 	World * loaded_world = saveload_cc::loadTest( tf.fileName() );
 	EXPECT_TRUE( loaded_world != NULL );
+	EXPECT_EQ( loaded_world->payload().i_, test_world->payload().i_ );
+	EXPECT_EQ( loaded_world->name(), test_world->name() );
+	EXPECT_EQ( loaded_world->currentTime(), test_world->currentTime() );
+	EXPECT_EQ( loaded_world->energy(), test_world->energy() );
+	EXPECT_EQ( loaded_world->energyBounded(), test_world->energyBounded() );
+	EXPECT_EQ( loaded_world->energyFree(), test_world->energyFree() );
+	EXPECT_TRUE( loaded_world->sameUId( test_world ) );
+	
+	Actor * loaded_actor = loaded_world->firstActor();
+	
+	EXPECT_TRUE( loaded_actor != NULL );
+	EXPECT_EQ( loaded_actor->payload().i_, test_actor->payload().i_ );
 	
 	endAprilLibrary();
 }	
-
-
-	
-	
-	
-	
-	
-	
-	
-	
-
-	
-//	saveload_cc::FBrn * bf = new saveload_cc::FBrn( w );
-//	DEC_REF( bf, bf );
-//	saveload_cc::FActu * af = new saveload_cc::FActu( w );
-//	DEC_REF( af, af );
-//	saveload_cc::FRefx * rf = new saveload_cc::FRefx( w );
-//	DEC_REF( rf, rf );
-//	saveload_cc::FSens * sf = new saveload_cc::FSens( w );
-//	DEC_REF( sf, sf );
-	
-//	saveload_cc::FAgent * fact = new saveload_cc::FAgent( w );
-//	DEC_REF( fact, fact );
-	
-//	Actor * a = w->createActor( saveload_cc::IdKind );
-//	Q_UNUSED( a );
-	
-//	w->start();
-//	w->advance();
-//	w->stop();
-	
-//}

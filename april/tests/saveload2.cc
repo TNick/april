@@ -964,7 +964,7 @@ TEST(SaveLoad2, basic) {
 	EXPECT_EQ( loaded_actuator->identificator(), test_actuator->identificator() );
 	EXPECT_EQ( loaded_actuator->factory()->factoryName(), 
 			   test_actuator->factory()->factoryName() );
-
+	
 	DEC_REF(loaded_world,loaded_world);
 	DEC_REF(test_world,test_world);
 	AprilLibrary::unregisterFactory( 
