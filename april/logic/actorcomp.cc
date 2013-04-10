@@ -36,6 +36,8 @@
 
 using namespace april;
 
+#define FUNC_ENTRY	APRDBG_FUNC(APRDBG_ACMP)
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -84,7 +86,7 @@ ActorComp::~ActorComp	( void )
 
 /* ------------------------------------------------------------------------- */
 bool				ActorComp::save				( QSettings & stg ) const
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-ActorComp" );
 	
@@ -106,7 +108,7 @@ bool				ActorComp::save				( QSettings & stg ) const
 
 /* ------------------------------------------------------------------------- */
 bool				ActorComp::load				( QSettings & stg )
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-ActorComp" );
 	

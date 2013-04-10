@@ -37,6 +37,8 @@
 
 using namespace april;
 
+#define FUNC_ENTRY	APRDBG_FUNC(APRDBG_ED)
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -72,7 +74,7 @@ EventData::EventData	( World * w, quint64 dt )
 
 /* ------------------------------------------------------------------------- */
 EventData *		EventData::fromStg			( EventLine * line, QSettings & stg )
-{
+{ FUNC_ENTRY;
 	EventData * ret = new EventData();
 	
 	for ( ;; )	{
@@ -99,14 +101,14 @@ EventData::~EventData	( void )
 
 /* ------------------------------------------------------------------------- */
 void			EventData::setDuration		( World * w, quint64 dt )
-{
+{ FUNC_ENTRY;
 	setDiscardTime( w->currentTime() + dt );
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 bool			EventData::save				( QSettings & stg ) const
-{
+{ FUNC_ENTRY;
 	bool	b = true;
 	stg.beginGroup( "april-EventData" );
 	
@@ -123,7 +125,7 @@ bool			EventData::save				( QSettings & stg ) const
 
 /* ------------------------------------------------------------------------- */
 bool			EventData::load				( QSettings & stg )
-{
+{ FUNC_ENTRY;
 	bool	b = true;
 
 	stg.beginGroup( "april-EventData" );

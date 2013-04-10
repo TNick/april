@@ -36,6 +36,8 @@
 
 using namespace april;
 
+#define FUNC_ENTRY	APRDBG_FUNC(APRDBG_FES)
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -69,7 +71,7 @@ EventFactory::~EventFactory	( void )
 
 /* ------------------------------------------------------------------------- */
 bool				EventFactory::addMyself			( ID id )
-{
+{ FUNC_ENTRY;
 	Q_ASSERT( id != InvalidId );
 	return world()->addEventFactory( this, id );
 }
@@ -77,7 +79,7 @@ bool				EventFactory::addMyself			( ID id )
 
 /* ------------------------------------------------------------------------- */
 bool				EventFactory::save				( QSettings & stg ) const
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-EventFactory" );
 	
@@ -95,7 +97,7 @@ bool				EventFactory::save				( QSettings & stg ) const
 
 /* ------------------------------------------------------------------------- */
 bool				EventFactory::load				( QSettings & stg )
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-EventFactory" );
 	

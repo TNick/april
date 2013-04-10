@@ -36,6 +36,8 @@
 
 using namespace april;
 
+#define FUNC_ENTRY	APRDBG_FUNC(APRDBG_FS)
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -69,7 +71,7 @@ SensorFactory::~SensorFactory	( void )
 
 /* ------------------------------------------------------------------------- */
 bool				SensorFactory::addMyself		( ID id )
-{
+{ FUNC_ENTRY;
 	Q_ASSERT( id != InvalidId );
 	return world()->addSensorFactory( this, id );
 }
@@ -77,7 +79,7 @@ bool				SensorFactory::addMyself		( ID id )
 
 /* ------------------------------------------------------------------------- */
 bool				SensorFactory::save				( QSettings & stg ) const
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-SensorFactory" );
 	
@@ -95,7 +97,7 @@ bool				SensorFactory::save				( QSettings & stg ) const
 
 /* ------------------------------------------------------------------------- */
 bool				SensorFactory::load				( QSettings & stg )
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-SensorFactory" );
 	

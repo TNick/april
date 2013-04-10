@@ -35,6 +35,8 @@
 
 using namespace april;
 
+#define FUNC_ENTRY	APRDBG_FUNC(APRDBG_UID)
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -84,14 +86,14 @@ ID				UniqueId::value		( const QString & s_name )
 
 /* ------------------------------------------------------------------------- */
 void			UniqueId::insert	( ID id, const QString & s_name )
-{
+{ FUNC_ENTRY;
 	map_.insert( id, s_name );
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 ID			UniqueId::addNew	( const QString & s_name )
-{
+{ FUNC_ENTRY;
 	while ( map_.contains( first_free_ ) )
 	{
 		first_free_++;
@@ -104,7 +106,7 @@ ID			UniqueId::addNew	( const QString & s_name )
 
 /* ------------------------------------------------------------------------- */
 ID				UniqueId::checkAdd	( const QString & s_name )
-{
+{ FUNC_ENTRY;
 	if ( s_name.isEmpty() )
 		return InvalidId;
 	ID i = map_.key( s_name, InvalidId );
@@ -118,7 +120,7 @@ ID				UniqueId::checkAdd	( const QString & s_name )
 
 /* ------------------------------------------------------------------------- */
 void			UniqueId::checkAdd	( ID id, const QString & s_name )
-{
+{ FUNC_ENTRY;
 	QMap<ID,QString>::Iterator itr = map_.find( id );
 	if ( itr == map_.end() )
 	{
@@ -133,7 +135,7 @@ void			UniqueId::checkAdd	( ID id, const QString & s_name )
 
 /* ------------------------------------------------------------------------- */
 bool			UniqueId::save		( QSettings & stg ) const
-{
+{ FUNC_ENTRY;
 	quint64 i = 0;
 	stg.beginGroup( "UniqueId" );
 	stg.setValue( "first_free_", first_free_ );
@@ -160,7 +162,7 @@ bool			UniqueId::save		( QSettings & stg ) const
 
 /* ------------------------------------------------------------------------- */
 bool			UniqueId::load		( QSettings & stg )
-{
+{ FUNC_ENTRY;
 	QString s;
 	ID key;
 	stg.beginGroup( "UniqueId" );

@@ -36,6 +36,8 @@
 
 using namespace april;
 
+#define FUNC_ENTRY	APRDBG_FUNC(APRDBG_AT)
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -78,7 +80,7 @@ Actuator::~Actuator	( void )
 
 /* ------------------------------------------------------------------------- */
 bool				Actuator::save				( QSettings & stg ) const
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-Actuator" );
 
@@ -91,7 +93,7 @@ bool				Actuator::save				( QSettings & stg ) const
 
 /* ------------------------------------------------------------------------- */
 bool				Actuator::load				( QSettings & stg )
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-Actuator" );
 

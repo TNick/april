@@ -51,6 +51,8 @@
 
 using namespace april;
 
+#define FUNC_ENTRY	APRDBG_FUNC(APRDBG_W)
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -90,7 +92,7 @@ World::World	( const QString & name, quint64 tot_energ )
 
 /* ------------------------------------------------------------------------- */
 World *			World::fromStg			( QSettings & stg )
-{
+{ FUNC_ENTRY;
 	stg.beginGroup( "april-World" );
 	QString factory_name = stg.value( "factory_name" ).toString();
 	Factory * f = AprilLibrary::factoryForString( NULL, factory_name );
@@ -174,7 +176,7 @@ World::~World	( void )
 
 /* ------------------------------------------------------------------------- */
 bool				World::setTotEnergy			( quint64 new_val )
-{
+{ FUNC_ENTRY;
 	if ( isRunning() )
 		return false;
 	if ( energy_free_ > new_val )
@@ -193,7 +195,7 @@ Actor *				World::firstActor			( void ) const
 
 /* ------------------------------------------------------------------------- */
 void				World::advance				( void )
-{
+{ FUNC_ENTRY;
 	if  ( b_running_ == false )
 		return;
 	
@@ -210,7 +212,7 @@ QString				World::factoryName			( void ) const
 
 /* ------------------------------------------------------------------------- */
 bool				World::setDirector			( Director * new_val )
-{
+{ FUNC_ENTRY;
 	if ( isRunning() )
 		return false;
 	if ( director_ != NULL )
@@ -226,7 +228,7 @@ bool				World::setDirector			( Director * new_val )
 
 /* ------------------------------------------------------------------------- */
 bool				World::addActor				( Actor * act )
-{
+{ FUNC_ENTRY;
 	Q_ASSERT( actors_.contains( act ) == false );
 	Q_ASSERT( act != NULL );
 	
@@ -239,7 +241,7 @@ bool				World::addActor				( Actor * act )
 
 /* ------------------------------------------------------------------------- */
 bool				World::remActor				( Actor * act )
-{
+{ FUNC_ENTRY;
 	Q_ASSERT( actors_.contains( act ) == true );
 	energy_free_ += act->totalEnergy();
 	actors_.remove( act );
@@ -250,7 +252,7 @@ bool				World::remActor				( Actor * act )
 
 /* ------------------------------------------------------------------------- */
 bool				World::addEventLine			( EventLine * el, ID id  )
-{
+{ FUNC_ENTRY;
 	if ( el == NULL )
 		return false;
 	Q_ASSERT( event_lines_.contains( id ) == false );
@@ -264,7 +266,7 @@ bool				World::addEventLine			( EventLine * el, ID id  )
 
 /* ------------------------------------------------------------------------- */
 bool				World::remEventLine			( EventLine * el, ID id  )
-{
+{ FUNC_ENTRY;
 	if ( el == NULL )
 		return false;
 	QMap<ID,EventLine*>::Iterator itr = event_lines_.find( id );
@@ -292,7 +294,7 @@ EventSource*				World::firstEvent			( void ) const
 
 /* ------------------------------------------------------------------------- */
 bool				World::addEvent				( EventSource * ev )
-{
+{ FUNC_ENTRY;
 	Q_ASSERT( events_.contains( ev ) == false );
 	
 	INC_REF( ev, this );
@@ -304,7 +306,7 @@ bool				World::addEvent				( EventSource * ev )
 
 /* ------------------------------------------------------------------------- */
 bool				World::remEvent				( EventSource * ev )
-{
+{ FUNC_ENTRY;
 	Q_ASSERT( events_.contains( ev ) == true );
 	
 	events_.remove( ev );
@@ -315,7 +317,7 @@ bool				World::remEvent				( EventSource * ev )
 
 /* ------------------------------------------------------------------------- */
 bool				World::addActorFactory		( ActorFactory * factory, ID id )
-{
+{ FUNC_ENTRY;
 	if ( factory == NULL )
 		return false;
 	if ( actor_factories_.contains( id ) )
@@ -328,7 +330,7 @@ bool				World::addActorFactory		( ActorFactory * factory, ID id )
 
 /* ------------------------------------------------------------------------- */
 bool				World::addActuatorFactory	( ActuatorFactory * factory, ID id )
-{
+{ FUNC_ENTRY;
 	if ( factory == NULL )
 		return false;
 	if ( actuator_factories_.contains( id ) )
@@ -341,7 +343,7 @@ bool				World::addActuatorFactory	( ActuatorFactory * factory, ID id )
 
 /* ------------------------------------------------------------------------- */
 bool				World::addSensorFactory		( SensorFactory * factory, ID id )
-{
+{ FUNC_ENTRY;
 	if ( factory == NULL )
 		return false;
 	if ( sensor_factories_.contains( id ) )
@@ -354,7 +356,7 @@ bool				World::addSensorFactory		( SensorFactory * factory, ID id )
 
 /* ------------------------------------------------------------------------- */
 bool				World::addBrainFactory		( BrainFactory * factory, ID id )
-{
+{ FUNC_ENTRY;
 	if ( factory == NULL )
 		return false;
 	if ( brain_factories_.contains( id ) )
@@ -367,7 +369,7 @@ bool				World::addBrainFactory		( BrainFactory * factory, ID id )
 
 /* ------------------------------------------------------------------------- */
 bool				World::addEventFactory		( EventFactory * factory, ID id )
-{
+{ FUNC_ENTRY;
 	if ( factory == NULL )
 		return false;
 	if ( event_factories_.contains( id ) )
@@ -380,7 +382,7 @@ bool				World::addEventFactory		( EventFactory * factory, ID id )
 
 /* ------------------------------------------------------------------------- */
 bool				World::addReflexFactory		( ReflexFactory * factory, ID id )
-{
+{ FUNC_ENTRY;
 	if ( factory == NULL )
 		return false;
 	if ( reflex_factories_.contains( id ) )
@@ -393,7 +395,7 @@ bool				World::addReflexFactory		( ReflexFactory * factory, ID id )
 
 /* ------------------------------------------------------------------------- */
 bool				World::remActorFactory		( ActorFactory * factory, ID id )
-{
+{ FUNC_ENTRY;
 	if ( factory == NULL )
 		return false;
 	QMap<ID,ActorFactory*>::Iterator itr = actor_factories_.find( id );
@@ -412,7 +414,7 @@ bool				World::remActorFactory		( ActorFactory * factory, ID id )
 
 /* ------------------------------------------------------------------------- */
 bool				World::remActuatorFactory	( ActuatorFactory * factory, ID id )
-{
+{ FUNC_ENTRY;
 	if ( factory == NULL )
 		return false;
 	QMap<ID,ActuatorFactory*>::Iterator itr = actuator_factories_.find( id );
@@ -431,7 +433,7 @@ bool				World::remActuatorFactory	( ActuatorFactory * factory, ID id )
 
 /* ------------------------------------------------------------------------- */
 bool				World::remSensorFactory		( SensorFactory * factory, ID id )
-{
+{ FUNC_ENTRY;
 	if ( factory == NULL )
 		return false;
 	QMap<ID,SensorFactory*>::Iterator itr = sensor_factories_.find( id );
@@ -450,7 +452,7 @@ bool				World::remSensorFactory		( SensorFactory * factory, ID id )
 
 /* ------------------------------------------------------------------------- */
 bool				World::remBrainFactory		( BrainFactory * factory, ID id )
-{
+{ FUNC_ENTRY;
 	if ( factory == NULL )
 		return false;
 	QMap<ID,BrainFactory*>::Iterator itr = brain_factories_.find( id );
@@ -469,7 +471,7 @@ bool				World::remBrainFactory		( BrainFactory * factory, ID id )
 
 /* ------------------------------------------------------------------------- */
 bool				World::remEventFactory		( EventFactory * factory, ID id )
-{
+{ FUNC_ENTRY;
 	if ( factory == NULL )
 		return false;
 	QMap<ID,EventFactory*>::Iterator itr = event_factories_.find( id );
@@ -488,7 +490,7 @@ bool				World::remEventFactory		( EventFactory * factory, ID id )
 
 /* ------------------------------------------------------------------------- */
 bool				World::remReflexFactory		( ReflexFactory * factory, ID id )
-{
+{ FUNC_ENTRY;
 	if ( factory == NULL )
 		return false;
 	QMap<ID,ReflexFactory*>::Iterator itr = reflex_factories_.find( id );
@@ -507,7 +509,7 @@ bool				World::remReflexFactory		( ReflexFactory * factory, ID id )
 
 /* ------------------------------------------------------------------------- */
 Actor *				World::createActor			( ID id_kind )
-{
+{ FUNC_ENTRY;
 	Actor * ret;
 	QMap<ID,ActorFactory*>::Iterator itr = actor_factories_.find( id_kind );
 	if ( itr == actor_factories_.end() )
@@ -552,7 +554,7 @@ Actor *				World::createActor			( ID id_kind )
 
 /* ------------------------------------------------------------------------- */
 Actuator *			World::createActuator		( Actor * actor, ID id )
-{
+{ FUNC_ENTRY;
 	QMap<ID,ActuatorFactory*>::Iterator itr = actuator_factories_.find( id );
 	if ( itr == actuator_factories_.end() )
 	{
@@ -565,7 +567,7 @@ Actuator *			World::createActuator		( Actor * actor, ID id )
 
 /* ------------------------------------------------------------------------- */
 Brain *				World::createBrain			( Actor * actor, ID id )
-{
+{ FUNC_ENTRY;
 	QMap<ID,BrainFactory*>::Iterator itr = brain_factories_.find( id );
 	if ( itr == brain_factories_.end() )
 	{
@@ -578,7 +580,7 @@ Brain *				World::createBrain			( Actor * actor, ID id )
 
 /* ------------------------------------------------------------------------- */
 Sensor *			World::createSensor			( Actor * actor, ID id )
-{
+{ FUNC_ENTRY;
 	QMap<ID,SensorFactory*>::Iterator itr = sensor_factories_.find( id );
 	if ( itr == sensor_factories_.end() )
 	{
@@ -591,7 +593,7 @@ Sensor *			World::createSensor			( Actor * actor, ID id )
 
 /* ------------------------------------------------------------------------- */
 Reflex *			World::createReflex			( Actor * actor, ID id )
-{
+{ FUNC_ENTRY;
 	QMap<ID,ReflexFactory*>::Iterator itr = reflex_factories_.find( id );
 	if ( itr == reflex_factories_.end() )
 	{
@@ -604,7 +606,7 @@ Reflex *			World::createReflex			( Actor * actor, ID id )
 
 /* ------------------------------------------------------------------------- */
 void				World::actorDies			( Actor * actor )
-{
+{ FUNC_ENTRY;
 	/* may decide to keep it arround */
 	remActor( actor );
 }
@@ -612,7 +614,7 @@ void				World::actorDies			( Actor * actor )
 
 /* ------------------------------------------------------------------------- */
 EventSource *				World::createEvent			( ID id )
-{
+{ FUNC_ENTRY;
 	QMap<ID,EventFactory*>::Iterator itr = event_factories_.find( id );
 	if ( itr == event_factories_.end() )
 	{
@@ -626,7 +628,7 @@ EventSource *				World::createEvent			( ID id )
 /* ------------------------------------------------------------------------- */
 bool				World::setEnergy			(
 		ActorComp * comp, quint64 energy, quint64 cost )
-{
+{ FUNC_ENTRY;
 	Q_ASSERT( comp != NULL );
 	if ( energy_free_ < energy )
 	{
@@ -640,7 +642,7 @@ bool				World::setEnergy			(
 
 /* ------------------------------------------------------------------------- */
 bool				World::start			( void )
-{
+{ FUNC_ENTRY;
 	if ( director_ == NULL )
 	{
 		director_ = new Director( this );
@@ -653,7 +655,7 @@ bool				World::start			( void )
 
 /* ------------------------------------------------------------------------- */
 void				World::stop				( void )
-{
+{ FUNC_ENTRY;
 	director_->stop();
 	b_running_ = false;
 }
@@ -679,7 +681,7 @@ void				World::stop				( void )
 
 /* ------------------------------------------------------------------------- */
 bool				World::save				( QSettings & stg ) const
-{
+{ FUNC_ENTRY;
 	if ( isRunning() )
 		return false;
 	int		i_cnt;
@@ -786,7 +788,7 @@ bool				World::save				( QSettings & stg ) const
 
 /* ------------------------------------------------------------------------- */
 bool				World::load				( QSettings & stg )
-{
+{ FUNC_ENTRY;
 	bool			b = true;
 	int				i_cnt;
 	QString			factory_name;

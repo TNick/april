@@ -35,6 +35,8 @@
 
 using namespace april;
 
+#define FUNC_ENTRY	APRDBG_FUNC(APRDBG_COMP)
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -69,7 +71,7 @@ Component::~Component	( void )
 
 /* ------------------------------------------------------------------------- */
 bool				Component::save				( QSettings & stg ) const
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-Component" );
 	
@@ -85,7 +87,7 @@ bool				Component::save				( QSettings & stg ) const
 
 /* ------------------------------------------------------------------------- */
 bool				Component::load				( QSettings & stg )
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-Component" );
 	

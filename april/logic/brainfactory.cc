@@ -36,6 +36,8 @@
 
 using namespace april;
 
+#define FUNC_ENTRY	APRDBG_FUNC(APRDBG_FB)
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -69,7 +71,7 @@ BrainFactory::~BrainFactory	( void )
 
 /* ------------------------------------------------------------------------- */
 bool				BrainFactory::addMyself			( ID id )
-{
+{ FUNC_ENTRY;
 	Q_ASSERT( id != InvalidId );
 	return world()->addBrainFactory( this, id );
 }
@@ -77,7 +79,7 @@ bool				BrainFactory::addMyself			( ID id )
 
 /* ------------------------------------------------------------------------- */
 bool				BrainFactory::save				( QSettings & stg ) const
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-BrainFactory" );
 	
@@ -95,7 +97,7 @@ bool				BrainFactory::save				( QSettings & stg ) const
 
 /* ------------------------------------------------------------------------- */
 bool				BrainFactory::load				( QSettings & stg )
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-BrainFactory" );
 	

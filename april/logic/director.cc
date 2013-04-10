@@ -48,6 +48,8 @@
 
 using namespace april;
 
+#define FUNC_ENTRY	APRDBG_FUNC(APRDBG_DIR)
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -82,7 +84,7 @@ Director::~Director	( void )
 
 /* ------------------------------------------------------------------------- */
 void				Director::advance				( void )
-{
+{ FUNC_ENTRY;
 	/* update time */
 	stepTime();
 	
@@ -130,14 +132,14 @@ QMap<ID,EventLine*>::ConstIterator	Director::endEventLine		( void )
 
 /* ------------------------------------------------------------------------- */
 void				Director::stepTime			( void )
-{
+{ FUNC_ENTRY;
 	w_->stepTime();
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 bool				Director::save				( QSettings & stg ) const
-{
+{ FUNC_ENTRY;
 	Q_UNUSED( stg );
 	return true;
 }
@@ -145,7 +147,7 @@ bool				Director::save				( QSettings & stg ) const
 
 /* ------------------------------------------------------------------------- */
 bool				Director::load				( QSettings & stg )
-{
+{ FUNC_ENTRY;
 	Q_UNUSED( stg );
 	return true;
 }

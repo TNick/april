@@ -37,6 +37,8 @@
 
 using namespace april;
 
+#define FUNC_ENTRY	APRDBG_FUNC(APRDBG_DNA)
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -89,7 +91,7 @@ DNA::~DNA		( void )
 
 /* ------------------------------------------------------------------------- */
 int				DNA::findID			( ID id ) const
-{
+{ FUNC_ENTRY;
 	int i_max = parts_.count();
 	for ( int i = 0; i < i_max; i++ )
 	{
@@ -104,7 +106,7 @@ int				DNA::findID			( ID id ) const
 
 /* ------------------------------------------------------------------------- */
 void			DNA::initDNA		( const InitData & init )
-{
+{ FUNC_ENTRY;
 	parts_.clear();
 	values_.clear();
 	values_i_.clear();
@@ -124,7 +126,7 @@ void			DNA::initDNA		( const InitData & init )
 
 /* ------------------------------------------------------------------------- */
 bool			DNA::fromMerge		( const DNA & p1, const DNA & p2 )
-{
+{ FUNC_ENTRY;
 	Q_UNUSED( p1 );
 	Q_UNUSED( p2 );
 	
@@ -171,7 +173,7 @@ bool			DNA::fromMerge		( const DNA & p1, const DNA & p2 )
 
 /* ------------------------------------------------------------------------- */
 bool			DNA::mergeAllVals		( const DNA & p1, const DNA & p2 )
-{
+{ FUNC_ENTRY;
 	
 	int iter_1 = OffMax;
 	int iter_2 = OffMax;
@@ -210,7 +212,7 @@ int			DNA::mergeUniteEl		(
 		int iter_1, int iter_2,
 		int i_max_1, int i_max_2,
 		const DNA & p1, const DNA & p2 )
-{
+{ FUNC_ENTRY;
 	bool b_not_found;
 	int cnt = values_i_.count();
 	if ( i_max_1 + iter_1 > p1.values_i_.count() )
@@ -255,7 +257,7 @@ int			DNA::mergeUniteEl		(
 
 /* ------------------------------------------------------------------------- */
 bool			DNA::mergeBrains		( const DNA & p1, const DNA & p2 )
-{
+{ FUNC_ENTRY;
 	int i_max_1 = p1.values_i_.at( OffBrains );
 	int i_max_2 = p2.values_i_.at( OffBrains );
 	if ( i_max_1 == 0 && i_max_2 == 0 )
@@ -301,7 +303,7 @@ bool			DNA::mergeBrains		( const DNA & p1, const DNA & p2 )
 /* ------------------------------------------------------------------------- */
 void			DNA::mergeAllParts		( 
 		const DNA & p1, const DNA & p2  )
-{
+{ FUNC_ENTRY;
 #	define part_1(i) p1.parts_.at( i )
 #	define part_2(i) p2.parts_.at( i )
 	
@@ -373,7 +375,7 @@ void			DNA::mergeAllParts		(
 void			DNA::mergeParts		( 
 		const Partition & part_1, const Partition & part_2,
 		const DNA & p1, const DNA & p2  )
-{
+{ FUNC_ENTRY;
 	Q_ASSERT( part_1.id_ == part_2.id_ );
 	
 	Partition pout;
@@ -422,7 +424,7 @@ void			DNA::mergeParts		(
 /* ------------------------------------------------------------------------- */
 void			DNA::mergePart			( 
 		const Partition & part, const DNA & p  )
-{
+{ FUNC_ENTRY;
 	int i_max = part.count_;
 	Partition pout;
 	qreal val;
@@ -445,7 +447,7 @@ void			DNA::mergePart			(
 
 /* ------------------------------------------------------------------------- */
 DNAView			DNA::getView			( ID id, Factory * f )
-{
+{ FUNC_ENTRY;
 	DNAView		view(this,InvalidId);
 	
 	int i = findID( id );
@@ -466,7 +468,7 @@ DNAView			DNA::getView			( ID id, Factory * f )
 
 /* ------------------------------------------------------------------------- */
 DNAView			DNA::getView			( ID id, int sz, Factory * f )
-{
+{ FUNC_ENTRY;
 	DNAView		view(this,InvalidId);
 	int i = findID( id );
 	if ( i != -1 )
@@ -526,7 +528,7 @@ DNAView			DNA::getView			( ID id, int sz, Factory * f )
 
 /* ------------------------------------------------------------------------- */
 bool			DNA::getViewNotFound	( DNAView & view, ID id, Factory * f )
-{
+{ FUNC_ENTRY;
 	if ( f == NULL )
 	{ /* no factory provided */
 		return false;
@@ -559,7 +561,7 @@ bool			DNA::getViewNotFound	( DNAView & view, ID id, Factory * f )
 
 /* ------------------------------------------------------------------------- */
 ID				DNA::kind				( void ) const
-{
+{ FUNC_ENTRY;
 	quint64 sz = values_i_.length();
 	if ( sz < OffMax )
 		return InvalidId;
@@ -569,7 +571,7 @@ ID				DNA::kind				( void ) const
 
 /* ------------------------------------------------------------------------- */
 QList<ID>		DNA::brains				( void ) const
-{
+{ FUNC_ENTRY;
 	QList<ID>	ret_l;
 	quint64 sz = values_i_.length();
 	if ( sz <= OffMax )
@@ -591,7 +593,7 @@ QList<ID>		DNA::brains				( void ) const
 
 /* ------------------------------------------------------------------------- */
 QList<ID>		DNA::actuators			( void ) const
-{
+{ FUNC_ENTRY;
 	QList<ID>	ret_l;
 	quint64 sz = values_i_.length();
 	if ( sz <= OffMax )
@@ -614,7 +616,7 @@ QList<ID>		DNA::actuators			( void ) const
 
 /* ------------------------------------------------------------------------- */
 QList<ID>		DNA::sensors		( void ) const
-{
+{ FUNC_ENTRY;
 	QList<ID>	ret_l;
 	quint64 sz = values_i_.length();
 	if ( sz <= OffMax )
@@ -638,7 +640,7 @@ QList<ID>		DNA::sensors		( void ) const
 
 /* ------------------------------------------------------------------------- */
 QList<ID>		DNA::reflexes		( void ) const
-{
+{ FUNC_ENTRY;
 	QList<ID>	ret_l;
 	quint64 sz = values_i_.length();
 	if ( sz <= OffMax )
@@ -671,7 +673,7 @@ bool			DNA::isValid			( void ) const
 
 /* ------------------------------------------------------------------------- */
 bool			DNA::save				( QSettings & stg ) const
-{
+{ FUNC_ENTRY;
 	int i_max;
 	
 	if ( isValid() == false )
@@ -715,7 +717,7 @@ bool			DNA::save				( QSettings & stg ) const
 
 /* ------------------------------------------------------------------------- */
 bool			DNA::load				( QSettings & stg )
-{
+{ FUNC_ENTRY;
 	int i_max;
 	bool b = true;
 	Partition part;
@@ -802,7 +804,7 @@ qreal				DNA::dnaNoise				( void )
 
 /* ------------------------------------------------------------------------- */
 bool				DNA::addActuator			( ID id )
-{
+{ FUNC_ENTRY;
 	if ( id == InvalidId )
 		return false;
 	
@@ -817,7 +819,7 @@ bool				DNA::addActuator			( ID id )
 
 /* ------------------------------------------------------------------------- */
 bool				DNA::addBrain				( ID id )
-{
+{ FUNC_ENTRY;
 	if ( id == InvalidId )
 		return false;
 	
@@ -831,7 +833,7 @@ bool				DNA::addBrain				( ID id )
 
 /* ------------------------------------------------------------------------- */
 bool				DNA::addReflex				( ID id )
-{
+{ FUNC_ENTRY;
 	if ( id == InvalidId )
 		return false;
 	
@@ -848,7 +850,7 @@ bool				DNA::addReflex				( ID id )
 
 /* ------------------------------------------------------------------------- */
 bool				DNA::addSensor				( ID id )
-{
+{ FUNC_ENTRY;
 	if ( id == InvalidId )
 		return false;
 	

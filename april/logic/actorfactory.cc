@@ -36,6 +36,8 @@
 
 using namespace april;
 
+#define FUNC_ENTRY	APRDBG_FUNC(APRDBG_FA)
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -88,14 +90,14 @@ void				ActorFactory::setDNA			(
 /* ------------------------------------------------------------------------- */
 void				ActorFactory::initDNA			( 
 	DNA & dna, const DNA::InitData & init )
-{
+{ FUNC_ENTRY;
 	dna.initDNA( init );
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 bool				ActorFactory::save				( QSettings & stg ) const
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-ActorFactory" );
 	
@@ -119,7 +121,7 @@ bool				ActorFactory::save				( QSettings & stg ) const
 
 /* ------------------------------------------------------------------------- */
 bool				ActorFactory::load				( QSettings & stg )
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-ActorFactory" );
 	

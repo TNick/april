@@ -36,6 +36,8 @@
 
 using namespace april;
 
+#define FUNC_ENTRY	APRDBG_FUNC(APRDBG_FR)
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -69,7 +71,7 @@ ReflexFactory::~ReflexFactory	( void )
 
 /* ------------------------------------------------------------------------- */
 bool				ReflexFactory::addMyself			( ID id )
-{
+{ FUNC_ENTRY;
 	Q_ASSERT( id != InvalidId );
 	return world()->addReflexFactory( this, id );
 }
@@ -77,7 +79,7 @@ bool				ReflexFactory::addMyself			( ID id )
 
 /* ------------------------------------------------------------------------- */
 bool				ReflexFactory::save				( QSettings & stg ) const
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-ReflexFactory" );
 	
@@ -95,7 +97,7 @@ bool				ReflexFactory::save				( QSettings & stg ) const
 
 /* ------------------------------------------------------------------------- */
 bool				ReflexFactory::load				( QSettings & stg )
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-ReflexFactory" );
 	

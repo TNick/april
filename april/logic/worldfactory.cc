@@ -36,6 +36,8 @@
 
 using namespace april;
 
+#define FUNC_ENTRY	APRDBG_FUNC(APRDBG_FW)
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -70,7 +72,7 @@ WorldFactory::~WorldFactory	( void )
 /* ------------------------------------------------------------------------- */
 World *				WorldFactory::create		(
 		const QString & s, quint64 tot_energ )
-{
+{ FUNC_ENTRY;
 	Q_UNUSED( s );
 	return new World( QString(), tot_energ );
 }
@@ -78,10 +80,16 @@ World *				WorldFactory::create		(
 
 /* ------------------------------------------------------------------------- */
 World *				WorldFactory::create		( QSettings & stg )
-{
-	
-	
-	return NULL;
+{ FUNC_ENTRY;
+
+	World * w = new World( "", 0 );
+	if ( w->load( stg ) == false )
+	{
+		DEC_REF(w,w);
+		AprilLibrary::remWorld( w );
+		return NULL;
+	}
+	return w;
 }
 /* ========================================================================= */
 

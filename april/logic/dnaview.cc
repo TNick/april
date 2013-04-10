@@ -36,6 +36,8 @@
 
 using namespace april;
 
+#define FUNC_ENTRY	APRDBG_FUNC(APRDBG_DNAV)
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -83,7 +85,7 @@ DNAView::~DNAView	( void )
 
 /* ------------------------------------------------------------------------- */
 qreal		DNAView::value		( int i ) const
-{
+{ FUNC_ENTRY;
 	if ( !isValid() )
 	{
 		Q_ASSERT( false );
@@ -102,7 +104,7 @@ qreal		DNAView::value		( int i ) const
 
 /* ------------------------------------------------------------------------- */
 void		DNAView::setDNA		( const DNA * d )
-{
+{ FUNC_ENTRY;
 	dna_ = d;
 }
 /* ========================================================================= */

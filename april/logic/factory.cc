@@ -36,6 +36,8 @@
 
 using namespace april;
 
+#define FUNC_ENTRY	APRDBG_FUNC(APRDBG_F)
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -71,14 +73,14 @@ Factory::~Factory	( void )
 /* ------------------------------------------------------------------------- */
 bool			Factory::setEnergy			(
 		ActorComp * comp, quint64 energy, quint64 cost )
-{
+{ FUNC_ENTRY;
 	return w_->setEnergy( comp, energy, cost );
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 bool			Factory::save				( QSettings & stg ) const
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-Factory" );
 	
@@ -98,7 +100,7 @@ bool			Factory::save				( QSettings & stg ) const
 
 /* ------------------------------------------------------------------------- */
 bool			Factory::load				( QSettings & stg )
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-Factory" );
 	

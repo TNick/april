@@ -36,6 +36,8 @@
 
 using namespace april;
 
+#define FUNC_ENTRY	APRDBG_FUNC(APRDBG_S)
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -78,7 +80,7 @@ Sensor::~Sensor	( void )
 
 /* ------------------------------------------------------------------------- */
 bool				Sensor::save				( QSettings & stg ) const
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-Sensor" );
 
@@ -91,7 +93,7 @@ bool				Sensor::save				( QSettings & stg ) const
 
 /* ------------------------------------------------------------------------- */
 bool				Sensor::load				( QSettings & stg )
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-Sensor" );
 

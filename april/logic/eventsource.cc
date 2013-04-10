@@ -38,6 +38,8 @@
 
 using namespace april;
 
+#define FUNC_ENTRY	APRDBG_FUNC(APRDBG_ES)
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -64,7 +66,7 @@ EventSource::EventSource	( World * w )
 
 /* ------------------------------------------------------------------------- */
 EventSource *		EventSource::fromStg		( World * w, QSettings & stg )
-{
+{ FUNC_ENTRY;
 	QString			factory_name;
 	Factory *		f;
 	ID				id;
@@ -116,7 +118,7 @@ EventSource::~EventSource	( void )
 
 /* ------------------------------------------------------------------------- */
 bool				EventSource::save				( QSettings & stg ) const
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-EventSource" );
 
@@ -129,7 +131,7 @@ bool				EventSource::save				( QSettings & stg ) const
 
 /* ------------------------------------------------------------------------- */
 bool				EventSource::load				( QSettings & stg )
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-EventSource" );
 

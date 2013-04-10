@@ -36,6 +36,8 @@
 
 using namespace april;
 
+#define FUNC_ENTRY	APRDBG_FUNC(APRDBG_FAT)
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -69,7 +71,7 @@ ActuatorFactory::~ActuatorFactory	( void )
 
 /* ------------------------------------------------------------------------- */
 bool				ActuatorFactory::addMyself			( ID id )
-{
+{ FUNC_ENTRY;
 	Q_ASSERT( id != InvalidId );
 	return world()->addActuatorFactory( this, id );
 }
@@ -77,7 +79,7 @@ bool				ActuatorFactory::addMyself			( ID id )
 
 /* ------------------------------------------------------------------------- */
 bool				ActuatorFactory::save				( QSettings & stg ) const
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-ActuatorFactory" );
 	
@@ -95,7 +97,7 @@ bool				ActuatorFactory::save				( QSettings & stg ) const
 
 /* ------------------------------------------------------------------------- */
 bool				ActuatorFactory::load				( QSettings & stg )
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-ActuatorFactory" );
 	

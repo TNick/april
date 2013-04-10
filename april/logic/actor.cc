@@ -33,6 +33,7 @@
 #include	"factory.h"
 #include	<april/aprillibrary.h>
 
+
 /*  INCLUDES    ============================================================ */
 //
 //
@@ -41,6 +42,8 @@
 /*  DEFINITIONS    --------------------------------------------------------- */
 
 using namespace april;
+
+#define FUNC_ENTRY	APRDBG_FUNC(APRDBG_A)
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -82,7 +85,7 @@ Actor::Actor	( World * w )
 
 /* ------------------------------------------------------------------------- */
 Actor *		Actor::fromStg		( World * w, QSettings & stg )
-{
+{ FUNC_ENTRY;
 	QString			factory_name;
 	Factory *		f;
 	ID				id;
@@ -204,7 +207,7 @@ QString			Actor::kindName					( void ) const
 
 /* ------------------------------------------------------------------------- */
 bool			Actor::decodeDNA				( void )
-{
+{ FUNC_ENTRY;
 	/* cache some values */
 	kind_ = dna_.kind();
 	cost_ = dna_.cost();
@@ -252,7 +255,7 @@ bool			Actor::decodeDNA				( void )
 
 /* ------------------------------------------------------------------------- */
 bool				Actor::addActuator				( Actuator * itm )
-{
+{ FUNC_ENTRY;
 	if ( actuators_.contains( itm ) )
 		return false;
 	INC_REF( itm, this );
@@ -264,7 +267,7 @@ bool				Actor::addActuator				( Actuator * itm )
 
 /* ------------------------------------------------------------------------- */
 bool				Actor::addSensor				( Sensor * itm )
-{
+{ FUNC_ENTRY;
 	if ( sensors_.contains( itm ) )
 		return false;
 	INC_REF( itm, this );
@@ -276,7 +279,7 @@ bool				Actor::addSensor				( Sensor * itm )
 
 /* ------------------------------------------------------------------------- */
 bool				Actor::addReflex				( Reflex * itm )
-{
+{ FUNC_ENTRY;
 	if ( reflexes_.contains( itm ) )
 		return false;
 	INC_REF( itm, this );
@@ -288,7 +291,7 @@ bool				Actor::addReflex				( Reflex * itm )
 
 /* ------------------------------------------------------------------------- */
 bool				Actor::addBrain					( Brain * itm )
-{
+{ FUNC_ENTRY;
 	if ( brains_.contains( itm ) )
 		return false;
 	INC_REF( itm, this );
@@ -300,7 +303,7 @@ bool				Actor::addBrain					( Brain * itm )
 
 /* ------------------------------------------------------------------------- */
 void				Actor::doSteps					( int steps )
-{
+{ FUNC_ENTRY;
 	if ( isAlive() == false )
 		return;
 	
@@ -360,7 +363,7 @@ void				Actor::doSteps					( int steps )
 
 /* ------------------------------------------------------------------------- */
 void				Actor::makeAlive				( void )
-{
+{ FUNC_ENTRY;
 	if ( alive_ )
 		return;
 	
@@ -407,7 +410,7 @@ void				Actor::makeAlive				( void )
 
 /* ------------------------------------------------------------------------- */
 quint64				Actor::totalEnergy				( void )
-{
+{ FUNC_ENTRY;
 	quint64 ret = energy_;
 	Sensor * itr_sens = firstSensor_(this);
 	while ( itr_sens != NULL )
@@ -442,7 +445,7 @@ quint64				Actor::totalEnergy				( void )
 
 /* ------------------------------------------------------------------------- */
 Sensor *			Actor::findSensor				( ID id ) const
-{
+{ FUNC_ENTRY;
 	Sensor * iter = firstSensor_(this);
 	while ( iter != NULL )
 	{
@@ -458,7 +461,7 @@ Sensor *			Actor::findSensor				( ID id ) const
 
 /* ------------------------------------------------------------------------- */
 Actuator *			Actor::findActuator				( ID id ) const
-{
+{ FUNC_ENTRY;
 	Actuator * iter = firstActuator_(this);
 	while ( iter != NULL )
 	{
@@ -474,7 +477,7 @@ Actuator *			Actor::findActuator				( ID id ) const
 
 /* ------------------------------------------------------------------------- */
 Reflex *			Actor::findReflex				( ID id ) const
-{
+{ FUNC_ENTRY;
 	Reflex * iter = firstReflex_(this);
 	while ( iter != NULL )
 	{
@@ -490,7 +493,7 @@ Reflex *			Actor::findReflex				( ID id ) const
 
 /* ------------------------------------------------------------------------- */
 Brain *				Actor::findBrain				( ID id ) const
-{
+{ FUNC_ENTRY;
 	Brain * iter = firstBrain_(this);
 	while ( iter != NULL )
 	{
@@ -506,7 +509,7 @@ Brain *				Actor::findBrain				( ID id ) const
 
 /* ------------------------------------------------------------------------- */
 bool				Actor::save						( QSettings & stg ) const
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-Actor" );
 	Factory * f = factory();
@@ -586,7 +589,7 @@ bool				Actor::save						( QSettings & stg ) const
 
 /* ------------------------------------------------------------------------- */
 bool				Actor::load						( QSettings & stg )
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-Actor" );
 	

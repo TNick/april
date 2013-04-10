@@ -36,6 +36,8 @@
 
 using namespace april;
 
+#define FUNC_ENTRY	APRDBG_FUNC(APRDBG_EL)
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -80,7 +82,7 @@ EventLine::EventLine	( World * w )
 
 /* ------------------------------------------------------------------------- */
 EventLine *		EventLine::fromStg		( World * w, QSettings & stg )
-{
+{ FUNC_ENTRY;
 	EventLine * ret = new EventLine( w );
 	
 	for ( ;; )	{
@@ -107,7 +109,7 @@ EventLine::~EventLine	( void )
 
 /* ------------------------------------------------------------------------- */
 void					EventLine::discardOldEntries		( void )
-{
+{ FUNC_ENTRY;
 	EventData *	itr = firstEventData_(this);
 	quint64 t = world_->time_;
 	while ( itr != NULL )
@@ -128,7 +130,7 @@ void					EventLine::discardOldEntries		( void )
 
 /* ------------------------------------------------------------------------- */
 bool					EventLine::postActivity				( EventData * ed )
-{ 
+{ FUNC_ENTRY; 
 	Q_ASSERT( event_data_.contains( ed ) == false ); 
 	if ( world()->isRunning() == false )
 	{
@@ -169,7 +171,7 @@ bool					EventLine::postActivity				( EventData * ed )
 
 /* ------------------------------------------------------------------------- */
 EventData *				EventLine::lastEventData			( void )
-{
+{ FUNC_ENTRY;
 	if ( last_ == NULL && event_data_.count() > 0 )
 	{
 		last_ = static_cast<EventData*>( event_data_.last() );
@@ -180,7 +182,7 @@ EventData *				EventLine::lastEventData			( void )
 
 /* ------------------------------------------------------------------------- */
 bool					EventLine::save				( QSettings & stg ) const
-{
+{ FUNC_ENTRY;
 	int		i_cnt;
 	bool	b = true;
 	stg.beginGroup( "april-EventLine" );
@@ -213,7 +215,7 @@ bool					EventLine::save				( QSettings & stg ) const
 
 /* ------------------------------------------------------------------------- */
 bool					EventLine::load				( QSettings & stg )
-{
+{ FUNC_ENTRY;
 	bool	b = true;
 	int		i_cnt;
 

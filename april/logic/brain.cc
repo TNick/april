@@ -36,6 +36,8 @@
 
 using namespace april;
 
+#define FUNC_ENTRY	APRDBG_FUNC(APRDBG_B)
+
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -78,7 +80,7 @@ Brain::~Brain	( void )
 
 /* ------------------------------------------------------------------------- */
 bool				Brain::save				( QSettings & stg ) const
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-Brain" );
 
@@ -91,7 +93,7 @@ bool				Brain::save				( QSettings & stg ) const
 
 /* ------------------------------------------------------------------------- */
 bool				Brain::load				( QSettings & stg )
-{
+{ FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-Brain" );
 

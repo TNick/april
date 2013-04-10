@@ -51,6 +51,29 @@ enum	APRDBG_Codes		{
 	APRDBG_LIBRARY,		/* library in general */
 	APRDBG_MW,			/* main window of an application */
 
+	APRDBG_F,			/* factory */
+	APRDBG_A,			/* actor */
+	APRDBG_FA,			/* actor factory */
+	APRDBG_ACMP,		/* actor component */
+	APRDBG_AT,			/* actuator */
+	APRDBG_FAT,			/* actuator factory */
+	APRDBG_B,			/* brain */
+	APRDBG_FB,			/* brain factory */
+	APRDBG_COMP,		/* component */
+	APRDBG_DIR,			/* director */
+	APRDBG_DNA,			/* DNA */
+	APRDBG_DNAV,		/* DNA View*/
+	APRDBG_ED,			/* event data */
+	APRDBG_EL,			/* event line */
+	APRDBG_ES,			/* event source */
+	APRDBG_FES,			/* event source factory */
+	APRDBG_R,			/* reflex */
+	APRDBG_FR,			/* reflex factory */
+	APRDBG_S,			/* sensor */
+	APRDBG_FS,			/* sensor factory */
+	APRDBG_W,			/* world */
+	APRDBG_FW,			/* world factory */
+	APRDBG_UID,			/* unique id */
 
 	APRDBG_MAX
 };
