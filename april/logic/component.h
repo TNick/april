@@ -40,6 +40,7 @@
 class	QSettings;
 
 namespace   april    {
+class	Factory;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -110,8 +111,12 @@ public:
 	{ return payload_; }
 
 	//! associated ID, if any
-	virtual ID			identificator			( void )
+	virtual ID			identificator			( void ) const
 	{ return InvalidId; }
+
+	//! associated ID, if any
+	virtual Factory *	factory					( void ) const
+	{ return NULL; }
 
 	//! save to a QSettings object
 	virtual bool		save					( QSettings & s ) const = 0;

@@ -117,12 +117,17 @@ public:
 	//! create a new actor
 	virtual Actor *			create				( ID id ) = 0;
 
+	//! create a new actor from saved settings
+	/** @deprecated */
+	virtual Actor *			create				( QSettings & stg )
+	{ Q_UNUSED(stg); return NULL;}
+
 	//! save to a QSettings object
 	virtual bool			save				( QSettings & s ) const;
 	
 	//! load from a QSettings object
 	virtual bool			load				( QSettings & s );
-
+	
 protected:
 
 	//! allow access to default dna storage

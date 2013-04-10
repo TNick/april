@@ -24,11 +24,14 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include	"actor.h"
+#include	"actorfactory.h"
 #include	"world.h"
 #include	"sensor.h"
 #include	"actuator.h"
 #include	"reflex.h"
 #include	"brain.h"
+#include	"factory.h"
+#include	<april/aprillibrary.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -80,17 +83,44 @@ Actor::Actor	( World * w )
 /* ------------------------------------------------------------------------- */
 Actor *		Actor::fromStg		( World * w, QSettings & stg )
 {
-	Actor * ret = new Actor( w );
+	QString			factory_name;
+	Factory *		f;
+	ID				id;
+	ActorFactory *	actor_factory;
+	Actor *			actor;
+	bool			b;
 	
-	for ( ;; )	{
-		if ( ret->load( stg ) == false )
-			break;
-		return ret;
+	stg.beginGroup( "april-Actor" );
+	factory_name = stg.value( "factory_name" ).toString();
+	id = stg.value( "factory_id" ).toULongLong( &b );
+	stg.endGroup();
+	if ( !b ) return NULL;
+	
+	f = AprilLibrary::factoryForString( w, factory_name );
+	if ( f == NULL )
+	{
+		stg.endGroup();
+		return NULL;
 	}
-	
-	DEC_REF(ret,ret);
-	w->remActor( ret );
-	return NULL;
+	else if ( f->factoryType() != FTyActor )
+	{
+		DEC_REF(f,f);
+		stg.endGroup();
+		return NULL;
+	}
+	actor_factory = static_cast<ActorFactory*>(f);
+	actor = actor_factory->create( id );
+	if ( actor )
+	{
+		if ( actor->load( stg ) == false )
+		{
+			w->remActor( actor );
+			DEC_REF(actor,actor);
+			actor = NULL;
+		}
+	}
+	DEC_REF(f,f);
+	return actor;
 }
 /* ========================================================================= */
 
@@ -479,12 +509,22 @@ bool				Actor::save						( QSettings & stg ) const
 {
 	bool b = true;
 	stg.beginGroup( "april-Actor" );
+	Factory * f = factory();
+	if ( f == NULL )
+	{
+		stg.setValue( "factory_name", QString() );
+	}
+	else
+	{
+		stg.setValue( "factory_name", f->factoryName() );
+	}
+	stg.setValue( "factory_id", identificator() );
 	
 	for (;;)	{
 		
 		b = b & dna_.save( stg );
 		if ( !b ) break;
-		
+		/*
 		stg.beginWriteArray( "sensors_", sensors_.count() );
 		Sensor * itr_sens = firstSensor_(this);
 		while ( itr_sens != NULL )
@@ -494,7 +534,7 @@ bool				Actor::save						( QSettings & stg ) const
 		}
 		stg.endArray();
 		if ( !b ) break;
-
+		
 		stg.beginWriteArray( "actuators_", actuators_.count() );
 		Actuator * itr_act = firstActuator_(this);
 		while ( itr_act != NULL )
@@ -533,9 +573,8 @@ bool				Actor::save						( QSettings & stg ) const
 		stg.setValue( "age_", age_ );
 		stg.setValue( "energy_", energy_ );
 		stg.setValue( "alive_", alive_ );
-		
+		*/
 		b = b & Component::save( stg );
-		
 		
 		break;
 	}
@@ -553,10 +592,10 @@ bool				Actor::load						( QSettings & stg )
 	
 	for (;;)	{
 		b = b & Component::load( stg );
-		
+		/*
 		b = b & dna_.load( stg );
 		if ( !b ) break;
-		
+		*/
 		
 		
 		break;

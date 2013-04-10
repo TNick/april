@@ -85,20 +85,14 @@ private:
 
 public:
 
-
-	/**
-	*	@brief	constructor;
-	*/
+	//! constructor;
 	EventFactory			( World * w );
 
 
 protected:
 
-	/**
-	*	@brief	destructor;
-	*/
+	//! destructor;
 	virtual					~EventFactory		( void );
-
 
 public:
 	
@@ -110,15 +104,20 @@ public:
 	virtual QString			factoryName			( void )
 	{ return "Event.Factory.Default"; }
 
-	//! create an actuator;
+	//! create an event source;
 	virtual EventSource *	create				( ID id ) = 0;
+
+	//! create an event source;
+	/** @deprecated */
+	virtual EventSource *	create				( QSettings & stg )
+	{ Q_UNUSED(stg); return NULL;}
 
 	//! save to a QSettings object
 	virtual bool			save				( QSettings & s ) const;
 	
 	//! load from a QSettings object
 	virtual bool			load				( QSettings & s );
-
+	
 protected:
 
 	//! add this class to the world

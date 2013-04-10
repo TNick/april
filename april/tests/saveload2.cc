@@ -32,8 +32,8 @@ enum Ids {
 	IdEvent
 };
 
-static const char * f_name = "World.Factory.Test";
-static const char * w_name = "World.Test";
+static const char * f_world_name = "World.Factory.Test";
+static const char * world_name = "World.Test";
 static const char * f_actor_name = "Actor.Factory.Test";
 static const char * f_event_name = "Event.Factory.Test";
 static const char * f_sensor_name = "Sensor.Factory.Test";
@@ -50,7 +50,7 @@ protected:
 		test_int_ = rand() % 12345;
 	}
 	virtual QString		factoryName			( void ) const
-	{ return f_name; }
+	{ return f_world_name; }
 	virtual bool	save				( QSettings & stg ) const
 	{
 		bool b = true;
@@ -82,15 +82,15 @@ protected:
 }; /* .............................................................. */
 class TstFact : public WorldFactory	{
 public:
-	TstFact() : WorldFactory( f_name ) {
+	TstFact() : WorldFactory( f_world_name ) {
 	}
 	virtual QString			factoryName			( void )
-	{ return f_name; }
+	{ return f_world_name; }
 	virtual World * create ( const QString & s, quint64 tot_energ ) {
 		return new TstWorld( s, tot_energ );
 	}
 	virtual World * create ( QSettings & stg ) {
-		World * w = new TstWorld( w_name, 0 );
+		World * w = new TstWorld( world_name, 0 );
 		if ( w->load( stg ) == false )
 		{
 			DEC_REF(w,w);
@@ -136,6 +136,11 @@ protected:
 		
 		return b;
 	}
+	virtual ID			identificator			( void ) const
+	{ return IdKind; }
+	virtual Factory *	factory					( void ) const
+	{ return world()->actorFactories().value( IdKind ); }
+	
 }; /* .............................................................. */
 class TstFactActor : public ActorFactory	{
 public:
@@ -144,6 +149,16 @@ public:
 		w->insertId( IdKind, f_actor_name );
 		addMyself( IdKind );
 		test_int_ = rand() % 32345;
+		DNA::InitData	idata;
+		idata.kind_ = IdKind;
+		idata.cost_ = 1;
+		idata.age_= 100;
+		idata.energy_= 10;
+		initDNA( idata );
+//		EXPECT_TRUE( defaultDNA().addBrain( IdBrain) );
+//		EXPECT_TRUE( defaultDNA().addActuator( IdActuator ) );
+//		EXPECT_TRUE( defaultDNA().addReflex( IdReflex ) );
+//		EXPECT_TRUE( defaultDNA().addSensor( IdSensor ) );
 	}
 	virtual QString			factoryName			( void )
 	{ return f_actor_name; }
@@ -572,7 +587,7 @@ Factory * factoryCreatorWorlds ( World * w, const QString & s_name )
 {
 	Q_UNUSED( s_name );
 	Q_UNUSED( w );
-	Factory * f = AprilLibrary::findWorldFactory( f_name );
+	Factory * f = AprilLibrary::findWorldFactory( f_world_name );
 	if ( f == NULL )
 	{
 		f = new TstFact();
@@ -636,7 +651,7 @@ void registerFactoryCreators()
 {
 	/* register factory creators so that they may be later retrieved */
 	AprilLibrary::registerFactory( 
-				saveload2_cc::f_name, 
+				saveload2_cc::f_world_name, 
 				saveload2_cc::factoryCreatorWorlds );
 	AprilLibrary::registerFactory( 
 				saveload2_cc::f_actor_name, 
@@ -698,8 +713,10 @@ void compareTwoWorldsFactories(
 	EXPECT_TRUE( afl1.constBegin().value() != NULL );
 	EXPECT_TRUE( afl2.constBegin().value() != NULL );
 	EXPECT_EQ( 
-				static_cast<saveload2_cc::TstFactActor*>(afl1.constBegin().value())->test_int_,
-				static_cast<saveload2_cc::TstFactActor*>(afl2.constBegin().value())->test_int_
+				static_cast<saveload2_cc::TstFactActor*>(
+					afl1.constBegin().value())->test_int_,
+				static_cast<saveload2_cc::TstFactActor*>(
+					afl2.constBegin().value())->test_int_
 				);
 	
 	QMap<ID,EventFactory*> efl1 = loaded_world->eventFactories();
@@ -710,8 +727,10 @@ void compareTwoWorldsFactories(
 	EXPECT_TRUE( efl1.constBegin().value() != NULL );
 	EXPECT_TRUE( efl2.constBegin().value() != NULL );
 	EXPECT_EQ( 
-				static_cast<saveload2_cc::TstFactEventSource*>(efl1.constBegin().value())->test_int_,
-				static_cast<saveload2_cc::TstFactEventSource*>(efl2.constBegin().value())->test_int_
+				static_cast<saveload2_cc::TstFactEventSource*>(
+					efl1.constBegin().value())->test_int_,
+				static_cast<saveload2_cc::TstFactEventSource*>(
+					efl2.constBegin().value())->test_int_
 				);
 	
 	QMap<ID,SensorFactory*> sfl1 = loaded_world->sensorFactories();
@@ -722,8 +741,10 @@ void compareTwoWorldsFactories(
 	EXPECT_TRUE( sfl1.constBegin().value() != NULL );
 	EXPECT_TRUE( sfl2.constBegin().value() != NULL );
 	EXPECT_EQ( 
-				static_cast<saveload2_cc::TstFactSensor*>(sfl1.constBegin().value())->test_int_,
-				static_cast<saveload2_cc::TstFactSensor*>(sfl2.constBegin().value())->test_int_
+				static_cast<saveload2_cc::TstFactSensor*>(
+					sfl1.constBegin().value())->test_int_,
+				static_cast<saveload2_cc::TstFactSensor*>(
+					sfl2.constBegin().value())->test_int_
 				);
 	
 	QMap<ID,ActuatorFactory*> attfl1 = loaded_world->actuatorFactories();
@@ -734,8 +755,10 @@ void compareTwoWorldsFactories(
 	EXPECT_TRUE( attfl1.constBegin().value() != NULL );
 	EXPECT_TRUE( attfl2.constBegin().value() != NULL );
 	EXPECT_EQ( 
-				static_cast<saveload2_cc::TstFactActuator*>(attfl1.constBegin().value())->test_int_,
-				static_cast<saveload2_cc::TstFactActuator*>(attfl2.constBegin().value())->test_int_
+				static_cast<saveload2_cc::TstFactActuator*>(
+					attfl1.constBegin().value())->test_int_,
+				static_cast<saveload2_cc::TstFactActuator*>(
+					attfl2.constBegin().value())->test_int_
 				);
 	
 	QMap<ID,ReflexFactory*> rfl1 = loaded_world->reflexFactories();
@@ -746,8 +769,10 @@ void compareTwoWorldsFactories(
 	EXPECT_TRUE( rfl1.constBegin().value() != NULL );
 	EXPECT_TRUE( rfl2.constBegin().value() != NULL );
 	EXPECT_EQ( 
-				static_cast<saveload2_cc::TstFactReflex*>(rfl1.constBegin().value())->test_int_,
-				static_cast<saveload2_cc::TstFactReflex*>(rfl2.constBegin().value())->test_int_
+				static_cast<saveload2_cc::TstFactReflex*>(
+					rfl1.constBegin().value())->test_int_,
+				static_cast<saveload2_cc::TstFactReflex*>(
+					rfl2.constBegin().value())->test_int_
 				);
 	
 	QMap<ID,BrainFactory*> bfl1 = loaded_world->brainFactories();
@@ -758,10 +783,12 @@ void compareTwoWorldsFactories(
 	EXPECT_TRUE( bfl1.constBegin().value() != NULL );
 	EXPECT_TRUE( bfl2.constBegin().value() != NULL );
 	EXPECT_EQ( 
-				static_cast<saveload2_cc::TstFactBrain*>(bfl1.constBegin().value())->test_int_,
-				static_cast<saveload2_cc::TstFactBrain*>(bfl2.constBegin().value())->test_int_
+				static_cast<saveload2_cc::TstFactBrain*>(
+					bfl1.constBegin().value())->test_int_,
+				static_cast<saveload2_cc::TstFactBrain*>(
+					bfl2.constBegin().value())->test_int_
 				);
-	}
+}
 
 
 TEST(SaveLoad2, basic) {
@@ -779,17 +806,21 @@ TEST(SaveLoad2, basic) {
 	
 	/* World */
 	saveload2_cc::TstWorld * test_world = 
-			static_cast<saveload2_cc::TstWorld *>(tstf->create( "sample-world", 10000 ));
+			static_cast<saveload2_cc::TstWorld *>(
+				tstf->create( "sample-world", 10000 ));
 	
 	addFactories( test_world );
-	
+	saveload2_cc::TstActor * test_actor = static_cast<saveload2_cc::TstActor*>(
+				test_world->createActor( saveload2_cc::IdKind ) );
+	Q_UNUSED( test_actor );
 	
 	/* save our world */
 	saveload2_cc::saveWorld( test_world, tf.fileName() );
 	
 	/* and load it in a different one */
 	saveload2_cc::TstWorld * loaded_world = 
-			static_cast<saveload2_cc::TstWorld *>( saveload2_cc::loadWorld( tf.fileName() ) );
+			static_cast<saveload2_cc::TstWorld *>( 
+				saveload2_cc::loadWorld( tf.fileName() ) );
 	
 	
 	EXPECT_TRUE( loaded_world != NULL );
@@ -802,12 +833,21 @@ TEST(SaveLoad2, basic) {
 	EXPECT_EQ( loaded_world->energyFree(), test_world->energyFree() );
 	EXPECT_TRUE( loaded_world->sameUId( test_world ) );
 	
+	
 	compareTwoWorldsFactories( loaded_world, test_world );
+	saveload2_cc::TstActor * loaded_actor = 
+			static_cast<saveload2_cc::TstActor *>( 
+				loaded_world->firstActor() );
+	
+	EXPECT_TRUE( loaded_actor != NULL );
+	EXPECT_EQ( loaded_actor->test_int_, test_actor->test_int_ );
 	
 	
 	DEC_REF(loaded_world,loaded_world);
 	DEC_REF(test_world,test_world);
-	AprilLibrary::unregisterFactory( saveload2_cc::f_name, saveload2_cc::factoryCreatorWorlds );
+	AprilLibrary::unregisterFactory( 
+				saveload2_cc::f_world_name, 
+				saveload2_cc::factoryCreatorWorlds );
 	endAprilLibrary();
 	
 }

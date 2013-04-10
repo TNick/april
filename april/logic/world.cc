@@ -677,7 +677,6 @@ void				World::stop				( void )
 	stg.endArray();                                                   \
 	if ( !b ) break;
 
-
 /* ------------------------------------------------------------------------- */
 bool				World::save				( QSettings & stg ) const
 {
@@ -706,22 +705,6 @@ bool				World::save				( QSettings & stg ) const
 		saveFactory(event,EventFactory);
 		saveFactory(reflex,ReflexFactory);
 		
-		
-		
-		b = b & Component::save( stg );
-		break;
-	}
-	
-	stg.endGroup();
-	return b;
-	
-#	undef	saveFactory
-	
-	
-	
-	for (;;)	{
-		
-		
 		stg.beginWriteArray( "actors_", actors_.count() );
 		i_cnt = 0;
 		Actor * a = firstActor_(this);
@@ -747,7 +730,6 @@ bool				World::save				( QSettings & stg ) const
 		}
 		stg.endArray();
 		if ( !b ) break;
-		
 	
 		stg.beginWriteArray( "event_lines_", event_lines_.count() );
 		i_cnt = 0;
@@ -766,10 +748,17 @@ bool				World::save				( QSettings & stg ) const
 		if ( director_ != NULL )
 		{
 			b = b & director_->save( stg );
-		}
+		}		
 		
+		b = b & Component::save( stg );
+		break;
 	}
+	
+	stg.endGroup();
 	return b;
+	
+#	undef	saveFactory
+	
 }
 /* ========================================================================= */
 
@@ -848,6 +837,22 @@ bool				World::load				( QSettings & stg )
 		loadFactory(sensor,SensorFactory,FTySensor);
 		loadFactory(event,EventFactory,FTyEvent);
 		loadFactory(reflex,ReflexFactory,FTyReflex);
+
+		i_cnt = stg.beginReadArray( "actors_" );
+		for ( int i = 0; i < i_cnt; i++ )
+		{
+			stg.setArrayIndex( i );
+			Actor * act = Actor::fromStg( this, stg );
+			if ( act == NULL )
+			{
+				b = false;
+				break;
+			}
+			DEC_REF(act,act);
+		}
+		stg.endArray();
+		if ( !b ) break;
+		// EventSource::fromStg()
 
 		break;
 	}

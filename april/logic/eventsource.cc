@@ -24,8 +24,10 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include	"eventsource.h"
+#include	"eventfactory.h"
 #include	"world.h"
 #include	<QSettings>
+#include	<april/aprillibrary.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -63,17 +65,44 @@ EventSource::EventSource	( World * w )
 /* ------------------------------------------------------------------------- */
 EventSource *		EventSource::fromStg		( World * w, QSettings & stg )
 {
-	EventSource * ret = new EventSource( w );
+	QString			factory_name;
+	Factory *		f;
+	ID				id;
+	EventFactory *	event_factory;
+	EventSource *	event;
+	bool			b;
 	
-	for ( ;; )	{
-		if ( ret->load( stg ) == false )
-			break;
-		return ret;
+	stg.beginGroup( "april-Event" );
+	factory_name = stg.value( "factory_name" ).toString();
+	id = stg.value( "factory_id" ).toULongLong( &b );
+	stg.endGroup();
+	if ( !b ) return NULL;
+	
+	f = AprilLibrary::factoryForString( w, factory_name );
+	if ( f == NULL )
+	{
+		stg.endGroup();
+		return NULL;
 	}
-	
-	DEC_REF(ret,ret);
-	w->remEvent( ret );
-	return NULL;
+	else if ( f->factoryType() != FTyWorld )
+	{
+		DEC_REF(f,f);
+		stg.endGroup();
+		return NULL;
+	}
+	event_factory = static_cast<EventFactory*>(f);
+	event = event_factory->create( id );
+	if ( event != NULL )
+	{
+		if ( event->load( stg ) == false )
+		{
+			w->remEvent( event );
+			DEC_REF(event,event);
+			event = NULL;
+		}
+	}
+	DEC_REF(f,f);
+	return event;
 }
 /* ========================================================================= */
 
