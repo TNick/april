@@ -130,6 +130,9 @@ enum	APRDBG_Codes		{
 
 namespace	april	{
 APRILSHARED_EXPORT	const char *		debugName			( int i );
+
+//! may be used by the IS_APRIL_DEBUG_ID_ALLOWED in 
+APRILSHARED_EXPORT	bool				filterDebug			( int i );
 }
 
 /*  FUNCTIONS    =========================================================== */

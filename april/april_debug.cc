@@ -89,6 +89,16 @@ APRILSHARED_EXPORT	const char *		april::debugName			( int i )
 	return debug_names[i];
 }
 
+APRILSHARED_EXPORT	bool				april::filterDebug			( int i )
+{
+	Q_ASSERT( i >= APRDBG_CTORDTOR );
+	Q_ASSERT( i < APRDBG_MAX );
+	
+	
+	
+	return false;
+}
+
 /*  FUNCTIONS    =========================================================== */
 //
 //

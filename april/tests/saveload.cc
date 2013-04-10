@@ -126,17 +126,82 @@ public:
 	}
 };
 
-void saveTest		( World * w, const QString & s )
+
+
+/* ----------------------------------------------------- */
+
+
+Factory * factoryCreatorActor ( World * w, const QString & s_name )
 {
-	QSettings s_out( s, QSettings::IniFormat );
-	EXPECT_TRUE( w->save( s_out ) );
-	s_out.sync();
+	Q_UNUSED( s_name );
+	return new ActorFactory(w);
+}
+Factory * factoryCreatorEventSource ( World * w, const QString & s_name )
+{
+	Q_UNUSED( s_name );
+	return new EventFactory(w);
+}
+Factory * factoryCreatorSensor ( World * w, const QString & s_name )
+{
+	Q_UNUSED( s_name );
+	return new SensorFactory(w);
+}
+Factory * factoryCreatorActuator ( World * w, const QString & s_name )
+{
+	Q_UNUSED( s_name );
+	return new ActuatorFactory(w);
+}
+Factory * factoryCreatorReflex ( World * w, const QString & s_name )
+{
+	Q_UNUSED( s_name );
+	return new ReflexFactory(w);
+}
+Factory * factoryCreatorBrain ( World * w, const QString & s_name )
+{
+	Q_UNUSED( s_name );
+	return new BrainFactory(w);
 }
 
-void loadTest		( World * w, const QString & s )
+void registerFactoryCreators()
+{
+	/* register factory creators so that they may be later retrieved */
+	AprilLibrary::registerFactory( 
+				saveload2_cc::f_world_name, 
+				saveload2_cc::factoryCreatorWorlds );
+	AprilLibrary::registerFactory( 
+				saveload2_cc::f_actor_name, 
+				saveload2_cc::factoryCreatorActor );
+	AprilLibrary::registerFactory( 
+				saveload2_cc::f_event_name, 
+				saveload2_cc::factoryCreatorEventSource );
+	AprilLibrary::registerFactory( 
+				saveload2_cc::f_sensor_name, 
+				saveload2_cc::factoryCreatorSensor );
+	AprilLibrary::registerFactory( 
+				saveload2_cc::f_actuator_name, 
+				saveload2_cc::factoryCreatorActuator );
+	AprilLibrary::registerFactory( 
+				saveload2_cc::f_reflex_name, 
+				saveload2_cc::factoryCreatorReflex );
+	AprilLibrary::registerFactory( 
+				saveload2_cc::f_brain_name, 
+				saveload2_cc::factoryCreatorBrain );
+}
+
+
+bool				saveTest		( World * w, const QString & s )
 {
 	QSettings s_out( s, QSettings::IniFormat );
-	EXPECT_TRUE( w->load( s_out ) );
+	bool b = w->save( s_out );
+	s_out.sync();
+	return b;
+}
+
+World *				loadTest		( const QString & s )
+{
+	QSettings s_out( s, QSettings::IniFormat );
+	World * w = World::fromStg( s_out );
+	return w;
 }
 
 }	/* namespace saveload_cc */
@@ -145,39 +210,87 @@ void loadTest		( World * w, const QString & s )
 
 
 TEST(SaveLoad, basic) {
+	/* save and load an empty world */
 	
 	QTemporaryFile	tf;
 	tf.open();
-
+	
 	initAprilLibrary();
 	World * w = new World( __FUNCTION__, 1000 );
 	DEC_REF( w, w );
 	
-	saveload_cc::FBrn * bf = new saveload_cc::FBrn( w );
-	DEC_REF( bf, bf );
-	saveload_cc::FActu * af = new saveload_cc::FActu( w );
-	DEC_REF( af, af );
-	saveload_cc::FRefx * rf = new saveload_cc::FRefx( w );
-	DEC_REF( rf, rf );
-	saveload_cc::FSens * sf = new saveload_cc::FSens( w );
-	DEC_REF( sf, sf );
+	EXPECT_TRUE( saveload_cc::saveTest( w, tf.fileName() ) );
+	World * loaded_world = saveload_cc::loadTest( tf.fileName() );
+	EXPECT_TRUE( loaded_world != NULL );
 	
-	saveload_cc::FAgent * fact = new saveload_cc::FAgent( w );
-	DEC_REF( fact, fact );
-	
-	Actor * a = w->createActor( saveload_cc::IdKind );
-	Q_UNUSED( a );
-	
-	w->start();
-	w->advance();
-	w->stop();
-	
-	saveload_cc::saveTest( w, tf.fileName() );
-	saveload_cc::loadTest( w, tf.fileName() );
-//	saveload_cc::saveTest( w, "D:\\qt\\april-build-Desktop_Qt_5_0_1_MinGW_32bit-Debug\\build\\t.ini");
-//	saveload_cc::loadTest( w, "D:\\qt\\april-build-Desktop_Qt_5_0_1_MinGW_32bit-Debug\\build\\t.ini" );
-	
-	DEC_REF( a, a );
-	
+	DEC_REF( loaded_world, loaded_world );
 	endAprilLibrary();
 }
+	
+TEST(SaveLoad, actor) {
+	/* save a world with actor and no factory */
+	
+	QTemporaryFile	tf;
+	tf.open();
+	
+	initAprilLibrary();
+	World * w = new World( __FUNCTION__, 1000 );
+	DEC_REF( w, w );
+	
+	Actor * a = new Actor( w );
+	DEC_REF( a, a );
+	
+	EXPECT_FALSE( saveload_cc::saveTest( w, tf.fileName() ) );
+		
+	endAprilLibrary();
+}	
+
+TEST(SaveLoad, actor_factory) {
+	/* save a world with actor and actor factory */
+	
+	QTemporaryFile	tf;
+	tf.open();
+	
+	initAprilLibrary();
+	World * w = new World( __FUNCTION__, 1000 );
+	DEC_REF( w, w );
+	
+	Actor * a = new Actor( w );
+	DEC_REF( a, a );
+	
+	EXPECT_FALSE( saveload_cc::saveTest( w, tf.fileName() ) );
+		
+	endAprilLibrary();
+}	
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+//	saveload_cc::FBrn * bf = new saveload_cc::FBrn( w );
+//	DEC_REF( bf, bf );
+//	saveload_cc::FActu * af = new saveload_cc::FActu( w );
+//	DEC_REF( af, af );
+//	saveload_cc::FRefx * rf = new saveload_cc::FRefx( w );
+//	DEC_REF( rf, rf );
+//	saveload_cc::FSens * sf = new saveload_cc::FSens( w );
+//	DEC_REF( sf, sf );
+	
+//	saveload_cc::FAgent * fact = new saveload_cc::FAgent( w );
+//	DEC_REF( fact, fact );
+	
+//	Actor * a = w->createActor( saveload_cc::IdKind );
+//	Q_UNUSED( a );
+	
+//	w->start();
+//	w->advance();
+//	w->stop();
+	
+//}

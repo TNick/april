@@ -653,8 +653,6 @@ bool				Actor::save						( QSettings & stg ) const
 		
 		*/
 		
-		
-		
 		stg.setValue( "birth_", birth_ );
 		stg.setValue( "death_", death_ );
 		stg.setValue( "age_", age_ );
@@ -747,6 +745,18 @@ bool				Actor::load						( QSettings & stg )
 	stg.endGroup();
 	
 	return b;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+Factory *			Actor::factory				( void ) const
+{
+	World * w = world();
+	if ( w == NULL )
+	{
+		return NULL;
+	}
+	return w->actorFactories().value( kind() );
 }
 /* ========================================================================= */
 

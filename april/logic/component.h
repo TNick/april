@@ -114,7 +114,7 @@ public:
 	virtual ID			identificator			( void ) const
 	{ return InvalidId; }
 
-	//! associated ID, if any
+	//! associated factory, if any
 	virtual Factory *	factory					( void ) const
 	{ return NULL; }
 

@@ -181,6 +181,13 @@ public:
 	
 	//! load from a QSettings object
 	virtual bool		load					( QSettings & s );
+
+	//! associated ID, if any
+	virtual ID			identificator			( void ) const
+	{ return kind(); }
+
+	//! associated factory, if any
+	virtual Factory *	factory					( void ) const;
 	
 	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
 	/** @name Allow access to components
