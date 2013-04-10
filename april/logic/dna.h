@@ -86,6 +86,20 @@ protected:
 		
 		//! number of values
 		int			count_;
+		
+		
+		//! tell if two classes are equal
+		bool			operator ==		( const Partition & other ) const
+		{
+			return ( ( id_ == other.id_ ) && 
+					 ( start_ == other.start_ ) && 
+					 ( count_ == other.count_ ) );
+		}
+		//! tell if two classes are not equal
+		bool			operator !=		( const Partition & other ) const
+		{
+			return !operator==(other); 
+		}
 	};
 	
 public:
@@ -190,6 +204,10 @@ public:
 	
 	//! tell if this instance is valid or not
 	bool			isValid			( void ) const;
+	
+	//! tell if two classes are equal
+	bool			operator ==		( const DNA & other ) const;
+	
 	
 	
 	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */

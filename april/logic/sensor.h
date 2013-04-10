@@ -84,6 +84,9 @@ public:
 	//! constructor; sets cost and packed energy
 	Sensor				( Actor * actor, quint64 cost, quint64 energy );
 
+	//! constructor method; creates and loads a sensor from QSettings
+	static Sensor *		fromStg					( Actor * a, QSettings & s );
+
 protected:
 
 	//! destructor;

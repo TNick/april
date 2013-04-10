@@ -312,6 +312,18 @@ protected:
 	//! add a Brain
 	bool				addBrain				( Brain * act );
 
+	//! remove an Actuator
+	bool				remActuator				( Actuator * act );
+
+	//! remove a Sensor
+	bool				remSensor				( Sensor * act );
+
+	//! remove a Reflex
+	bool				remReflex				( Reflex * act );
+
+	//! remove a Brain
+	bool				remBrain				( Brain * act );
+
 	//! perform steps (called by the World)
 	void				doSteps					( int steps  = 1 );
 

@@ -86,6 +86,9 @@ public:
 	
 	//! constructor; sets cost and packed energy
 	Actuator			( Actor * actor, quint64 cost, quint64 energy );
+	
+	//! constructor method; creates and loads an Actuator from QSettings
+	static Actuator *	fromStg				( Actor * a, QSettings & stg );
 
 protected:
 
@@ -108,7 +111,7 @@ public:
 	//
 	//
 	//
-
+	
 };	/*	class Actuator	*/
 
 /*  CLASS    =============================================================== */

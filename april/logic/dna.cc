@@ -145,7 +145,7 @@ bool			DNA::fromMerge		( const DNA & p1, const DNA & p2 )
 	{
 		values_i_.append( 0 );
 	}
-
+	
 	/* check compatibility */
 	if ( p1.values_i_.count() < OffMax )
 	{
@@ -872,6 +872,36 @@ bool				DNA::addSensor				( ID id )
 }
 /* ========================================================================= */
 
+/* ------------------------------------------------------------------------- */
+bool				DNA::operator ==	( const DNA & other ) const
+{
+	if ( values_i_.length() == other.values_i_.length() )
+	{
+		if ( values_i_ == other.values_i_ )
+		{
+			if ( values_.length() == other.values_.length() )
+			{
+				if ( values_ == other.values_ )
+				{
+					if ( parts_.count() == other.parts_.count() )
+					{
+						int i_max = parts_.count();
+						for ( int i = 0; i < i_max; i++ )
+						{
+							if ( parts_.at( i ) != other.parts_.at( i ) )
+							{
+								return false;
+							}
+						}
+						return true;
+					}
+				}
+			}
+		}
+	}
+	return false;
+}
+/* ========================================================================= */
 
 
 /*  CLASS    =============================================================== */

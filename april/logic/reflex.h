@@ -84,6 +84,9 @@ public:
 
 	//! constructor; sets cost and packed energy
 	Reflex				( Actor * actor, quint64 cost, quint64 energy );
+	
+	//! constructor method; creates and loads an Reflex from QSettings
+	static Reflex *		fromStg				( Actor * a, QSettings & stg );
 
 protected:
 

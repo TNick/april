@@ -24,7 +24,9 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include	"reflex.h"
+#include	"reflexfactory.h"
 #include	"actor.h"
+#include	<april/aprillibrary.h>
 
 
 /*  INCLUDES    ============================================================ */
@@ -75,6 +77,50 @@ Reflex::Reflex	( Actor * actor, quint64 cost, quint64 energy )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+Reflex *			Reflex::fromStg				( Actor * a, QSettings & stg )
+{ FUNC_ENTRY;
+	QString			factory_name;
+	Factory *		f;
+	ID				id;
+	ReflexFactory *	reflex_factory;
+	Reflex *		reflex;
+	bool			b;
+	
+	stg.beginGroup( "april-Reflex" );
+	factory_name = stg.value( "factory_name" ).toString();
+	id = stg.value( "factory_id" ).toULongLong( &b );
+	stg.endGroup();
+	if ( !b ) return NULL;
+	
+	f = AprilLibrary::factoryForString( a->world(), factory_name );
+	if ( f == NULL )
+	{
+		stg.endGroup();
+		return NULL;
+	}
+	else if ( f->factoryType() != FTyReflex )
+	{
+		DEC_REF(f,f);
+		stg.endGroup();
+		return NULL;
+	}
+	reflex_factory = static_cast<ReflexFactory*>(f);
+	reflex = reflex_factory->create( a, id );
+	if ( reflex )
+	{
+		if ( reflex->load( stg ) == false )
+		{
+			a->remReflex( reflex );
+			DEC_REF(reflex,reflex);
+			reflex = NULL;
+		}
+	}
+	DEC_REF(f,f);
+	return reflex;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
 Reflex::~Reflex	( void )
 {
 	APRDBG_CDTOR;
@@ -87,6 +133,20 @@ bool				Reflex::save				( QSettings & stg ) const
 { FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-Reflex" );
+
+	Factory * f = factory();
+	if ( f == NULL )
+	{
+		stg.setValue( "factory_name", QString() );
+		_LG_("  no factory set for reflex");
+	}
+	else
+	{
+		stg.setValue( "factory_name", f->factoryName() );
+		_LG2_("  factory for reflex: ", f->factoryName() );
+	}
+	stg.setValue( "factory_id", identificator() );
+	_LG2_("  factory id: ", identificator() );
 
 	b = b & ActorComp::save( stg );
 	

@@ -136,6 +136,7 @@ protected:
 		
 		return b;
 	}
+public:
 	virtual ID			identificator			( void ) const
 	{ return IdKind; }
 	virtual Factory *	factory					( void ) const
@@ -155,17 +156,13 @@ public:
 		idata.age_= 100;
 		idata.energy_= 10;
 		initDNA( idata );
-//		EXPECT_TRUE( defaultDNA().addBrain( IdBrain) );
-//		EXPECT_TRUE( defaultDNA().addActuator( IdActuator ) );
-//		EXPECT_TRUE( defaultDNA().addReflex( IdReflex ) );
-//		EXPECT_TRUE( defaultDNA().addSensor( IdSensor ) );
+		EXPECT_TRUE( defaultDNA().addBrain( IdBrain) );
+		EXPECT_TRUE( defaultDNA().addActuator( IdActuator ) );
+		EXPECT_TRUE( defaultDNA().addReflex( IdReflex ) );
+		EXPECT_TRUE( defaultDNA().addSensor( IdSensor ) );
 	}
 	virtual QString			factoryName			( void )
 	{ return f_actor_name; }
-	Actor *			create				( ID id ) {
-		Q_UNUSED( id );
-		return new TstActor( world() );
-	}
 	bool			save				( QSettings & stg ) const {
 		bool b = true;
 		b = b & ActorFactory::save( stg );
@@ -191,6 +188,18 @@ public:
 		stg.endGroup();
 		
 		return b;
+	}
+	virtual Actor * create ( ID id ) {
+		Q_UNUSED( id );
+		Q_ASSERT( id == IdKind );
+		/* create new instance that gets inserted in the world */
+		TstActor * ret = new TstActor( world() ); 
+		/* set a default dan */
+		setDNA( ret );
+		return ret;
+	}
+	virtual void copyDefaultDNA ( DNA & destination ) { 
+		destination = defaultDNA();
 	}
 }; /* .............................................................. */
 class TstEventSource : public EventSource {
@@ -228,6 +237,11 @@ protected:
 		
 		return b;
 	}
+public:
+	virtual ID			identificator			( void ) const
+	{ return IdEvent; }
+	virtual Factory *	factory					( void ) const
+	{ return world()->eventFactories().value( IdEvent ); }
 }; /* .............................................................. */
 class TstFactEventSource : public EventFactory	{
 public:
@@ -305,6 +319,11 @@ protected:
 		
 		return b;
 	}
+public:
+	virtual ID			identificator			( void ) const
+	{ return IdSensor; }
+	virtual Factory *	factory					( void ) const
+	{ return actor()->world()->sensorFactories().value( IdSensor ); }
 }; /* .............................................................. */
 class TstFactSensor : public SensorFactory	{
 public:
@@ -383,6 +402,11 @@ protected:
 		
 		return b;
 	}
+public:
+	virtual ID			identificator			( void ) const
+	{ return IdActuator; }
+	virtual Factory *	factory					( void ) const
+	{ return actor()->world()->actuatorFactories().value( IdActuator ); }
 }; /* .............................................................. */
 class TstFactActuator : public ActuatorFactory	{
 public:
@@ -461,6 +485,11 @@ protected:
 		
 		return b;
 	}
+public:
+	virtual ID			identificator			( void ) const
+	{ return IdReflex; }
+	virtual Factory *	factory					( void ) const
+	{ return actor()->world()->reflexFactories().value( IdReflex ); }
 }; /* .............................................................. */
 class TstFactReflex : public ReflexFactory	{
 public:
@@ -539,6 +568,11 @@ protected:
 		
 		return b;
 	}
+public:
+	virtual ID			identificator			( void ) const
+	{ return IdBrain; }
+	virtual Factory *	factory					( void ) const
+	{ return actor()->world()->brainFactories().value( IdBrain ); }
 }; /* .............................................................. */
 class TstFactBrain : public BrainFactory	{
 public:
@@ -842,7 +876,95 @@ TEST(SaveLoad2, basic) {
 	EXPECT_TRUE( loaded_actor != NULL );
 	EXPECT_EQ( loaded_actor->test_int_, test_actor->test_int_ );
 	
+	EXPECT_TRUE( loaded_actor->firstSensor() != NULL );
+	EXPECT_TRUE( test_actor->firstSensor() != NULL );
+	EXPECT_TRUE( loaded_actor->firstActuator() != NULL );
+	EXPECT_TRUE( test_actor->firstActuator() != NULL );
+	EXPECT_TRUE( loaded_actor->firstReflex() != NULL );
+	EXPECT_TRUE( test_actor->firstReflex() != NULL );
+	EXPECT_TRUE( loaded_actor->firstBrain() != NULL );
+	EXPECT_TRUE( test_actor->firstBrain() != NULL );
 	
+	EXPECT_EQ( loaded_actor->kind(), test_actor->kind() );
+	EXPECT_EQ( loaded_actor->kindName(), test_actor->kindName() );
+	EXPECT_EQ( loaded_actor->dna(), test_actor->dna() );
+	EXPECT_EQ( loaded_actor->birth(), test_actor->birth() );
+	EXPECT_EQ( loaded_actor->death(), test_actor->death() );
+	EXPECT_EQ( loaded_actor->age(), test_actor->age() );
+	EXPECT_EQ( loaded_actor->toLive(), test_actor->toLive() );
+	EXPECT_EQ( loaded_actor->energy(), test_actor->energy() );
+	EXPECT_EQ( loaded_actor->cost(), test_actor->cost() );
+	EXPECT_EQ( loaded_actor->isAlive(), test_actor->isAlive() );
+	EXPECT_EQ( loaded_actor->dies(), test_actor->dies() );
+	
+	saveload2_cc::TstSensor * loaded_sensor =
+			static_cast<saveload2_cc::TstSensor *>(
+				loaded_actor->firstSensor() );
+	saveload2_cc::TstSensor * test_sensor =
+			static_cast<saveload2_cc::TstSensor *>(
+				test_actor->firstSensor() );
+	EXPECT_EQ( loaded_sensor->test_int_, test_sensor->test_int_ );
+	EXPECT_EQ( loaded_sensor->isValid(), test_sensor->isValid() );
+	EXPECT_EQ( loaded_sensor->cost(), test_sensor->cost() );
+	EXPECT_EQ( loaded_sensor->energy(), test_sensor->energy() );
+	EXPECT_EQ( loaded_sensor->actor(), loaded_actor );
+	EXPECT_EQ( test_sensor->actor(), test_actor );
+	EXPECT_EQ( loaded_sensor->payload().i_, test_sensor->payload().i_ );
+	EXPECT_EQ( loaded_sensor->identificator(), test_sensor->identificator() );
+	EXPECT_EQ( loaded_sensor->factory()->factoryName(), 
+			   test_sensor->factory()->factoryName() );
+	
+	saveload2_cc::TstReflex * loaded_reflex =
+			static_cast<saveload2_cc::TstReflex *>(
+				loaded_actor->firstReflex() );
+	saveload2_cc::TstReflex * test_reflex =
+			static_cast<saveload2_cc::TstReflex *>(
+				test_actor->firstReflex() );
+	EXPECT_EQ( loaded_reflex->test_int_, test_reflex->test_int_ );
+	EXPECT_EQ( loaded_reflex->isValid(), test_reflex->isValid() );
+	EXPECT_EQ( loaded_reflex->cost(), test_reflex->cost() );
+	EXPECT_EQ( loaded_reflex->energy(), test_reflex->energy() );
+	EXPECT_EQ( loaded_reflex->actor(), loaded_actor );
+	EXPECT_EQ( test_reflex->actor(), test_actor );
+	EXPECT_EQ( loaded_reflex->payload().i_, test_reflex->payload().i_ );
+	EXPECT_EQ( loaded_reflex->identificator(), test_reflex->identificator() );
+	EXPECT_EQ( loaded_reflex->factory()->factoryName(), 
+			   test_reflex->factory()->factoryName() );
+	
+	saveload2_cc::TstBrain * loaded_brain =
+			static_cast<saveload2_cc::TstBrain *>(
+				loaded_actor->firstBrain() );
+	saveload2_cc::TstBrain * test_brain =
+			static_cast<saveload2_cc::TstBrain *>(
+				test_actor->firstBrain() );
+	EXPECT_EQ( loaded_brain->test_int_, test_brain->test_int_ );
+	EXPECT_EQ( loaded_brain->isValid(), test_brain->isValid() );
+	EXPECT_EQ( loaded_brain->cost(), test_brain->cost() );
+	EXPECT_EQ( loaded_brain->energy(), test_brain->energy() );
+	EXPECT_EQ( loaded_brain->actor(), loaded_actor );
+	EXPECT_EQ( test_brain->actor(), test_actor );
+	EXPECT_EQ( loaded_brain->payload().i_, test_brain->payload().i_ );
+	EXPECT_EQ( loaded_brain->identificator(), test_brain->identificator() );
+	EXPECT_EQ( loaded_brain->factory()->factoryName(), 
+			   test_brain->factory()->factoryName() );
+	
+	saveload2_cc::TstActuator * loaded_actuator =
+			static_cast<saveload2_cc::TstActuator *>(
+				loaded_actor->firstActuator() );
+	saveload2_cc::TstActuator * test_actuator =
+			static_cast<saveload2_cc::TstActuator *>(
+				test_actor->firstActuator() );
+	EXPECT_EQ( loaded_actuator->test_int_, test_actuator->test_int_ );
+	EXPECT_EQ( loaded_actuator->isValid(), test_actuator->isValid() );
+	EXPECT_EQ( loaded_actuator->cost(), test_actuator->cost() );
+	EXPECT_EQ( loaded_actuator->energy(), test_actuator->energy() );
+	EXPECT_EQ( loaded_actuator->actor(), loaded_actor );
+	EXPECT_EQ( test_actuator->actor(), test_actor );
+	EXPECT_EQ( loaded_actuator->payload().i_, test_actuator->payload().i_ );
+	EXPECT_EQ( loaded_actuator->identificator(), test_actuator->identificator() );
+	EXPECT_EQ( loaded_actuator->factory()->factoryName(), 
+			   test_actuator->factory()->factoryName() );
+
 	DEC_REF(loaded_world,loaded_world);
 	DEC_REF(test_world,test_world);
 	AprilLibrary::unregisterFactory( 

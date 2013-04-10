@@ -25,6 +25,7 @@
 
 #include	"eventsource.h"
 #include	"eventfactory.h"
+#include	"eventfactory.h"
 #include	"world.h"
 #include	<QSettings>
 #include	<april/aprillibrary.h>
@@ -125,6 +126,20 @@ bool				EventSource::save				( QSettings & stg ) const
 { FUNC_ENTRY;
 	bool b = true;
 	stg.beginGroup( "april-EventSource" );
+
+	Factory * f = factory();
+	if ( f == NULL )
+	{
+		stg.setValue( "factory_name", QString() );
+		_LG_("  no factory set for EventSource");
+	}
+	else
+	{
+		stg.setValue( "factory_name", f->factoryName() );
+		_LG2_("  factory for EventSource: ", f->factoryName() );
+	}
+	stg.setValue( "factory_id", identificator() );
+	_LG2_("  factory id: ", identificator() );
 
 	b = b & Component::save( stg );
 	

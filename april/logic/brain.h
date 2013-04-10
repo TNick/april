@@ -84,6 +84,9 @@ public:
 	
 	//! constructor; sets cost and packed energy
 	Brain				( Actor * actor, quint64 cost, quint64 energy );
+	
+	//! constructor method; creates and loads an Brain from QSettings
+	static Brain *		fromStg				( Actor * a, QSettings & stg );
 
 protected:
 

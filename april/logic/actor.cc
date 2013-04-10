@@ -306,6 +306,54 @@ bool				Actor::addBrain					( Brain * itm )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+bool				Actor::remActuator				( Actuator * act )
+{ FUNC_ENTRY;
+	
+	if ( actuators_.contains( act ) )
+		return false;
+	actuators_.remove( act );
+	DEC_REF( act, this );
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				Actor::remSensor				( Sensor * sns )
+{ FUNC_ENTRY;
+	
+	if ( sensors_.contains( sns ) )
+		return false;
+	sensors_.remove( sns );
+	DEC_REF( sns, this );
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				Actor::remReflex				( Reflex * r )
+{ FUNC_ENTRY;
+	
+	if ( reflexes_.contains( r ) )
+		return false;
+	reflexes_.remove( r );
+	DEC_REF( r, this );
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				Actor::remBrain				( Brain * b )
+{ FUNC_ENTRY;
+	
+	if ( brains_.contains( b ) )
+		return false;
+	brains_.remove( b );
+	DEC_REF( b, this );
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
 void				Actor::doSteps					( int steps )
 { FUNC_ENTRY;
 	if ( isAlive() == false )
@@ -515,6 +563,7 @@ Brain *				Actor::findBrain				( ID id ) const
 bool				Actor::save						( QSettings & stg ) const
 { FUNC_ENTRY;
 	bool b = true;
+	int i = 0;
 	stg.beginGroup( "april-Actor" );
 	Factory * f = factory();
 	if ( f == NULL )
@@ -535,16 +584,41 @@ bool				Actor::save						( QSettings & stg ) const
 		b = b & dna_.save( stg );
 		if ( !b ) { _LG_("  dna_ fails"); break; }
 		
+		
+#define saveActorComp(slist,cls)								    \
+		stg.beginWriteArray( stringify(slist), slist.count() );     \
+		cls * itr_##cls = first##cls##_(this);                       \
+		i = 0;                                                      \
+		while ( itr_##cls != NULL ) {                                \
+			stg.setArrayIndex( i );                                 \
+			b = b & itr_##cls->save( stg );                          \
+			itr_##cls = next##cls##_(itr_##cls);                      \
+			i++;                                                    \
+		}                                                           \
+		stg.endArray();                                             \
+		if ( !b ) break
+		
+		saveActorComp(sensors_,Sensor);
+		saveActorComp(actuators_,Actuator);
+		saveActorComp(reflexes_,Reflex);
+		saveActorComp(brains_,Brain);
+#undef	saveActorComp
+
+//		stg.beginWriteArray( "sensors_", sensors_.count() );
+//		Sensor * itr_sens = firstSensor_(this);
+//		i = 0;
+//		while ( itr_sens != NULL )
+//		{
+//			stg.setArrayIndex( i );
+//			b = b & itr_sens->save( stg );
+//			itr_sens = nextSensor_(itr_sens);
+//			i++;
+//		}
+//		stg.endArray();
+//		if ( !b ) break;
+		
+		
 		/*
-		stg.beginWriteArray( "sensors_", sensors_.count() );
-		Sensor * itr_sens = firstSensor_(this);
-		while ( itr_sens != NULL )
-		{
-			b = b & itr_sens->save( stg );
-			itr_sens = nextSensor_(itr_sens);
-		}
-		stg.endArray();
-		if ( !b ) break;
 		
 		stg.beginWriteArray( "actuators_", actuators_.count() );
 		Actuator * itr_act = firstActuator_(this);
@@ -576,15 +650,19 @@ bool				Actor::save						( QSettings & stg ) const
 		stg.endArray();
 		if ( !b ) break;
 		
-		// the kind is present in DNA
-		// the cost is present in DNA
+		
+		*/
+		
+		
 		
 		stg.setValue( "birth_", birth_ );
 		stg.setValue( "death_", death_ );
 		stg.setValue( "age_", age_ );
 		stg.setValue( "energy_", energy_ );
 		stg.setValue( "alive_", alive_ );
-		*/
+		// the kind is present in DNA
+		// the cost is present in DNA
+
 		b = b & Component::save( stg );
 		_LG2_("  Component: ",b);
 		
@@ -600,16 +678,68 @@ bool				Actor::save						( QSettings & stg ) const
 bool				Actor::load						( QSettings & stg )
 { FUNC_ENTRY;
 	bool b = true;
+	int i_cnt;
 	stg.beginGroup( "april-Actor" );
 	
 	for (;;)	{
 		b = b & Component::load( stg );
 		_LG2_("  Component: ",b);
-		/*
-		b = b & dna_.load( stg );
-		if ( !b ) break;
-		*/
 		
+		b = b & dna_.load( stg );
+		if ( !b ) { _LG_("  dna_ fails"); break; }
+		
+		birth_ = stg.value( "birth_" ).toULongLong( &b );
+		if ( !b ) { _LG_("  birth_ fails"); break; }
+		death_ = stg.value( "death_" ).toULongLong( &b );
+		if ( !b ) { _LG_("  death_ fails"); break; }
+		age_ = stg.value( "age_" ).toULongLong( &b );
+		if ( !b ) { _LG_("  age_ fails"); break; }
+		energy_ = stg.value( "energy_" ).toULongLong( &b );
+		if ( !b ) { _LG_("  energy_ fails"); break; }
+		alive_ = stg.value( "alive_" ).toBool();
+		
+		kind_ = dna_.kind(); // the kind is present in DNA
+		cost_ = dna_.cost(); // the cost is present in DNA
+		
+		
+		
+#define loadActorComp(slist,cls)							    \
+		i_cnt = stg.beginReadArray( stringify(slist) );         \
+		for ( int i = 0; i < i_cnt; i++ ) {                     \
+			stg.setArrayIndex( i );                             \
+			cls * act = cls::fromStg( this, stg );              \
+			if ( act == NULL ) {                                \
+				b = false;                                      \
+				_LG2_( "  " stringify(slist) " fails: ",i);     \
+				break;                                          \
+			}                                                   \
+			DEC_REF(act,act);                                   \
+		}                                                       \
+		stg.endArray();                                         \
+		if ( !b ) break
+				
+		loadActorComp(sensors_,Sensor);
+		loadActorComp(actuators_,Actuator);
+		loadActorComp(reflexes_,Reflex);
+		loadActorComp(brains_,Brain);
+#undef	loadActorComp
+
+//		i_cnt = stg.beginReadArray( "sensors_" );
+//		for ( int i = 0; i < i_cnt; i++ )
+//		{
+//			stg.setArrayIndex( i );
+//			Sensor * act = Sensor::fromStg( this, stg );
+//			if ( act == NULL )
+//			{
+//				b = false;
+//				_LG2_("  sensor fails: ",i);
+//				break;
+//			}
+//			DEC_REF(act,act);
+//		}
+//		stg.endArray();
+//		if ( !b ) break;
+
 		
 		break;
 	}
