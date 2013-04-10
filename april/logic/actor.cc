@@ -43,7 +43,11 @@
 
 using namespace april;
 
-#define FUNC_ENTRY	APRDBG_FUNC(APRDBG_A)
+
+#define	_LG2_(t1,t2)	APRDBG2(APRDBG_W,t1,t2)
+#define	_LG3_(t1,t2,t3)	APRDBG3(APRDBG_W,t1,t2,t3)
+#define	_LG_(t)		APRDBG(APRDBG_A,t)
+#define	FUNC_ENTRY	APRDBG_FUNC(APRDBG_A)
 
 /*  DEFINITIONS    ========================================================= */
 //

@@ -51,7 +51,11 @@
 
 using namespace april;
 
-#define FUNC_ENTRY	APRDBG_FUNC(APRDBG_W)
+
+#define	_LG2_(t1,t2)	APRDBG2(APRDBG_W,t1,t2)
+#define	_LG3_(t1,t2,t3)	APRDBG3(APRDBG_W,t1,t2,t3)
+#define	_LG_(t)			APRDBG(APRDBG_W,t)
+#define	FUNC_ENTRY		APRDBG_FUNC(APRDBG_W)
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -95,17 +99,20 @@ World *			World::fromStg			( QSettings & stg )
 { FUNC_ENTRY;
 	stg.beginGroup( "april-World" );
 	QString factory_name = stg.value( "factory_name" ).toString();
+	_LG2_("  factory: ",factory_name);
 	Factory * f = AprilLibrary::factoryForString( NULL, factory_name );
 	WorldFactory * wf;
 	if ( f == NULL )
 	{
 		stg.endGroup();
+		_LG_("  could not find factory");
 		return NULL;
 	}
 	else if ( f->factoryType() != FTyWorld )
 	{
 		DEC_REF(f,f);
 		stg.endGroup();
+		_LG_("  Wrong kind of factory");
 		return NULL;
 	}
 	stg.endGroup();
@@ -677,7 +684,7 @@ void				World::stop				( void )
 	i_cnt++;                                                          \
 	}                                                                 \
 	stg.endArray();                                                   \
-	if ( !b ) break;
+	if ( !b ) { _LG_( stringify(f) " factory fails"); break; }
 
 /* ------------------------------------------------------------------------- */
 bool				World::save				( QSettings & stg ) const
@@ -698,7 +705,7 @@ bool				World::save				( QSettings & stg ) const
 		stg.setValue( "energy_free_", energy_free_ );
 		
 		b = b & uid_.save( stg );
-		if ( !b ) break;
+		if ( !b ) { _LG_("  uid_ fails"); break; }
 		
 		saveFactory(actor,ActorFactory);
 		saveFactory(actuator,ActuatorFactory);
@@ -718,7 +725,7 @@ bool				World::save				( QSettings & stg ) const
 			i_cnt++;
 		}
 		stg.endArray();
-		if ( !b ) break;
+		if ( !b ) { _LG_("  actors_ failed"); break; }
 		
 		stg.beginWriteArray( "events_", events_.count() );
 		i_cnt = 0;
@@ -731,7 +738,7 @@ bool				World::save				( QSettings & stg ) const
 			i_cnt++;
 		}
 		stg.endArray();
-		if ( !b ) break;
+		if ( !b ) { _LG_("  events_ failed"); break; }
 	
 		stg.beginWriteArray( "event_lines_", event_lines_.count() );
 		i_cnt = 0;
@@ -745,14 +752,16 @@ bool				World::save				( QSettings & stg ) const
 			i_cnt++;
 		}
 		stg.endArray();
-		if ( !b ) break;
+		if ( !b ) { _LG_("  event_lines_ failed"); break; }
 		
 		if ( director_ != NULL )
 		{
 			b = b & director_->save( stg );
-		}		
+			_LG2_("  director: ",b);
+		}
 		
 		b = b & Component::save( stg );
+		_LG2_("  component: ",b);
 		break;
 	}
 	
@@ -779,10 +788,9 @@ bool				World::save				( QSettings & stg ) const
 	add##F( af, id );														\
 	DEC_REF(factory,factory);												\
 	b = b & af->load( stg );												\
-	if ( !b ) break;													    \
 	}																		\
 	stg.endArray();															\
-	if ( !b ) break;
+	if ( !b ) { _LG_( stringify(f) " factory fails"); break; }
 
 
 
@@ -848,6 +856,7 @@ bool				World::load				( QSettings & stg )
 			if ( act == NULL )
 			{
 				b = false;
+				_LG2_("  actor fails: ",i);
 				break;
 			}
 			DEC_REF(act,act);
