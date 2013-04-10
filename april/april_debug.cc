@@ -46,7 +46,29 @@ static const char * debug_names[] = {
 	"LIBRARY",
 	"MW",
 
-
+	"Factory",
+	"Actor",
+	"FactActor",
+	"ActorComponent",
+	"Actuator",
+	"FactActuator",
+	"Brain",
+	"FactBrain",
+	"Component",
+	"Director",
+	"DNA",
+	"DNAView",
+	"EventData",
+	"EventLine",
+	"EventSource",
+	"FactEventSrc",
+	"Reflex",
+	"FactReflex",
+	"Sensor",
+	"FactSensor",
+	"World",
+	"FactWorld",
+	"UID",
 
 	0
 };

@@ -681,7 +681,11 @@ bool			DNA::save				( QSettings & stg ) const
 	int i_max;
 	
 	if ( isValid() == false )
+	{
+		_LG_("  Invalid DNA requested to save");
 		return false;
+	}
+	
 	stg.beginGroup( "DNA" );
 	
 	stg.beginWriteArray( "parts_" );

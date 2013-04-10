@@ -520,17 +520,21 @@ bool				Actor::save						( QSettings & stg ) const
 	if ( f == NULL )
 	{
 		stg.setValue( "factory_name", QString() );
+		_LG_("  no factory set for actor");
 	}
 	else
 	{
 		stg.setValue( "factory_name", f->factoryName() );
+		_LG2_("  factory for actor: ", f->factoryName() );
 	}
 	stg.setValue( "factory_id", identificator() );
+	_LG2_("  factory id: ", identificator() );
 	
 	for (;;)	{
 		
 		b = b & dna_.save( stg );
-		if ( !b ) break;
+		if ( !b ) { _LG_("  dna_ fails"); break; }
+		
 		/*
 		stg.beginWriteArray( "sensors_", sensors_.count() );
 		Sensor * itr_sens = firstSensor_(this);
@@ -582,6 +586,7 @@ bool				Actor::save						( QSettings & stg ) const
 		stg.setValue( "alive_", alive_ );
 		*/
 		b = b & Component::save( stg );
+		_LG2_("  Component: ",b);
 		
 		break;
 	}
@@ -599,6 +604,7 @@ bool				Actor::load						( QSettings & stg )
 	
 	for (;;)	{
 		b = b & Component::load( stg );
+		_LG2_("  Component: ",b);
 		/*
 		b = b & dna_.load( stg );
 		if ( !b ) break;
