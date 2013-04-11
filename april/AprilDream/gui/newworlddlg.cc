@@ -123,7 +123,6 @@ void					NewWorldDlg::validateAndClose		( void )
 	{
 		w_ = new World( data_.s_name_, data_.energy_ );
 		OWN_CREF(w_,this);
-		//setResult( QDialog::Accepted );
 		accept();
 	}
 	else

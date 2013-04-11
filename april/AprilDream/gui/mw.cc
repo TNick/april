@@ -234,7 +234,8 @@ bool					MW::slotCloseWorld	( void )
 	QString s_err;
 	if ( w_scene_.closeWorld( s_err ) == false )
 	{
-		showError( s_err );
+		if ( s_err.isEmpty() == false )
+			showError( s_err );
 		return false;
 	}
 	else
@@ -253,9 +254,11 @@ bool					MW::slotSaveWorld	( void )
 	QString s_err;
 	if ( w_scene_.save( s_err ) == false )
 	{
-		showError( s_err );
+		if ( s_err.isEmpty() == false )
+			showError( s_err );
 		return false;
 	}
+	newWorldStatus();
 	return true;
 }
 /* ========================================================================= */
@@ -268,9 +271,11 @@ bool					MW::slotSaveWorldAs	( void )
 	QString s_err;
 	if ( w_scene_.saveAs( s_err ) == false )
 	{
-		showError( s_err );
+		if ( s_err.isEmpty() == false )
+			showError( s_err );
 		return false;
 	}
+	newWorldStatus();
 	return true;
 }
 /* ========================================================================= */
@@ -288,7 +293,13 @@ void					MW::newWorldStatus	( void )
 	viever_.setEnabled( b );
 	if ( b )
 	{
-		setWindowTitle( tr("%1[*] - AprilDream").arg( world()->name() ) );
+		QString s_file = w_scene_.hasAssociatedFile() ? 
+								  w_scene_.associatedFile() : 
+								  tr("no file");
+		setWindowTitle( tr("%1[*] <%2> - AprilDream")
+						.arg( world()->name() )
+						.arg( s_file )
+						);
 	}
 	else
 	{

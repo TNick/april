@@ -132,6 +132,16 @@ public:
 	//! save to current file; if none is associated user is asked
 	bool				saveAs				( QString & s_err );
 
+	//! associated file
+	const QString &		associatedFile		( void ) const
+	{ return s_file_; }
+
+	//! has associated file
+	bool				hasAssociatedFile	( void ) const
+	{ return s_file_.isEmpty() == false; }
+
+
+
 	/*  FUNCTIONS    ======================================================= */
 	//
 	//
