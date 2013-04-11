@@ -105,7 +105,8 @@ public:
 /* ------------------------------------------------------------------------- */
 WorldQScene::WorldQScene	( QObject * parent )
 	: QGraphicsScene( parent ), MemTrack(),
-	  w_( NULL )
+	  w_( NULL ),
+	  s_file_()
 {
 	APRDBG_CDTOR;
 	

@@ -27,6 +27,8 @@
 #include	"mw.h"
 #include	"ui_mw.h"
 #include	"newworlddlg.h"
+#include	<april/logic/world.h>
+#include	<april/aprillibrary.h>
 
 #include	<QLabel>
 #include	<QFileDialog>
@@ -178,12 +180,21 @@ void					MW::stopWorld			( void )
 bool					MW::slotNewWorld	( void )
 {
 	NewWorldDlg wdlg( this );
-	if ( wdlg.exec() == QDialog::Accepted )
+	int i = wdlg.exec();
+	if ( i == QDialog::Accepted )
 	{
-		/** @todo create new world */
-		
-		newWorldStatus();
-		return true;
+		Q_ASSERT( wdlg.world() != NULL );
+		QString s_err;
+		if ( w_scene_.loadWorld( wdlg.world(), s_err ) == false )
+		{
+			showError( s_err );
+			AprilLibrary::remWorld( wdlg.world() );
+		}
+		else
+		{
+			newWorldStatus();
+			return true;
+		}
 	}
 	return false;
 }

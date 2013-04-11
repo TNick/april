@@ -38,6 +38,8 @@
 
 namespace   april	{
 
+class	World;
+
 namespace	Gui		{
 
 /*  DEFINITIONS    ========================================================= */
@@ -47,9 +49,8 @@ namespace	Gui		{
 //
 /*  CLASS    --------------------------------------------------------------- */
 
-
 /**
-*	@brief	Dialog to ...
+*	@brief	Dialog to create a new world
 */
 class NewWorldDlg : public QDialog, public MemTrack		{
 	Q_OBJECT
@@ -61,6 +62,36 @@ class NewWorldDlg : public QDialog, public MemTrack		{
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
 
+public:
+
+	//! the type
+	enum PredefinedTypes {
+		DefaultType = 0
+	};
+	
+	//! threading mode
+	enum ThreadingMode {
+		ThreadNone = 0,	/**< No threads */
+		ThreadOne,		/**< A worker thread */
+		ThreadTwo,		/**< 2 worker threads */
+		ThreadFour,		/**< 4 worker threads */
+		ThreadEight,	/**< 8 worker threads */
+		Thread16,		/**< 16 worker threads */
+		Thread64,		/**< 64 worker threads */
+		ThreadActor,	/**< One thread for each actor */
+		
+		ThreadMax
+	};
+	
+	//! data for general tab
+	struct GeneralData		{
+		int				type_;		/**< index of the type - 0 is DefaultType */
+		ThreadingMode	th_mode_;	/**< threading mode */
+		quint64			energy_;	/**< amount of energy in the world */
+		QString			s_name_;	/**< name */
+		QString			s_file_;	/**< file */
+	};
+
 	/*  DEFINITIONS    ===================================================== */
 	//
 	//
@@ -70,12 +101,15 @@ class NewWorldDlg : public QDialog, public MemTrack		{
 
 private:
 
-	/**
-	*	@brief	GUI components embedded in this instance
-	*/
+	//! GUI components embedded in this instance
 	Ui::NewWorldDlg 			ui;
 
+	//! the world that is created
+	World *						w_;
 
+	//! the data inside general tab
+	GeneralData					data_;
+	
 	/*  DATA    ============================================================ */
 	//
 	//
@@ -85,18 +119,38 @@ private:
 
 public:
 
-	/**
-	*	@brief	constructor
-	*/
+	//! constructor
 	explicit			NewWorldDlg		( QWidget *parent = 0 );
 
-	/**
-	*	@brief	destructor
-	*/
-	~NewWorldDlg			(void);
+	//! destructor
+	~NewWorldDlg		(void);
+	
+	//! the world that is created
+	inline World *		world			( void ) const
+	{ return w_; }
+
+	//! the data inside general tab
+	GeneralData &		generalData		( void )
+	{ return data_; }
 
 protected:
-	void				changeEvent		( QEvent *e );
+
+	//!@{
+	//! other events
+	void				changeEvent			( QEvent *e );
+	//!@}
+	
+private slots:
+
+	//! check the input; if OK emmit accepted()
+	void				validateAndClose	( void );
+	
+	//! change current type
+	void				changeType			( int i );
+	
+	//! pick a file
+	void				browseForFile		( void );
+
 
 	/*  FUNCTIONS    ======================================================= */
 	//
