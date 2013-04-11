@@ -75,18 +75,11 @@ private:
 
 public:
 
-
-	/**
-	*	@brief	constructor;
-	*/
+	//! constructor
 	##CLASS##			( void );
 
-
-	/**
-	*	@brief	destructor;
-	*/
+	//! destructor;
 	virtual				~##CLASS##		( void );
-
 
 
 	/*  FUNCTIONS    ======================================================= */

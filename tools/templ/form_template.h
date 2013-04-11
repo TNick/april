@@ -85,20 +85,18 @@ private:
 
 public:
 
-	/**
-	*	@brief	constructor
-	*/
+	//! constructor
 	explicit			##CLASS##		( QWidget *parent = 0 );
 
-
-	/**
-	*	@brief	destructor
-	*/
+	//! destructor
 	~##CLASS##		(void);
 
-
 protected:
-	void				changeEvent		( QEvent *e );
+
+	//!@{
+	//! other events
+	void				changeEvent			( QEvent *e );
+	//!@}
 
 
 	/*  FUNCTIONS    ======================================================= */

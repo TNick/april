@@ -52,9 +52,8 @@ namespace   april    {
 
 
 
+	//! short description
 	/**
-	*	@brief	short description
-	*
 	*	extended description
 	*
 	*	@return		description for return
