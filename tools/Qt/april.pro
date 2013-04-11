@@ -6,4 +6,5 @@ SUBDIRS += april-internal-test
 SUBDIRS += examples
 SUBDIRS += plugins
 SUBDIRS += AprilDream
+SUBDIRS += abstracta
 
