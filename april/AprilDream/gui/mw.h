@@ -142,6 +142,9 @@ private slots:
 	//!  stop the world
 	void					stopWorld			( void );
 	
+	//!  present the plug-ins dialog
+	void					showplugIns			( void );
+	
 	
 	//!@{
 	//! basic slots for world

@@ -66,7 +66,8 @@ ICON = ../../../april/aprildream/aprildream.icns
 
 FORMS += \
     ../../../april/AprilDream/gui/mw.ui \
-    ../../../april/AprilDream/gui/newworlddlg.ui
+    ../../../april/AprilDream/gui/newworlddlg.ui \
+    ../../../april/AprilDream/gui/pluginsdlg.ui
 
 HEADERS += \
     ../../../april/AprilDream/gui/mw.h \
@@ -84,7 +85,8 @@ HEADERS += \
     ../../../april/AprilDream/gui/dockids.h \
     ../../../april/AprilDream/gui/dockcrtsel.h \
     ../../../april/AprilDream/gui/sceneviewer.h \
-    ../../../april/AprilDream/gui/newworlddlg.h
+    ../../../april/AprilDream/gui/newworlddlg.h \
+    ../../../april/AprilDream/gui/pluginsdlg.h
 
 SOURCES += \
     ../../../april/AprilDream/gui/mw.cc \
@@ -103,7 +105,8 @@ SOURCES += \
     ../../../april/AprilDream/gui/dockids.cc \
     ../../../april/AprilDream/gui/dockcrtsel.cc \
     ../../../april/AprilDream/gui/sceneviewer.cc \
-    ../../../april/AprilDream/gui/newworlddlg.cc
+    ../../../april/AprilDream/gui/newworlddlg.cc \
+    ../../../april/AprilDream/gui/pluginsdlg.cc
 
 RESOURCES += \
     ../../../april/AprilDream/aprildream.qrc

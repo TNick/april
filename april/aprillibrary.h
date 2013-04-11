@@ -250,6 +250,9 @@ public:
 	//! get the plug-in for a certain file (may be relative to cuurrent directory)
 	static AprilPluginInterf *	findPlugInRel		( const QString & s );
 
+	//! first plugin
+	static AprilPluginLoader *	firstPlugin			( void );
+
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
 

@@ -7,5 +7,11 @@
         <file alias="exit.png">../res/fatcow-hosting-icons-3000/door_out.png</file>
         <file alias="open.png">../res/fatcow-hosting-icons-3000/folder.png</file>
         <file alias="close.png">../res/fatcow-hosting-icons-3000/cross.png</file>
+        
+        <file alias="folder_add.png">../res/fatcow-hosting-icons-3000/folder_add.png</file>
+        <file alias="refresh.png">../res/fatcow-hosting-icons-3000/page_refresh.png</file>
+        <file alias="folder_delete.png">../res/fatcow-hosting-icons-3000/folder_delete.png</file>
+        
+        
     </qresource>
 </RCC>

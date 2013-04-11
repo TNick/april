@@ -27,6 +27,8 @@
 #include	"mw.h"
 #include	"ui_mw.h"
 #include	"newworlddlg.h"
+#include	"pluginsdlg.h"
+
 #include	<april/logic/world.h>
 #include	<april/aprillibrary.h>
 
@@ -87,6 +89,8 @@ MW::MW	( QWidget *parent ) :
 			 this, SLOT( startWorld() ) );
 	connect( ui.actionStop, SIGNAL(triggered()),
 			 this, SLOT( stopWorld() ) );
+	connect( ui.action_plug_ins, SIGNAL(triggered()),
+			 this, SLOT( showplugIns() ) );
 	
 	l_run = new QLabel( ui.statusbar );
 	ui.statusbar->addWidget( l_run );
@@ -172,6 +176,18 @@ void					MW::stopWorld			( void )
 	{
 		l_run->setTextFormat(Qt::RichText);
 		l_run->setText("<img src=\":/pause.png\">");
+	}
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void					MW::showplugIns			( void )
+{
+	PluginsDlg pdlg( this );
+	int i = pdlg.exec();
+	if ( i == QDialog::Accepted )
+	{
+		/* stub */
 	}
 }
 /* ========================================================================= */
@@ -294,8 +310,8 @@ void					MW::newWorldStatus	( void )
 	if ( b )
 	{
 		QString s_file = w_scene_.hasAssociatedFile() ? 
-								  w_scene_.associatedFile() : 
-								  tr("no file");
+					w_scene_.associatedFile() : 
+					tr("no file");
 		setWindowTitle( tr("%1[*] <%2> - AprilDream")
 						.arg( world()->name() )
 						.arg( s_file )

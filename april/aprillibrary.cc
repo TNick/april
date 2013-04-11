@@ -371,6 +371,13 @@ AprilPluginInterf *	AprilLibrary::findPlugInRel		( const QString & s )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+AprilPluginLoader *	AprilLibrary::firstPlugin		( void )
+{
+	return firstPlugin_( unique() );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
 bool				AprilLibrary::registerFactory	(
 		const QString & s_name, FactoryCreator callback )
 {
