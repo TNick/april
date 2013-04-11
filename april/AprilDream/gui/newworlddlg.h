@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			worldqscene.h
+  \file			newworlddlg.h
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the definition for WorldQScene class
+  \brief		Contains the definition for NewWorldDlg class
 
 
 *//*
@@ -17,17 +17,17 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __WORLDQSCENE_INC__
-#define __WORLDQSCENE_INC__
+#ifndef __NEWWORLDDLG_INC__
+#define __NEWWORLDDLG_INC__
 //
 //
 //
 //
 /*  INCLUDES    ------------------------------------------------------------ */
 
+#include    <QDialog>
 #include    <april/april.h>
-#include    <QGraphicsScene>
-#include	<april/logic/world.h>
+#include	"ui_newworlddlg.h"
 
 /*  INCLUDES    ============================================================ */
 //
@@ -38,7 +38,7 @@
 
 namespace   april	{
 
-namespace   Gui		{
+namespace	Gui		{
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -47,13 +47,13 @@ namespace   Gui		{
 //
 /*  CLASS    --------------------------------------------------------------- */
 
+
 /**
-*	@brief	A world in a QGraphicsScene
+*	@brief	Dialog to ...
 */
-class
-	APRILSHARED_EXPORT
-	WorldQScene		: public QGraphicsScene, public MemTrack		{
-	BBM_TRACK( WorldQScene );
+class NewWorldDlg : public QDialog, public MemTrack		{
+	Q_OBJECT
+	BBM_TRACK( NewWorldDlg );
 
 	//
 	//
@@ -70,11 +70,11 @@ class
 
 private:
 
-	//! the world
-	World *			w_;
+	/**
+	*	@brief	GUI components embedded in this instance
+	*/
+	Ui::NewWorldDlg 			ui;
 
-	//! associated file
-	QString			s_file_;
 
 	/*  DATA    ============================================================ */
 	//
@@ -85,52 +85,18 @@ private:
 
 public:
 
-
-	//! constructor;
-	WorldQScene			( QObject * parent = NULL );
-
-	//! destructor;
-	virtual				~WorldQScene		( void );
-
-	//! underlying world object
-	inline World *		world				( void ) const 
-	{ return w_; }
-
-	//! has a world or is empty
-	inline bool			hasWorld			( void ) const 
-	{ return w_ != NULL; }
-
-	//! open a world from a file
 	/**
-	 * The program loads new world and, if succesfull, discards discards 
-	 * current world, if any.
-	 * The call fails if the world is running.
-	 *
-	 * @param s_file The file to load
-	 * @return true if the new world was loaded
-	 */
-	bool				openWorld			 (
-			const QString &		s_file,
-			QString &			s_err
-			);
-	
-	//! close current world; fails if the world is running
-	bool				closeWorld			 ( QString & s_err );
+	*	@brief	constructor
+	*/
+	explicit			NewWorldDlg		( QWidget *parent = 0 );
 
-	//! loads provided world
 	/**
-	 * The call fails if the current world is running.
-	 *
-	 * @param w The world to load
-	 * @return true if the new world was loaded
-	 */
-	bool				loadWorld			( World * w, QString & s_err );
+	*	@brief	destructor
+	*/
+	~NewWorldDlg			(void);
 
-	//! save to current file; if none is associated user is asked
-	bool				save				( QString & s_err );
-
-	//! save to current file; if none is associated user is asked
-	bool				saveAs				( QString & s_err );
+protected:
+	void				changeEvent		( QEvent *e );
 
 	/*  FUNCTIONS    ======================================================= */
 	//
@@ -138,7 +104,7 @@ public:
 	//
 	//
 
-};	/*	class WorldQScene	*/
+};	/*	class NewWorldDlg	*/
 
 /*  CLASS    =============================================================== */
 //
@@ -146,10 +112,10 @@ public:
 //
 //
 
-}   //  namespace Gui
+}	//	namespace	Gui
 
-}   //  namespace april
+}   //  namespace   april
 
-#endif // __WORLDQSCENE_INC__
+#endif // __NEWWORLDDLG_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */

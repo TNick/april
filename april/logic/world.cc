@@ -41,6 +41,7 @@
 #include	"eventline.h"
 
 #include	<april/aprillibrary.h>
+#include	<QFile>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -91,6 +92,22 @@ World::World	( const QString & name, quint64 tot_energ )
 	APRDBG_CDTOR;
 	
 	AprilLibrary::addWorld( this );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+World *			World::fromStg			( 
+	const QString & s_file, QString & s_err )
+{ FUNC_ENTRY;
+	
+	QFile f( s_file );
+	if ( f.exists() == false )
+	{
+		s_err = QObject::tr( "Can't load the world. The file does not exists." );
+		return NULL;
+	}
+	QSettings	stg( s_file, QSettings::IniFormat );
+	return fromStg( stg );	
 }
 /* ========================================================================= */
 
@@ -934,6 +951,20 @@ bool				World::load				( QSettings & stg )
 	}
 	stg.endGroup();
 	return b;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool		World::saveAsStg			( 
+		const QString & s_file, QString & s_err ) const
+{
+	QSettings	stg( s_file, QSettings::IniFormat );
+	if ( stg.isWritable() == false )
+	{
+		s_err = QObject::tr( "Can't write to file." );
+		return false;
+	}
+	return save( stg );
 }
 /* ========================================================================= */
 

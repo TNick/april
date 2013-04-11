@@ -28,6 +28,20 @@
      <string>View</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuWorld">
+    <property name="title">
+     <string>World</string>
+    </property>
+    <addaction name="action_new_world"/>
+    <addaction name="action_open_world"/>
+    <addaction name="separator"/>
+    <addaction name="action_save_world"/>
+    <addaction name="action_save_world_as"/>
+    <addaction name="separator"/>
+    <addaction name="action_close_current_world"/>
+    <addaction name="action_exit"/>
+   </widget>
+   <addaction name="menuWorld"/>
    <addaction name="menuView"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -73,6 +87,89 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Space</string>
+   </property>
+  </action>
+  <action name="action_new_world">
+   <property name="icon">
+    <iconset resource="../aprildream.qrc">
+     <normaloff>:/new.png</normaloff>:/new.png</iconset>
+   </property>
+   <property name="text">
+    <string>New world...</string>
+   </property>
+   <property name="toolTip">
+    <string>Allows setting the parameters for a new world</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="action_open_world">
+   <property name="icon">
+    <iconset resource="../aprildream.qrc">
+     <normaloff>:/open.png</normaloff>:/open.png</iconset>
+   </property>
+   <property name="text">
+    <string>Open world....</string>
+   </property>
+   <property name="toolTip">
+    <string>Opens a previously saved world from the disk</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="action_close_current_world">
+   <property name="icon">
+    <iconset resource="../aprildream.qrc">
+     <normaloff>:/close.png</normaloff>:/close.png</iconset>
+   </property>
+   <property name="text">
+    <string>Close current world</string>
+   </property>
+   <property name="toolTip">
+    <string>Closes current world, leaving the interface empty and disabled. To re-enable it open a world or create a new one.</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="action_save_world">
+   <property name="icon">
+    <iconset resource="../aprildream.qrc">
+     <normaloff>:/save.png</normaloff>:/save.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save world</string>
+   </property>
+   <property name="toolTip">
+    <string>Saves current world to a file. If no file is associated then asks for a file first.</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="action_save_world_as">
+   <property name="text">
+    <string>Save world as...</string>
+   </property>
+   <property name="toolTip">
+    <string>Save the world as a different file than the one associate with it right now.</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="action_exit">
+   <property name="icon">
+    <iconset resource="../aprildream.qrc">
+     <normaloff>:/exit.png</normaloff>:/exit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Exit</string>
+   </property>
+   <property name="toolTip">
+    <string>Closes the application</string>
    </property>
   </action>
  </widget>

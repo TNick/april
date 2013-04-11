@@ -161,6 +161,12 @@ public:
 	//! constructor method; creates and loads a world from QSettings
 	static World *		fromStg				( QSettings & s );
 	
+	//! constructor method; creates and loads a world from a file
+	static World *		fromStg				(
+			const QString &			s_file,
+			QString &				s_err
+			);
+
 protected:
 
 	/**
@@ -554,6 +560,13 @@ public:
 	
 	//! load the world (only when the world is stopped)
 	virtual bool	load				( QSettings & stg );
+
+
+	//! save the world (only when the world is stopped)
+	virtual bool	saveAsStg			( 
+			const QString &			s_file,
+			QString &				s_err
+			) const;
 
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */

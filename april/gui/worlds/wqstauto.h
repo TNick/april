@@ -108,6 +108,7 @@ public:
 	inline int			interval		( void ) const
 	{ return update_len_; }
 	
+	
 private:
 
 	//! used to generate events in the underlying world object

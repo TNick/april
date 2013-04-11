@@ -114,7 +114,21 @@ public:
 
 	//! destructor
 	~MW						( void );
-
+	
+	//! tell if we have a world loaded or not
+	bool					hasWorld			( void ) const
+	{ return w_scene_.hasWorld(); }
+	
+	//! underlying world
+	World *					world				( void ) const
+	{ return w_scene_.world(); }
+	
+	//! show an error message
+	void					showError			( const QString & s_msg );
+	
+	//! show an informative message
+	void					showInfo			( const QString & s_msg );
+	
 protected:
 
 	//! examine change events for run-time language change
@@ -128,7 +142,27 @@ private slots:
 	//!  stop the world
 	void					stopWorld			( void );
 	
+	
+	//!@{
+	//! basic slots for world
+	bool					slotNewWorld		( void );
+	bool					slotOpenWorld		( void );
+	bool					slotCloseWorld		( void );
+	bool					slotSaveWorld		( void );
+	bool					slotSaveWorldAs		( void );
+	//!@}
+	
 
+private:
+
+	
+	//!@{
+	//! prepare to start
+	void					prepareActionsWorld	( void );
+	//!@}
+	
+	//! called when a world is opened/created or closed
+	void					newWorldStatus		( void );
 
 	/*  FUNCTIONS    ======================================================= */
 	//

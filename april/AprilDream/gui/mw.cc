@@ -26,7 +26,11 @@
 
 #include	"mw.h"
 #include	"ui_mw.h"
+#include	"newworlddlg.h"
+
 #include	<QLabel>
+#include	<QFileDialog>
+#include	<QMessageBox>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -75,6 +79,8 @@ MW::MW	( QWidget *parent ) :
 	setCentralWidget( &viever_ );
 	viever_.setScene( &w_scene_ );
 	
+	prepareActionsWorld();
+	
 	connect( ui.actionStart, SIGNAL(triggered()),
 			 this, SLOT( startWorld() ) );
 	connect( ui.actionStop, SIGNAL(triggered()),
@@ -83,7 +89,27 @@ MW::MW	( QWidget *parent ) :
 	l_run = new QLabel( ui.statusbar );
 	ui.statusbar->addWidget( l_run );
 	l_run->setTextFormat(Qt::RichText);
-    l_run->setText("<img src=\":/pause.png\">");
+	l_run->setText("<img src=\":/pause.png\">");
+	
+	newWorldStatus();
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void					MW::prepareActionsWorld	( void )
+{
+	connect( ui.action_new_world, SIGNAL( triggered() ),
+			 this, SLOT( slotNewWorld() ) );
+	connect( ui.action_open_world, SIGNAL( triggered() ),
+			 this, SLOT( slotOpenWorld() ) );
+	connect( ui.action_close_current_world, SIGNAL( triggered() ),
+			 this, SLOT( slotCloseWorld() ) );
+	connect( ui.action_save_world, SIGNAL( triggered() ),
+			 this, SLOT( slotSaveWorld() ) );
+	connect( ui.action_save_world_as, SIGNAL( triggered() ),
+			 this, SLOT( slotSaveWorldAs() ) );
+	connect( ui.action_exit, SIGNAL( triggered() ),
+			 this, SLOT( close() ) );
 }
 /* ========================================================================= */
 
@@ -92,6 +118,23 @@ MW::~MW	( void )
 {
 	APRDBG_CDTOR;
 	/* stub */
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void					MW::showError			( const QString & s_msg )
+{
+	Q_ASSERT( s_msg.isEmpty() == false );
+	ui.statusbar->showMessage( s_msg, 10 );
+	QMessageBox::critical( this, "Error in AprilDream", s_msg );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void					MW::showInfo			( const QString & s_msg )
+{
+	Q_ASSERT( s_msg.isEmpty() == false );
+	ui.statusbar->showMessage( s_msg, 10 );
 }
 /* ========================================================================= */
 
@@ -127,6 +170,118 @@ void					MW::stopWorld			( void )
 	{
 		l_run->setTextFormat(Qt::RichText);
 		l_run->setText("<img src=\":/pause.png\">");
+	}
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool					MW::slotNewWorld	( void )
+{
+	NewWorldDlg wdlg( this );
+	if ( wdlg.exec() == QDialog::Accepted )
+	{
+		/** @todo create new world */
+		
+		newWorldStatus();
+		return true;
+	}
+	return false;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool					MW::slotOpenWorld	( void )
+{
+	QString fileName = QFileDialog::getOpenFileName(
+				this,
+				tr( "Select the file to open:" ),
+				QString(),
+				QString()
+				);
+	if ( !fileName.isEmpty() )
+	{
+		QString s_err;
+		if ( w_scene_.openWorld( fileName, s_err ) == false )
+		{
+			showError( tr( "Could not load file %1!\n%2" )
+					   .arg( fileName )
+					   .arg( s_err ) );
+		}
+		else
+		{
+			newWorldStatus();
+			return true;
+		}
+	}
+	return false;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool					MW::slotCloseWorld	( void )
+{
+	QString s_err;
+	if ( w_scene_.closeWorld( s_err ) == false )
+	{
+		showError( s_err );
+		return false;
+	}
+	else
+	{
+		newWorldStatus();
+		return true;
+	}
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool					MW::slotSaveWorld	( void )
+{
+	if ( hasWorld() == false )
+		return false;
+	QString s_err;
+	if ( w_scene_.save( s_err ) == false )
+	{
+		showError( s_err );
+		return false;
+	}
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool					MW::slotSaveWorldAs	( void )
+{
+	if ( hasWorld() == false )
+		return false;
+	QString s_err;
+	if ( w_scene_.saveAs( s_err ) == false )
+	{
+		showError( s_err );
+		return false;
+	}
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void					MW::newWorldStatus	( void )
+{
+	bool b = hasWorld();
+	
+	ui.actionStart->setEnabled( b );
+	ui.actionStop->setEnabled( b );
+	ui.action_close_current_world->setEnabled( b );
+	ui.action_save_world->setEnabled( b );
+	ui.action_save_world_as->setEnabled( b );
+	viever_.setEnabled( b );
+	if ( b )
+	{
+		setWindowTitle( tr("%1[*] - AprilDream").arg( world()->name() ) );
+	}
+	else
+	{
+		setWindowTitle( tr( "AprilDream (no world loaded)" ) );
 	}
 }
 /* ========================================================================= */
