@@ -58,9 +58,9 @@ struct	AaToken		{
 		HasLeadingWhites	= 0x0400,
 		HasTrailingWhites	= 0x0800,
 		HasMiddleWhites		= 0x1000,
-		IsAllWhites			= HasLeadingWhites | HasMiddleWhites | HasTrailingWhites,
+		IsAllWhites			= 0x2000 | HasLeadingWhites | HasMiddleWhites | HasTrailingWhites,
 		
-		HasLowCodes			= 0x2000	/**< characters lower than space excluding previous */
+		HasLowCodes			= 0x4000	/**< characters lower than space excluding previous */
 	};
 	
 	//! initialise the structure to ground values

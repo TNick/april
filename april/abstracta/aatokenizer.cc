@@ -62,7 +62,7 @@ AaTkString				AaTokenizer::basicTk			( const QString & s )
 	bool		in_token = false;
 	int			i_current = 0;
 	
-	ret.tk_.reserve( qMax( 1000, s.length() ) );
+	ret.tk_.reserve( qMin( 1000, s.length() ) );
 	ret.s_ = s;
 	
 	/* skip leading white spaces */
@@ -286,7 +286,6 @@ AaTkString				AaTokenizer::basicTk			( const QString & s )
 			tkn.flags = AaToken::WasQuoted;
 		}
 		else
-		
 		{
 			if ( prev_was_white )
 			{
@@ -296,7 +295,7 @@ AaTkString				AaTokenizer::basicTk			( const QString & s )
 			{
 				tkn.flags |= AaToken::IsAllWhites;
 			}
-			if ( all_hex )
+			if ( all_hex && ( ( tkn.flags & AaToken::HasMiddleWhites ) == 0 ) )
 			{
 				tkn.flags |= AaToken::OnlyHex;
 			}
@@ -304,10 +303,15 @@ AaTkString				AaTokenizer::basicTk			( const QString & s )
 		ret.tk_.append( tkn );
 		
 		/* end of string? */
+		in_token = false;
 		if ( itr == itr_end )
 			break;
 		
 		/* no, only end of token */
+		itr++; i_current++;
+		if ( itr == itr_end )
+			break;
+		ch = *itr; c = ch.unicode();
 	}
 	
 	ret.tk_.squeeze();
