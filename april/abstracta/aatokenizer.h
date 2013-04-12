@@ -60,7 +60,8 @@ struct	AaToken		{
 		HasMiddleWhites		= 0x1000,
 		IsAllWhites			= 0x2000 | HasLeadingWhites | HasMiddleWhites | HasTrailingWhites,
 		
-		HasLowCodes			= 0x4000	/**< characters lower than space excluding previous */
+		HasLowCodes			= 0x4000,	/**< characters lower than space excluding previous */
+		UpperCaseLetters	= 0x8000
 	};
 	
 	//! initialise the structure to ground values
@@ -96,6 +97,16 @@ struct	AaToken		{
 	bool	hasDot			( void ) const
 	{ return ( flags & HasDot ) != 0; }
 	
+	bool	hasLowCodes		( void ) const
+	{ return ( flags & HasLowCodes ) == HasLowCodes; }
+	
+	bool	hasUpperCaseLetters		( void ) const
+	{ return ( flags & UpperCaseLetters ) == UpperCaseLetters; }
+	
+	bool	hasLowerCaseLetters		( void ) const
+	{ return ( ( flags & UpperCaseLetters ) == 0 ) && hasLetters(); }
+	
+	
 	bool	isInteger		( void ) const
 	{ 
 		return ( isAllWhite() == false ) && 
@@ -130,6 +141,15 @@ struct	AaToken		{
 
 //! a tokenised string; contains the string itself and the list of tokens
 struct	AaTkString		{
+	
+	//! get the string as described by the token i
+	QString			getToken		( int i )
+	{ return s_.mid( tk_.at( i ).i_start, tk_.at( i ).i_end - tk_.at( i ).i_start ); }
+	
+	//! get the string as described by the token i
+	QString			getToken		( const AaToken & tk )
+	{ return s_.mid( tk.i_start, tk.i_end - tk.i_start ); }
+	
 	
 	//! the string
 	QString				s_;

@@ -26,6 +26,7 @@
 #include	<april/april.h>
 #include	<april/aprillibrary.h>
 #include	<libbbb/2/doevents.h>
+#include	<april/abstracta/aatokenizer.h>
 
 #include	<QString>
 #include	<QTranslator>
@@ -233,8 +234,44 @@ void			mainEnd			( void )
 /* ------------------------------------------------------------------------- */
 bool		processCommand	( const QString & s )
 {
-	
-	return false;
+	AaTkString aas = AaTokenizer::basicTk( s );
+	QString s_err;
+	int i_max = aas.tk_.count();
+	if ( i_max > 0 )
+	{
+		const AaToken & cmd = aas.tk_.at( 0 );
+		
+		/* first thing should be a command */
+		if ( cmd.hasLowCodes() | cmd.isAllWhite() | cmd.middleWhite() )
+		{
+			s_err = QObject::tr( 
+						"Improper command. The command may not\n" 
+						"contain spaces and special codes."
+						);
+			AaOutput::showError( s_err );
+			return true;
+		}
+		/* convert commands into an easier to read form */
+		QString s_cmd = aas.getToken( cmd );
+		if ( cmd.leadingWhite() | cmd.trailingWhite() )
+		{
+			s_cmd = s_cmd.trimmed();
+		}
+		if ( cmd.hasUpperCaseLetters() )
+		{
+			s_cmd = s_cmd.toLower();
+		}
+		
+		/* is this an exit request? */
+		if ( ( s_cmd == "exit" ) ||
+			 ( s_cmd == "q") ||
+			 ( s_cmd == "quit") )
+		{
+			return false;
+		}
+		
+	}
+	return true;
 }
 /* ========================================================================= */
 
