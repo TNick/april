@@ -58,13 +58,14 @@ struct	AaToken		{
 		HasLeadingWhites	= 0x0400,
 		HasTrailingWhites	= 0x0800,
 		HasMiddleWhites		= 0x1000,
-		IsAllWhites			= HasLeadingWhites | HasMiddleWhites | HasTrailingWhites
+		IsAllWhites			= HasLeadingWhites | HasMiddleWhites | HasTrailingWhites,
 		
+		HasLowCodes			= 0x2000	/**< characters lower than space excluding previous */
 	};
 	
 	//! initialise the structure to ground values
 	void	init			( void )
-	{ i_stat = -1; i_end = -1; flags = 0; }
+	{ i_start = -1; i_end = -1; flags = 0; }
 	
 	//!@{
 	//! querry the flags
@@ -109,11 +110,14 @@ struct	AaToken		{
 				( middleWhite() == false ) && 
 				( ( flags & OnlyHex ) == OnlyHex ); 
 	}
+	
+	bool	wasQuoted		( void ) const
+	{ return ( flags & WasQuoted ) == WasQuoted; }
 	//!@}
 
 
 	//! the offset from the start of the string to the start of the token
-	int		i_stat;
+	int		i_start;
 	
 	//! the offset from the start of the string to the end of the token
 	int		i_end;

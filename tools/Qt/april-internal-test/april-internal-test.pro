@@ -60,7 +60,6 @@ isEmpty( UI_DIR ) {
 #######################################################
 
 
-    ../../../libdigibrain/test/dbinpqueue_test.cc
 
 SOURCES += \
     ../../../april/tests/aprillibrary.cc \
@@ -76,5 +75,10 @@ SOURCES += \
     ../../../april/tests/eventline.cc \
     ../../../april/tests/plugins.cc \
     ../../../april/tests/saveload.cc \
-    ../../../april/tests/saveload2.cc
+    ../../../april/tests/saveload2.cc \
+    ../../../april/tests/aatokenizer_test.cc \
+    ../../../april/abstracta/aatokenizer.cc
+ 
+HEADERS += \
+    ../../../april/abstracta/aatokenizer.h
 
