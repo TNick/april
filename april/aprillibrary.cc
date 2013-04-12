@@ -245,6 +245,40 @@ void			AprilLibrary::remWorld					( World * world )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+World *			AprilLibrary::firstWorld				( void )
+{
+	return firstWorld_(uniq_);
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+QString			AprilLibrary::uniqueWorldName			( const QString & pattern )
+{
+	QString s_ret;
+	bool b_match;
+	World * iter;
+	for ( int i = 1; i < INT_MAX; i++ )
+	{
+		b_match = false;
+		s_ret = pattern.arg( i );
+		iter = firstWorld_(uniq_);
+		while ( iter != NULL )
+		{
+			if ( iter->name() == s_ret )
+			{
+				b_match = true;
+				break;
+			}
+			iter = nextWorld_(iter);
+		}
+		if ( b_match == false )
+			break;
+	}
+	return s_ret;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
 void			AprilLibrary::internalRemWorld			( World * world )
 {
 	if ( world->isRunning() )

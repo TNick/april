@@ -325,7 +325,86 @@ AaTkString				AaTokenizer::basicTk			( const QString & s )
 //
 //
 //
+/*  CLASS    --------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------- */
+bool			AaTkString::isString		( const QString & s_match, int i ) const
+{
+	Q_ASSERT( i >= 0 );
+	Q_ASSERT( i < tk_.count() );
+	const AaToken & tk = tk_.at( i );
+	if ( isString(tk) == false )
+		return false;
+	QString s_tk = getToken( tk );
+	return ( s_tk == s_match );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			AaTkString::isString		( int i ) const
+{
+	Q_ASSERT( i >= 0 );
+	Q_ASSERT( i < tk_.count() );
+	const AaToken & tk = tk_.at( i );
+	return isString( tk );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			AaTkString::isString		( const AaToken & tk ) const
+{
+	return ( tk.hasWhiteSpaces() || 
+		 tk.hasDigits() || 
+		 tk.hasComma() || 
+		 tk.hasDot() || 
+		 tk.hasLowCodes() ||
+		 tk.hasUpperCaseLetters() ) == false;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			AaTkString::isInteger		( int i ) const
+{
+	Q_ASSERT( i >= 0 );
+	Q_ASSERT( i < tk_.count() );
+	const AaToken & tk = tk_.at( i );
+	return isInteger( tk );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			AaTkString::isInteger		( const AaToken & tk ) const
+{
+	return tk.isInteger();
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			AaTkString::isHexInteger	( int i ) const
+{
+	Q_ASSERT( i >= 0 );
+	Q_ASSERT( i < tk_.count() );
+	const AaToken & tk = tk_.at( i );
+	return isHexInteger( tk );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			AaTkString::isHexInteger	( const AaToken & tk ) const
+{
+	return tk.isHexInteger();
+}
+/* ========================================================================= */
+
+
+
+/*  CLASS    =============================================================== */
+//
+//
+//
+//
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
+
 
 

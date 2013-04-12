@@ -143,12 +143,69 @@ struct	AaToken		{
 struct	AaTkString		{
 	
 	//! get the string as described by the token i
-	QString			getToken		( int i )
+	QString			getToken		( int i ) const
 	{ return s_.mid( tk_.at( i ).i_start, tk_.at( i ).i_end - tk_.at( i ).i_start ); }
 	
 	//! get the string as described by the token i
-	QString			getToken		( const AaToken & tk )
+	QString			getToken		( const AaToken & tk ) const
 	{ return s_.mid( tk.i_start, tk.i_end - tk.i_start ); }
+	
+	//! check if the provided string matches token i
+	/**
+	*	It is asserted that the string to querry is all-lower case; it is
+	*	also asserted that the string contains only letters (no digits,
+	*	no separators or other characters). Neither the token nor the
+	*	string to match are trimmed (white spaces are not ignored).
+	*
+	*	The function uses the flags as much as it can to avoid a string
+	*	comparation and return a false result.
+	*/
+	bool			isString		( const QString & s_match, int i ) const;
+	
+	//! check if the token is a string
+	/**
+	*	It is asserted that the string to querry is all-lower case; it is
+	*	also asserted that the string contains only letters (no digits,
+	*	no separators or other characters).
+	*
+	*	The function uses only the flags to guess the result.
+	*/
+	bool			isString		( int i ) const;
+	
+	//! check if the token is a string
+	/**
+	*	It is asserted that the string to querry is all-lower case; it is
+	*	also asserted that the string contains only letters (no digits,
+	*	no separators or other characters).
+	*
+	*	The function uses only the flags to guess the result.
+	*/
+	bool			isString		( const AaToken & tk ) const;
+	
+	//! check if the token is an integer
+	/**
+	*	The function uses only the flags to guess the result.
+	*/
+	bool			isInteger		( int i ) const;
+	
+	//! check if the token is an integer
+	/**
+	*	The function uses only the flags to guess the result.
+	*/
+	bool			isInteger		( const AaToken & tk ) const;
+	
+	//! check if the token is an integer
+	/**
+	*	The function uses only the flags to guess the result.
+	*/
+	bool			isHexInteger	( int i ) const;
+	
+	//! check if the token is an integer
+	/**
+	*	The function uses only the flags to guess the result.
+	*/
+	bool			isHexInteger	( const AaToken & tk ) const;
+	
 	
 	
 	//! the string

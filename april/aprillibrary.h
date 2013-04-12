@@ -202,6 +202,13 @@ public:
 			World *			world
 			);
 	
+
+	//! first world
+	static World *			firstWorld		( void );
+	
+	//! get a unique name for a world
+	static QString			uniqueWorldName	( const QString & pattern );
+	
 protected:
 
 

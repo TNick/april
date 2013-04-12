@@ -25,6 +25,8 @@
 
 #include	"abstractapril.h"
 #include	<iostream>
+#include	"aamodule.h"
+#include	"modules/aaworld.h"
 
 /*  INCLUDES    ============================================================ */
 //
@@ -59,7 +61,7 @@ AbstractApril::AbstractApril	( void )
 	exit_code_(0)
 {
 	APRDBG_CDTOR;
-	/* stub */
+	/* stub */	
 }
 /* ========================================================================= */
 
@@ -67,7 +69,22 @@ AbstractApril::AbstractApril	( void )
 AbstractApril::~AbstractApril	( void )
 {
 	APRDBG_CDTOR;
-	/* stub */
+	foreach( AaModule * itr, modules_ )
+	{
+		DEC_REF(itr,this);
+	}
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void			AbstractApril::init					( void )
+{
+	/* load build-in modules */
+	
+	AaWorld * module_w = new AaWorld();
+	addModule( module_w );
+	REMOVE_CONSTRUCTOR_REF(module_w);
+
 }
 /* ========================================================================= */
 
@@ -76,6 +93,7 @@ int				AbstractApril::runMainLoop			( void )
 {
 	/* create the one and only instance */
 	uniq_ = new AbstractApril();
+	uniq_->init();
 	
 	std::string prompt_string;
 	std::string buffer;
@@ -94,6 +112,34 @@ int				AbstractApril::runMainLoop			( void )
 	delete uniq_;
 	uniq_ = NULL;
 	return i_ret;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			AbstractApril::addModule			( AaModule * m )
+{
+	if ( uniq_->modules_.contains( m ) )
+	{
+		return false;
+	}
+	uniq_->modules_.append( m );
+	m->insertCommands();
+	INC_REF(m,uniq_);
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			AbstractApril::remModule			( AaModule * m )
+{
+	if ( uniq_->modules_.contains( m ) == false )
+	{
+		return false;
+	}
+	uniq_->modules_.removeOne( m );
+	m->removeCommands();
+	DEC_REF(m,uniq_);
+	return true;
 }
 /* ========================================================================= */
 

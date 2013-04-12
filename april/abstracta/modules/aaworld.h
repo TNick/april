@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			abstractapril.h
+  \file			aaworld.h
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the definition for AbstractApril class
+  \brief		Contains the definition for AaWorld class
 
 
 *//*
@@ -17,8 +17,8 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __ABSTRACTAPRIL_INC__
-#define __ABSTRACTAPRIL_INC__
+#ifndef __AAWORLD_INC__
+#define __AAWORLD_INC__
 //
 //
 //
@@ -26,7 +26,7 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include    <april/april.h>
-#include    <april/abstracta/commandmap.h>
+#include    <april/abstracta/aamodule.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -37,7 +37,7 @@
 
 namespace   april    {
 
-class	AaModule;
+class	AaTkString;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -47,10 +47,10 @@ class	AaModule;
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief	Main class for abstracta application
+*	@brief	Provides commands related to worlds
 */
-class AbstractApril		: public MemTrack		{
-	BBM_TRACK( AbstractApril );
+class AaWorld		: public AaModule		{
+	BBM_TRACK( AaWorld );
 
 	//
 	//
@@ -67,17 +67,7 @@ class AbstractApril		: public MemTrack		{
 
 private:
 
-	//! map of commands
-	CommandMap					cmd_map;
-	
-	//! application exit code
-	int							exit_code_;
-	
-	//! the list of modules
-	QList<AaModule*>			modules_;
-	
-	//! the one and only instance
-	static AbstractApril *		uniq_;
+
 
 	/*  DATA    ============================================================ */
 	//
@@ -86,52 +76,72 @@ private:
 	//
 	/*  FUNCTIONS    ------------------------------------------------------- */
 
-private:
-
-	//! constructor
-	AbstractApril		( void );
-
-	//! destructor;
-	virtual				~AbstractApril		( void );
-
 public:
 
-	//! enter main loop; return program exit code
-	static int			runMainLoop			( void );
+	//! constructor
+	AaWorld				( void );
 
-	//! add a command to the list; returns false if the string is in use
-	static bool			addCommand			( const QString & s_cmd, cmdCallBack kb )
-	{ return uniq_->cmd_map.addCommand( s_cmd, kb ); }
+	//! destructor;
+	virtual				~AaWorld		( void );
+	
+protected:
 
-	//! remove a command to from list; returns false if not found or don't match
-	static bool			remCommand			( const QString & s_cmd, cmdCallBack kb )
-	{ return uniq_->cmd_map.remCommand( s_cmd, kb ); }
+	//! insert all commands (request from AbstractApril)
+	virtual void		insertCommands	( void );
 
-	//! execute the command associated with the given string
-	static void			execute				( const QString & s_input )
-	{ uniq_->cmd_map.execute( s_input ); }
-
-	//! add an module; appends module's list of commands and appends the module
-	static bool			addModule			( AaModule * m );
-
-	//! add an module; removes module's list of commands and removes the module
-	static bool			remModule			( AaModule * m );
+	//! remove all commands (request from AbstractApril)
+	virtual void		removeCommands	( void );
+	
+	//! tell your name
+	virtual QString		name			( void );
 
 
 private:
 
-	//! initialisation
-	void				init				( void );
+	//! create a new world
+	static bool			newWorld		(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err
+			);
 
+	//! open a world
+	static bool			openWorld		(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err
+			);
 
+	//! save a world
+	static bool			saveWorld		(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err
+			);
 
+	//! close a world
+	static bool			closeWorld		(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err
+			);
+
+	//! list all worlds
+	static bool			listWorlds		(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err
+			);
+			
+			
+	
 	/*  FUNCTIONS    ======================================================= */
 	//
 	//
 	//
 	//
-	
-};	/*	class AbstractApril	*/
+
+};	/*	class AaWorld	*/
 
 /*  CLASS    =============================================================== */
 //
@@ -141,6 +151,6 @@ private:
 
 }   //  namespace   april
 
-#endif // __ABSTRACTAPRIL_INC__
+#endif // __AAWORLD_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */

@@ -451,5 +451,162 @@ TEST(AaTokenizer, whites) {
 	endAprilLibrary();
 }
 
+TEST(AaTokenizer, numbers) {
+	
+	initAprilLibrary();
+	{
+		QString	s("0");
+		AaTkString aas = AaTokenizer::basicTk( s );
+		EXPECT_FALSE( aas.s_.isEmpty() );
+		EXPECT_EQ( aas.s_, s );
+		EXPECT_EQ( aas.tk_.count(), 1 );
+		const AaToken & tk1 = aas.tk_.at( 0 );
+		EXPECT_EQ( tk1.i_start, 0 );
+		EXPECT_EQ( tk1.i_end, 1 );
+		EXPECT_FALSE( tk1.isAllWhite() );
+		EXPECT_FALSE( tk1.leadingWhite() );
+		EXPECT_FALSE( tk1.trailingWhite() );
+		EXPECT_FALSE( tk1.middleWhite() );
+		EXPECT_FALSE( tk1.hasWhiteSpaces() );
+		EXPECT_TRUE( tk1.hasDigits() );
+		EXPECT_FALSE( tk1.hasLetters() );
+		EXPECT_FALSE( tk1.hasComma() );
+		EXPECT_FALSE( tk1.hasDot() );
+		EXPECT_TRUE( tk1.isInteger() );
+		EXPECT_TRUE( tk1.isHexInteger() );
+		EXPECT_FALSE( tk1.wasQuoted() );
+	}
+	{
+		QString	s("01");
+		AaTkString aas = AaTokenizer::basicTk( s );
+		EXPECT_FALSE( aas.s_.isEmpty() );
+		EXPECT_EQ( aas.s_, s );
+		EXPECT_EQ( aas.tk_.count(), 1 );
+		const AaToken & tk1 = aas.tk_.at( 0 );
+		EXPECT_EQ( tk1.i_start, 0 );
+		EXPECT_EQ( tk1.i_end, 2 );
+		EXPECT_FALSE( tk1.isAllWhite() );
+		EXPECT_FALSE( tk1.leadingWhite() );
+		EXPECT_FALSE( tk1.trailingWhite() );
+		EXPECT_FALSE( tk1.middleWhite() );
+		EXPECT_FALSE( tk1.hasWhiteSpaces() );
+		EXPECT_TRUE( tk1.hasDigits() );
+		EXPECT_FALSE( tk1.hasLetters() );
+		EXPECT_FALSE( tk1.hasComma() );
+		EXPECT_FALSE( tk1.hasDot() );
+		EXPECT_TRUE( tk1.isInteger() );
+		EXPECT_TRUE( tk1.isHexInteger() );
+		EXPECT_FALSE( tk1.wasQuoted() );
+	}
+	{
+		QString	s("0123456789");
+		AaTkString aas = AaTokenizer::basicTk( s );
+		EXPECT_FALSE( aas.s_.isEmpty() );
+		EXPECT_EQ( aas.s_, s );
+		EXPECT_EQ( aas.tk_.count(), 1 );
+		const AaToken & tk1 = aas.tk_.at( 0 );
+		EXPECT_EQ( tk1.i_start, 0 );
+		EXPECT_EQ( tk1.i_end, 10 );
+		EXPECT_FALSE( tk1.isAllWhite() );
+		EXPECT_FALSE( tk1.leadingWhite() );
+		EXPECT_FALSE( tk1.trailingWhite() );
+		EXPECT_FALSE( tk1.middleWhite() );
+		EXPECT_FALSE( tk1.hasWhiteSpaces() );
+		EXPECT_TRUE( tk1.hasDigits() );
+		EXPECT_FALSE( tk1.hasLetters() );
+		EXPECT_FALSE( tk1.hasComma() );
+		EXPECT_FALSE( tk1.hasDot() );
+		EXPECT_TRUE( tk1.isInteger() );
+		EXPECT_TRUE( tk1.isHexInteger() );
+		EXPECT_FALSE( tk1.wasQuoted() );
+	}
+	{
+		QString	s("0123456789ABCDEF");
+		AaTkString aas = AaTokenizer::basicTk( s );
+		EXPECT_FALSE( aas.s_.isEmpty() );
+		EXPECT_EQ( aas.s_, s );
+		EXPECT_EQ( aas.tk_.count(), 1 );
+		const AaToken & tk1 = aas.tk_.at( 0 );
+		EXPECT_EQ( tk1.i_start, 0 );
+		EXPECT_EQ( tk1.i_end, 16 );
+		EXPECT_FALSE( tk1.isAllWhite() );
+		EXPECT_FALSE( tk1.leadingWhite() );
+		EXPECT_FALSE( tk1.trailingWhite() );
+		EXPECT_FALSE( tk1.middleWhite() );
+		EXPECT_FALSE( tk1.hasWhiteSpaces() );
+		EXPECT_TRUE( tk1.hasDigits() );
+		EXPECT_TRUE( tk1.hasLetters() );
+		EXPECT_FALSE( tk1.hasComma() );
+		EXPECT_FALSE( tk1.hasDot() );
+		EXPECT_FALSE( tk1.isInteger() );
+		EXPECT_TRUE( tk1.isHexInteger() );
+		EXPECT_FALSE( tk1.wasQuoted() );
+	}
+	
+	endAprilLibrary();
+}
 
+TEST(AaTokenizer, mixed) {
+	
+	initAprilLibrary();
+	{
+		QString	s("w.new a_name_1 10");
+		AaTkString aas = AaTokenizer::basicTk( s );
+		EXPECT_FALSE( aas.s_.isEmpty() );
+		EXPECT_EQ( aas.s_, s );
+		EXPECT_EQ( aas.tk_.count(), 3 );
+		const AaToken & tk1 = aas.tk_.at( 0 );
+		const AaToken & tk2 = aas.tk_.at( 1 );
+		const AaToken & tk3 = aas.tk_.at( 2 );
+		
+		EXPECT_EQ( tk1.i_start, 0 );
+		EXPECT_EQ( tk1.i_end, 5 );
+		EXPECT_FALSE( tk1.isAllWhite() );
+		EXPECT_FALSE( tk1.leadingWhite() );
+		EXPECT_FALSE( tk1.trailingWhite() );
+		EXPECT_FALSE( tk1.middleWhite() );
+		EXPECT_FALSE( tk1.hasWhiteSpaces() );
+		EXPECT_FALSE( tk1.hasDigits() );
+		EXPECT_TRUE( tk1.hasLetters() );
+		EXPECT_FALSE( tk1.hasComma() );
+		EXPECT_TRUE( tk1.hasDot() );
+		EXPECT_FALSE( tk1.isInteger() );
+		EXPECT_FALSE( tk1.isHexInteger() );
+		EXPECT_FALSE( tk1.wasQuoted() );
+		
+		EXPECT_EQ( tk2.i_start, 6 );
+		EXPECT_EQ( tk2.i_end, 14 );
+		EXPECT_FALSE( tk2.isAllWhite() );
+		EXPECT_FALSE( tk2.leadingWhite() );
+		EXPECT_FALSE( tk2.trailingWhite() );
+		EXPECT_FALSE( tk2.middleWhite() );
+		EXPECT_FALSE( tk2.hasWhiteSpaces() );
+		EXPECT_TRUE( tk2.hasDigits() );
+		EXPECT_TRUE( tk2.hasLetters() );
+		EXPECT_FALSE( tk2.hasComma() );
+		EXPECT_FALSE( tk2.hasDot() );
+		EXPECT_FALSE( tk2.isInteger() );
+		EXPECT_FALSE( tk2.isHexInteger() );
+		EXPECT_FALSE( tk2.wasQuoted() );
+		
+		EXPECT_EQ( tk3.i_start, 15 );
+		EXPECT_EQ( tk3.i_end, 17 );
+		EXPECT_FALSE( tk3.isAllWhite() );
+		EXPECT_FALSE( tk3.leadingWhite() );
+		EXPECT_FALSE( tk3.trailingWhite() );
+		EXPECT_FALSE( tk3.middleWhite() );
+		EXPECT_FALSE( tk3.hasWhiteSpaces() );
+		EXPECT_TRUE( tk3.hasDigits() );
+		EXPECT_FALSE( tk3.hasLetters() );
+		EXPECT_FALSE( tk3.hasComma() );
+		EXPECT_FALSE( tk3.hasDot() );
+		EXPECT_TRUE( tk3.isInteger() );
+		EXPECT_TRUE( tk3.isHexInteger() );
+		EXPECT_FALSE( tk3.wasQuoted() );
+		
+		
+	}
+	
+	endAprilLibrary();
+}
 

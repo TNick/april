@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			abstractapril.h
+  \file			aamodule.h
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the definition for AbstractApril class
+  \brief		Contains the definition for AaModule class
 
 
 *//*
@@ -17,8 +17,8 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __ABSTRACTAPRIL_INC__
-#define __ABSTRACTAPRIL_INC__
+#ifndef __AAMODULE_INC__
+#define __AAMODULE_INC__
 //
 //
 //
@@ -26,7 +26,7 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include    <april/april.h>
-#include    <april/abstracta/commandmap.h>
+#include	<libbbb/1/refcnt.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -37,8 +37,6 @@
 
 namespace   april    {
 
-class	AaModule;
-
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -47,16 +45,18 @@ class	AaModule;
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief	Main class for abstracta application
+*	@brief	Base class for all modules
 */
-class AbstractApril		: public MemTrack		{
-	BBM_TRACK( AbstractApril );
+class AaModule		: public libbbb::RefCnt, public MemTrack		{
+	BBM_TRACK( AaModule );
 
 	//
 	//
 	//
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
+
+friend class AbstractApril;
 
 	/*  DEFINITIONS    ===================================================== */
 	//
@@ -67,17 +67,7 @@ class AbstractApril		: public MemTrack		{
 
 private:
 
-	//! map of commands
-	CommandMap					cmd_map;
-	
-	//! application exit code
-	int							exit_code_;
-	
-	//! the list of modules
-	QList<AaModule*>			modules_;
-	
-	//! the one and only instance
-	static AbstractApril *		uniq_;
+
 
 	/*  DATA    ============================================================ */
 	//
@@ -86,52 +76,34 @@ private:
 	//
 	/*  FUNCTIONS    ------------------------------------------------------- */
 
-private:
-
-	//! constructor
-	AbstractApril		( void );
-
-	//! destructor;
-	virtual				~AbstractApril		( void );
-
 public:
 
-	//! enter main loop; return program exit code
-	static int			runMainLoop			( void );
+	//! constructor
+	AaModule			( void );
 
-	//! add a command to the list; returns false if the string is in use
-	static bool			addCommand			( const QString & s_cmd, cmdCallBack kb )
-	{ return uniq_->cmd_map.addCommand( s_cmd, kb ); }
+protected:
 
-	//! remove a command to from list; returns false if not found or don't match
-	static bool			remCommand			( const QString & s_cmd, cmdCallBack kb )
-	{ return uniq_->cmd_map.remCommand( s_cmd, kb ); }
+	//! destructor;
+	virtual				~AaModule		( void );
 
-	//! execute the command associated with the given string
-	static void			execute				( const QString & s_input )
-	{ uniq_->cmd_map.execute( s_input ); }
+protected:
 
-	//! add an module; appends module's list of commands and appends the module
-	static bool			addModule			( AaModule * m );
+	//! insert all commands (request from AbstractApril)
+	virtual void		insertCommands	( void ) = 0;
 
-	//! add an module; removes module's list of commands and removes the module
-	static bool			remModule			( AaModule * m );
+	//! remove all commands (request from AbstractApril)
+	virtual void		removeCommands	( void ) = 0;
 
-
-private:
-
-	//! initialisation
-	void				init				( void );
-
-
+	//! tell your name
+	virtual QString		name			( void ) = 0;
 
 	/*  FUNCTIONS    ======================================================= */
 	//
 	//
 	//
 	//
-	
-};	/*	class AbstractApril	*/
+
+};	/*	class AaModule	*/
 
 /*  CLASS    =============================================================== */
 //
@@ -141,6 +113,6 @@ private:
 
 }   //  namespace   april
 
-#endif // __ABSTRACTAPRIL_INC__
+#endif // __AAMODULE_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
