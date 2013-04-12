@@ -67,14 +67,18 @@ ICON = ../../../april/abstracta/abstracta.icns
 SOURCES += \
     ../../../april/abstracta/abstracta-main.cc \
     ../../../april/abstracta/aaoutput.cc \
-    ../../../april/abstracta/aatokenizer.cc
+    ../../../april/abstracta/aatokenizer.cc \
+    ../../../april/abstracta/commandmap.cc \
+    ../../../april/abstracta/abstractapril.cc
 
 RESOURCES += \
     ../../../april/abstracta/abstracta.qrc
 
 HEADERS += \
     ../../../april/abstracta/aaoutput.h \
-    ../../../april/abstracta/aatokenizer.h
+    ../../../april/abstracta/aatokenizer.h \
+    ../../../april/abstracta/commandmap.h \
+    ../../../april/abstracta/abstractapril.h
 
 
 
