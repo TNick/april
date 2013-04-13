@@ -279,6 +279,38 @@ QString			AprilLibrary::uniqueWorldName			( const QString & pattern )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+World *			AprilLibrary::findWorld					(
+		const QString & s_name )
+{
+	World * iter = firstWorld_(uniq_);
+	while ( iter != NULL )
+	{
+		if ( iter->name() == s_name )
+			return iter;
+		iter = nextWorld_(iter);
+	}
+	return NULL;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+World *			AprilLibrary::worldAt					( int i )
+{
+	if ( i < 0 )
+		return NULL;
+	World * iter = firstWorld_(uniq_);
+	while ( iter != NULL )
+	{
+		if ( i == 0 )
+			return iter;
+		iter = nextWorld_(iter);
+		i--;
+	}
+	return NULL;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
 void			AprilLibrary::internalRemWorld			( World * world )
 {
 	if ( world->isRunning() )
@@ -530,31 +562,31 @@ static Factory *		factoryCreatorActor			(
 	return new ActorFactory(w);
 }
 static Factory *		factoryCreatorEventSource	(
-	World * w, const QString & s_name )
+		World * w, const QString & s_name )
 {
 	Q_UNUSED( s_name );
 	return new EventFactory(w);
 }
 static Factory *		factoryCreatorSensor		(
-	World * w, const QString & s_name )
+		World * w, const QString & s_name )
 {
 	Q_UNUSED( s_name );
 	return new SensorFactory(w);
 }
 static Factory *		factoryCreatorActuator		(
-	World * w, const QString & s_name )
+		World * w, const QString & s_name )
 {
 	Q_UNUSED( s_name );
 	return new ActuatorFactory(w);
 }
 static Factory *		factoryCreatorReflex		(
-	World * w, const QString & s_name )
+		World * w, const QString & s_name )
 {
 	Q_UNUSED( s_name );
 	return new ReflexFactory(w);
 }
 static Factory *		factoryCreatorBrain			(
-	World * w, const QString & s_name )
+		World * w, const QString & s_name )
 {
 	Q_UNUSED( s_name );
 	return new BrainFactory(w);

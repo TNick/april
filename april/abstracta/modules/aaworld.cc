@@ -229,6 +229,21 @@ bool			AaWorld::saveWorld				(
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+static void		closeW			( World * w, QString & s_err )
+{
+	
+	Q_ASSERT( w != NULL );
+	
+	s_err.append( QObject::tr( "World <%1> was closed.\n").arg( w->name() ) );
+	if ( w->isRunning() )
+	{
+		w->stop();
+	}
+	AprilLibrary::remWorld( w );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
 bool			AaWorld::closeWorld				(
 		const QString & s_cmd, const AaTkString & atks, QString & s_err )
 {
@@ -237,7 +252,53 @@ bool			AaWorld::closeWorld				(
 	Q_UNUSED( atks );
 	Q_UNUSED( s_err );
 	
-	return true;
+	int arg_cnt = atks.tk_.count() - 1;
+	
+	for ( ;; )
+	{
+		if ( arg_cnt != 1 )
+		{
+			s_err.append( QObject::tr( "Error! One argument expected.\n" ) );
+			break;
+		}
+		QString arg1 = atks.getToken( 1 );
+		if ( atks.isInteger( 1 ) )
+		{
+			bool b;
+			int i = arg1.toInt( &b );
+			if ( b )
+			{
+				if ( ( i >= 0 ) && ( i < AprilLibrary::worldsCount() ) )
+				{
+					World * w = AprilLibrary::worldAt(i);
+					closeW( w, s_err );
+					return false;
+				}
+			}
+		}
+		World * w = AprilLibrary::findWorld( arg1 );
+		if ( w == NULL )
+		{
+			s_err.append(
+						QObject::tr( 
+							"Error! World <%1> was not found.\n" 
+							).arg( arg1 ) );
+			break;
+		}
+		closeW( w, s_err );
+		return false;
+	}
+	
+	/* print the usage */
+	s_err.append( QObject::tr( 
+					  "Usage:\n"
+					  "    w.close <index>        "
+					  "close the world at specified index\n"
+					  "    w.close <name>         "
+					  "close the world having that name\n"
+					  "\n"
+					  ) );
+	return false;
 }
 /* ========================================================================= */
 

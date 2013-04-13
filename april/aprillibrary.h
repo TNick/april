@@ -209,6 +209,16 @@ public:
 	//! get a unique name for a world
 	static QString			uniqueWorldName	( const QString & pattern );
 	
+	//! the number of worlds
+	static int				worldsCount		( void )
+	{ return uniq_->worlds_.count(); }
+	
+	//! find a world by its name
+	static World *			findWorld		( const QString & s_name );
+	
+	//! get a world at aspecific index
+	static World *			worldAt			( int i );
+	
 protected:
 
 
