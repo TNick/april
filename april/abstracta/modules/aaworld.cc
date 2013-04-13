@@ -54,7 +54,119 @@ using namespace april;
 //
 //
 //
+/*  SUPPORT  --------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------- */
+static void		errorNumberOfArguments		( QString & s_err ) {
+	s_err.append( 
+				QObject::tr( 
+					"Error! Invalid number of arguments.\n\n" 
+					) );
+}
+static void		errorOneArgumentExpected	( QString & s_err ) {
+	s_err.append(
+				QObject::tr( 
+					"Error! One argument expected.\n\n"
+					) );
+}
+static void		errorNoAssocFile			( World * w, QString & s_err ) {
+	s_err.append(
+				QObject::tr( 
+					"Error! World <%1> has no associated file.\n\n" 
+					).arg( w->name() ) );
+}
+static void		errorEnergyInteger			( QString & s_err ) {
+	s_err.append(
+				QObject::tr( 
+					"Error! Energy must be a positive integer.\n\n" 
+					) );
+}
+static void		errorUnknownOprion			( QString & s_err, const QString & s_tk ) {
+	s_err.append(
+				QObject::tr( 
+					"Error! Unknown option: %1.\n\n"
+					).arg( s_tk ) );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+static World *		getWorldFromArg				(	
+		const QString & s_tk, const AaToken & tk, QString & s_err )
+{
+	World * w;
+	if ( tk.isInteger() )
+	{
+		bool b;
+		int i = s_tk.toInt( &b );
+		if ( b )
+		{
+			if ( ( i >= 0 ) && ( i < AprilLibrary::worldsCount() ) )
+			{
+				return AprilLibrary::worldAt(i);
+			}
+		}
+	}
+	w = AprilLibrary::findWorld( s_tk );
+	if ( w == NULL )
+	{
+		s_err.append(
+					QObject::tr( 
+						"Error! World <%1> was not found.\n" 
+						).arg( s_tk ) );
+	}
+	return w;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+static void		closeW			( World * w, QString & s_err )
+{
+	
+	Q_ASSERT( w != NULL );
+	
+	s_err.append( QObject::tr( "World <%1> was closed.\n").arg( w->name() ) );
+	if ( w->isRunning() )
+	{
+		w->stop();
+	}
+	AprilLibrary::remWorld( w );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+static void			saveW					(
+		World * w, const QString & s_file, QString & s_err )
+{
+	if ( w->saveAsStg( s_file, s_err ) )
+	{
+		w->setAssociatedFile( s_file );
+		s_err.append( QObject::tr( "World <%1> was saved.\n").arg( w->name() ) );
+	}
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+static bool		createWorld						( 
+		const QString & s_name, int energy, QString & s_err )
+{
+	Q_UNUSED( s_err );
+	World * w = new World( s_name, energy );
+	DEC_REF(w,w);
+	AaOutput::showInfo(
+				QObject::tr( 
+					"New world <%1> was created with %2 units of energy.\n"
+					).arg( s_name ).arg( energy ) );
+	return true;
+}
+/* ========================================================================= */
+
+/*  SUPPORT  =============================================================== */
+//
+//
+//
+//
 /*  CLASS    --------------------------------------------------------------- */
+
 
 /* ------------------------------------------------------------------------- */
 AaWorld::AaWorld	( void )
@@ -103,21 +215,6 @@ QString			AaWorld::name					( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-static bool		createWorld						( 
-		const QString & s_name, int energy, QString & s_err )
-{
-	Q_UNUSED( s_err );
-	World * w = new World( s_name, energy );
-	DEC_REF(w,w);
-	AaOutput::showInfo(
-				QObject::tr( 
-					"New world <%1> was created with %2 units of energy.\n"
-					).arg( s_name ).arg( energy ) );
-	return true;
-}
-/* ========================================================================= */
-
-/* ------------------------------------------------------------------------- */
 bool			AaWorld::newWorld				(
 		const QString & s_cmd, const AaTkString & atks, QString & s_err )
 {
@@ -126,29 +223,29 @@ bool			AaWorld::newWorld				(
 	Q_UNUSED( s_cmd );
 	
 	int arg_cnt = atks.tk_.count() - 1;
-	QString arg_1;
+	QString arg1;
 	int energy = -1;
 	bool b;
 	for ( ;; )
 	{
 		if ( arg_cnt == 0 )
 		{ /* default to all arguments */
-			arg_1 = AprilLibrary::uniqueWorldName( QObject::tr( "World%1" ) );
+			arg1 = AprilLibrary::uniqueWorldName( QObject::tr( "World%1" ) );
 			energy = 100000;
-			return createWorld( arg_1, energy, s_err );
+			return createWorld( arg1, energy, s_err );
 		}
 		else if ( arg_cnt == 1 )
 		{ /* either help or name */
-			arg_1 = atks.getToken( 1 );
-			if ( atks.isString( 1 ) && ( arg_1 == "help" ) )
+			arg1 = atks.getToken( 1 );
+			if ( atks.isString( 1 ) && ( arg1 == QObject::tr( "help" ) ) )
 				break;
 			/* the name was provided */
 			energy = 100000;
-			return createWorld( arg_1, energy, s_err );
+			return createWorld( arg1, energy, s_err );
 		}
 		else if ( arg_cnt == 2 )
 		{ /* name and energy */
-			arg_1 = atks.getToken( 1 );
+			arg1 = atks.getToken( 1 );
 			for ( ;; )	{
 				if ( atks.isInteger( 2 ) )
 				{
@@ -166,14 +263,14 @@ bool			AaWorld::newWorld				(
 				{
 					break;
 				}
-				return createWorld( arg_1, energy, s_err );
+				return createWorld( arg1, energy, s_err );
 			}
-			s_err.append( QObject::tr( "Error! Energy must be a positive integer.\n\n" ) );
+			errorEnergyInteger( s_err );
 			break;
 		}
 		else
 		{
-			s_err.append( QObject::tr( "Error! Invalid number of arguments.\n\n" ) );
+			errorNumberOfArguments( s_err );
 			break;
 		}
 	} /* for ( ;; ) */
@@ -211,7 +308,37 @@ bool			AaWorld::openWorld				(
 	Q_UNUSED( atks );
 	Q_UNUSED( s_err );
 	
-	return true;
+	int arg_cnt = atks.tk_.count() - 1;
+	
+	for ( ;; )
+	{
+		if ( arg_cnt != 1 )
+		{
+			errorOneArgumentExpected ( s_err );
+			break;
+		}
+		QString arg1 = atks.getToken( 1 );
+		if ( arg1 == QObject::tr( "help" ) )
+			break;
+		World * w = World::fromStg( arg1, s_err );
+		if ( w != NULL )
+		{
+			s_err.append( QObject::tr( "World <%1> was opened.\n" ).arg( w->name()) );
+			DEC_REF(w,w);
+		}		
+		return false;
+	}
+	
+	/* print the usage */
+	s_err.append( QObject::tr( 
+					  "Usage:\n"
+					  "    w.open <file-name>     "
+					  "opens specified file and loads the world inside\n"
+					  "    w.open help            "
+					  "prints usage instructions\n"
+					  "\n"
+					  ) );
+	return false;
 }
 /* ========================================================================= */
 
@@ -221,25 +348,69 @@ bool			AaWorld::saveWorld				(
 {
 	Q_ASSERT( s_cmd == "w.save" );
 	Q_UNUSED( s_cmd );
-	Q_UNUSED( atks );
-	Q_UNUSED( s_err );
 	
-	return true;
-}
-/* ========================================================================= */
-
-/* ------------------------------------------------------------------------- */
-static void		closeW			( World * w, QString & s_err )
-{
+	int arg_cnt = atks.tk_.count() - 1;
+	QString arg1;
+	QString arg2;
+	World * w;
 	
-	Q_ASSERT( w != NULL );
-	
-	s_err.append( QObject::tr( "World <%1> was closed.\n").arg( w->name() ) );
-	if ( w->isRunning() )
+	for ( ;; )
 	{
-		w->stop();
+		if ( arg_cnt == 1 )
+		{ /* only name/index */
+			arg1 = atks.getToken( 1 );
+			if ( arg1 == QObject::tr( "help" ) )
+				break;
+			w = getWorldFromArg( arg1, atks.tk_.at( 1 ), s_err );
+			if ( w == NULL )
+				break;
+			arg2 = w->associatedFile();
+			if ( arg2.isEmpty() )
+			{
+				errorNoAssocFile( w, s_err );
+				break;
+			}
+			saveW( w, arg2, s_err );
+			return false;
+		}
+		else if ( arg_cnt == 2 )
+		{ /* name/index and file */
+			arg1 = atks.getToken( 1 );
+			arg2 = atks.getToken( 2 );
+			w = getWorldFromArg( arg1, atks.tk_.at( 1 ), s_err );
+			if ( w == NULL )
+				break;
+			
+			saveW( w, arg2, s_err );
+			return false;
+		}
+		else
+		{
+			errorNumberOfArguments( s_err );
+			break;
+		}
 	}
-	AprilLibrary::remWorld( w );
+	
+	/* print the usage */
+	s_err.append( QObject::tr( 
+					  "Usage:\n"
+					  "    w.save [name] [file]   "
+					  "saves specified world to a file\n"
+					  "    w.save [index] [file]  "
+					  "saves specified world to a file\n"
+					  "    w.save help            "
+					  "prints usage instructions\n"
+					  "\n"
+					  "Options:\n"
+					  "  name     the name of the world;\n"
+					  "  file     where to save; if not specified the \n"
+					  "           file asociated with the world is used"
+					  "\n"
+					  "If the opperation is succefull the internl association\n"
+					  "is also updated.\n"
+					  "\n"
+					  ) );
+	return false;
 }
 /* ========================================================================= */
 
@@ -249,8 +420,6 @@ bool			AaWorld::closeWorld				(
 {
 	Q_ASSERT( s_cmd == "w.close" );
 	Q_UNUSED( s_cmd );
-	Q_UNUSED( atks );
-	Q_UNUSED( s_err );
 	
 	int arg_cnt = atks.tk_.count() - 1;
 	
@@ -258,33 +427,15 @@ bool			AaWorld::closeWorld				(
 	{
 		if ( arg_cnt != 1 )
 		{
-			s_err.append( QObject::tr( "Error! One argument expected.\n" ) );
+			errorOneArgumentExpected( s_err );
 			break;
 		}
 		QString arg1 = atks.getToken( 1 );
-		if ( atks.isInteger( 1 ) )
-		{
-			bool b;
-			int i = arg1.toInt( &b );
-			if ( b )
-			{
-				if ( ( i >= 0 ) && ( i < AprilLibrary::worldsCount() ) )
-				{
-					World * w = AprilLibrary::worldAt(i);
-					closeW( w, s_err );
-					return false;
-				}
-			}
-		}
-		World * w = AprilLibrary::findWorld( arg1 );
-		if ( w == NULL )
-		{
-			s_err.append(
-						QObject::tr( 
-							"Error! World <%1> was not found.\n" 
-							).arg( arg1 ) );
+		if ( arg1 == QObject::tr( "help" ) )
 			break;
-		}
+		World * w = getWorldFromArg( arg1, atks.tk_.at( 1 ), s_err );
+		if ( w == NULL )
+			break;
 		closeW( w, s_err );
 		return false;
 	}
@@ -296,6 +447,8 @@ bool			AaWorld::closeWorld				(
 					  "close the world at specified index\n"
 					  "    w.close <name>         "
 					  "close the world having that name\n"
+					  "    w.close help           "
+					  "prints usage instructions\n"
 					  "\n"
 					  ) );
 	return false;
@@ -312,50 +465,67 @@ bool			AaWorld::listWorlds				(
 	Q_UNUSED( s_err );
 	
 	int arg_cnt = atks.tk_.count() - 1;
-	if ( arg_cnt == 0 )
+	QString arg1;
+	for ( ;; )
 	{
-		World * iter = AprilLibrary::firstWorld();
-		if ( iter == NULL )
+		if ( arg_cnt == 0 )
 		{
-			s_err.append( QObject::tr( 
-							  "No worlds loaded.\n"
-							  ) );
-			return false;
+			World * iter = AprilLibrary::firstWorld();
+			if ( iter == NULL )
+			{
+				s_err.append( QObject::tr( 
+								  "No worlds loaded.\n"
+								  ) );
+				return false;
+			}
+			else
+			{
+				QList<QStringList>	datao;
+				QStringList			sl;
+				
+				sl.append( QObject::tr( "Name" ) );
+				sl.append( QObject::tr( "Bounded" ) );
+				sl.append( QObject::tr( "Free" ) );
+				sl.append( QObject::tr( "Time" ) );
+				sl.append( QObject::tr( "Status" ) );
+				datao.append( sl ); sl.clear();
+				
+				while ( iter != NULL )
+				{
+					sl.append( iter->name() );
+					sl.append( QString::number( iter->energyBounded() ) );
+					sl.append( QString::number( iter->energyFree() ) );
+					sl.append( QString::number( iter->currentTime() ) );
+					sl.append( iter->isRunning() ? "Running" : "Stopped" );
+					datao.append( sl );  sl.clear();
+					
+					iter = nextWorld_(iter);
+				}
+				AaOutput::showTable( datao, true );
+				return true;
+			}
+		}
+		else if ( arg_cnt == 1 )
+		{
+			arg1 = atks.getToken( 1 );
+			if ( arg1 == QObject::tr( "help" ) )
+				break;
+			errorUnknownOprion( s_err, arg1 );
+			break;
 		}
 		else
 		{
-			QList<QStringList>	datao;
-			QStringList			sl;
-			QString				s;
-			
-			sl.append( QObject::tr( "Name" ) );
-			sl.append( QObject::tr( "Bounded" ) );
-			sl.append( QObject::tr( "Free" ) );
-			sl.append( QObject::tr( "Time" ) );
-			sl.append( QObject::tr( "Status" ) );
-			datao.append( sl ); sl.clear();
-			
-			while ( iter != NULL )
-			{
-				sl.append( iter->name() );
-				sl.append( QString::number( iter->energyBounded() ) );
-				sl.append( QString::number( iter->energyFree() ) );
-				sl.append( QString::number( iter->currentTime() ) );
-				sl.append( iter->isRunning() ? "Running" : "Stopped" );
-				datao.append( sl );  sl.clear();
-				
-				iter = nextWorld_(iter);
-			}
-			AaOutput::showTable( datao, true );
-			return true;
+			errorNumberOfArguments( s_err );
+			break;
 		}
 	}
-	
 	/* print the usage */
 	s_err.append( QObject::tr( 
 					  "Usage:\n"
 					  "    w.list                 "
 					  "lists the worlds and basic properties\n"
+					  "    w.list help            "
+					  "prints usage instructions\n"
 					  "\n"
 					  ) );
 	return false;

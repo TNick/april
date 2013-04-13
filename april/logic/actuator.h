@@ -88,6 +88,7 @@ public:
 	Actuator			( Actor * actor, quint64 cost, quint64 energy );
 	
 	//! constructor method; creates and loads an Actuator from QSettings
+	Q_REQUIRED_RESULT
 	static Actuator *	fromStg				( Actor * a, QSettings & stg );
 
 protected:

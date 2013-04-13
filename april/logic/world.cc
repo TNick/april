@@ -77,6 +77,7 @@ World::World	( const QString & name, quint64 tot_energ )
 	: Component(),
 	  b_running_( false ),
 	  s_name_(name),
+	  s_file_(),
 	  time_(0),
 	  energy_all_(tot_energ),
 	  energy_free_(tot_energ),
@@ -94,20 +95,27 @@ World::World	( const QString & name, quint64 tot_energ )
 	AprilLibrary::addWorld( this );
 }
 /* ========================================================================= */
-
+#include <QDir>
 /* ------------------------------------------------------------------------- */
 World *			World::fromStg			( 
 	const QString & s_file, QString & s_err )
 { FUNC_ENTRY;
 	
 	QFile f( s_file );
-	if ( f.exists() == false )
+	QDir d( s_file );
+	
+	if ( ( f.exists() == false ) || d.exists() )
 	{
 		s_err = QObject::tr( "Can't load the world. The file does not exists." );
 		return NULL;
 	}
 	QSettings	stg( s_file, QSettings::IniFormat );
-	return fromStg( stg );	
+	World * w = fromStg( stg );	
+	if (  w != NULL )
+	{
+		w->setAssociatedFile( s_file );
+	}
+	return w;
 }
 /* ========================================================================= */
 

@@ -73,8 +73,6 @@ private:
 	//! the world
 	World *			w_;
 
-	//! associated file
-	QString			s_file_;
 
 	/*  DATA    ============================================================ */
 	//
@@ -134,11 +132,11 @@ public:
 
 	//! associated file
 	const QString &		associatedFile		( void ) const
-	{ return s_file_; }
+	{ return w_->associatedFile(); }
 
 	//! has associated file
 	bool				hasAssociatedFile	( void ) const
-	{ return s_file_.isEmpty() == false; }
+	{ return w_->hasAssociatedFile(); }
 
 
 

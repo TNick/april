@@ -103,7 +103,10 @@ private:
 
 	//! the name of this world
 	QString						s_name_;
-		
+
+	//! associated file
+	QString						s_file_;
+	
 	//! current time in this world
 	quint64						time_;
 	
@@ -159,9 +162,11 @@ public:
 	World				( const QString & name, quint64 tot_energ );
 
 	//! constructor method; creates and loads a world from QSettings
+	Q_REQUIRED_RESULT
 	static World *		fromStg				( QSettings & s );
 	
 	//! constructor method; creates and loads a world from a file
+	Q_REQUIRED_RESULT
 	static World *		fromStg				(
 			const QString &			s_file,
 			QString &				s_err
@@ -190,6 +195,19 @@ public:
 	
 	//! name of the factory that created this instance
 	virtual QString		factoryName			( void ) const;
+
+	//! associated file
+	const QString &		associatedFile		( void ) const
+	{ return s_file_; }
+
+	//! has associated file
+	bool				hasAssociatedFile	( void ) const
+	{ return s_file_.isEmpty() == false; }
+	
+	//! change associated file
+	void				setAssociatedFile	( const QString & s_val )
+	{ s_file_ = s_val; }
+	
 
 	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
 	/** @name Director

@@ -105,8 +105,7 @@ public:
 /* ------------------------------------------------------------------------- */
 WorldQScene::WorldQScene	( QObject * parent )
 	: QGraphicsScene( parent ), MemTrack(),
-	  w_( NULL ),
-	  s_file_()
+	  w_( NULL )
 {
 	APRDBG_CDTOR;
 	
@@ -153,7 +152,7 @@ bool				WorldQScene::openWorld			(
 	else
 	{
 		OWN_CREF(w_,this);
-		s_file_ = s_file;
+		w_->setAssociatedFile( s_file );
 		return true;
 	}
 }
@@ -186,7 +185,7 @@ bool				WorldQScene::loadWorld			( World * w, QString & s_err  )
 		{
 			INC_REF(w_,this);
 		}
-		s_file_.clear();
+		w_->setAssociatedFile( QString() );
 		return true;
 	}
 	else
@@ -210,9 +209,9 @@ bool				WorldQScene::save				( QString & s_err )
 		return false;
 	}
 	
-	if ( s_file_.isEmpty() )
+	if ( w_->hasAssociatedFile() == false )
 		return saveAs( s_err );
-	return w_->saveAsStg( s_file_, s_err );
+	return w_->saveAsStg( w_->associatedFile(), s_err );
 }
 /* ========================================================================= */
 
@@ -233,13 +232,13 @@ bool				WorldQScene::saveAs				( QString & s_err )
 	QString fileName = QFileDialog::getSaveFileName(
 				qApp->activeWindow(),
 				tr( "Where to save the world:" ),
-				s_file_
+				w_->associatedFile()
 				);
 	if ( !fileName.isEmpty() )
 	{
 		if ( w_->saveAsStg( fileName, s_err ) )
 		{
-			s_file_ = fileName;
+			w_->setAssociatedFile( fileName );
 			return true;
 		}
 	}
