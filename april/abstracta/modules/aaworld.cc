@@ -99,6 +99,12 @@ static void		errorAlreadyStopped			( QString & s_err ) {
 					"Error! The world is already stopped.\n\n"
 					) );
 }
+static void		errorIntegerExpected		( QString & s_err, const QString & s_tk ) {
+	s_err.append(
+				QObject::tr( 
+					"Error! An integer was expected instead of %1.\n\n"
+					).arg( s_tk) );
+}
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
@@ -664,17 +670,39 @@ bool			AaWorld::advWorld				(
 	int arg_cnt = atks.tk_.count() - 1;
 	for ( ;; )
 	{
-		if ( arg_cnt != 1 )
+		if ( ( arg_cnt != 1 ) && ( arg_cnt != 2) )
 		{
 			errorOneArgumentExpected( s_err );
 			break;
 		}
 		QString arg1 = atks.getToken( 1 );
+		QString arg2;
 		if ( arg1 == QObject::tr( "help" ) )
 			break;
 		World * w = getWorldFromArg( arg1, atks.tk_.at( 1 ), s_err );
 		if ( w == NULL )
 			break;
+		int i = 1;
+		if ( arg_cnt == 2 )
+		{
+			i = -1;
+			const AaToken & tk2 = atks.tk_.at( 2 );
+			arg2 = atks.getToken( tk2 );
+			if ( tk2.isInteger() )
+			{
+				bool b;
+				i = arg2.toInt( &b );
+				if ( b == false || i <= 0 )
+				{
+					i = -1;
+				}
+			}
+		}
+		if ( i == -1 )
+		{
+			errorIntegerExpected( s_err, arg2 );
+			break;
+		}
 		if ( w->isRunning() == false )
 		{
 			w->start();
@@ -683,7 +711,11 @@ bool			AaWorld::advWorld				(
 							"World <%1> was started.\n" 
 							).arg( w->name() ) );
 		}
-		w->advance();
+		while ( i > 0 )
+		{
+			w->advance();
+			i--;
+		}
 		s_err.append( 
 					QObject::tr( 
 						"Time in world <%1> is now %2.\n" 
@@ -693,10 +725,10 @@ bool			AaWorld::advWorld				(
 	/* print the usage */
 	s_err.append( QObject::tr( 
 					  "Usage:\n"
-					  "    w.adv <index>          "
-					  "advances the world at that index one time unit\n"
-					  "    w.adv <name>           "
-					  "advances the world with that name one time unit\n"
+					  "    w.adv <index> [steps]  "
+					  "advances the world at that index 'steps' time unit\n"
+					  "    w.adv <name> [steps]   "
+					  "advances the world with that name 'steps' time units\n"
 					  "    w.adv help             "
 					  "prints usage instructions\n"
 					  "\n"
