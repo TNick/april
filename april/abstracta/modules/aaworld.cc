@@ -31,6 +31,7 @@
 #include	<april/logic/world.h>
 #include	<april/aprillibrary.h>
 #include	<QObject>
+#include	<QStringList>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -123,8 +124,6 @@ bool			AaWorld::newWorld				(
 	Q_ASSERT( atks.tk_.count() >= 1 );
 	Q_ASSERT( s_cmd == "w.new" );
 	Q_UNUSED( s_cmd );
-	Q_UNUSED( atks );
-	Q_UNUSED( s_err );
 	
 	int arg_cnt = atks.tk_.count() - 1;
 	QString arg_1;
@@ -182,9 +181,12 @@ bool			AaWorld::newWorld				(
 	/* print the usage */
 	s_err.append( QObject::tr( 
 					  "Usage:\n"
-					  "    w.new                  creates a new world with default values\n"
-					  "    w.new [name] [energy]  creates a world with given name and energy\n"
-					  "    w.new help             prints usage instructions\n"
+					  "    w.new                  "
+					  "creates a new world with default values\n"
+					  "    w.new [name] [energy]  "
+					  "creates a world with given name and energy\n"
+					  "    w.new help             "
+					  "prints usage instructions\n"
 					  "\n"
 					  "Options:\n"
 					  "  name     the name of the world; this will identify the\n"
@@ -248,7 +250,54 @@ bool			AaWorld::listWorlds				(
 	Q_UNUSED( atks );
 	Q_UNUSED( s_err );
 	
-	return true;
+	int arg_cnt = atks.tk_.count() - 1;
+	if ( arg_cnt == 0 )
+	{
+		World * iter = AprilLibrary::firstWorld();
+		if ( iter == NULL )
+		{
+			s_err.append( QObject::tr( 
+							  "No worlds loaded.\n"
+							  ) );
+			return false;
+		}
+		else
+		{
+			QList<QStringList>	datao;
+			QStringList			sl;
+			QString				s;
+			
+			sl.append( QObject::tr( "Name" ) );
+			sl.append( QObject::tr( "Bounded" ) );
+			sl.append( QObject::tr( "Free" ) );
+			sl.append( QObject::tr( "Time" ) );
+			sl.append( QObject::tr( "Status" ) );
+			datao.append( sl ); sl.clear();
+			
+			while ( iter != NULL )
+			{
+				sl.append( iter->name() );
+				sl.append( QString::number( iter->energyBounded() ) );
+				sl.append( QString::number( iter->energyFree() ) );
+				sl.append( QString::number( iter->currentTime() ) );
+				sl.append( iter->isRunning() ? "Running" : "Stopped" );
+				datao.append( sl );  sl.clear();
+				
+				iter = nextWorld_(iter);
+			}
+			AaOutput::showTable( datao, true );
+			return true;
+		}
+	}
+	
+	/* print the usage */
+	s_err.append( QObject::tr( 
+					  "Usage:\n"
+					  "    w.list                 "
+					  "lists the worlds and basic properties\n"
+					  "\n"
+					  ) );
+	return false;
 }
 /* ========================================================================= */
 

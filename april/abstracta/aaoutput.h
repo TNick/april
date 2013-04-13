@@ -102,7 +102,11 @@ public:
 			);
 	
 	
-	
+	//! present a table
+	static void				showTable			(
+			const QList<QStringList> &	table,
+			bool						has_header
+			);
 
 	/*  FUNCTIONS    ======================================================= */
 	//
