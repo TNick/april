@@ -87,6 +87,18 @@ static void		errorUnknownOprion			( QString & s_err, const QString & s_tk ) {
 					"Error! Unknown option: %1.\n\n"
 					).arg( s_tk ) );
 }
+static void		errorAlreadyStarted			( QString & s_err ) {
+	s_err.append(
+				QObject::tr( 
+					"Error! The world is already started.\n\n"
+					) );
+}
+static void		errorAlreadyStopped			( QString & s_err ) {
+	s_err.append(
+				QObject::tr( 
+					"Error! The world is already stopped.\n\n"
+					) );
+}
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
@@ -188,22 +200,38 @@ AaWorld::~AaWorld	( void )
 /* ------------------------------------------------------------------------- */
 void			AaWorld::insertCommands			( void )
 {
-	AbstractApril::addCommand( QObject::tr( "w.new" ), AaWorld::newWorld );
-	AbstractApril::addCommand( QObject::tr( "w.open" ), AaWorld::openWorld );
-	AbstractApril::addCommand( QObject::tr( "w.save" ), AaWorld::saveWorld );
-	AbstractApril::addCommand( QObject::tr( "w.close" ), AaWorld::closeWorld );
-	AbstractApril::addCommand( QObject::tr( "w.list" ), AaWorld::listWorlds );
+#define addOneCmd(c)	\
+	AbstractApril::addCommand( QObject::tr( "w." stringify(c) ), AaWorld::c##World )
+	
+	addOneCmd(new);
+	addOneCmd(open);
+	addOneCmd(save);
+	addOneCmd(close);
+	addOneCmd(list);
+	addOneCmd(start);
+	addOneCmd(stop);
+	addOneCmd(adv);
+	
+#undef addOneCmd
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 void			AaWorld::removeCommands			( void )
 {
-	AbstractApril::remCommand( QObject::tr( "w.new" ), AaWorld::newWorld );
-	AbstractApril::remCommand( QObject::tr( "w.open" ), AaWorld::openWorld );
-	AbstractApril::remCommand( QObject::tr( "w.save" ), AaWorld::saveWorld );
-	AbstractApril::remCommand( QObject::tr( "w.close" ), AaWorld::closeWorld );
-	AbstractApril::remCommand( QObject::tr( "w.list" ), AaWorld::listWorlds );
+#define remOneCmd(c)	\
+	AbstractApril::remCommand( QObject::tr( "w." stringify(c) ), AaWorld::c##World );
+
+	remOneCmd(new);
+	remOneCmd(open);
+	remOneCmd(save);
+	remOneCmd(close);
+	remOneCmd(list);
+	remOneCmd(start);
+	remOneCmd(stop);
+	remOneCmd(adv);
+	
+#undef remOneCmd
 }
 /* ========================================================================= */
 
@@ -456,13 +484,11 @@ bool			AaWorld::closeWorld				(
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-bool			AaWorld::listWorlds				(
+bool			AaWorld::listWorld				(
 		const QString & s_cmd, const AaTkString & atks, QString & s_err )
 {
 	Q_ASSERT( s_cmd == "w.list" );
 	Q_UNUSED( s_cmd );
-	Q_UNUSED( atks );
-	Q_UNUSED( s_err );
 	
 	int arg_cnt = atks.tk_.count() - 1;
 	QString arg1;
@@ -525,6 +551,153 @@ bool			AaWorld::listWorlds				(
 					  "    w.list                 "
 					  "lists the worlds and basic properties\n"
 					  "    w.list help            "
+					  "prints usage instructions\n"
+					  "\n"
+					  ) );
+	return false;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			AaWorld::startWorld				(
+		const QString & s_cmd, const AaTkString & atks, QString & s_err )
+{
+	Q_ASSERT( s_cmd == "w.start" );
+	Q_UNUSED( s_cmd );
+	
+	int arg_cnt = atks.tk_.count() - 1;
+	for ( ;; )
+	{
+		if ( arg_cnt != 1 )
+		{
+			errorOneArgumentExpected( s_err );
+			break;
+		}
+		QString arg1 = atks.getToken( 1 );
+		if ( arg1 == QObject::tr( "help" ) )
+			break;
+		World * w = getWorldFromArg( arg1, atks.tk_.at( 1 ), s_err );
+		if ( w == NULL )
+			break;
+		if ( w->isRunning() )
+		{
+			errorAlreadyStarted( s_err );
+			return false;
+		}
+		w->start();
+		s_err.append( 
+					QObject::tr( 
+						"World <%1> was started.\n" 
+						).arg( w->name() ) );
+		return false;
+	}
+	/* print the usage */
+	s_err.append( QObject::tr( 
+					  "Usage:\n"
+					  "    w.start <index>        "
+					  "starts the world at that index\n"
+					  "    w.start <name>         "
+					  "starts the world with specified name\n"
+					  "    w.start help           "
+					  "prints usage instructions\n"
+					  "\n"
+					  ) );
+	return false;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			AaWorld::stopWorld				(
+		const QString & s_cmd, const AaTkString & atks, QString & s_err )
+{
+	Q_ASSERT( s_cmd == "w.stop" );
+	Q_UNUSED( s_cmd );
+	
+	int arg_cnt = atks.tk_.count() - 1;
+	for ( ;; )
+	{
+		if ( arg_cnt != 1 )
+		{
+			errorOneArgumentExpected( s_err );
+			break;
+		}
+		QString arg1 = atks.getToken( 1 );
+		if ( arg1 == QObject::tr( "help" ) )
+			break;
+		World * w = getWorldFromArg( arg1, atks.tk_.at( 1 ), s_err );
+		if ( w == NULL )
+			break;
+		if ( w->isRunning() == false )
+		{
+			errorAlreadyStopped( s_err );
+			return false;
+		}
+		w->stop();
+		s_err.append( 
+					QObject::tr( 
+						"World <%1> was stopped.\n" 
+						).arg( w->name() ) );
+		return false;
+	}
+	/* print the usage */
+	s_err.append( QObject::tr( 
+					  "Usage:\n"
+					  "    w.stop <index>         "
+					  "stops the world at that index\n"
+					  "    w.stop <name>          "
+					  "stops the world with specified name\n"
+					  "    w.stop help            "
+					  "prints usage instructions\n"
+					  "\n"
+					  ) );
+	return false;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			AaWorld::advWorld				(
+		const QString & s_cmd, const AaTkString & atks, QString & s_err )
+{
+	Q_ASSERT( s_cmd == "w.adv" );
+	Q_UNUSED( s_cmd );
+	
+	int arg_cnt = atks.tk_.count() - 1;
+	for ( ;; )
+	{
+		if ( arg_cnt != 1 )
+		{
+			errorOneArgumentExpected( s_err );
+			break;
+		}
+		QString arg1 = atks.getToken( 1 );
+		if ( arg1 == QObject::tr( "help" ) )
+			break;
+		World * w = getWorldFromArg( arg1, atks.tk_.at( 1 ), s_err );
+		if ( w == NULL )
+			break;
+		if ( w->isRunning() == false )
+		{
+			w->start();
+			s_err.append( 
+						QObject::tr( 
+							"World <%1> was started.\n" 
+							).arg( w->name() ) );
+		}
+		w->advance();
+		s_err.append( 
+					QObject::tr( 
+						"Time in world <%1> is now %2.\n" 
+						).arg( w->name() ).arg( w->currentTime() ) );
+		return false;
+	}
+	/* print the usage */
+	s_err.append( QObject::tr( 
+					  "Usage:\n"
+					  "    w.adv <index>          "
+					  "advances the world at that index one time unit\n"
+					  "    w.adv <name>           "
+					  "advances the world with that name one time unit\n"
+					  "    w.adv help             "
 					  "prints usage instructions\n"
 					  "\n"
 					  ) );

@@ -127,11 +127,33 @@ private:
 			);
 
 	//! list all worlds
-	static bool			listWorlds		(
+	static bool			listWorld		(
 			const QString &			s_cmd,
 			const AaTkString &		atks,
 			QString &				s_err
 			);
+			
+	//! start a world
+	static bool			startWorld		(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err
+			);
+			
+	//! stop a world
+	static bool			stopWorld		(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err
+			);
+			
+	//! advance a world
+	static bool			advWorld		(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err
+			);
+			
 			
 			
 	
