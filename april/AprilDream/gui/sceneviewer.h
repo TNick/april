@@ -47,7 +47,7 @@ namespace	Gui		{
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief
+*	@brief	An enhanced scene viewer based on QGraphicsView
 */
 class SceneViewer		: public QGraphicsView, public MemTrack		{
 	Q_OBJECT

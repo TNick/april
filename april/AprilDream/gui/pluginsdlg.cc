@@ -68,6 +68,7 @@ class	PlginEntry : public QTreeWidgetItem {
 	bool		b_init_loaded_;
 public:
 	
+	//! constructor
 	PlginEntry( const QString & s_file )
 		: QTreeWidgetItem(),
 		b_init_loaded_( false )
@@ -78,6 +79,7 @@ public:
 		setText( ColPath, fi.absoluteFilePath() );
 	}
 	
+	//! mark as being loaded in library
 	void			setLoaded			( void )
 	{
 		b_init_loaded_ = true;
@@ -85,6 +87,7 @@ public:
 		setText( ColStatus, QObject::tr( "Not loaded" ) );
 	}
 	
+	//! mark as being unloaded in library
 	void			setUnloaded			( void )
 	{
 		b_init_loaded_ = false;
@@ -92,12 +95,15 @@ public:
 		setText( ColStatus, QObject::tr( "Loaded" ) );
 	}
 	
+	//! tell if plug-in is loaded in library
 	bool			wasLoaded			( void ) const
 	{ return b_init_loaded_; }
 	
+	//! should we load this plug-in?
 	bool			shouldBeLoaded		( void ) const
 	{ return checkState( ColName ) == Qt::Checked; }
 	
+	//! the binary file
 	QString			file				( void ) const
 	{
 		return text( ColPath );

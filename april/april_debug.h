@@ -81,9 +81,15 @@ enum	APRDBG_Codes		{
 
 #ifndef	ENABLE_LOGGING
 #	ifndef QT_NO_DEBUG
+
+//! logging is enabled
 #		define	ENABLE_LOGGING	1
+
 #	else
+
+//! logging is disabled
 #		define	ENABLE_LOGGING	0
+
 #	endif
 #endif
 
@@ -92,9 +98,14 @@ enum	APRDBG_Codes		{
 
 /* IS_APRIL_DEBUG_ID_ALLOWED should be defined in LIBAPRIL_config.h */
 #ifndef	IS_APRIL_DEBUG_ID_ALLOWED
+
+//! disable all IDs
 #	define	IS_APRIL_DEBUG_ID_ALLOWED( id )	false
+
 #endif
 
+//!@{
+//! macros that intermediate the logging (enabled)
 #	define APRDBG(id,txt)	\
 	if ( IS_APRIL_DEBUG_ID_ALLOWED( id ) ) \
 	qDebug() << april::debugName(id) << ": " << txt
@@ -106,13 +117,23 @@ enum	APRDBG_Codes		{
 	qDebug() << april::debugName(id) << ": " << txt1 << txt2 << txt3
 #	define APRDBG_FUNC(id)	APRDBG(id, __func__ )
 #	define APRDBG_CDTOR		APRDBG2(APRDBG_CTORDTOR, __func__, this )
+//!@}
+
+
 #else
+//!@{
+//! macros that intermediate the logging (disabled)
 #	define APRDBG(id,txt)
 #	define APRDBG2(id,txt1,txt2)
 #	define APRDBG3(id,txt1,txt2,txt3)
 #	define APRDBG_FUNC(id)
 #	define APRDBG_CDTOR
+//!@}
 #endif
+
+
+
+
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -129,10 +150,13 @@ enum	APRDBG_Codes		{
 /*  FUNCTIONS    ----------------------------------------------------------- */
 
 namespace	april	{
+
+//! get the name for a particular debug ID
 APRILSHARED_EXPORT	const char *		debugName			( int i );
 
 //! may be used by the IS_APRIL_DEBUG_ID_ALLOWED in 
 APRILSHARED_EXPORT	bool				filterDebug			( int i );
+
 }
 
 /*  FUNCTIONS    =========================================================== */

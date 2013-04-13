@@ -31,6 +31,9 @@
 //
 /*  DEFINITIONS    --------------------------------------------------------- */
 
+//!@{
+//! current version
+
 #define APRIL_VERSION_MAJOR	1
 #define APRIL_VERSION_MINOR	0
 #define APRIL_VERSION_REV		0
@@ -41,6 +44,8 @@
 	APRIL_VERSION_REV
 
 #define APRIL_VER_STR	"1.0.0"
+
+//!@}
 
 /*  DEFINITIONS    ========================================================= */
 //

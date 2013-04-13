@@ -109,6 +109,7 @@ public:
 	 * By default this method creates a simple Sensor.
 	 * The caller recieves a reference that should eventually discard.
 	 *
+	 * @param ag The actor where this is to be created
 	 * @param id The id that is requested; the implementation does 
 	 * not use this parameter
 	 * @return either a pointer or NULL

@@ -206,6 +206,9 @@ AaWorld::~AaWorld	( void )
 /* ------------------------------------------------------------------------- */
 void			AaWorld::insertCommands			( void )
 {
+/// @cond internal
+
+//! register a command from this package 
 #define addOneCmd(c)	\
 	AbstractApril::addCommand( QObject::tr( "w." stringify(c) ), AaWorld::c##World )
 	
@@ -219,12 +222,16 @@ void			AaWorld::insertCommands			( void )
 	addOneCmd(adv);
 	
 #undef addOneCmd
+//! @endcond
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 void			AaWorld::removeCommands			( void )
 {
+/// @cond internal
+
+//! unregister a command from this package @internal
 #define remOneCmd(c)	\
 	AbstractApril::remCommand( QObject::tr( "w." stringify(c) ), AaWorld::c##World );
 
@@ -238,6 +245,7 @@ void			AaWorld::removeCommands			( void )
 	remOneCmd(adv);
 	
 #undef remOneCmd
+//! @endcond
 }
 /* ========================================================================= */
 

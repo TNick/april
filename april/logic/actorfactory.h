@@ -157,7 +157,7 @@ protected:
 	//! initialise a DNA instance
 	/**
 	 * @param dna target structure
-	 * @param id_kind the id to set in target structure
+	 * @param init the id to set in target structure
 	 */
 	void					initDNA				(
 			DNA &					dna,

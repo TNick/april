@@ -48,7 +48,7 @@ namespace	Gui		{
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief
+*	@brief	An Actor with gui characteristics
 */
 class
 	APRILSHARED_EXPORT

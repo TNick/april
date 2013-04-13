@@ -43,11 +43,14 @@
 
 using namespace april;
 
+//! @cond internal
 
 #define	_LG2_(t1,t2)	APRDBG2(APRDBG_W,t1,t2)
 #define	_LG3_(t1,t2,t3)	APRDBG3(APRDBG_W,t1,t2,t3)
 #define	_LG_(t)		APRDBG(APRDBG_A,t)
 #define	FUNC_ENTRY	APRDBG_FUNC(APRDBG_A)
+
+//! @endcond
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -582,7 +585,8 @@ bool				Actor::save						( QSettings & stg ) const
 		b = b & dna_.save( stg );
 		if ( !b ) { _LG_("  dna_ fails"); break; }
 		
-		
+/// @cond internal
+
 #define saveActorComp(slist,cls)								    \
 		stg.beginWriteArray( stringify(slist), slist.count() );     \
 		cls * itr_##cls = first##cls##_(this);                       \
@@ -601,6 +605,8 @@ bool				Actor::save						( QSettings & stg ) const
 		saveActorComp(reflexes_,Reflex);
 		saveActorComp(brains_,Brain);
 #undef	saveActorComp
+
+/// @endcond
 
 //		stg.beginWriteArray( "sensors_", sensors_.count() );
 //		Sensor * itr_sens = firstSensor_(this);
@@ -697,7 +703,7 @@ bool				Actor::load						( QSettings & stg )
 		kind_ = dna_.kind(); // the kind is present in DNA
 		cost_ = dna_.cost(); // the cost is present in DNA
 		
-		
+/// @cond internal
 		
 #define loadActorComp(slist,cls)							    \
 		i_cnt = stg.beginReadArray( stringify(slist) );         \
@@ -719,6 +725,8 @@ bool				Actor::load						( QSettings & stg )
 		loadActorComp(reflexes_,Reflex);
 		loadActorComp(brains_,Brain);
 #undef	loadActorComp
+
+/// @endcond
 
 //		i_cnt = stg.beginReadArray( "sensors_" );
 //		for ( int i = 0; i < i_cnt; i++ )

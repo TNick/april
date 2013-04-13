@@ -343,7 +343,7 @@ protected:
 	//! initialise an empty DNA; the instance becomes valid
 	/**
 	 * This is usefull for ActorFactory to create a default DNA
-	 * @param id_kind the ID to set inside
+	 * @param init initial data
 	 */
 	void			initDNA			( const InitData & init );
 	

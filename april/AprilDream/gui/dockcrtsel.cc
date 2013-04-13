@@ -43,35 +43,38 @@ namespace   april	{
 
 namespace	Gui		{
 
-	//! index in the list of properties for the world
-	enum	WorldProps	{
-		WEnergy = 0,
-		WEnergyBound,
-		
-		WFreq,
-		WInterval,
-		
-		/* all below this line are read-only */
-		WTime,
-		WActors,
-		WEvents,
-		WEventsFact,
-		WActorsFact,
-		WActFact,
-		WSensFact,
-		WBrainFact,
-		
-		WMax,
-		WFirstReadOnly = WTime
-	};
+//! index in the list of properties for the world
+enum	WorldProps	{
+	WEnergy = 0,
+	WEnergyBound,
 	
+	WFreq,
+	WInterval,
 	
+	/* all below this line are read-only */
+	WTime,
+	WActors,
+	WEvents,
+	WEventsFact,
+	WActorsFact,
+	WActFact,
+	WSensFact,
+	WBrainFact,
+	
+	WMax,
+	WFirstReadOnly = WTime
+};
+
+//! implementation class
+/**
+ * @internal
+ */
 class	DockCrtSel_p		{
 public:
-
+	
 	//! property browser
 	QtTreePropertyBrowser *		tree_;
-
+	
 	//!@{
 	//! managers for properties
 	QtBoolPropertyManager *		boolManager; 
@@ -83,15 +86,19 @@ public:
 	//	QtEnumPropertyManager *		enumManager;
 	//	QtGroupPropertyManager *	groupManager;
 	//!@}
-
+	
+	
+	//!@{
+	//! factories
 	QtCheckBoxFactory *			checkBoxFactory;
 	QtSpinBoxFactory *			spinBoxFactory;
 	QtLineEditFactory *			lineEditFactory;
 	//	QtSliderFactory *			sliderFactory;
 	//	QtScrollBarFactory *		scrollBarFactory;
 	//	QtEnumEditorFactory *		comboBoxFactory;
+	//!@}
 	
-
+	
 	//! array of properties
 	QtProperty *				props_[WMax];
 	
@@ -118,7 +125,7 @@ public:
 /* ------------------------------------------------------------------------- */
 DockCrtSel::DockCrtSel	( MW * mw )
 	: Dock( mw, "Current selection" ),
-	d_( NULL )
+	  d_( NULL )
 {
 	APRDBG_CDTOR;
 	/* stub */
@@ -195,7 +202,7 @@ void				DockCrtSel::construct			( void )
 	//	d_->tree_->setFactoryForManager(
 	//				enumManager, comboBoxFactory);
 	
-
+	
 	DOCK_ADD_IPROP_B(WEnergy,"energy",10,10000000);
 	DOCK_ADD_IPROP(WEnergyBound,"bound energy");
 	DOCK_ADD_IPROP_B(WFreq,"update frequency",1,10000);
@@ -208,14 +215,14 @@ void				DockCrtSel::construct			( void )
 	DOCK_ADD_IPROP(WActFact,"actuators fact.");
 	DOCK_ADD_IPROP(WSensFact,"sensors fact.");
 	DOCK_ADD_IPROP(WBrainFact,"brain fact.");
-
+	
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 void				DockCrtSel::deconstruct			( void )
 {
-
+	
 	d_->tree_->deleteLater();
 	
 	d_->boolManager->deleteLater(); 

@@ -52,11 +52,13 @@
 
 using namespace april;
 
+//! @cond internal
 
 #define	_LG2_(t1,t2)	APRDBG2(APRDBG_W,t1,t2)
 #define	_LG3_(t1,t2,t3)	APRDBG3(APRDBG_W,t1,t2,t3)
 #define	_LG_(t)			APRDBG(APRDBG_W,t)
 #define	FUNC_ENTRY		APRDBG_FUNC(APRDBG_W)
+//! @endcond
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -173,6 +175,7 @@ World::~World	( void )
 	}
 	
 	/* ...... */
+/// @cond internal
 #	define	discardFactory(f,F) \
 	QMap<ID,F*>::ConstIterator itr_##f =f##_factories_.constBegin();\
 	QMap<ID,F*>::ConstIterator itr_end_##f = f##_factories_.constEnd();\
@@ -190,6 +193,7 @@ World::~World	( void )
 	discardFactory(reflex,ReflexFactory);
 	
 #	undef	discardFactory
+/// @endcond
 	
 	QMap<ID,EventLine*>::ConstIterator itr_event_lines = event_lines_.constBegin();
 	QMap<ID,EventLine*>::ConstIterator itr_end_event_lines = event_lines_.constEnd();
@@ -693,6 +697,7 @@ void				World::stop				( void )
 }
 /* ========================================================================= */
 
+/// @cond internal
 #define saveFactory(f,F)	                                          \
 	stg.beginWriteArray( stringify(f) "_factories_" );				  \
 	i_cnt = 0;														  \
@@ -710,6 +715,7 @@ void				World::stop				( void )
 	}                                                                 \
 	stg.endArray();                                                   \
 	if ( !b ) { _LG_( stringify(f) " factory fails"); break; }
+/// @endcond
 
 /* ------------------------------------------------------------------------- */
 bool				World::save				( QSettings & stg ) const
@@ -794,11 +800,11 @@ bool				World::save				( QSettings & stg ) const
 	return b;
 	
 #	undef	saveFactory
-	
+
 }
 /* ========================================================================= */
 
-
+/// @cond internal
 #	define	loadFactory(f,F,ty)												\
 	i_cnt = stg.beginReadArray( stringify(f) "_factories_" ); 				\
 	for ( int i = 0; i < i_cnt; i++ ) {							            \
@@ -816,6 +822,7 @@ bool				World::save				( QSettings & stg ) const
 	}																		\
 	stg.endArray();															\
 	if ( !b ) { _LG_( stringify(f) " factory fails"); break; }
+/// @endcond
 
 
 

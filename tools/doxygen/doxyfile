@@ -10,7 +10,7 @@ EXAMPLE_PATH           = ../../april/examples
 EXAMPLE_PATTERNS       = *.cc, *.h
 EXAMPLE_RECURSIVE      = YES
 
-EXCLUDE_PATTERNS       = */tests/* */examples/*.cc */examples/*.h
+EXCLUDE_PATTERNS       = */tests/* */examples/*.cc */examples/*.h */propertybrowser/* *_config.h
 TAB_SIZE               = 4
 
 DISTRIBUTE_GROUP_DOC   = YES

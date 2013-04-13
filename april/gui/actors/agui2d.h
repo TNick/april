@@ -52,7 +52,7 @@ namespace	Gui		{
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief
+*	@brief	An Actor with 2D position
 */
 class
 	APRILSHARED_EXPORT

@@ -47,24 +47,35 @@ using namespace std;
 //
 /*  DEFINITIONS    --------------------------------------------------------- */
 
+//! components of the arguments table
 enum		ArgsTable		{
-	ARG_HELP = 0,
-	ARG_VER,
-	ARG_INIT_FILES,
-
-	ARG_END,
-	ARG_MAX
+	ARG_HELP = 0,	/**< present help */
+	ARG_VER,		/**< present version */
+	ARG_INIT_FILES,	/**< initial files */
+	
+	ARG_END,		/**< end marker */
+	ARG_MAX			/**< error checking */
 };
+
+//!@{
+//! easy access to argtable members
 
 #define a__help		((struct arg_lit *)argtable[ARG_HELP])
 #define a__ver		((struct arg_lit *)argtable[ARG_VER])
 #define a__init		((struct arg_file *)argtable[ARG_INIT_FILES])
 #define a__end		((struct arg_end *)argtable[ARG_END])
 
+//!@}
+
+//!@{
+//! application macros
+
 #define	APRILDREAM_NAME		"AprilDream"
 #define	LANG_FILE_PREFIX	APRILDREAM_NAME "_"
 #define	LANG_FILE_SUFFIX	".qm"
 #define	LANG_FILE(loc)		(LANG_FILE_PREFIX + loc + LANG_FILE_SUFFIX)
+
+//!@}
 
 using namespace	april;
 using namespace std;
@@ -76,6 +87,7 @@ using namespace std;
 //
 /*  DATA    ---------------------------------------------------------------- */
 
+//! the one and only main window
 Gui::MW *			mw = NULL;
 
 /*  DATA    ================================================================ */
@@ -86,6 +98,7 @@ Gui::MW *			mw = NULL;
 /*  FUNCTIONS    ----------------------------------------------------------- */
 
 /* ------------------------------------------------------------------------- */
+//! load proper language file based on application location and settings
 void		translatable		( void )
 {
 	/* application is translatable */
@@ -108,6 +121,7 @@ void		translatable		( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+//! initialisation method for the application
 int			mainInit		( int argc, char *argv[] )
 {
 
@@ -219,6 +233,7 @@ int			mainInit		( int argc, char *argv[] )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+//! ending function for the application
 void			mainEnd			( void )
 {
 
@@ -236,6 +251,7 @@ void			mainEnd			( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+//! appliation entry point
 int			main			( int argc, char *argv[] )
 {
 	int i_ret;

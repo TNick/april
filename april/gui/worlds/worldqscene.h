@@ -105,6 +105,7 @@ public:
 	 * The call fails if the world is running.
 	 *
 	 * @param s_file The file to load
+	 * @param s_err Return the errors in this parameter
 	 * @return true if the new world was loaded
 	 */
 	bool				openWorld			 (
@@ -120,6 +121,7 @@ public:
 	 * The call fails if the current world is running.
 	 *
 	 * @param w The world to load
+	 * @param s_err Return the errors in this parameter
 	 * @return true if the new world was loaded
 	 */
 	bool				loadWorld			( World * w, QString & s_err );

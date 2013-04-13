@@ -41,8 +41,13 @@ namespace   april	{
 
 namespace	Gui		{
 
+//! internal tree entry
+/**
+ * @internal
+ */
 class	DockIds_p		{
 public:
+	//! the tree item
 	QTreeWidget *		tv_;
 	
 }; /* class	DockIds_p */

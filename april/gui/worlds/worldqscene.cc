@@ -41,14 +41,17 @@
 using namespace april;
 using namespace april::Gui;
 
+//! Item for scene that represents the origin and axis directions
 class	WQS_Unit		: public QGraphicsItem	{
 	
 	int		scale = 100;
 public:
 	
+	//! constructor
 	WQS_Unit() : QGraphicsItem()
 	{}
 	
+	//! the rectangle that contains our item
 	QRectF						boundingRect		( void ) const
 	{
 		int		scale_16 = scale/16;
@@ -57,6 +60,7 @@ public:
 					  scale+scale_16 + penWidth, scale+scale_16 + penWidth);
 	}
 	
+	//! paint our item
 	void						paint				(
 			QPainter *							painter, 
 			const QStyleOptionGraphicsItem *	option,
@@ -85,7 +89,7 @@ public:
 	
 };
 
-
+//! the initial width and height
 #define INIT_SCENE_RECT		1200
 
 /*  DEFINITIONS    ========================================================= */

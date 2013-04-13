@@ -4,10 +4,10 @@
   \file			dockworld.cc
   \date			Apr 2013
   \author		TNick
-
+  
   \brief		Contains the implementation of DockWorld class
-
-
+  
+  
 *//*
 
 
@@ -45,35 +45,38 @@ namespace   april	{
 
 namespace	Gui		{
 
-	//! index in the list of properties for the world
-	enum	WorldProps	{
-		WEnergy = 0,
-		WEnergyBound,
-		
-		WFreq,
-		WInterval,
-		
-		/* all below this line are read-only */
-		WTime,
-		WActors,
-		WEvents,
-		WEventsFact,
-		WActorsFact,
-		WActFact,
-		WSensFact,
-		WBrainFact,
-		
-		WMax,
-		WFirstReadOnly = WTime
-	};
+//! index in the list of properties for the world
+enum	WorldProps	{
+	WEnergy = 0,
+	WEnergyBound,
 	
+	WFreq,
+	WInterval,
 	
+	/* all below this line are read-only */
+	WTime,
+	WActors,
+	WEvents,
+	WEventsFact,
+	WActorsFact,
+	WActFact,
+	WSensFact,
+	WBrainFact,
+	
+	WMax,
+	WFirstReadOnly = WTime
+};
+
+//! private data for worlds
+/**
+ * @internal
+ */
 class	DockWorld_p		{
 public:
-
+	
 	//! property browser
 	QtTreePropertyBrowser *		tree_;
-
+	
 	//!@{
 	//! managers for properties
 	QtBoolPropertyManager *		boolManager; 
@@ -85,15 +88,18 @@ public:
 	//	QtEnumPropertyManager *		enumManager;
 	//	QtGroupPropertyManager *	groupManager;
 	//!@}
-
+	
+	//!@{
+	//! factories
 	QtCheckBoxFactory *			checkBoxFactory;
 	QtSpinBoxFactory *			spinBoxFactory;
 	QtLineEditFactory *			lineEditFactory;
 	//	QtSliderFactory *			sliderFactory;
 	//	QtScrollBarFactory *		scrollBarFactory;
 	//	QtEnumEditorFactory *		comboBoxFactory;
+	//!@}
 	
-
+	
 	//! array of properties
 	QtProperty *				props_[WMax];
 	
@@ -120,7 +126,7 @@ public:
 /* ------------------------------------------------------------------------- */
 DockWorld::DockWorld	( MW * mw )
 	: Dock( mw, "World properties" ),
-	d_( NULL )
+	  d_( NULL )
 {
 	APRDBG_CDTOR;
 	/* stub */
@@ -197,7 +203,7 @@ void				DockWorld::construct			( void )
 	//	d_->tree_->setFactoryForManager(
 	//				enumManager, comboBoxFactory);
 	
-
+	
 	DOCK_ADD_IPROP_B(WEnergy,"energy",10,10000000);
 	DOCK_ADD_IPROP(WEnergyBound,"bound energy");
 	DOCK_ADD_IPROP_B(WFreq,"update frequency",1,10000);
@@ -210,14 +216,14 @@ void				DockWorld::construct			( void )
 	DOCK_ADD_IPROP(WActFact,"actuators fact.");
 	DOCK_ADD_IPROP(WSensFact,"sensors fact.");
 	DOCK_ADD_IPROP(WBrainFact,"brain fact.");
-
+	
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 void				DockWorld::deconstruct			( void )
 {
-
+	
 	d_->tree_->deleteLater();
 	
 	d_->boolManager->deleteLater(); 

@@ -43,6 +43,7 @@ class
 	AprilPluginLoader	: public QPluginLoader, public List2De, public MemTrack {
 	BBM_TRACK( AprilPluginInterf );
 public:
+	//! constructor
 	AprilPluginLoader( const QString & s ) : QPluginLoader( s ), List2De(), MemTrack()
 	{}
 };

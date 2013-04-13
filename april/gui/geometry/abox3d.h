@@ -35,7 +35,7 @@
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief
+*	@brief	An axis aligned rectangle with height
 */
 struct ABOX3D				{
 

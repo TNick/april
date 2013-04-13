@@ -47,7 +47,7 @@ class	World;
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief
+*	@brief	Base class for components of an Actor
 */
 class
 	APRILSHARED_EXPORT

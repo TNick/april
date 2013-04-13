@@ -40,8 +40,13 @@ namespace   april	{
 
 namespace	Gui		{
 
+/**
+ * @brief Tree component
+ * @internal
+ */
 class	DockTree_p		{
 public:
+	//! the tree item
 	QTreeWidget *		tv_;
 	
 }; /* class	DockTree_p */

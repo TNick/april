@@ -86,7 +86,12 @@ public:
 	//! entire set of properties
 	struct		LibProps			{
 
+
+
+		//! save to settings
 		void save ( QSettings & s );
+		
+		//! load from settings
 		void load ( QSettings & s );
 	};
 
@@ -365,8 +370,10 @@ private:
 
 }   //  namespace   april
 
-/// starts the library
+//! starts the library
 APRILSHARED_EXPORT bool	initAprilLibrary			( void );
+
+//! terminates the libraryl releases resources
 APRILSHARED_EXPORT void	endAprilLibrary				( void );
 
 #endif // __APRILLIBRARY_INC__

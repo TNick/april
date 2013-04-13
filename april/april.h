@@ -46,12 +46,24 @@ Object emit signals on certain actions if APRIL_SIGNALS is defined.
 #undef		LIBDIGIB_SIGNALS
 */
 
+//! generate a random real number between 0 and 1
 #define RAND_0_1			( ((qreal)qrand()) / RAND_MAX )
+
+//! generate a random real number between 0.5 and 1.5
 #define RAND_ARROUND_1		( RAND_0_1 + 0.5 )
+
+//! generate a random real number between -0.5 and 0.5
 #define RAND_ARROUND_0		( RAND_0_1 - 0.5 )
+
+//! a very small random value
 #define SMALL_RANDOM		( RAND_ARROUND_0 / 100000 )
+
+//! a random value between 0 and m
 #define RANDINT_0_MAX(m)	( qrand() % (m) )
 
+
+//!@{
+//! easy accesor macro for List2De derived classes
 
 #define firstSensor_(p)	static_cast<Sensor*>(p->sensors_.first())
 #define prevSensor_(p)	static_cast<Sensor*>(p->prev())
@@ -89,10 +101,16 @@ Object emit signals on certain actions if APRIL_SIGNALS is defined.
 #define prevPlugin_(p)	static_cast<AprilPluginLoader*>(p->prev())
 #define nextPlugin_(p)	static_cast<AprilPluginLoader*>(p->next())
 
+//!@}
+
 
 #ifndef stringify
+
+//! helper for stringify
 #define xstringify(s) #s
+//! convert an identifier to its string representation
 #define stringify(s) xstringify(s)
+
 #endif
 
 
