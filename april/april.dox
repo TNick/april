@@ -10,6 +10,8 @@ The april project is structured into parts. The basic part is the
 classes: World, Actor, EventSource, Sensor, Reflex, Actuator, Brain to name the
 prominent ones.
 
+@image html "generic diagram.png" "Basic flow of information" width=10cm
+
 Extending the april-core library is the <strong>april-gui library</strong>.
 This provides classes that inherit the building blocks, adding 2D or 3D
 locality, graphical representation and so on.
