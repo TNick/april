@@ -72,7 +72,8 @@ SOURCES += \
     ../../../april/abstracta/abstractapril.cc \
     ../../../april/abstracta/modules/aaworld.cc \
     ../../../april/abstracta/aamodule.cc \
-    ../../../april/abstracta/modules/aaplugins.cc
+    ../../../april/abstracta/modules/aaplugins.cc \
+    ../../../april/abstracta/modules/aaapril.cc
 
 RESOURCES += \
     ../../../april/abstracta/abstracta.qrc
@@ -84,7 +85,8 @@ HEADERS += \
     ../../../april/abstracta/abstractapril.h \
     ../../../april/abstracta/modules/aaworld.h \
     ../../../april/abstracta/aamodule.h \
-    ../../../april/abstracta/modules/aaplugins.h
+    ../../../april/abstracta/modules/aaplugins.h \
+    ../../../april/abstracta/modules/aaapril.h
 
 
 

@@ -4,10 +4,10 @@
   \file			aaoutput.h
   \date			Apr 2013
   \author		TNick
-
+  
   \brief		Contains the definition for AaOutput class
-
-
+  
+  
 *//*
 
 
@@ -48,53 +48,66 @@ namespace   april    {
 */
 class AaOutput		: public MemTrack		{
 	BBM_TRACK( AaOutput );
-
+	
 	//
 	//
 	//
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
-
+	
 	/*  DEFINITIONS    ===================================================== */
 	//
 	//
 	//
 	//
 	/*  DATA    ------------------------------------------------------------ */
-
+	
 private:
+	
+	//! the prompt
+	std::string				prompt_string;
 
-
+	
+	
+	//! the one and only instance
+	static AaOutput *		uniq_;
+	
 	/*  DATA    ============================================================ */
 	//
 	//
 	//
 	//
 	/*  FUNCTIONS    ------------------------------------------------------- */
-
+	
 public:
-
+	
+	//! initialise the output system
+	static bool				init				( void );
+	
+	//! terminate the output system
+	static void				end					( void );
+	
 	//! present an informative message
 	static void				showInfo			( const QString & s_msg );
-
+	
 	//! present an warning message
 	static void				showWarning			( const QString & s_msg );
-
+	
 	//! present an error message
 	static void				showError			( const QString & s_msg );
-
+	
 	//! present an informative message
 	static void				showInfo			( 
 			const QString &			s_title,
 			const QString &			s_msg
 			);
-
+	
 	//! present an warning message
 	static void				showWarning			( 
 			const QString &			s_title,
 			const QString &			s_msg
 			);
-
+	
 	//! present an error message
 	static void				showError			( 
 			const QString &			s_title,
@@ -107,13 +120,23 @@ public:
 			const QList<QStringList> &	table,
 			bool						has_header
 			);
-
+	
+	
+	//! change the prompt
+	static void				setPrompt			(
+			const QString &			s_new_prompt	
+			);
+	
+	//! show the prompt
+	static void				showPrompt			( void );
+	
+	
 	/*  FUNCTIONS    ======================================================= */
 	//
 	//
 	//
 	//
-
+	
 };	/*	class AaOutput	*/
 
 /*  CLASS    =============================================================== */

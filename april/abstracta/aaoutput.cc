@@ -26,6 +26,8 @@
 #include	"aaoutput.h"
 #include	<QDebug>
 #include	<QString>
+#include	<QSettings>
+#include	<iostream>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -43,12 +45,52 @@ using namespace april;
 //
 /*  DATA    ---------------------------------------------------------------- */
 
+AaOutput *		AaOutput::uniq_ = NULL;
+
 /*  DATA    ================================================================ */
 //
 //
 //
 //
 /*  CLASS    --------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------- */
+bool				AaOutput::init					( void )
+{
+	if ( uniq_ != NULL )
+		return true;
+	uniq_ = new AaOutput();
+	
+	QSettings	stg;
+	stg.beginGroup( "AaOutput" );
+	QString s_prompt = stg.value( "prompt_string", ">" ).toString();
+	if ( s_prompt.isEmpty() )
+	{
+		s_prompt = ">";
+	}
+	uniq_->prompt_string = s_prompt.toStdString();
+	
+	stg.endGroup();
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void				AaOutput::end					( void )
+{
+	if ( uniq_ == NULL )
+		return;
+		
+	QSettings	stg;
+	stg.beginGroup( "AaOutput" );
+	stg.setValue( "prompt_string", 
+	QString::fromStdString( uniq_->prompt_string ) );
+	stg.endGroup();
+	
+	delete uniq_;
+	uniq_ = NULL;
+}
+/* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 void				AaOutput::showInfo				( const QString & s_msg )
@@ -187,6 +229,22 @@ void				AaOutput::showTable				(
 }
 /* ========================================================================= */
 
+/* ------------------------------------------------------------------------- */
+void			AaOutput::setPrompt			( const QString & s_new_prompt )
+{
+	if ( s_new_prompt.isEmpty() )
+		return;
+	uniq_->prompt_string = s_new_prompt.toStdString();
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void			AaOutput::showPrompt		( void )
+{
+	std::cout << uniq_->prompt_string;
+}
+/* ========================================================================= */
+
 /*  CLASS    =============================================================== */
 //
 //
@@ -194,5 +252,4 @@ void				AaOutput::showTable				(
 //
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-
 

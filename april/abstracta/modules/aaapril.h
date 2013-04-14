@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			aaworld.h
+  \file			aaapril.h
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the definition for AaWorld class
+  \brief		Contains the definition for AaApril class
 
 
 *//*
@@ -17,8 +17,8 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __AAWORLD_INC__
-#define __AAWORLD_INC__
+#ifndef __AAAPRIL_INC__
+#define __AAAPRIL_INC__
 //
 //
 //
@@ -45,10 +45,10 @@ namespace   april    {
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief	Module that provides commands related to worlds
+*	@brief	Module that provides commands related to introspection
 */
-class AaWorld		: public AaModule		{
-	BBM_TRACK( AaWorld );
+class AaApril		: public AaModule		{
+	BBM_TRACK( AaApril );
 
 	//
 	//
@@ -77,14 +77,12 @@ private:
 public:
 
 	//! constructor
-	AaWorld				( void );
+	AaApril			( void );
 
 protected:
 
 	//! destructor;
-	virtual				~AaWorld		( void );
-	
-protected:
+	virtual				~AaApril		( void );
 
 	//! insert all commands (request from AbstractApril)
 	virtual void		insertCommands	( void );
@@ -95,83 +93,51 @@ protected:
 	//! tell your name
 	virtual QString		name			( void );
 
-
-public:
-
-	//! directly open a world from a file
-	static bool			dOpenWorld		(
-			const QString &			s_file,
-			QString &				s_err			
-			);
-
 private:
 
-	//! create a new world
-	static bool			newWorld		(
+	//! list all registered commands
+	static bool			commands		(
 			const QString &			s_cmd,
 			const AaTkString &		atks,
 			QString &				s_err
 			);
 
-	//! open a world
-	static bool			openWorld		(
+	//! list all registered modules
+	static bool			modules			(
 			const QString &			s_cmd,
 			const AaTkString &		atks,
 			QString &				s_err
 			);
 
-	//! save a world
-	static bool			saveWorld		(
+	//! prints the version
+	static bool			version			(
 			const QString &			s_cmd,
 			const AaTkString &		atks,
 			QString &				s_err
 			);
 
-	//! close a world
-	static bool			closeWorld		(
+	//! informs about the copyright
+	static bool			copyright			(
 			const QString &			s_cmd,
 			const AaTkString &		atks,
 			QString &				s_err
 			);
 
-	//! list all worlds
-	static bool			listWorld		(
+	//! change the prompt to specified string
+	static bool			prompt			(
 			const QString &			s_cmd,
 			const AaTkString &		atks,
 			QString &				s_err
 			);
-			
-	//! start a world
-	static bool			startWorld		(
-			const QString &			s_cmd,
-			const AaTkString &		atks,
-			QString &				s_err
-			);
-			
-	//! stop a world
-	static bool			stopWorld		(
-			const QString &			s_cmd,
-			const AaTkString &		atks,
-			QString &				s_err
-			);
-			
-	//! advance a world
-	static bool			advWorld		(
-			const QString &			s_cmd,
-			const AaTkString &		atks,
-			QString &				s_err
-			);
-			
-			
-			
-	
+
+
 	/*  FUNCTIONS    ======================================================= */
 	//
 	//
 	//
 	//
 
-};	/*	class AaWorld	*/
+};	/*	class AaApril	*/
 
 /*  CLASS    =============================================================== */
 //
@@ -181,6 +147,6 @@ private:
 
 }   //  namespace   april
 
-#endif // __AAWORLD_INC__
+#endif // __AAAPRIL_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */

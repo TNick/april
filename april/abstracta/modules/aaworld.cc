@@ -221,6 +221,21 @@ QString			AaWorld::name					( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+bool			AaWorld::dOpenWorld				(
+		const QString & s_file, QString & s_err )
+{
+	World * w = World::fromStg( s_file, s_err );
+	if ( w != NULL )
+	{
+		s_err.append( QObject::tr( "World <%1> was opened.\n" ).arg( w->name()) );
+		DEC_REF(w,w);
+		return true;
+	}
+	return false;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
 bool			AaWorld::newWorld				(
 		const QString & s_cmd, const AaTkString & atks, QString & s_err )
 {
@@ -324,12 +339,7 @@ bool			AaWorld::openWorld				(
 		QString arg1 = atks.getToken( 1 );
 		if ( arg1 == QObject::tr( "help" ) )
 			break;
-		World * w = World::fromStg( arg1, s_err );
-		if ( w != NULL )
-		{
-			s_err.append( QObject::tr( "World <%1> was opened.\n" ).arg( w->name()) );
-			DEC_REF(w,w);
-		}		
+		dOpenWorld( arg1, s_err );
 		return false;
 	}
 	

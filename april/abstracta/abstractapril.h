@@ -97,7 +97,14 @@ private:
 public:
 
 	//! enter main loop; return program exit code
-	static int			runMainLoop			( void );
+	static int			runMainLoop			( const QStringList & sl_init_files );
+
+	//! execute the list of commands separated by && then exit
+	static int			executeCommands		( const QString & cmds );
+
+	//! execute the list of commands in the file then exit
+	static int			executeFile			( const QString & cmds );
+
 
 	//! add a command to the list; returns false if the string is in use
 	static bool			addCommand			( const QString & s_cmd, cmdCallBack kb )
@@ -117,7 +124,10 @@ public:
 	//! add an module; removes module's list of commands and removes the module
 	static bool			remModule			( AaModule * m );
 
-
+	//! the list of registered commands
+	static QStringList	commands			( void );
+	
+	static QStringList	modules				( void );
 private:
 
 	//! initialisation

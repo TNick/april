@@ -117,6 +117,9 @@ public:
 	bool				shouldContinue	( void ) const
 	{ return b_exit_ == false; }
 	
+	//! the list of registered commands
+	QStringList			commands		( void ) const;
+
 	/*  FUNCTIONS    ======================================================= */
 	//
 	//

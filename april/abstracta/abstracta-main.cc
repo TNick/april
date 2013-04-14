@@ -53,6 +53,8 @@ using namespace std;
 enum		ArgsTable		{
 	ARG_HELP = 0,	/**< present help */
 	ARG_VER,		/**< present version */
+	ARG_COMMANDS,	/**< commands to execute then exit */
+	ARG_CMDFILE,	/**< execute commands in file then exit */
 	ARG_INIT_FILES,	/**< initial files */
 	
 	ARG_END,		/**< end marker */
@@ -64,6 +66,8 @@ enum		ArgsTable		{
 #define a__help		((struct arg_lit *)argtable[ARG_HELP])
 #define a__ver		((struct arg_lit *)argtable[ARG_VER])
 #define a__init		((struct arg_file *)argtable[ARG_INIT_FILES])
+#define a__cmds		((struct arg_str *)argtable[ARG_INIT_FILES])
+#define a__cmdfile	((struct arg_str *)argtable[ARG_CMDFILE])
 #define a__end		((struct arg_end *)argtable[ARG_END])
 //!@}
 
@@ -75,6 +79,20 @@ enum		ArgsTable		{
 #define	LANG_FILE(loc)		(LANG_FILE_PREFIX + loc + LANG_FILE_SUFFIX)
 //!@}
 
+//! exit codes used by routins in this file
+enum		ExitCode		{
+	ExitOkBreak = -1,	/**< all went fine and should quit the program */
+	ExitOk = 0,			/**< all went fine and should continue */
+	ExitArgError,		/**< provided arguments were wrong */
+	ExitFail,			/**< the command(s) failed to execute properly */
+	
+	ExitMax				/**< bounds check */
+};
+
+
+#define EXIT_OK				-1
+#define EXIT_CONTINUE		-1
+
 using namespace	april;
 using namespace std;
 
@@ -85,6 +103,11 @@ using namespace std;
 //
 /*  DATA    ---------------------------------------------------------------- */
 
+//! table of arguments
+void *				argtable[ARG_MAX];
+
+//! files to load at start-up
+QStringList			sl_init_load;
 
 /*  DATA    ================================================================ */
 //
@@ -127,25 +150,36 @@ int			mainInit		( int argc, char *argv[] )
 	QCoreApplication::setOrganizationName( "TNick" );
 	QCoreApplication::setOrganizationDomain( "april.github.com/" );
 	QCoreApplication::setApplicationName( ABSTRACTA_NAME );
-	
+	QByteArray	ba_help = QObject::tr( "print this help and exit" ).toLatin1();
+	QByteArray	ba_ver = QObject::tr( "print version information and exit" ).toLatin1();
+	QByteArray	ba_src = QObject::tr( "the world(s) to load" ).toLatin1();
+	QByteArray	ba_cmd = QObject::tr( "execute these commands then exit" ).toLatin1();
+	QByteArray	ba_cmdfile = QObject::tr( "execute commands in the file then exit" ).toLatin1();
+
 	translatable();
 	
-	/* table of arguments */
-	void *				argtable[ARG_MAX];
 	int					nerrors;
 	
 	argtable[ARG_HELP] = arg_lit0(
 				NULL, "help",
-				QObject::tr( "print this help and exit" ).toLatin1()
+				ba_help.constBegin()
 				);
 	
 	argtable[ARG_VER] = arg_lit0(
 				NULL, "version",
-				QObject::tr( "print version information and exit" ).toLatin1()
+				ba_ver.constBegin()
 				);
 	
 	argtable[ARG_INIT_FILES] = arg_file0(
-				NULL, NULL,  NULL, "source"
+				NULL, NULL,  "worlds", ba_src.constBegin()
+				);
+	
+	argtable[ARG_COMMANDS] = arg_str0(
+				"c", "commands",  NULL, ba_cmd.constBegin()
+				);
+				
+	argtable[ARG_CMDFILE] = arg_str0(
+				"f", "file",  NULL, ba_cmdfile.constBegin()
 				);
 	
 	argtable[ARG_END] = arg_end( 20 );
@@ -156,7 +190,7 @@ int			mainInit		( int argc, char *argv[] )
 					QObject::tr( ABSTRACTA_NAME " initialisation error" ),
 					QObject::tr( "Insufficient memory!\n" ) 
 					);
-		return 1;
+		return ExitFail;
 	}
 	
 	/* parse arguments */
@@ -172,7 +206,7 @@ int			mainInit		( int argc, char *argv[] )
 				.toLatin1().constBegin()
 			 << endl;
 		arg_print_glossary( stdout, argtable, "  %-10s %s\n" );
-		return 0;
+		return ExitOkBreak;
 	}
 	if( a__ver->count > 0 )
 	{
@@ -181,7 +215,7 @@ int			mainInit		( int argc, char *argv[] )
 							.arg( APRIL_VERSION_MINOR )
 							.arg( APRIL_VERSION_REV )
 							.toLatin1().constBegin() );
-		return 0;
+		return ExitOkBreak;
 	}
 	if( nerrors > 0 )
 	{
@@ -191,37 +225,23 @@ int			mainInit		( int argc, char *argv[] )
 					"\nTry '" ABSTRACTA_NAME " --help' for more information.\n" )
 				.toLatin1().constBegin()
 			 << endl;
-		return 1;
+		return ExitArgError;
 	}
 	
 	if ( initAprilLibrary() == false )
 	{
 		AaOutput::showError( QObject::tr( ABSTRACTA_NAME " initialisation error" ), 
 							 QObject::tr( "Could not initialise april library!\n" ) );
-		return -1;
+		return ExitFail;
 	}
 	
-	/* do your thing */
-	
-	/* files that should be loaded at startup
-	QStringList	sl;
+	/* files that should be loaded at startup */
 	for ( int i = 0; i < a__init->count; i++ )
 	{
-		if ( mw->openFile( a__init->filename[i] ) == false )
-		{
-			sl.append(	QObject::tr( "The file %1\ncould not be opened." )
-						.arg( argv[i] ) );
-		}
+		sl_init_load.append( a__init->filename[i] );
 	}
-	if ( sl.count() > 0 )
-	{
-		QMessageBox::warning(
-					mw, QObject::tr( "Error opening file(s)" ),
-					sl.join( "\n" ) + "\n",
-					QMessageBox::Ok );
-	}
-	*/
-	return 0;
+
+	return ExitOk;
 }
 /* ========================================================================= */
 
@@ -253,10 +273,24 @@ int			main			( int argc, char *argv[] )
 	QCoreApplication apl( argc, argv );
 	
 	i_ret = mainInit( argc, argv );
-	if ( i_ret == 0 )
+	if ( i_ret == ExitOk )
 	{
-		/* i_ret = apl.exec(); */
-		i_ret = AbstractApril::runMainLoop();
+		struct arg_str * a = a__cmds;
+		struct arg_str * b = a__cmdfile;
+		struct arg_file * c = a__init;
+		
+		if ( a__cmds->count > 0 )
+		{
+			i_ret = AbstractApril::executeCommands( a__cmds->sval[0] );
+		}
+		else if ( a__cmdfile->count > 0 )
+		{
+			i_ret = AbstractApril::executeFile( a__cmdfile->sval[0] );
+		}
+		else
+		{
+			i_ret = AbstractApril::runMainLoop( sl_init_load );
+		}
 		mainEnd();
 	}
 	
