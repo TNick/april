@@ -142,7 +142,7 @@ void				AaOutput::showError				(
 
 /* ------------------------------------------------------------------------- */
 void				AaOutput::showTable				(
-		const QList<QStringList> & table, bool has_header )
+		const QList<QStringList> & table, bool has_header, bool row_index )
 {
 	int i_row = 0;
 	int i_row_max = table.count();
@@ -176,7 +176,7 @@ void				AaOutput::showTable				(
 	}
 	
 	/* compute total lenght */
-	int total_lenght = 4; /* start with row number */
+	int total_lenght = row_index ? 4 : 1; /* start with row number */
 	for ( int i = 0; i < i_col_max; i++ )
 	{
 		total_lenght += cols.at( i ) + 1;
@@ -186,7 +186,10 @@ void				AaOutput::showTable				(
 	{
 		const QStringList & sl = table.at( 0 );
 		int col_cnt = sl.count();
-		s_res.append( "    " );/* start with row number */
+		if ( row_index )
+			s_res.append( "    " );/* start with row number */
+		else
+			s_res.append( " " );
 		for ( int j = 0; j < col_cnt; j++ )
 		{
 			const QString & s = sl.at( j );
@@ -209,10 +212,13 @@ void				AaOutput::showTable				(
 		int col_cnt = sl.count();
 		
 		/* start with row number */
-		s_row = QString::number( i_printed_row );
-		s_res.append( QString( 3 - s_row.length() , QChar(' ') ) );
-		s_res.append( s_row );
-		s_res.append( " " );
+		if ( row_index )
+		{
+			s_row = QString::number( i_printed_row );
+			s_res.append( QString( 3 - s_row.length() , QChar(' ') ) );
+			s_res.append( s_row );
+		}
+		s_res.append( QChar(' ') );
 		
 		for ( int j = 0; j < col_cnt; j++ )
 		{

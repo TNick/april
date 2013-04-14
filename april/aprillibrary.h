@@ -224,6 +224,15 @@ public:
 	//! get a world at aspecific index
 	static World *			worldAt			( int i );
 	
+	//! seta a world as the current world
+	static bool				setCrtWorld		(  World * new_crt );
+	
+	//! tell the current world
+	static World *			crtWorld		( void )
+	{ return uniq_->def_world_; }
+	
+	
+	
 protected:
 
 

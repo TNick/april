@@ -36,6 +36,7 @@
 #include	<april/logic/worldfactory.h>
 #include	<april/logic/actor.h>
 #include	<april/logic/actorfactory.h>
+#include	<april/logic/genericactorfactory.h>
 #include	<april/logic/brain.h>
 #include	<april/logic/brainfactory.h>
 #include	<april/logic/actuator.h>
@@ -67,6 +68,7 @@ AprilLibrary *	AprilLibrary::uniq_ = NULL;
 
 static const char *	name_deffact_world = "World.Factory.Default";
 static const char *	name_deffact_actor = "Actor.Factory.Default";
+static const char *	name_genfact_actor = "Actor.Factory.Generic";
 static const char *	name_deffact_sensor = "Sensor.Factory.Default";
 static const char *	name_deffact_actuator = "Actuator.Factory.Default";
 static const char *	name_deffact_brain = "Brain.Factory.Default";
@@ -128,6 +130,11 @@ AprilLibrary::~AprilLibrary	( void )
 		itr_w_n = nextWorld_(itr_w);
 		DEC_REF(itr_w,this);
 		itr_w = itr_w_n;
+	}
+	
+	if ( def_world_ != NULL )
+	{
+		DEC_REF(def_world_,this);
 	}
 	
 	Q_ASSERT( uniq_ == this );
@@ -214,12 +221,12 @@ void			AprilLibrary::addWorld					( World * world )
 void			AprilLibrary::internalAddWorld			( World * world )
 {
 	APRDBG_FUNC(APRDBG_LIBRARY);
-	if ( def_world_ == NULL )
-	{
-		def_world_ = world;
-	}
 	uniq_->worlds_.prepend( world );
 	INC_REF( world, this );
+	if ( def_world_ == NULL )
+	{
+		setCrtWorld( world );
+	}
 	world->inserted();
 }
 /* ========================================================================= */
@@ -311,6 +318,23 @@ World *			AprilLibrary::worldAt					( int i )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+bool			AprilLibrary::setCrtWorld				( World * new_crt )
+{
+	Q_ASSERT( ( new_crt == NULL ) || uniq_->worlds_.contains( new_crt ) );
+	if ( uniq_->def_world_ != NULL )
+	{
+		DEC_REF(uniq_->def_world_,uniq_);
+	}
+	uniq_->def_world_ = new_crt;
+	if ( uniq_->def_world_ != NULL )
+	{
+		INC_REF(uniq_->def_world_,uniq_);
+	}
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
 void			AprilLibrary::internalRemWorld			( World * world )
 {
 	if ( world->isRunning() )
@@ -321,14 +345,17 @@ void			AprilLibrary::internalRemWorld			( World * world )
 	if ( def_world_ == world )
 	{
 		if ( worlds_.count() == 1 )
-			def_world_ = NULL;
+		{
+			setCrtWorld( NULL );
+		}
 		else
 		{
-			def_world_ = prevWorld_(world);
-			if ( def_world_ == NULL )
+			World * dw = prevWorld_(world);
+			if ( dw == NULL )
 			{
-				def_world_ = nextWorld_(world);
+				dw = nextWorld_(world);
 			}
+			setCrtWorld( dw );
 		}
 	}
 	worlds_.remove( world );
@@ -619,38 +646,72 @@ WorldFactory *		AprilLibrary::findWorldFactory		( const QString & s )
 static Factory *		factoryCreatorActor			(
 		World * w, const QString & s_name )
 {
-	Q_UNUSED( s_name );
-	return new ActorFactory(w);
+	ActorFactory * f = w->findActorFactory( s_name );
+	if ( f == NULL )
+	{
+		f = new ActorFactory(w);
+	}
+	return f;
+}
+static Factory *		factoryCreatorGenericActor	(
+		World * w, const QString & s_name )
+{
+	ActorFactory * f = w->findActorFactory( s_name );
+	if ( f == NULL )
+	{
+		f = new GenericActorFactory(w);
+	}
+	return f;
 }
 static Factory *		factoryCreatorEventSource	(
 		World * w, const QString & s_name )
 {
-	Q_UNUSED( s_name );
-	return new EventFactory(w);
+	EventFactory * f = w->findEventFactory( s_name );
+	if ( f == NULL )
+	{
+		f = new EventFactory(w);
+	}
+	return f;
 }
 static Factory *		factoryCreatorSensor		(
 		World * w, const QString & s_name )
 {
-	Q_UNUSED( s_name );
-	return new SensorFactory(w);
+	SensorFactory * f = w->findSensorFactory( s_name );
+	if ( f == NULL )
+	{
+		f = new SensorFactory(w);
+	}
+	return f;
 }
 static Factory *		factoryCreatorActuator		(
 		World * w, const QString & s_name )
 {
-	Q_UNUSED( s_name );
-	return new ActuatorFactory(w);
+	ActuatorFactory * f = w->findActuatorFactory( s_name );
+	if ( f == NULL )
+	{
+		f = new ActuatorFactory(w);
+	}
+	return f;
 }
 static Factory *		factoryCreatorReflex		(
 		World * w, const QString & s_name )
 {
-	Q_UNUSED( s_name );
-	return new ReflexFactory(w);
+	ReflexFactory * f = w->findReflexFactory( s_name );
+	if ( f == NULL )
+	{
+		f = new ReflexFactory(w);
+	}
+	return f;
 }
 static Factory *		factoryCreatorBrain			(
 		World * w, const QString & s_name )
 {
-	Q_UNUSED( s_name );
-	return new BrainFactory(w);
+	BrainFactory * f = w->findBrainFactory( s_name );
+	if ( f == NULL )
+	{
+		f = new BrainFactory(w);
+	}
+	return f;
 }
 void		AprilLibrary::registerFactoryCreators		( void )
 {
@@ -660,6 +721,9 @@ void		AprilLibrary::registerFactoryCreators		( void )
 	AprilLibrary::registerFactory( 
 				name_deffact_actor, 
 				factoryCreatorActor );
+	AprilLibrary::registerFactory( 
+				name_genfact_actor, 
+				factoryCreatorGenericActor );
 	AprilLibrary::registerFactory( 
 				name_deffact_event, 
 				factoryCreatorEventSource );

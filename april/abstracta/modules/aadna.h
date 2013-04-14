@@ -1,13 +1,13 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			aaoutput.h
+  \file			aadna.h
   \date			Apr 2013
   \author		TNick
-  
-  \brief		Contains the definition for AaOutput class
-  
-  
+
+  \brief		Contains the definition for AaDNA class
+
+
 *//*
 
 
@@ -17,8 +17,8 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __AAOUTPUT_INC__
-#define __AAOUTPUT_INC__
+#ifndef __AADNA_INC__
+#define __AADNA_INC__
 //
 //
 //
@@ -26,6 +26,7 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include    <april/april.h>
+#include    <april/abstracta/aamodule.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -44,101 +45,79 @@ namespace   april    {
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief	Manages the output in abstracta application
+*	@brief	Module that provides commands related to DNA
 */
-class AaOutput		: public MemTrack		{
-	BBM_TRACK( AaOutput );
-	
+class AaDNA		: public AaModule		{
+	BBM_TRACK( AaDNA );
+
 	//
 	//
 	//
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
-	
+
 	/*  DEFINITIONS    ===================================================== */
 	//
 	//
 	//
 	//
 	/*  DATA    ------------------------------------------------------------ */
-	
-private:
-	
-	//! the prompt
-	std::string				prompt_string;
 
-	
-	
-	//! the one and only instance
-	static AaOutput *		uniq_;
-	
+private:
+
+
+
 	/*  DATA    ============================================================ */
 	//
 	//
 	//
 	//
 	/*  FUNCTIONS    ------------------------------------------------------- */
-	
+
 public:
+
+	//! constructor
+	AaDNA			( void );
+
+protected:
+
+	//! destructor;
+	virtual				~AaDNA			( void );
+
+	//! insert all commands (request from AbstractApril)
+	virtual void		insertCommands	( void );
+
+	//! remove all commands (request from AbstractApril)
+	virtual void		removeCommands	( void );
 	
-	//! initialise the output system
-	static bool				init				( void );
+	//! tell your name
+	virtual QString		name			( void );
 	
-	//! terminate the output system
-	static void				end					( void );
-	
-	//! present an informative message
-	static void				showInfo			( const QString & s_msg );
-	
-	//! present an warning message
-	static void				showWarning			( const QString & s_msg );
-	
-	//! present an error message
-	static void				showError			( const QString & s_msg );
-	
-	//! present an informative message
-	static void				showInfo			( 
-			const QString &			s_title,
-			const QString &			s_msg
+private:
+
+	//! create a new kind in current world
+	static bool			newDNA			(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err
 			);
-	
-	//! present an warning message
-	static void				showWarning			( 
-			const QString &			s_title,
-			const QString &			s_msg
+			
+	//! list the kinds of DNA in this world
+	static bool			listDNA			(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err
 			);
-	
-	//! present an error message
-	static void				showError			( 
-			const QString &			s_title,
-			const QString &			s_msg
-			);
-	
-	
-	//! present a table
-	static void				showTable			(
-			const QList<QStringList> &	table,
-			bool						has_header,
-			bool						row_index = true
-			);
-	
-	
-	//! change the prompt
-	static void				setPrompt			(
-			const QString &			s_new_prompt	
-			);
-	
-	//! show the prompt
-	static void				showPrompt			( void );
-	
-	
+
+
+
 	/*  FUNCTIONS    ======================================================= */
 	//
 	//
 	//
 	//
-	
-};	/*	class AaOutput	*/
+
+};	/*	class AaDNA	*/
 
 /*  CLASS    =============================================================== */
 //
@@ -148,6 +127,6 @@ public:
 
 }   //  namespace   april
 
-#endif // __AAOUTPUT_INC__
+#endif // __AADNA_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */

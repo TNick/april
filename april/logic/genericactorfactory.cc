@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			aamodule.cc
+  \file			genericactorfactory.cc
   \date			Apr 2013
   \author		TNick
   
-  \brief		Contains the implementation of AaModule class
+  \brief		Contains the implementation of GenericActorFactory class
   
   
 *//*
@@ -23,9 +23,10 @@
 //
 /*  INCLUDES    ------------------------------------------------------------ */
 
-#include	"aamodule.h"
+#include	"genericactorfactory.h"
+#include	<QSettings>
+#include	<april/logic/actor.h>
 #include	<april/logic/world.h>
-#include	<QObject>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -51,8 +52,8 @@ using namespace april;
 /*  CLASS    --------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------------- */
-AaModule::AaModule	( void )
-	: libbbb::RefCnt(), MemTrack()
+GenericActorFactory::GenericActorFactory	( World * w )
+	: ActorFactory( w )
 {
 	APRDBG_CDTOR;
 	/* stub */
@@ -60,82 +61,110 @@ AaModule::AaModule	( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-AaModule::~AaModule	( void )
+GenericActorFactory::~GenericActorFactory	( void )
 {
 	APRDBG_CDTOR;
 	/* stub */
 }
 /* ========================================================================= */
 
-void		AaModule::errorNumberOfArguments		( QString & s_err )
+/* ------------------------------------------------------------------------- */
+Actor *			GenericActorFactory::create		( ID id )
 {
-	s_err.append( 
-				QObject::tr( 
-					"Error! Invalid number of arguments.\n\n" 
-					) );
+	IdDnaMapIterC itr = list_.find( id );
+	if ( itr == list_.constEnd() )
+	{
+		return NULL;
+		}
+	
+	Actor * a = new Actor( world() );
+	setDNA( a, itr.value() );
+	return a;
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void		AaModule::errorOneArgumentExpected		( QString & s_err )
+bool			GenericActorFactory::save		( QSettings & stg ) const
 {
-	s_err.append(
-				QObject::tr( 
-					"Error! One argument expected.\n\n"
-					) );
+	bool b = true;
+	b = b & ActorFactory::save( stg );
+	stg.beginGroup( "GenericActorFactory" );
+	stg.beginWriteArray( "list_", list_.count() );
+	
+	int i = 0;
+	IdDnaMapIterC itr = list_.constBegin();
+	IdDnaMapIterC itr_end = list_.constEnd();
+	while ( itr != itr_end )
+	{
+		stg.setArrayIndex( i );
+		stg.setValue( "ID", itr.key() );
+		itr.value().save( stg );
+		itr++; i++;
+	}
+	
+	stg.endArray();
+	stg.endGroup();
+	return b;
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void		AaModule::errorNoAssocFile				( World * w, QString & s_err )
+bool			GenericActorFactory::load		( QSettings & stg )
 {
-	s_err.append(
-				QObject::tr( 
-					"Error! World <%1> has no associated file.\n\n" 
-					).arg( w->name() ) );
+	bool b = true;
+	
+	b = ActorFactory::load( stg );
+	if ( !b ) return false;
+	
+	stg.beginGroup( "GenericActorFactory" );
+	for(;;) {
+		
+		int	i_max = stg.beginReadArray( "list_" );
+		ID	id;
+		DNA	dna;
+		for( int i = 0; i < i_max; i++ )
+		{
+			stg.setArrayIndex( i );
+			id = stg.value( "ID", InvalidId ).toULongLong( &b );
+			b = b & dna.load( stg );
+			if ( !b ) break;
+			list_.insert( id, dna );
+		}
+		stg.endArray();
+		
+		break;
+	}
+	stg.endGroup();
+	
+	return b;
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void		AaModule::errorEnergyInteger			( QString & s_err )
+GenericActorFactory *		GenericActorFactory::findMyself		( World * w )
 {
-	s_err.append(
-				QObject::tr( 
-					"Error! Energy must be a positive integer.\n\n" 
-					) );
+	GenericActorFactory * gf;
+	ActorFactory * f = w->findActorFactory( staticName() );
+	if ( ( f == NULL ) || ( f->factoryType() != FTyGenericActor ) )
+	{
+		gf = new GenericActorFactory( w );
+	}
+	else
+	{
+		gf = static_cast<GenericActorFactory*>( f );
+		INC_REF(gf,gf);
+	}
+	return gf;
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void		AaModule::errorUnknownOprion			( 
-		QString & s_err, const QString & s_tk )
+void						GenericActorFactory::addNewKind		(
+		const DNA::InitData & data ) 
 {
-	s_err.append(
-				QObject::tr( 
-					"Error! Unknown option: %1.\n\n"
-					).arg( s_tk ) );
-}
-/* ========================================================================= */
-
-/* ------------------------------------------------------------------------- */
-void		AaModule::errorIntegerExpected		( 
-		QString & s_err, const QString & s_tk )
-{
-	s_err.append(
-				QObject::tr( 
-					"Error! An integer was expected instead of %1.\n\n"
-					).arg( s_tk) );
-}
-/* ========================================================================= */
-
-/* ------------------------------------------------------------------------- */
-void		AaModule::errorNoCurrentWorld		( 
-		QString & s_err )
-{
-	s_err.append(
-				QObject::tr( 
-					"Error! No current world.\n\n"
-					) );
+	DNA	new_dna;
+	initDNA( new_dna, data );
+	list_.insert( data.kind_, new_dna );
 }
 /* ========================================================================= */
 

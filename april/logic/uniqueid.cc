@@ -61,7 +61,7 @@ using namespace april;
 UniqueId::UniqueId( const QString & s_name )
 	: my_name_( s_name ),
 	  map_(),
-	  first_free_(InvalidId)
+	  first_free_(1)
 {
 	/* stub */
 }
@@ -204,6 +204,22 @@ bool			UniqueId::operator ==	( const UniqueId & other ) const
 		}
 	}
 	return false;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+QString			UniqueId::createName	( const QString & s_pattern )
+{
+	QString s_name;
+	for ( int i = 1; i < INT_MAX; i++ )
+	{
+		s_name = s_pattern.arg ( i );
+		if ( value( s_name ) == InvalidId )
+		{
+			return s_name;
+		}
+	}
+	return QString();
 }
 /* ========================================================================= */
 

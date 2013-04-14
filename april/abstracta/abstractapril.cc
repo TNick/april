@@ -31,6 +31,7 @@
 #include	"modules/aaapril.h"
 #include	"modules/aaworld.h"
 #include	"modules/aaplugins.h"
+#include	"modules/aadna.h"
 #include	<QFile>
 
 /*  INCLUDES    ============================================================ */
@@ -98,6 +99,10 @@ void			AbstractApril::init					( void )
 	AaPlugIns * module_p = new AaPlugIns();
 	addModule( module_p );
 	REMOVE_CONSTRUCTOR_REF(module_p);
+
+	AaDNA * module_dna = new AaDNA();
+	addModule( module_dna );
+	REMOVE_CONSTRUCTOR_REF(module_dna);
 
 }
 /* ========================================================================= */

@@ -184,6 +184,7 @@ void			AaWorld::insertCommands			( void )
 	addOneCmd(start);
 	addOneCmd(stop);
 	addOneCmd(adv);
+	addOneCmd(crt);
 	
 #undef addOneCmd
 //! @endcond
@@ -207,6 +208,7 @@ void			AaWorld::removeCommands			( void )
 	remOneCmd(start);
 	remOneCmd(stop);
 	remOneCmd(adv);
+	remOneCmd(crt);
 	
 #undef remOneCmd
 //! @endcond
@@ -710,6 +712,73 @@ bool			AaWorld::advWorld				(
 					  "    w.adv <name> [steps]   "
 					  "advances the world with that name 'steps' time units\n"
 					  "    w.adv help             "
+					  "prints usage instructions\n"
+					  "\n"
+					  ) );
+	return false;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			AaWorld::crtWorld				(
+		const QString & s_cmd, const AaTkString & atks, QString & s_err )
+{
+	
+	Q_ASSERT( atks.tk_.count() >= 1 );
+	Q_ASSERT( s_cmd == "w.crt" );
+	int arg_cnt = atks.tk_.count() - 1;
+	
+	for ( ;; )
+	{
+		if ( arg_cnt == 0 )
+		{
+			World * w = AprilLibrary::crtWorld();
+			if ( w == NULL )
+			{
+				s_err.append( 
+							QObject::tr( 
+								"(no current world)\n" 
+								) );
+			}
+			else
+			{
+				s_err.append( 
+							QObject::tr( 
+								"<%1>\n" 
+								).arg( w->name() ) );
+			}
+			return false;
+		}
+		else if ( arg_cnt != 1 )
+		{
+			errorOneArgumentExpected ( s_err );
+			break;
+		}
+		QString arg1 = atks.getToken( 1 );
+		if ( arg1 == QObject::tr( "help" ) )
+			break;
+	
+		World * w = getWorldFromArg( arg1, atks.tk_.at( 1 ), s_err );
+		if ( w == NULL )
+			break;
+		AprilLibrary::setCrtWorld( w );
+		s_err.append( 
+					QObject::tr( 
+						"World <%1> was made current.\n" 
+						).arg( w->name() ) );
+		return false;
+	}
+	
+	/* print the usage */
+	s_err.append( QObject::tr( 
+					  "Usage:\n"
+					  "    w.crt                  "
+					  "prints the name of current world\n"
+					  "    w.crt <index>          "
+					  "changes current world to the one indicated by index\n"
+					  "    w.crt <name>           "
+					  "changes current world to the one indicated by name\n"
+					  "    w.crt help             "
 					  "prints usage instructions\n"
 					  "\n"
 					  ) );

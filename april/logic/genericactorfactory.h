@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			actorfactory.h
+  \file			genericactorfactory.h
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the definition for ActorFactory class
+  \brief		Contains the definition for GenericActorFactory class
 
 
 *//*
@@ -17,8 +17,8 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __ACTORFACTORY_INC__
-#define __ACTORFACTORY_INC__
+#ifndef __GENERICACTORFACTORY_INC__
+#define __GENERICACTORFACTORY_INC__
 //
 //
 //
@@ -26,8 +26,8 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include    <april/april.h>
-#include    <april/logic/factory.h>
-#include    <april/logic/dna.h>
+#include    <april/logic/actorfactory.h>
+#include    <april/logic/uniqueid.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -38,9 +38,6 @@
 
 namespace   april    {
 
-class		DNA;
-class		Actor;
-
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -49,18 +46,26 @@ class		Actor;
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief	Factory class for agents
+*	@brief	A generic actor factory
+*
+*	The factory simply worls with IDs and DNA. For each DNA registered an
+*	ID is used.
 */
-class
-	APRILSHARED_EXPORT
-	ActorFactory		: public Factory		{
-	BBM_TRACK( ActorFactory );
+class GenericActorFactory		: public ActorFactory		{
+	BBM_TRACK( GenericActorFactory );
 
 	//
 	//
 	//
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
+
+public:
+
+	//! a list of ID and DNA values
+	typedef	QMap<ID,DNA>					IdDnaMap;
+	typedef	QMap<ID,DNA>::Iterator			IdDnaMapIter;
+	typedef	QMap<ID,DNA>::ConstIterator		IdDnaMapIterC;
 
 	/*  DEFINITIONS    ===================================================== */
 	//
@@ -71,12 +76,8 @@ class
 
 private:
 
-	//! storage space for default DNA
-	/**
-	 * If the class provides more than one actor than additional space
-	 * will be needed.
-	 */
-	DNA			default_dna_;
+	//! the list of IDs and DNA
+	IdDnaMap				list_;
 
 	/*  DATA    ============================================================ */
 	//
@@ -87,38 +88,26 @@ private:
 
 public:
 
-
-	/**
-	*	@brief	constructor;
-	*/
-	ActorFactory			( World * w );
+	//! constructor
+	GenericActorFactory		( World * w );
 
 protected:
 
-	/**
-	*	@brief	destructor;
-	*/
-	virtual					~ActorFactory		( void );
-
-public:
+	//! destructor;
+	virtual					~GenericActorFactory( void );
 	
 	//! the generic type of the factory
 	virtual FactoryType		factoryType			( void )
-	{ return FTyActor; }
+	{ return FTyGenericActor; }
 	
 	//! the name used to save this factory
 	virtual QString			factoryName			( void )
-	{ return "Actor.Factory.Default"; }
-
-	//! copies default DNA from internal storage to destination
-	virtual void			copyDefaultDNA		( DNA & destination )
-	{ destination = default_dna_; }
+	{ return staticName(); }
 
 	//! create a new actor
 	/**
-	 * By default this method creates a simple Actor based on the
-	 * default_dna_. The method fails if the id in DNA is not the 
-	 * same as the one that was required.
+	 * Looks up the ID in the internal list. If found, the DNA for
+	 * that ID is used to construct a new Actor.
 	 *
 	 * The caller recieves a reference that should eventually discard.
 	 *
@@ -132,44 +121,37 @@ public:
 	
 	//! load from a QSettings object
 	virtual bool			load				( QSettings & s );
-	
-protected:
 
-	//! allow access to default dna storage
-	DNA &					defaultDNA			( void )
-	{ return default_dna_; }
+public:
 
-	//! add this class to the world
-	bool					addMyself			( ID id );
-	
-	//! set the DNA in the actor
-	void					setDNA				( Actor * a, const DNA & dna );
-	
-	//! set default DNA in the actor
-	void					setDNA				( Actor * a )
-	{ setDNA( a, default_dna_ ); }
-	
-	//! initialise a DNA instance
+	//! find the instance (should only be one) of this class in a world
 	/**
-	 * @param dna target structure
-	 * @param init the id to set in target structure
+	 * The method returns a reference to the caller that should
+	 * eventually release it.
+	 *
+	 * @param w the target world
+	 * @return always non-null
 	 */
-	void					initDNA				(
-			DNA &					dna,
-			const DNA::InitData &	init
-			);
-	
-	//! initialise default DNA instance
-	void					initDNA				( const DNA::InitData & init )
-	{ initDNA( default_dna_, init ); }
-	
+	static GenericActorFactory *	findMyself	( World * w );
+
+	//! the name of this factory
+	static QString			staticName			( void )
+	{ return "Actor.Factory.Generic"; }
+
+	//! the list of IDs and DNA
+	const IdDnaMap &		dnaList				( void ) const
+	{ return list_; }
+
+	//! creates a new kind
+	void					addNewKind			( const DNA::InitData & data );
+
 	/*  FUNCTIONS    ======================================================= */
 	//
 	//
 	//
 	//
 
-};	/*	class ActorFactory	*/
+};	/*	class GenericActorFactory	*/
 
 /*  CLASS    =============================================================== */
 //
@@ -179,6 +161,6 @@ protected:
 
 }   //  namespace   april
 
-#endif // __ACTORFACTORY_INC__
+#endif // __GENERICACTORFACTORY_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */

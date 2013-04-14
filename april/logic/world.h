@@ -406,6 +406,10 @@ public:
 	bool			sameUId			( World * other ) const
 	{ return uid_ == other->uid_; }
 
+	//! generate an unique name based on a pattern
+	QString			createIdName	( const QString & s_pattern )
+	{ return uid_.createName( s_pattern ); }
+
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
 
@@ -483,7 +487,7 @@ protected:
 
 
 	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
-	/** @name Factories added and removed here
+	/** @name Factories added, removed and searched here
 	 */
 	///@{
 	
@@ -525,6 +529,26 @@ public:
 
 	//! add one to the list of event factories
 	bool			remReflexFactory	( ReflexFactory * factory, ID id );
+	
+	
+
+	//! add one to the list of actor factories
+	ActorFactory*	findActorFactory	( const QString & s_name );
+
+	//! add one to the list of actuator factories
+	ActuatorFactory*findActuatorFactory	( const QString & s_name );
+
+	//! add one to the list of sensor factories
+	SensorFactory*	findSensorFactory	( const QString & s_name );
+
+	//! add one to the list of brain factories
+	BrainFactory*	findBrainFactory	( const QString & s_name );
+
+	//! add one to the list of event factories
+	EventFactory*	findEventFactory	( const QString & s_name );
+
+	//! add one to the list of event factories
+	ReflexFactory*	findReflexFactory	( const QString & s_name );
 	
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */

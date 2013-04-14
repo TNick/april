@@ -145,6 +145,10 @@ public:
 	
 	//! tell if two classes are equal
 	bool			operator ==		( const UniqueId & other ) const;
+	
+	//! generate an unique name based on a pattern
+	QString			createName		( const QString & s_pattern );
+
 
 	/*  FUNCTIONS    ======================================================= */
 	//

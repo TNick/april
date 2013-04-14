@@ -162,6 +162,13 @@ private:
 			QString &				s_err
 			);
 			
+	//! change current world
+	static bool			crtWorld		(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err
+			);
+			
 			
 			
 	

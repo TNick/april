@@ -275,9 +275,6 @@ int			main			( int argc, char *argv[] )
 	i_ret = mainInit( argc, argv );
 	if ( i_ret == ExitOk )
 	{
-		struct arg_str * a = a__cmds;
-		struct arg_str * b = a__cmdfile;
-		struct arg_file * c = a__init;
 		
 		if ( a__cmds->count > 0 )
 		{

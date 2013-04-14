@@ -44,6 +44,7 @@ class	ActorComp;
 enum	FactoryType		{
 	FTyGeneric = 0,
 	FTyActor,
+	FTyGenericActor,
 	FTyActuator,
 	FTyBrain,
 	FTyEvent,

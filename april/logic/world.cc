@@ -983,6 +983,24 @@ bool		World::saveAsStg			(
 }
 /* ========================================================================= */
 
+
+/// @cond internal
+#define findFactory(ty,var)	\
+ty##Factory*	World::find##ty##Factory	( const QString & s_name ) {             \
+	QMap<ID,ty##Factory*>::ConstIterator	itr = var.constBegin();                  \
+	QMap<ID,ty##Factory*>::ConstIterator	itr_e = var.constEnd();                  \
+	while ( itr != itr_e )                                                           \
+		{ if ( itr.value()->factoryName() == s_name ) return itr.value(); itr++; }           \
+	return NULL; }
+
+findFactory(Actor,actor_factories_)
+findFactory(Actuator,actuator_factories_)
+findFactory(Brain,brain_factories_)
+findFactory(Sensor,sensor_factories_)
+findFactory(Event,event_factories_)
+findFactory(Reflex,reflex_factories_)
+/// @endcond
+
 /*  CLASS    =============================================================== */
 //
 //

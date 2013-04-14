@@ -108,6 +108,7 @@ protected:
 	static void errorEnergyInteger(QString &s_err);
 	static void errorUnknownOprion(QString &s_err, const QString &s_tk);
 	static void errorIntegerExpected(QString &s_err, const QString &s_tk);
+	static void errorNoCurrentWorld(QString &s_err);
 	//!@}
 	
 	/*  FUNCTIONS    ======================================================= */
