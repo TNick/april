@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			aamodule.h
+  \file			aaplugins.h
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the definition for AaModule class
+  \brief		Contains the definition for AaPlugIns class
 
 
 *//*
@@ -17,8 +17,8 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __AAMODULE_INC__
-#define __AAMODULE_INC__
+#ifndef __AAPLUGINS_INC__
+#define __AAPLUGINS_INC__
 //
 //
 //
@@ -26,7 +26,7 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include    <april/april.h>
-#include	<libbbb/1/refcnt.h>
+#include    <april/abstracta/aamodule.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -37,9 +37,6 @@
 
 namespace   april    {
 
-class	World;
-class	AaTkString;
-
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -48,18 +45,16 @@ class	AaTkString;
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief	Base class for all modules
+*	@brief	Module that provides commands related to plug-ins
 */
-class AaModule		: public libbbb::RefCnt, public MemTrack		{
-	BBM_TRACK( AaModule );
+class AaPlugIns		: public AaModule		{
+	BBM_TRACK( AaPlugIns );
 
 	//
 	//
 	//
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
-
-friend class AbstractApril;
 
 	/*  DEFINITIONS    ===================================================== */
 	//
@@ -82,41 +77,53 @@ private:
 public:
 
 	//! constructor
-	AaModule			( void );
-	
+	AaPlugIns			( void );
+
 protected:
 
 	//! destructor;
-	virtual				~AaModule		( void );
-
-protected:
+	virtual				~AaPlugIns		( void );
 
 	//! insert all commands (request from AbstractApril)
-	virtual void		insertCommands	( void ) = 0;
+	virtual void		insertCommands	( void );
 
 	//! remove all commands (request from AbstractApril)
-	virtual void		removeCommands	( void ) = 0;
-
-	//! tell your name
-	virtual QString		name			( void ) = 0;
-
-	//!@{
-	//! common types of errors
-	static void errorNumberOfArguments(QString &s_err);
-	static void errorOneArgumentExpected(QString &s_err);
-	static void errorNoAssocFile(World *w, QString &s_err);
-	static void errorEnergyInteger(QString &s_err);
-	static void errorUnknownOprion(QString &s_err, const QString &s_tk);
-	static void errorIntegerExpected(QString &s_err, const QString &s_tk);
-	//!@}
+	virtual void		removeCommands	( void );
 	
+	//! tell your name
+	virtual QString		name			( void );
+	
+private:
+
+	//! load a plug-in
+	static bool			loadPlugIn		(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err
+			);
+
+	//! unload a plug-in
+	static bool			unloadPlugIn		(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err
+			);
+
+	//! list loaded plug-ins
+	static bool			listPlugIn		(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err
+			);
+
+
 	/*  FUNCTIONS    ======================================================= */
 	//
 	//
 	//
 	//
 
-};	/*	class AaModule	*/
+};	/*	class AaPlugIns	*/
 
 /*  CLASS    =============================================================== */
 //
@@ -126,6 +133,6 @@ protected:
 
 }   //  namespace   april
 
-#endif // __AAMODULE_INC__
+#endif // __AAPLUGINS_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */

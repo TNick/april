@@ -27,6 +27,7 @@
 #include	<iostream>
 #include	"aamodule.h"
 #include	"modules/aaworld.h"
+#include	"modules/aaplugins.h"
 
 /*  INCLUDES    ============================================================ */
 //
@@ -84,6 +85,10 @@ void			AbstractApril::init					( void )
 	AaWorld * module_w = new AaWorld();
 	addModule( module_w );
 	REMOVE_CONSTRUCTOR_REF(module_w);
+
+	AaPlugIns * module_p = new AaPlugIns();
+	addModule( module_p );
+	REMOVE_CONSTRUCTOR_REF(module_p);
 
 }
 /* ========================================================================= */

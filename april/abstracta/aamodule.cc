@@ -24,7 +24,8 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include	"aamodule.h"
-
+#include	<april/logic/world.h>
+#include	<QObject>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -63,6 +64,67 @@ AaModule::~AaModule	( void )
 {
 	APRDBG_CDTOR;
 	/* stub */
+}
+/* ========================================================================= */
+
+void		AaModule::errorNumberOfArguments		( QString & s_err )
+{
+	s_err.append( 
+				QObject::tr( 
+					"Error! Invalid number of arguments.\n\n" 
+					) );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void		AaModule::errorOneArgumentExpected		( QString & s_err )
+{
+	s_err.append(
+				QObject::tr( 
+					"Error! One argument expected.\n\n"
+					) );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void		AaModule::errorNoAssocFile				( World * w, QString & s_err )
+{
+	s_err.append(
+				QObject::tr( 
+					"Error! World <%1> has no associated file.\n\n" 
+					).arg( w->name() ) );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void		AaModule::errorEnergyInteger			( QString & s_err )
+{
+	s_err.append(
+				QObject::tr( 
+					"Error! Energy must be a positive integer.\n\n" 
+					) );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void		AaModule::errorUnknownOprion			( 
+QString & s_err, const QString & s_tk )
+{
+	s_err.append(
+				QObject::tr( 
+					"Error! Unknown option: %1.\n\n"
+					).arg( s_tk ) );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void		AaModule::errorIntegerExpected		( 
+QString & s_err, const QString & s_tk )
+{
+	s_err.append(
+				QObject::tr( 
+					"Error! An integer was expected instead of %1.\n\n"
+					).arg( s_tk) );
 }
 /* ========================================================================= */
 

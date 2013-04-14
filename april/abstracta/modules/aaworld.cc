@@ -57,36 +57,6 @@ using namespace april;
 /*  SUPPORT  --------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------------- */
-static void		errorNumberOfArguments		( QString & s_err ) {
-	s_err.append( 
-				QObject::tr( 
-					"Error! Invalid number of arguments.\n\n" 
-					) );
-}
-static void		errorOneArgumentExpected	( QString & s_err ) {
-	s_err.append(
-				QObject::tr( 
-					"Error! One argument expected.\n\n"
-					) );
-}
-static void		errorNoAssocFile			( World * w, QString & s_err ) {
-	s_err.append(
-				QObject::tr( 
-					"Error! World <%1> has no associated file.\n\n" 
-					).arg( w->name() ) );
-}
-static void		errorEnergyInteger			( QString & s_err ) {
-	s_err.append(
-				QObject::tr( 
-					"Error! Energy must be a positive integer.\n\n" 
-					) );
-}
-static void		errorUnknownOprion			( QString & s_err, const QString & s_tk ) {
-	s_err.append(
-				QObject::tr( 
-					"Error! Unknown option: %1.\n\n"
-					).arg( s_tk ) );
-}
 static void		errorAlreadyStarted			( QString & s_err ) {
 	s_err.append(
 				QObject::tr( 
@@ -98,12 +68,6 @@ static void		errorAlreadyStopped			( QString & s_err ) {
 				QObject::tr( 
 					"Error! The world is already stopped.\n\n"
 					) );
-}
-static void		errorIntegerExpected		( QString & s_err, const QString & s_tk ) {
-	s_err.append(
-				QObject::tr( 
-					"Error! An integer was expected instead of %1.\n\n"
-					).arg( s_tk) );
 }
 /* ========================================================================= */
 
@@ -347,8 +311,6 @@ bool			AaWorld::openWorld				(
 {
 	Q_ASSERT( s_cmd == "w.open" );
 	Q_UNUSED( s_cmd );
-	Q_UNUSED( atks );
-	Q_UNUSED( s_err );
 	
 	int arg_cnt = atks.tk_.count() - 1;
 	

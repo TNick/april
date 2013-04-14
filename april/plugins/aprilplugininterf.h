@@ -46,6 +46,10 @@ public:
 	//! constructor
 	AprilPluginLoader( const QString & s ) : QPluginLoader( s ), List2De(), MemTrack()
 	{}
+	
+	//! the name of the plug-in if loaded, otherwise an empty string
+	QString			name					( void );
+	
 };
 
 namespace april {

@@ -257,23 +257,39 @@ private:
 
 public:
 
-	//! load a plug-in from the file indicated (may be relative to cuurrent directory)
+	//! load a plug-in from the file indicated (may be relative to current directory)
 	static AprilPluginInterf *	loadPlugIn			( const QString & s );
 	
-	//! unload a plug-in based on file name (may be relative to cuurrent directory)
+	//! unload a plug-in based on file name (may be relative to current directory)
 	static bool					unloadPlugIn		( const QString & s );
 	
 	//! unload a plug-in
 	static bool					unloadPlugIn		( AprilPluginInterf * p );
 	
+	//! unload a plug-in
+	static bool					unloadPlugIn		( AprilPluginLoader * pld );
+	
 	//! get the plug-in for a certain file (must be absolute path)
 	static AprilPluginInterf *	findPlugIn			( const QString & s );
 	
-	//! get the plug-in for a certain file (may be relative to cuurrent directory)
+	//! get the plug-in loader for a certain file (must be absolute path)
+	static AprilPluginLoader *	findPlugInLoader	( const QString & s );
+	
+	//! get the plug-in for a certain file (may be relative to current directory)
 	static AprilPluginInterf *	findPlugInRel		( const QString & s );
+	
+	//! get the plug-in loader for a certain file (may be relative to current directory)
+	static AprilPluginLoader *	findPlugInLoaderRel	( const QString & s );
 
-	//! first plugin
+	//! first plug-in
 	static AprilPluginLoader *	firstPlugin			( void );
+
+	//! the number of plug-ins
+	static int					pluginsCount		( void )
+	{ return uniq_->plugins_.count(); }
+	
+	//! get a plug-in at aspecific index
+	static AprilPluginLoader *	pluginAt			( int i );
 
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */

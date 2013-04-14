@@ -134,7 +134,7 @@ void				AaOutput::showTable				(
 	}
 	
 	/* compute total lenght */
-	int total_lenght = 1; /* start with a single space */
+	int total_lenght = 4; /* start with row number */
 	for ( int i = 0; i < i_col_max; i++ )
 	{
 		total_lenght += cols.at( i ) + 1;
@@ -144,7 +144,7 @@ void				AaOutput::showTable				(
 	{
 		const QStringList & sl = table.at( 0 );
 		int col_cnt = sl.count();
-		s_res.append( " " );/* start with a single space */
+		s_res.append( "    " );/* start with row number */
 		for ( int j = 0; j < col_cnt; j++ )
 		{
 			const QString & s = sl.at( j );
@@ -158,12 +158,20 @@ void				AaOutput::showTable				(
 		i_row++;
 	}
 	
+	int i_printed_row = 0;
+	QString s_row;
 	while ( i_row < i_row_max )
 	{
 		const QStringList & sl = table.at( i_row );
 		
 		int col_cnt = sl.count();
-		s_res.append( " " );/* start with a single space */
+		
+		/* start with row number */
+		s_row = QString::number( i_printed_row );
+		s_res.append( QString( 3 - s_row.length() , QChar(' ') ) );
+		s_res.append( s_row );
+		s_res.append( " " );
+		
 		for ( int j = 0; j < col_cnt; j++ )
 		{
 			const QString & s = sl.at( j );
@@ -172,7 +180,7 @@ void				AaOutput::showTable				(
 		}
 		s_res.append( "\n" );
 		
-		i_row++;
+		i_row++; i_printed_row++;
 	}
 	
 	qDebug() << s_res.toLatin1().constBegin();

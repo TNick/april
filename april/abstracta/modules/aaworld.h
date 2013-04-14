@@ -37,8 +37,6 @@
 
 namespace   april    {
 
-class	AaTkString;
-
 /*  DEFINITIONS    ========================================================= */
 //
 //
@@ -47,7 +45,7 @@ class	AaTkString;
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief	Provides commands related to worlds
+*	@brief	Module that provides commands related to worlds
 */
 class AaWorld		: public AaModule		{
 	BBM_TRACK( AaWorld );
@@ -80,6 +78,8 @@ public:
 
 	//! constructor
 	AaWorld				( void );
+
+protected:
 
 	//! destructor;
 	virtual				~AaWorld		( void );

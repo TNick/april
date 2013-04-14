@@ -391,6 +391,26 @@ bool				AprilLibrary::unloadPlugIn		( const QString & s )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+bool				AprilLibrary::unloadPlugIn		( AprilPluginLoader * pld )
+{
+	if ( unique()->plugins_.contains( pld ) == false )
+		return false;
+		
+	AprilPluginInterf * plg = static_cast<AprilPluginInterf*>( 
+				pld->instance() );
+	if ( plg != NULL )
+	{
+		plg->unloading();		
+	}
+	
+	pld->unload();
+	unique()->plugins_.remove( pld );
+	pld->deleteLater();
+	return true;	
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
 bool				AprilLibrary::unloadPlugIn		( AprilPluginInterf * p )
 {
 	AprilPluginLoader * itr = firstPlugin_(unique());
@@ -429,6 +449,22 @@ AprilPluginInterf *	AprilLibrary::findPlugIn		( const QString & s )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+AprilPluginLoader *	AprilLibrary::findPlugInLoader		( const QString & s )
+{
+	AprilPluginLoader * itr = firstPlugin_(unique());
+	while ( itr != NULL )
+	{
+		if ( QString::compare( itr->fileName(), s, Qt::CaseInsensitive ) == 0 )
+		{
+			return itr;
+		}
+		itr = nextPlugin_( itr );
+	}
+	return NULL;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
 AprilPluginInterf *	AprilLibrary::findPlugInRel		( const QString & s )
 {
 	QString s_file = QDir().absoluteFilePath( s );
@@ -437,9 +473,34 @@ AprilPluginInterf *	AprilLibrary::findPlugInRel		( const QString & s )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+AprilPluginLoader *	AprilLibrary::findPlugInLoaderRel( const QString & s )
+{
+	QString s_file = QDir().absoluteFilePath( s );
+	return findPlugInLoader( s_file );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
 AprilPluginLoader *	AprilLibrary::firstPlugin		( void )
 {
 	return firstPlugin_( unique() );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+AprilPluginLoader *	AprilLibrary::pluginAt			( int i )
+{
+	if ( i < 0 )
+		return NULL;
+	AprilPluginLoader * iter = firstPlugin_(uniq_);
+	while ( iter != NULL )
+	{
+		if ( i == 0 )
+			return iter;
+		iter = nextPlugin_(iter);
+		i--;
+	}
+	return NULL;
 }
 /* ========================================================================= */
 
