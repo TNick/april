@@ -136,42 +136,6 @@ bool			AModApril::commands			(
 	return funcArg0( s_cmd, atks, s_err, do_commands );
 }
 /* ========================================================================= */
-//	Q_UNUSED( s_cmd );
-
-//	int arg_cnt = atks.tk_.count() - 1;
-//	QString arg1;
-//	for ( ;; )
-//	{
-//		if ( arg_cnt == 0 )
-//		{
-//			QStringList sl = AbstractApril::commands();
-//			s_err.append( sl.join( QChar( '\n' ) ) );
-//			return false;
-//		}
-//		else if ( arg_cnt == 1 )
-//		{
-//			arg1 = atks.getToken( 1 );
-//			if ( arg1 == QObject::tr( "help" ) )
-//				break;
-//			errorUnknownOprion( s_err, arg1 );
-//			break;
-//		}
-//		else
-//		{
-//			errorNumberOfArguments( s_err );
-//			break;
-//		}
-//	}
-//	/* print the usage */
-//	s_err.append( QObject::tr( 
-//					  "Usage:\n"
-//					  "    april.commands         "
-//					  "lists the commands\n"
-//					  "    april.commands help    "
-//					  "prints usage instructions\n"
-//					  "\n"
-//					  ) );
-//	return false;
 
 /* ------------------------------------------------------------------------- */
 static QString	do_modules					( void )
@@ -187,45 +151,6 @@ bool			AModApril::modules			(
 }
 /* ========================================================================= */
 
-//	
-//	Q_UNUSED( s_cmd );
-
-//	int arg_cnt = atks.tk_.count() - 1;
-//	QString arg1;
-//	for ( ;; )
-//	{
-//		if ( arg_cnt == 0 )
-//		{
-//			QStringList sl = AbstractApril::modules();
-//			s_err.append( sl.join( QChar( '\n' ) ) );
-//			return false;
-//		}
-//		else if ( arg_cnt == 1 )
-//		{
-//			arg1 = atks.getToken( 1 );
-//			if ( arg1 == QObject::tr( "help" ) )
-//				break;
-//			errorUnknownOprion( s_err, arg1 );
-//			break;
-//		}
-//		else
-//		{
-//			errorNumberOfArguments( s_err );
-//			break;
-//		}
-//	}
-//	/* print the usage */
-//	s_err.append( QObject::tr( 
-//					  "Usage:\n"
-//					  "    april.modules          "
-//					  "lists the modules\n"
-//					  "    april.modules help     "
-//					  "prints usage instructions\n"
-//					  "\n"
-//					  ) );
-//	return false;
-
-
 /* ------------------------------------------------------------------------- */
 static QString	do_version					( void )
 {
@@ -239,44 +164,9 @@ bool			AModApril::version			(
 }
 /* ========================================================================= */
 
-//	int arg_cnt = atks.tk_.count() - 1;
-//	QString arg1;
-//	for ( ;; )
-//	{
-//		if ( arg_cnt == 0 )
-//		{
-//			s_err.append( QObject::tr( "April Version " APRIL_VER_STR "\n" ) );
-//			return false;
-//		}
-//		else if ( arg_cnt == 1 )
-//		{
-//			arg1 = atks.getToken( 1 );
-//			if ( arg1 == QObject::tr( "help" ) )
-//				break;
-//			errorUnknownOprion( s_err, arg1 );
-//			break;
-//		}
-//		else
-//		{
-//			errorNumberOfArguments( s_err );
-//			break;
-//		}
-//	}
-//	/* print the usage */
-//	s_err.append( QObject::tr( 
-//					  "Usage:\n"
-//					  "    april.version          "
-//					  "display the version\n"
-//					  "    april.version help     "
-//					  "prints usage instructions\n"
-//					  "\n"
-//					  ) );
-//	return false;
-
 /* ------------------------------------------------------------------------- */
 static QString	do_copyright				( void )
 {
-	QString	s;
 	if ( QDir().exists( "COPYING" ) )
 	{
 		QFile f( "COPYING" );
@@ -302,59 +192,6 @@ bool			AModApril::copyright			(
 }
 /* ========================================================================= */
 	
-//	Q_UNUSED( s_cmd );
-	
-//	int arg_cnt = atks.tk_.count() - 1;
-//	QString arg1;
-//	for ( ;; )
-//	{
-//		if ( arg_cnt == 0 )
-//		{
-//			if ( QDir().exists( "COPYING" ) )
-//			{
-//				QFile f( "COPYING" );
-//				if ( f.open( QIODevice::ReadOnly ) )
-//				{
-//					QString	s( f.readAll() );
-//					s_err.append( s );
-//					f.close();
-//					return false;
-//				}
-//			}
-//			s_err.append( 
-//						QObject::tr( 
-//							"April project is distributed under the\n"
-//							"3-clause (New) BSD license. You can read\n"
-//							"more about it in COPYING file distributed\n"
-//							"with the package or by searching the internet.\n"
-//							) );
-//			return false;
-//		}
-//		else if ( arg_cnt == 1 )
-//		{
-//			arg1 = atks.getToken( 1 );
-//			if ( arg1 == QObject::tr( "help" ) )
-//				break;
-//			errorUnknownOprion( s_err, arg1 );
-//			break;
-//		}
-//		else
-//		{
-//			errorNumberOfArguments( s_err );
-//			break;
-//		}
-//	}
-//	/* print the usage */
-//	s_err.append( QObject::tr( 
-//					  "Usage:\n"
-//					  "    april.copyright        "
-//					  "display information about copyright\n"
-//					  "    april.copyright help   "
-//					  "prints usage instructions\n"
-//					  "\n"
-//					  ) );
-//	return false;
-
 /* ------------------------------------------------------------------------- */
 static QString	do_prompt				( 
 		const QString & s_arg_1, const AaToken & tk1 )
@@ -370,36 +207,6 @@ bool			AModApril::prompt			(
 	return funcArg1( s_cmd, atks, s_err, do_prompt );
 }
 /* ========================================================================= */
-
-//	Q_ASSERT( atks.tk_.count() >= 1 );
-//	Q_ASSERT( s_cmd == "april.prompt" );
-//	int arg_cnt = atks.tk_.count() - 1;
-	
-//	for ( ;; )
-//	{
-//		if ( arg_cnt != 1 )
-//		{
-//			errorOneArgumentExpected ( s_err );
-//			break;
-//		}
-//		QString arg1 = atks.getToken( 1 );
-//		if ( arg1 == QObject::tr( "help" ) )
-//			break;
-//		AOutput::setPrompt( arg1 );
-//		s_err.append( QObject::tr( "Prompt changed to %1.\n" ).arg( arg1 ) );
-//		return false;
-//	}
-	
-//	/* print the usage */
-//	s_err.append( QObject::tr( 
-//					  "Usage:\n"
-//					  "    april.prompt \"new-one\" "
-//					  "change the prompt to specified string\n"
-//					  "    april.prompt help      "
-//					  "prints usage instructions\n"
-//					  "\n"
-//					  ) );
-//	return false;
 
 /*  CLASS    =============================================================== */
 //

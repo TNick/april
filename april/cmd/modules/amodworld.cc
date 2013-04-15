@@ -298,25 +298,7 @@ bool			AModWorld::newWorld				(
 	} /* for ( ;; ) */
 	
 	/* print the usage */
-	s_err.append( QObject::tr( 
-					  "Usage:\n"
-					  "    w.new                  "
-					  "creates a new world with default values\n"
-					  "    w.new [name] [energy]  "
-					  "creates a world with given name and energy\n"
-					  "    w.new help             "
-					  "prints usage instructions\n"
-					  "\n"
-					  "Options:\n"
-					  "  name     the name of the world; this will identify the\n"
-					  "           world in future dialogs; when no name is given\n"
-					  "           an unique one is generated;\n"
-					  "  energy   the ammount of energy in the world; this must be\n"
-					  "           a positive integer. In order to set the energy\n"
-					  "           you MUST set a name. By default the energy is set\n"
-					  "           to 100000 units."
-					  "\n"
-					  ) );
+	s_err.append( getCLUsage( s_cmd ) );
 	return false;
 }
 /* ========================================================================= */
@@ -345,14 +327,7 @@ bool			AModWorld::openWorld				(
 	}
 	
 	/* print the usage */
-	s_err.append( QObject::tr( 
-					  "Usage:\n"
-					  "    w.open <file-name>     "
-					  "opens specified file and loads the world inside\n"
-					  "    w.open help            "
-					  "prints usage instructions\n"
-					  "\n"
-					  ) );
+	s_err.append( getCLUsage( s_cmd ) );
 	return false;
 }
 /* ========================================================================= */
@@ -407,24 +382,7 @@ bool			AModWorld::saveWorld				(
 	}
 	
 	/* print the usage */
-	s_err.append( QObject::tr( 
-					  "Usage:\n"
-					  "    w.save [name] [file]   "
-					  "saves specified world to a file\n"
-					  "    w.save [index] [file]  "
-					  "saves specified world to a file\n"
-					  "    w.save help            "
-					  "prints usage instructions\n"
-					  "\n"
-					  "Options:\n"
-					  "  name     the name of the world;\n"
-					  "  file     where to save; if not specified the \n"
-					  "           file asociated with the world is used"
-					  "\n"
-					  "If the opperation is succefull the internl association\n"
-					  "is also updated.\n"
-					  "\n"
-					  ) );
+	s_err.append( getCLUsage( s_cmd ) );
 	return false;
 }
 /* ========================================================================= */
@@ -456,16 +414,7 @@ bool			AModWorld::closeWorld				(
 	}
 	
 	/* print the usage */
-	s_err.append( QObject::tr( 
-					  "Usage:\n"
-					  "    w.close <index>        "
-					  "close the world at specified index\n"
-					  "    w.close <name>         "
-					  "close the world having that name\n"
-					  "    w.close help           "
-					  "prints usage instructions\n"
-					  "\n"
-					  ) );
+	s_err.append( getCLUsage( s_cmd ) );
 	return false;
 }
 /* ========================================================================= */
@@ -533,14 +482,7 @@ bool			AModWorld::listWorld				(
 		}
 	}
 	/* print the usage */
-	s_err.append( QObject::tr( 
-					  "Usage:\n"
-					  "    w.list                 "
-					  "lists the worlds and basic properties\n"
-					  "    w.list help            "
-					  "prints usage instructions\n"
-					  "\n"
-					  ) );
+	s_err.append( getCLUsage( s_cmd ) );
 	return false;
 }
 /* ========================================================================= */
@@ -579,16 +521,7 @@ bool			AModWorld::startWorld				(
 		return false;
 	}
 	/* print the usage */
-	s_err.append( QObject::tr( 
-					  "Usage:\n"
-					  "    w.start <index>        "
-					  "starts the world at that index\n"
-					  "    w.start <name>         "
-					  "starts the world with specified name\n"
-					  "    w.start help           "
-					  "prints usage instructions\n"
-					  "\n"
-					  ) );
+	s_err.append( getCLUsage( s_cmd ) );
 	return false;
 }
 /* ========================================================================= */
@@ -627,16 +560,7 @@ bool			AModWorld::stopWorld				(
 		return false;
 	}
 	/* print the usage */
-	s_err.append( QObject::tr( 
-					  "Usage:\n"
-					  "    w.stop <index>         "
-					  "stops the world at that index\n"
-					  "    w.stop <name>          "
-					  "stops the world with specified name\n"
-					  "    w.stop help            "
-					  "prints usage instructions\n"
-					  "\n"
-					  ) );
+	s_err.append( getCLUsage( s_cmd ) );
 	return false;
 }
 /* ========================================================================= */
@@ -704,16 +628,7 @@ bool			AModWorld::advWorld				(
 		return false;
 	}
 	/* print the usage */
-	s_err.append( QObject::tr( 
-					  "Usage:\n"
-					  "    w.adv <index> [steps]  "
-					  "advances the world at that index 'steps' time unit\n"
-					  "    w.adv <name> [steps]   "
-					  "advances the world with that name 'steps' time units\n"
-					  "    w.adv help             "
-					  "prints usage instructions\n"
-					  "\n"
-					  ) );
+	s_err.append( getCLUsage( s_cmd ) );
 	return false;
 }
 /* ========================================================================= */
@@ -769,18 +684,7 @@ bool			AModWorld::crtWorld				(
 	}
 	
 	/* print the usage */
-	s_err.append( QObject::tr( 
-					  "Usage:\n"
-					  "    w.crt                  "
-					  "prints the name of current world\n"
-					  "    w.crt <index>          "
-					  "changes current world to the one indicated by index\n"
-					  "    w.crt <name>           "
-					  "changes current world to the one indicated by name\n"
-					  "    w.crt help             "
-					  "prints usage instructions\n"
-					  "\n"
-					  ) );
+	s_err.append( getCLUsage( s_cmd ) );
 	return false;
 }
 /* ========================================================================= */

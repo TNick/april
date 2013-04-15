@@ -108,7 +108,7 @@ public:
 	{ return cmd_map_; }
 	
 
-protected:
+public:
 	//!@{
 	//! common types of errors
 	static void errorNumberOfArguments(QString &s_err);

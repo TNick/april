@@ -9,6 +9,7 @@ CONFIG(debug, debug|release) {
 	TARGET = april-cmd
 }
 CONFIG += dll warn_on
+DEFINES += APRIL_LIBRARY
 QT += core gui
 INCLUDEPATH += ../../..
 

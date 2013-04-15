@@ -144,7 +144,7 @@ bool			AModDNA::newDNA				(
 				errorNoCurrentWorld( s_err );
 				return false;
 			}
-
+			
 			if ( arg_cnt > 1 )
 			{
 				if ( arg_cnt > 2 )
@@ -197,116 +197,117 @@ bool			AModDNA::newDNA				(
 	}
 	
 	/* print the usage */
-	s_err.append( QObject::tr( 
-					  "Usage:\n"
-					  "    dna.new [id] [cost] [age] [energy]    "
-					  "creates a new kind\n"
-					  "    dna.new help                          "
-					  "prints usage instructions\n"
-					  "\n"
-					  "Options:\n"
-					  "  id       the name to assign to the new numeric ID that\n"
-					  "           will be generated. If ommited, a new, unique\n"
-					  "           name will be generated.\n"
-					  "           A form like this is recomended: Actor.Kind.<name>.\n"
-					  "  cost     the intrinsec energy cost for the agent per time\n"
-					  "           unit; other components that are added will\n"
-					  "           increase the total cost for running the agent.n"
-					  "           This value must be an integer larger than 0.\n"
-					  "           By default the cost is set to 10.\n"
-					  "  age      average age of death. This is an orientative\n"
-					  "           value (suggestion). It must be larger than 0.\n"
-					  "           By default it is set to 100.\n"
-					  "  energy   energy required at birth. At least this ammount\n"
-					  "           of energy units are assigned at birt to an agent\n"
-					  "           of this kind. When the user creates the agent,\n"
-					  "           the energy is substracted from the free energy\n"
-					  "           of the world.\n"
-					  "           By default it is set to 10.\n"
-					  "\n"
-					  ) );
+	s_err.append( getCLUsage( s_cmd ) );
 	return false;
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+static QString	do_dna_list					( void )
+{
+	QString s;
+	World * w = AprilLibrary::crtWorld();
+	if ( w == NULL )
+	{
+		AprilModule::errorNoCurrentWorld( s );
+		return s;
+	}
+	GenericActorFactory * gf = GenericActorFactory::findMyself( w );
+	Q_ASSERT( gf != NULL );
+	
+	GenericActorFactory::IdDnaMapIterC itr = gf->dnaList().constBegin();
+	GenericActorFactory::IdDnaMapIterC itr_e = gf->dnaList().constEnd();
+	if ( itr == itr_e )
+	{
+		return QObject::tr( 
+						  "No kinds registered in this world.\n"
+						  );
+	}
+	else
+	{
+		QList<QStringList>	datao;
+		QStringList			sl;
+		
+		sl.append( QObject::tr( "ID" ) );
+		sl.append( QObject::tr( "Name" ) );
+		datao.append( sl ); sl.clear();
+		while ( itr != itr_e )
+		{
+			sl.append( QString::number( itr.key() ) );
+			sl.append( w->nameForId( itr.key() ) );
+			datao.append( sl ); sl.clear();
+			itr++;
+		}
+		AOutput::showTable( datao, true, false );
+		return QString();
+	}	
+}
 bool			AModDNA::listDNA				(
 		const QString & s_cmd, const AaTkString & atks, QString & s_err )
 {
-	Q_ASSERT( atks.tk_.count() >= 1 );
 	Q_ASSERT( s_cmd == "dna.list" );
-	
-	
-	int arg_cnt = atks.tk_.count() - 1;
-	QString arg1;
-	for ( ;; )
-	{
-		if ( arg_cnt == 0 )
-		{
-			World * w = AprilLibrary::crtWorld();
-			if ( w == NULL )
-			{
-				errorNoCurrentWorld( s_err );
-				return false;
-			}
-			GenericActorFactory * gf = GenericActorFactory::findMyself( w );
-			Q_ASSERT( gf != NULL );
-			
-			
-			GenericActorFactory::IdDnaMapIterC itr = gf->dnaList().constBegin();
-			GenericActorFactory::IdDnaMapIterC itr_e = gf->dnaList().constEnd();
-			if ( itr == itr_e )
-			{
-				s_err.append( QObject::tr( 
-								  "No kinds registered in this world.\n"
-								  ) );
-				return false;
-			}
-			else
-			{
-				QList<QStringList>	datao;
-				QStringList			sl;
-				
-				sl.append( QObject::tr( "ID" ) );
-				sl.append( QObject::tr( "Name" ) );
-				datao.append( sl ); sl.clear();
-				while ( itr != itr_e )
-				{
-					sl.append( QString::number( itr.key() ) );
-					sl.append( w->nameForId( itr.key() ) );
-					datao.append( sl ); sl.clear();
-					itr++;
-				}
-				AOutput::showTable( datao, true, false );
-				return true;
-			}
-		}
-		else if ( arg_cnt == 1 )
-		{
-			arg1 = atks.getToken( 1 );
-			if ( arg1 == QObject::tr( "help" ) )
-				break;
-			errorUnknownOprion( s_err, arg1 );
-			break;
-		}
-		else
-		{
-			errorNumberOfArguments( s_err );
-			break;
-		}
-	}
-	/* print the usage */
-	s_err.append( QObject::tr( 
-					  "Usage:\n"
-					  "    dna.list               "
-					  "lists the available kinds in this world\n"
-					  "    dna.list help          "
-					  "prints usage instructions\n"
-					  "\n"
-					  ) );
-	return false;
+	return funcArg0( s_cmd, atks, s_err, do_dna_list );
 }
 /* ========================================================================= */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//	Q_ASSERT( atks.tk_.count() >= 1 );
+//	Q_ASSERT( s_cmd == "dna.list" );
+
+
+//	int arg_cnt = atks.tk_.count() - 1;
+//	QString arg1;
+//	for ( ;; )
+//	{
+//		if ( arg_cnt == 0 )
+//		{
+
+//		}
+//		else if ( arg_cnt == 1 )
+//		{
+//			arg1 = atks.getToken( 1 );
+//			if ( arg1 == QObject::tr( "help" ) )
+//				break;
+//			errorUnknownOprion( s_err, arg1 );
+//			break;
+//		}
+//		else
+//		{
+//			errorNumberOfArguments( s_err );
+//			break;
+//		}
+//	}
+//	/* print the usage */
+//	s_err.append( QObject::tr( 
+//					  "Usage:\n"
+//					  "    dna.list               "
+//					  "lists the available kinds in this world\n"
+//					  "    dna.list help          "
+//					  "prints usage instructions\n"
+//					  "\n"
+//					  ) );
+//	return false;
+//}
+///* ========================================================================= */
 
 /*  CLASS    =============================================================== */
 //

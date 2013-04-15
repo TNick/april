@@ -192,14 +192,7 @@ bool			AModPlugIns::loadPlugIn			(
 	}
 	
 	/* print the usage */
-	s_err.append( QObject::tr( 
-					  "Usage:\n"
-					  "    p.load <file-name>     "
-					  "loads specified plug-in file\n"
-					  "    p.load help            "
-					  "prints usage instructions\n"
-					  "\n"
-					  ) );
+	s_err.append( getCLUsage( s_cmd ) );
 	return false;
 }
 /* ========================================================================= */
@@ -233,16 +226,7 @@ bool			AModPlugIns::unloadPlugIn			(
 	}
 	
 	/* print the usage */
-	s_err.append( QObject::tr( 
-					  "Usage:\n"
-					  "    p.unload <index>       "
-					  "unloads the plug-in at specified index\n"
-					  "    p.unload <name>        "
-					  "unloads the plug-in having that name\n"
-					  "    p.unload help          "
-					  "prints usage instructions\n"
-					  "\n"
-					  ) );
+	s_err.append( getCLUsage( s_cmd ) );
 	return false;
 }
 /* ========================================================================= */
@@ -303,14 +287,7 @@ bool			AModPlugIns::listPlugIn			(
 		}
 	}
 	/* print the usage */
-	s_err.append( QObject::tr( 
-					  "Usage:\n"
-					  "    p.list                 "
-					  "lists the plug-ins and their paths\n"
-					  "    p.list help            "
-					  "prints usage instructions\n"
-					  "\n"
-					  ) );
+	s_err.append( getCLUsage( s_cmd ) );
 	return false;
 }
 /* ========================================================================= */
