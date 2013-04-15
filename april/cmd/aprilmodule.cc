@@ -141,7 +141,6 @@ void		AprilModule::errorNoCurrentWorld		(
 					) );
 }
 /* ========================================================================= */
-
 /* ------------------------------------------------------------------------- */
 bool		AprilModule::setUsage					( 
 	const QString & s_name, 
@@ -151,6 +150,7 @@ bool		AprilModule::setUsage					(
 {
 	Q_ASSERT( usage.count() == usage_descr.count() );
 	Q_ASSERT( opts.count() == opts_descr.count() );
+	int i;
 	
 	/** @todo file from app settings */
 	QSettings	stg( "help.dat", QSettings::IniFormat );
@@ -158,23 +158,26 @@ bool		AprilModule::setUsage					(
 		return false;
 	
 	stg.beginGroup( s_name );
-	stg.beginWriteArray( "Usage", usage.count() );
+	stg.beginWriteArray( "Usage", usage.count()+1 );
 	int usg_max = usage.count();
-	for ( int i = 0; i < usg_max; i++ )
+	for ( i = 0; i < usg_max; i++ )
 	{
 		stg.setArrayIndex( i );
-		stg.setValue( "cmd", usage.at( i ) );
+		stg.setValue( "cmd", s_name + " " + usage.at( i ) );
 		stg.setValue( "descr", usage_descr.at( i ) );
 	}
+	stg.setArrayIndex( i );
+	stg.setValue( "cmd", s_name + " help" );
+	stg.setValue( "descr", "prints usage instructions" );
 	stg.endArray(); // Usage
 	
 	stg.beginWriteArray( "Options", opts.count() );
 	int opt_max = opts.count();
-	for ( int i = 0; i < opt_max; i++ )
+	for ( i = 0; i < opt_max; i++ )
 	{
 		stg.setArrayIndex( i );
-		stg.setValue( "opt", usage.at( i ) );
-		stg.setValue( "descr", usage_descr.at( i ) );
+		stg.setValue( "opt", opts.at( i ) );
+		stg.setValue( "descr", opts_descr.at( i ) );
 	}
 	stg.endArray(); // Options
 	
@@ -229,12 +232,12 @@ QString		AprilModule::getCLUsage				( const QString & s_name )
 			
 			s_ret.append( "  " );
 			s_ret.append( s_opt );
-			s_ret.append( QString( qMax( 1, 10 - s_usage.length() ), QChar( ' ' ) ) );
+			s_ret.append( QString( qMax( 1, 9 - s_opt.length() ), QChar( ' ' ) ) );
 			if ( s_opt_descr.count() == 0 )
 				continue;
 			s_ret.append( s_opt_descr.at( 0 ) );
 			s_ret.append( QChar( '\n' ) );
-			for ( int j = 1; i < s_opt_descr.count(); j++ )
+			for ( int j = 1; j < s_opt_descr.count(); j++ )
 			{
 				s_ret.append( QString( 11, QChar( ' ' ) ) );
 				s_ret.append( s_opt_descr.at( j ) );
@@ -248,10 +251,10 @@ QString		AprilModule::getCLUsage				( const QString & s_name )
 	if ( s_obs.count() > 0 )
 	{
 		s_ret.append( QObject::tr( "\nObservations:\n" ) );
-		for ( int j = 1; j < s_obs.count(); j++ )
+		for ( int j = 0; j < s_obs.count(); j++ )
 		{
 			s_ret.append( QChar( ' ' ) );
-			s_ret.append( s_opt_descr.at( j ) );
+			s_ret.append( s_obs.at( j ) );
 			s_ret.append( QChar( '\n' ) );
 		}
 	}

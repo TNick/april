@@ -120,6 +120,7 @@ protected:
 	static void errorNoCurrentWorld(QString &s_err);
 	//!@}
 	
+public:
 	
 	//! get the string representing command line info for a command
 	static QString		getCLUsage		( const QString & s_name );
@@ -134,7 +135,6 @@ protected:
 			const QStringList &				obs
 			);
 	
-public:
 
 	//! callback for functions with no arguments
 	typedef QString ( * arg0Func)	( void );
