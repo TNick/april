@@ -24,9 +24,9 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include	"commandmap.h"
-#include	"aatokenizer.h"
-#include	<april/logic/aaoutput.h>
-#include	<april/cmd/aamodule.h>
+#include	"apriltokenizer.h"
+#include	<april/logic/aoutput.h>
+#include	<april/cmd/aprilmodule.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -71,7 +71,7 @@ CommandMap::~CommandMap	( void )
 	{
 		def_inst_ = NULL;
 	}
-	foreach( AaModule * itr, modules_ )
+	foreach( AprilModule * itr, modules_ )
 	{
 		DEC_REF(itr,this);
 	}
@@ -119,7 +119,7 @@ bool				CommandMap::remCommand				(
 void				CommandMap::execute					( 
 		const QString & s_input )
 {
-	AaTkString aas = AaTokenizer::basicTk( s_input );
+	AaTkString aas = AprilTokenizer::basicTk( s_input );
 	QString s_err;
 	int i_max = aas.tk_.count();
 	if ( i_max > 0 )
@@ -133,7 +133,7 @@ void				CommandMap::execute					(
 						"Error! Improper command. The command may not\n" 
 						"contain spaces and special codes."
 						);
-			AaOutput::showError( s_err );
+			AOutput::showError( s_err );
 			return;
 		}
 		/* convert commands into an easier to read form */
@@ -162,11 +162,11 @@ void				CommandMap::execute					(
 				s_err = QObject::tr( 
 							"Error! Command %1 was not found."
 							).arg( s_cmd );
-				AaOutput::showError( s_err );
+				AOutput::showError( s_err );
 			}
 			else if ( kb( s_cmd, aas, s_err ) == false )
 			{
-				AaOutput::showError( s_err );
+				AOutput::showError( s_err );
 			}
 		}
 	}
@@ -183,7 +183,7 @@ QStringList				CommandMap::commands		( void ) const
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-bool			CommandMap::addModule			( AaModule * m )
+bool			CommandMap::addModule			( AprilModule * m )
 {
 	if ( modules_.contains( m ) )
 	{
@@ -197,7 +197,7 @@ bool			CommandMap::addModule			( AaModule * m )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-bool			CommandMap::remModule			( AaModule * m )
+bool			CommandMap::remModule			( AprilModule * m )
 {
 	if ( modules_.contains( m ) == false )
 	{
@@ -214,7 +214,7 @@ bool			CommandMap::remModule			( AaModule * m )
 QStringList		CommandMap::modules				( void ) const
 {
 	QStringList sl;
-	foreach( AaModule * itr, modules_ )
+	foreach( AprilModule * itr, modules_ )
 	{
 		sl.append( itr->name() );
 	}

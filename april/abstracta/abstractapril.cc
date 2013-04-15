@@ -26,13 +26,13 @@
 #include	"abstractapril.h"
 #include	<iostream>
 
-#include	<april/cmd/aamodule.h>
-#include	<april/cmd/aatokenizer.h>
-#include	<april/cmd/modules/aaapril.h>
-#include	<april/cmd/modules/aaworld.h>
-#include	<april/cmd/modules/aaplugins.h>
-#include	<april/cmd/modules/aadna.h>
-#include	<april/logic/aaoutput.h>
+#include	<april/cmd/aprilmodule.h>
+#include	<april/cmd/apriltokenizer.h>
+#include	<april/cmd/modules/amodapril.h>
+#include	<april/cmd/modules/amodworld.h>
+#include	<april/cmd/modules/amodplugins.h>
+#include	<april/cmd/modules/amoddna.h>
+#include	<april/logic/aoutput.h>
 
 #include	<QFile>
 
@@ -69,7 +69,7 @@ AbstractApril::AbstractApril	( void )
 	  exit_code_(0)
 {
 	APRDBG_CDTOR;
-	AaOutput::init();
+	AOutput::init();
 }
 /* ========================================================================= */
 
@@ -77,7 +77,7 @@ AbstractApril::AbstractApril	( void )
 AbstractApril::~AbstractApril	( void )
 {
 	APRDBG_CDTOR;
-	AaOutput::end();
+	AOutput::end();
 }
 /* ========================================================================= */
 
@@ -86,19 +86,19 @@ void			AbstractApril::init					( void )
 {
 	/* load build-in modules */
 	
-	AaApril * module_april = new AaApril( &cmd_map );
+	AModApril * module_april = new AModApril( &cmd_map );
 	addModule( module_april );
 	REMOVE_CONSTRUCTOR_REF(module_april);
 	
-	AaWorld * module_w = new AaWorld( &cmd_map );
+	AModWorld * module_w = new AModWorld( &cmd_map );
 	addModule( module_w );
 	REMOVE_CONSTRUCTOR_REF(module_w);
 	
-	AaPlugIns * module_p = new AaPlugIns( &cmd_map );
+	AModPlugIns * module_p = new AModPlugIns( &cmd_map );
 	addModule( module_p );
 	REMOVE_CONSTRUCTOR_REF(module_p);
 	
-	AaDNA * module_dna = new AaDNA( &cmd_map );
+	AModDNA * module_dna = new AModDNA( &cmd_map );
 	addModule( module_dna );
 	REMOVE_CONSTRUCTOR_REF(module_dna);
 	
@@ -152,7 +152,7 @@ int				AbstractApril::executeFile			( const QString & cmds )
 	}
 	else
 	{
-		AaOutput::showError( 
+		AOutput::showError( 
 					QObject::tr( "Failed to execute file" ), 
 					f.errorString() );
 		uniq_->exit_code_ = 1;
@@ -177,15 +177,15 @@ int				AbstractApril::runMainLoop			(
 	QString s_err;
 	foreach( QString iter, sl_init_files )
 	{
-		AaWorld::dOpenWorld( iter, s_err );
-		AaOutput::showInfo( s_err );
+		AModWorld::dOpenWorld( iter, s_err );
+		AOutput::showInfo( s_err );
 	}
 	
 	/* prepare the prompt */
 	std::string buffer;
 	for ( ;; )
 	{
-		AaOutput::showPrompt();
+		AOutput::showPrompt();
 		getline (cin, buffer);
 		uniq_->cmd_map.execute( QString::fromStdString( buffer ) );
 		if ( uniq_->cmd_map.shouldExit() )
@@ -200,14 +200,14 @@ int				AbstractApril::runMainLoop			(
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-bool			AbstractApril::addModule			( AaModule * m )
+bool			AbstractApril::addModule			( AprilModule * m )
 {
 	return uniq_->cmd_map.addModule( m );
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-bool			AbstractApril::remModule			( AaModule * m )
+bool			AbstractApril::remModule			( AprilModule * m )
 {
 	return uniq_->cmd_map.remModule( m );
 }

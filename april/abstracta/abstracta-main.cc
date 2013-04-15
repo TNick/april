@@ -36,7 +36,7 @@
 #include	<iostream>
 #include	<argtable2.h>
 
-#include	<april/logic/aaoutput.h>
+#include	<april/logic/aoutput.h>
 #include	<april/cmd/commandmap.h>
 #include	"abstractapril.h"
 
@@ -186,7 +186,7 @@ int			mainInit		( int argc, char *argv[] )
 	
 	if ( arg_nullcheck( argtable ) != 0 )
 	{
-		AaOutput::showError(
+		AOutput::showError(
 					QObject::tr( ABSTRACTA_NAME " initialisation error" ),
 					QObject::tr( "Insufficient memory!\n" ) 
 					);
@@ -198,7 +198,7 @@ int			mainInit		( int argc, char *argv[] )
 	
 	if( a__help->count > 0 )
 	{
-		/* todo: should use AaOutput */
+		/* todo: should use AOutput */
 		cout << QObject::tr( "Usage: " ABSTRACTA_NAME ).toLatin1().constBegin() << endl;
 		arg_print_syntax( stdout, argtable, "\n" );
 		cout << QObject::tr(
@@ -210,7 +210,7 @@ int			mainInit		( int argc, char *argv[] )
 	}
 	if( a__ver->count > 0 )
 	{
-		AaOutput::showInfo( QString( ABSTRACTA_NAME " version %1.%2.%3\n" )
+		AOutput::showInfo( QString( ABSTRACTA_NAME " version %1.%2.%3\n" )
 							.arg( APRIL_VERSION_MAJOR )
 							.arg( APRIL_VERSION_MINOR )
 							.arg( APRIL_VERSION_REV )
@@ -219,7 +219,7 @@ int			mainInit		( int argc, char *argv[] )
 	}
 	if( nerrors > 0 )
 	{
-		/* todo: should use AaOutput */
+		/* todo: should use AOutput */
 		arg_print_errors( stdout, a__end, ABSTRACTA_NAME );
 		cerr << QString(
 					"\nTry '" ABSTRACTA_NAME " --help' for more information.\n" )
@@ -230,7 +230,7 @@ int			mainInit		( int argc, char *argv[] )
 	
 	if ( initAprilLibrary() == false )
 	{
-		AaOutput::showError( QObject::tr( ABSTRACTA_NAME " initialisation error" ), 
+		AOutput::showError( QObject::tr( ABSTRACTA_NAME " initialisation error" ), 
 							 QObject::tr( "Could not initialise april library!\n" ) );
 		return ExitFail;
 	}

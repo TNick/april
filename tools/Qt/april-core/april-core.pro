@@ -88,7 +88,7 @@ SOURCES += \
     ../../../april/plugins/aprilplugininterf.cc \
     ../../../april/logic/worldfactory.cc \
     ../../../april/logic/genericactorfactory.cc \
-    ../../../april/logic/aaoutput.cc
+    ../../../april/logic/aoutput.cc
 
 HEADERS += \
     ../../../april/april_version.h \
@@ -122,7 +122,7 @@ HEADERS += \
     ../../../april/plugins/aprilplugininterf.h \
     ../../../april/logic/worldfactory.h \
     ../../../april/logic/genericactorfactory.h \
-    ../../../april/logic/aaoutput.h
+    ../../../april/logic/aoutput.h
 
 OTHER_FILES += \
     ../../../april/april.dox

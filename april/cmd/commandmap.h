@@ -38,7 +38,7 @@
 namespace   april    {
 
 class	AaTkString;
-class	AaModule;
+class	AprilModule;
 
 //! the definition for a callback used with commands
 typedef	bool	(*cmdCallBack)	(
@@ -87,7 +87,7 @@ private:
 	bool						b_exit_;
 	
 	//! the list of modules
-	QList<AaModule*>			modules_;
+	QList<AprilModule*>			modules_;
 	
 	//! default instance	
 	static CommandMap *			def_inst_;
@@ -118,10 +118,10 @@ public:
 	QStringList			commands		( void ) const;
 
 	//! add an module; appends module's list of commands and appends the module
-	bool				addModule		( AaModule * m );
+	bool				addModule		( AprilModule * m );
 
 	//! add an module; removes module's list of commands and removes the module
-	bool				remModule		( AaModule * m );
+	bool				remModule		( AprilModule * m );
 	
 	//! the list of registered modules
 	QStringList			modules			( void ) const;

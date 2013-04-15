@@ -63,19 +63,19 @@ isEmpty( UI_DIR ) {
 
 SOURCES += \
     ../../../april/cmd/commandmap.cc \
-    ../../../april/cmd/aatokenizer.cc \
-    ../../../april/cmd/aamodule.cc \
-    ../../../april/cmd/modules/aaworld.cc \
-    ../../../april/cmd/modules/aaplugins.cc \
-    ../../../april/cmd/modules/aadna.cc \
-    ../../../april/cmd/modules/aaapril.cc
+    ../../../april/cmd/aprilmodule.cc \
+    ../../../april/cmd/apriltokenizer.cc \
+    ../../../april/cmd/modules/amodapril.cc \
+    ../../../april/cmd/modules/amoddna.cc \
+    ../../../april/cmd/modules/amodplugins.cc \
+    ../../../april/cmd/modules/amodworld.cc
 
 HEADERS += \
     ../../../april/cmd/commandmap.h \
-    ../../../april/cmd/aatokenizer.h \
-    ../../../april/cmd/aamodule.h \
-    ../../../april/cmd/modules/aaworld.h \
-    ../../../april/cmd/modules/aaplugins.h \
-    ../../../april/cmd/modules/aadna.h \
-    ../../../april/cmd/modules/aaapril.h
+    ../../../april/cmd/aprilmodule.h \
+    ../../../april/cmd/apriltokenizer.h \
+    ../../../april/cmd/modules/amodapril.h \
+    ../../../april/cmd/modules/amoddna.h \
+    ../../../april/cmd/modules/amodplugins.h \
+    ../../../april/cmd/modules/amodworld.h
 

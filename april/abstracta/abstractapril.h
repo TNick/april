@@ -37,7 +37,7 @@
 
 namespace   april    {
 
-class	AaModule;
+class	AprilModule;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -117,10 +117,10 @@ public:
 	{ uniq_->cmd_map.execute( s_input ); }
 
 	//! add an module; appends module's list of commands and appends the module
-	static bool			addModule			( AaModule * m );
+	static bool			addModule			( AprilModule * m );
 
 	//! add an module; removes module's list of commands and removes the module
-	static bool			remModule			( AaModule * m );
+	static bool			remModule			( AprilModule * m );
 	
 	//! the list of registered modules
 	static QStringList	modules				( void );
