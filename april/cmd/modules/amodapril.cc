@@ -182,7 +182,7 @@ static QString	do_copyright				( void )
 				"3-clause (New) BSD license. You can read\n"
 				"more about it in COPYING file distributed\n"
 				"with the package or by searching the internet.\n"
-				) ;
+				);
 }
 bool			AModApril::copyright			(
 		const QString & s_cmd, const AaTkString & atks, QString & s_err )

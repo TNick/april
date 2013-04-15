@@ -643,16 +643,24 @@ WorldFactory *		AprilLibrary::findWorldFactory		( const QString & s )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-static Factory *		factoryCreatorActor			(
-		World * w, const QString & s_name )
-{
-	ActorFactory * f = w->findActorFactory( s_name );
-	if ( f == NULL )
-	{
-		f = new ActorFactory(w);
-	}
-	return f;
-}
+/// @cond internal
+#define factoryCreatorX(X)	\
+static Factory * factoryCreator##X ( World * w, const QString & s_name ) { \
+	X##Factory * f = w->find##X##Factory( s_name ); \
+	if ( f == NULL ) { f = new X##Factory(w); } \
+	else { INC_REF(f,f); } \
+	return f; } \
+
+factoryCreatorX(Actor)
+factoryCreatorX(Event)
+factoryCreatorX(Sensor)
+factoryCreatorX(Actuator)
+factoryCreatorX(Reflex)
+factoryCreatorX(Brain)
+
+#undef factoryCreatorX
+/// @endcond
+
 static Factory *		factoryCreatorGenericActor	(
 		World * w, const QString & s_name )
 {
@@ -663,56 +671,7 @@ static Factory *		factoryCreatorGenericActor	(
 	}
 	return f;
 }
-static Factory *		factoryCreatorEventSource	(
-		World * w, const QString & s_name )
-{
-	EventFactory * f = w->findEventFactory( s_name );
-	if ( f == NULL )
-	{
-		f = new EventFactory(w);
-	}
-	return f;
-}
-static Factory *		factoryCreatorSensor		(
-		World * w, const QString & s_name )
-{
-	SensorFactory * f = w->findSensorFactory( s_name );
-	if ( f == NULL )
-	{
-		f = new SensorFactory(w);
-	}
-	return f;
-}
-static Factory *		factoryCreatorActuator		(
-		World * w, const QString & s_name )
-{
-	ActuatorFactory * f = w->findActuatorFactory( s_name );
-	if ( f == NULL )
-	{
-		f = new ActuatorFactory(w);
-	}
-	return f;
-}
-static Factory *		factoryCreatorReflex		(
-		World * w, const QString & s_name )
-{
-	ReflexFactory * f = w->findReflexFactory( s_name );
-	if ( f == NULL )
-	{
-		f = new ReflexFactory(w);
-	}
-	return f;
-}
-static Factory *		factoryCreatorBrain			(
-		World * w, const QString & s_name )
-{
-	BrainFactory * f = w->findBrainFactory( s_name );
-	if ( f == NULL )
-	{
-		f = new BrainFactory(w);
-	}
-	return f;
-}
+
 void		AprilLibrary::registerFactoryCreators		( void )
 {
 	AprilLibrary::registerFactory( 
@@ -726,7 +685,7 @@ void		AprilLibrary::registerFactoryCreators		( void )
 				factoryCreatorGenericActor );
 	AprilLibrary::registerFactory( 
 				name_deffact_event, 
-				factoryCreatorEventSource );
+				factoryCreatorEvent );
 	AprilLibrary::registerFactory( 
 				name_deffact_sensor, 
 				factoryCreatorSensor );

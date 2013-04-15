@@ -24,6 +24,7 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include	"aprilmodule.h"
+#include	<april/aprillibrary.h>
 #include	<april/logic/world.h>
 #include	<april/cmd/apriltokenizer.h>
 #include	<QObject>
@@ -327,6 +328,48 @@ bool		AprilModule::funcArg1					(
 	return false;	
 }
 /* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool		AprilModule::funcArg_W2					(
+		const QString & s_cmd, const AaTkString & atks, 
+		QString & s_err, AprilModule::argW2Func kb )
+{
+
+	Q_ASSERT( atks.tk_.count() >= 1 );
+	int arg_cnt = atks.tk_.count() - 1;
+	QString arg1;
+	for ( ;; )
+	{
+		if ( arg_cnt == 2 )
+		{
+			World * w = AprilLibrary::crtWorld();
+			if ( w == NULL )
+			{
+				AprilModule::errorNoCurrentWorld( s_err );
+				return false;
+			}
+			
+		}
+		else if ( arg_cnt == 1 )
+		{
+			arg1 = atks.getToken( 1 );
+			if ( arg1 == QObject::tr( "help" ) )
+				break;
+			errorUnknownOprion( s_err, arg1 );
+			break;
+		}
+		else
+		{
+			errorNumberOfArguments( s_err );
+			break;
+		}
+	}
+	/* print the usage */
+	s_err.append( getCLUsage( s_cmd ) );
+	return false;	
+}
+/* ========================================================================= */
+
 
 /*  CLASS    =============================================================== */
 //

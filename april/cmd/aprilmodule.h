@@ -142,7 +142,10 @@ public:
 	//! callback for functions with one argument
 	typedef QString ( * arg1Func)	( const QString & s_arg_1, const AaToken & tk1 );
 	
-	
+	//! callback for functions that require a default world with 2 args
+	typedef QString ( * argW2Func)	( 
+			World * w, const QString & s_arg_1, const AaToken & tk1,
+			const QString & s_arg_2, const AaToken & tk2 );
 	
 protected:
 	
@@ -162,6 +165,14 @@ protected:
 			arg1Func				kb
 			);
 	
+	
+	//! helper for functions with two arguments and world ewxpectations
+	static bool			funcArg_W2		(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err,
+			argW2Func				kb
+			);
 	
 	
 	/*  FUNCTIONS    ======================================================= */

@@ -110,6 +110,34 @@ private:
 			const AaTkString &		atks,
 			QString &				s_err
 			);
+			
+	//! add a sensor to an existing kind
+	static bool			sDNA		(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err
+			);
+			
+	//! add a actuator to an existing kind
+	static bool			aDNA		(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err
+			);
+			
+	//! add a brain to an existing kind
+	static bool			bDNA		(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err
+			);
+			
+	//! add a reflex to an existing kind
+	static bool			rDNA		(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err
+			);
 
 
 

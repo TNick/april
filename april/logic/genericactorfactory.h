@@ -81,6 +81,9 @@ private:
 	//! the list of IDs and DNA
 	IdDnaMap				list_;
 
+	//! invalid reference
+	DNA						dna_invalid_;
+	
 	/*  DATA    ============================================================ */
 	//
 	//
@@ -146,6 +149,9 @@ public:
 
 	//! creates a new kind
 	void					addNewKind			( const DNA::InitData & data );
+
+	//! get the DNA at a particular index
+	DNA &					dna					( ID id );
 
 	/*  FUNCTIONS    ======================================================= */
 	//
