@@ -24,8 +24,9 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include	"commandmap.h"
-#include	<april/abstracta/aatokenizer.h>
-#include	"aaoutput.h"
+#include	"aatokenizer.h"
+#include	<april/logic/aaoutput.h>
+#include	<april/cmd/aamodule.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -43,6 +44,8 @@ using namespace april;
 //
 /*  DATA    ---------------------------------------------------------------- */
 
+CommandMap *		CommandMap::def_inst_ = NULL;
+
 /*  DATA    ================================================================ */
 //
 //
@@ -56,7 +59,7 @@ CommandMap::CommandMap	( void )
 	  b_exit_(false)
 {
 	APRDBG_CDTOR;
-	/* stub */
+	def_inst_ = this;
 }
 /* ========================================================================= */
 
@@ -64,7 +67,21 @@ CommandMap::CommandMap	( void )
 CommandMap::~CommandMap	( void )
 {
 	APRDBG_CDTOR;
-	/* stub */
+	if ( def_inst_ == this )
+	{
+		def_inst_ = NULL;
+	}
+	foreach( AaModule * itr, modules_ )
+	{
+		DEC_REF(itr,this);
+	}
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+const CommandMap *	CommandMap::defaultInstance			( void )
+{
+	return def_inst_;
 }
 /* ========================================================================= */
 
@@ -161,6 +178,46 @@ QStringList				CommandMap::commands		( void ) const
 {
 	QStringList sl = cmd_list_.keys();
 	sl.sort();
+	return sl;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			CommandMap::addModule			( AaModule * m )
+{
+	if ( modules_.contains( m ) )
+	{
+		return false;
+	}
+	modules_.append( m );
+	m->insertCommands( this );
+	INC_REF(m,this);
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			CommandMap::remModule			( AaModule * m )
+{
+	if ( modules_.contains( m ) == false )
+	{
+		return false;
+	}
+	modules_.removeOne( m );
+	m->removeCommands( this );
+	DEC_REF(m,this);
+	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+QStringList		CommandMap::modules				( void ) const
+{
+	QStringList sl;
+	foreach( AaModule * itr, modules_ )
+	{
+		sl.append( itr->name() );
+	}
 	return sl;
 }
 /* ========================================================================= */

@@ -37,7 +37,9 @@
 namespace   april    {
 
 //! a token descriptor (string is not contained inside)
-struct	AaToken		{
+struct
+	APRILSHARED_EXPORT
+	AaToken		{
 	
 	//! properties of a token
 	enum	Flags	{
@@ -140,7 +142,9 @@ struct	AaToken		{
 
 
 //! a tokenised string; contains the string itself and the list of tokens
-struct	AaTkString		{
+struct
+	APRILSHARED_EXPORT
+	AaTkString		{
 	
 	//! get the string as described by the token i
 	QString			getToken		( int i ) const
@@ -226,7 +230,9 @@ struct	AaTkString		{
 /**
 *	@brief	A class capable of splitting strings into tokens
 */
-class AaTokenizer		: public MemTrack		{
+class
+	APRILSHARED_EXPORT
+	AaTokenizer		: public MemTrack		{
 	BBM_TRACK( AaTokenizer );
 	
 	//

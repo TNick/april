@@ -20,9 +20,9 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0
 #######################################################
 LIBS += -L../build
 CONFIG(debug, debug|release) {
-	LIBS += -lbbb_debug -lapril_debug -lapril-gui_debug
+	LIBS += -lbbb_debug -lapril_debug -lapril-cmd_debug -lapril-gui_debug
 } else {
-	LIBS += -lbbb -lapril -lapril-gui
+	LIBS += -lbbb -lapril -lapril-cmd -lapril-gui
 }
 
 

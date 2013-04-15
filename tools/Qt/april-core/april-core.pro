@@ -20,7 +20,6 @@ INCLUDEPATH += ../../..
 
 include( "../version.pri" )
 include( "../local_defs.pri" )
-include( "../library-sources.pri" )
 
 # This is a hack
 # On windows gcc(?) appends a 0 to the name of the
@@ -88,7 +87,8 @@ SOURCES += \
     ../../../april/logic/eventsource.cc \
     ../../../april/plugins/aprilplugininterf.cc \
     ../../../april/logic/worldfactory.cc \
-    ../../../april/logic/genericactorfactory.cc
+    ../../../april/logic/genericactorfactory.cc \
+    ../../../april/logic/aaoutput.cc
 
 HEADERS += \
     ../../../april/april_version.h \
@@ -121,7 +121,8 @@ HEADERS += \
     ../../../april/logic/eventsource.h \
     ../../../april/plugins/aprilplugininterf.h \
     ../../../april/logic/worldfactory.h \
-    ../../../april/logic/genericactorfactory.h
+    ../../../april/logic/genericactorfactory.h \
+    ../../../april/logic/aaoutput.h
 
 OTHER_FILES += \
     ../../../april/april.dox

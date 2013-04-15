@@ -21,9 +21,9 @@ greaterThan( QT_MAJOR_VERSION, 4 ): QT += widgets
 #######################################################
 LIBS += -L../build
 CONFIG(debug, debug|release) {
-	LIBS += -lbbb_debug -lapril_debug -lapril-gui_debug
+	LIBS += -lbbb_debug -lapril_debug -lapril-cmd_debug -lapril-gui_debug
 } else {
-	LIBS += -lbbb -lapril -lapril-gui
+	LIBS += -lbbb -lapril -lapril-cmd -lapril-gui
 }
 
 
@@ -76,9 +76,6 @@ SOURCES += \
     ../../../april/tests/plugins.cc \
     ../../../april/tests/saveload.cc \
     ../../../april/tests/saveload2.cc \
-    ../../../april/tests/aatokenizer_test.cc \
-    ../../../april/abstracta/aatokenizer.cc
+    ../../../april/tests/aatokenizer_test.cc
  
-HEADERS += \
-    ../../../april/abstracta/aatokenizer.h
 

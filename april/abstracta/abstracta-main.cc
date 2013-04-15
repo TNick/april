@@ -36,8 +36,8 @@
 #include	<iostream>
 #include	<argtable2.h>
 
-#include	"aaoutput.h"
-#include	"commandmap.h"
+#include	<april/logic/aaoutput.h>
+#include	<april/cmd/commandmap.h>
 #include	"abstractapril.h"
 
 using namespace std;

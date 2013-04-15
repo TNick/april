@@ -1,7 +1,7 @@
 
 #include	<gtest/gtest.h>
 #include	<april/aprillibrary.h>
-#include	<april/abstracta/aatokenizer.h>
+#include	<april/cmd/aatokenizer.h>
 
 using namespace april;
 

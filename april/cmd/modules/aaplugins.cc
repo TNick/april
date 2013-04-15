@@ -24,10 +24,9 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include	"aaplugins.h"
-#include	<april/abstracta/abstractapril.h>
-#include	<april/abstracta/commandmap.h>
-#include	<april/abstracta/aatokenizer.h>
-#include	<april/abstracta/aaoutput.h>
+#include	<april/cmd/commandmap.h>
+#include	<april/cmd/aatokenizer.h>
+#include	<april/logic/aaoutput.h>
 #include	<april/logic/world.h>
 #include	<april/plugins/aprilplugininterf.h>
 #include	<april/aprillibrary.h>
@@ -95,8 +94,8 @@ static AprilPluginLoader *		getPlginFromArg				(
 /*  CLASS    --------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------------- */
-AaPlugIns::AaPlugIns	( void )
-	: AaModule()
+AaPlugIns::AaPlugIns	( CommandMap * cmd_map )
+	: AaModule(cmd_map)
 {
 	APRDBG_CDTOR;
 	/* stub */
@@ -112,13 +111,13 @@ AaPlugIns::~AaPlugIns	( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void			AaPlugIns::insertCommands			( void )
+void			AaPlugIns::insertCommands			( CommandMap * cm )
 {
 /// @cond internal
 
 //! register a command from this package 
 #define addOneCmd(c)	\
-	AbstractApril::addCommand( QObject::tr( "p." stringify(c) ), AaPlugIns::c##PlugIn )
+	cm->addCommand( QObject::tr( "p." stringify(c) ), AaPlugIns::c##PlugIn )
 	
 	addOneCmd(load);
 	addOneCmd(unload);
@@ -130,13 +129,13 @@ void			AaPlugIns::insertCommands			( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void			AaPlugIns::removeCommands			( void )
+void			AaPlugIns::removeCommands			( CommandMap * cm )
 {
 /// @cond internal
 
 //! unregister a command from this package @internal
 #define remOneCmd(c)	\
-	AbstractApril::remCommand( QObject::tr( "p." stringify(c) ), AaPlugIns::c##PlugIn );
+	cm->remCommand( QObject::tr( "p." stringify(c) ), AaPlugIns::c##PlugIn );
 
 	remOneCmd(load);
 	remOneCmd(unload);

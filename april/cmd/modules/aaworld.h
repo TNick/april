@@ -26,7 +26,7 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include    <april/april.h>
-#include    <april/abstracta/aamodule.h>
+#include    <april/cmd/aamodule.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -47,7 +47,9 @@ namespace   april    {
 /**
 *	@brief	Module that provides commands related to worlds
 */
-class AaWorld		: public AaModule		{
+class
+	APRILSHARED_EXPORT
+	AaWorld		: public AaModule		{
 	BBM_TRACK( AaWorld );
 
 	//
@@ -77,7 +79,7 @@ private:
 public:
 
 	//! constructor
-	AaWorld				( void );
+	AaWorld				( CommandMap * cmd_map );
 
 protected:
 
@@ -86,11 +88,11 @@ protected:
 	
 protected:
 
-	//! insert all commands (request from AbstractApril)
-	virtual void		insertCommands	( void );
+	//! insert all commands
+	virtual void		insertCommands	( CommandMap * cm );
 
-	//! remove all commands (request from AbstractApril)
-	virtual void		removeCommands	( void );
+	//! remove all commands
+	virtual void		removeCommands	( CommandMap * cm );
 	
 	//! tell your name
 	virtual QString		name			( void );

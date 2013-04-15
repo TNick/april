@@ -24,10 +24,9 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include	"aaworld.h"
-#include	<april/abstracta/abstractapril.h>
-#include	<april/abstracta/commandmap.h>
-#include	<april/abstracta/aatokenizer.h>
-#include	<april/abstracta/aaoutput.h>
+#include	<april/cmd/commandmap.h>
+#include	<april/cmd/aatokenizer.h>
+#include	<april/logic/aaoutput.h>
 #include	<april/logic/world.h>
 #include	<april/aprillibrary.h>
 #include	<QObject>
@@ -151,8 +150,8 @@ static bool		createWorld						(
 
 
 /* ------------------------------------------------------------------------- */
-AaWorld::AaWorld	( void )
-	: AaModule()
+AaWorld::AaWorld	( CommandMap * cmd_map )
+	: AaModule(cmd_map)
 {
 	APRDBG_CDTOR;
 	/* stub */
@@ -168,13 +167,13 @@ AaWorld::~AaWorld	( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void			AaWorld::insertCommands			( void )
+void			AaWorld::insertCommands			( CommandMap * cm )
 {
 /// @cond internal
 
 //! register a command from this package 
 #define addOneCmd(c)	\
-	AbstractApril::addCommand( QObject::tr( "w." stringify(c) ), AaWorld::c##World )
+	cm->addCommand( QObject::tr( "w." stringify(c) ), AaWorld::c##World )
 	
 	addOneCmd(new);
 	addOneCmd(open);
@@ -192,13 +191,13 @@ void			AaWorld::insertCommands			( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void			AaWorld::removeCommands			( void )
+void			AaWorld::removeCommands			( CommandMap * cm )
 {
 /// @cond internal
 
 //! unregister a command from this package @internal
 #define remOneCmd(c)	\
-	AbstractApril::remCommand( QObject::tr( "w." stringify(c) ), AaWorld::c##World );
+	cm->remCommand( QObject::tr( "w." stringify(c) ), AaWorld::c##World );
 
 	remOneCmd(new);
 	remOneCmd(open);

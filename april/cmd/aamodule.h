@@ -4,10 +4,10 @@
   \file			aamodule.h
   \date			Apr 2013
   \author		TNick
-
+  
   \brief		Contains the definition for AaModule class
-
-
+  
+  
 *//*
 
 
@@ -39,6 +39,8 @@ namespace   april    {
 
 class	World;
 class	AaTkString;
+class	AaToken;
+class	CommandMap;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -50,56 +52,63 @@ class	AaTkString;
 /**
 *	@brief	Base class for all modules
 */
-class AaModule		: public libbbb::RefCnt, public MemTrack		{
+class
+	APRILSHARED_EXPORT
+	AaModule		: public libbbb::RefCnt, public MemTrack		{
 	BBM_TRACK( AaModule );
-
+	
 	//
 	//
 	//
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
-
-friend class AbstractApril;
-
+	
 	/*  DEFINITIONS    ===================================================== */
 	//
 	//
 	//
 	//
 	/*  DATA    ------------------------------------------------------------ */
-
+	
 private:
-
-
-
+	
+	//! the CommandMap where we belong
+	CommandMap *			cmd_map_;
+	
 	/*  DATA    ============================================================ */
 	//
 	//
 	//
 	//
 	/*  FUNCTIONS    ------------------------------------------------------- */
-
+	
 public:
-
+	
 	//! constructor
-	AaModule			( void );
+	AaModule			( CommandMap * cmd_map );
 	
 protected:
-
+	
 	//! destructor;
 	virtual				~AaModule		( void );
-
-protected:
-
-	//! insert all commands (request from AbstractApril)
-	virtual void		insertCommands	( void ) = 0;
-
-	//! remove all commands (request from AbstractApril)
-	virtual void		removeCommands	( void ) = 0;
-
+	
+public:
+	
+	//! insert all commands
+	virtual void		insertCommands	( CommandMap * cm ) = 0;
+	
+	//! remove all commands
+	virtual void		removeCommands	( CommandMap * cm ) = 0;
+	
 	//! tell your name
 	virtual QString		name			( void ) = 0;
+	
+	//! the CommandMap where we belong
+	inline CommandMap *	cmdMap			( void ) const 
+	{ return cmd_map_; }
+	
 
+protected:
 	//!@{
 	//! common types of errors
 	static void errorNumberOfArguments(QString &s_err);
@@ -111,12 +120,56 @@ protected:
 	static void errorNoCurrentWorld(QString &s_err);
 	//!@}
 	
+	
+	//! get the string representing command line info for a command
+	static QString		getCLUsage		( const QString & s_name );
+	
+	//! save the usage for a command
+	static bool			setUsage		(
+			const QString &					s_name,
+			const QStringList &				usage,
+			const QStringList &				usage_descr,
+			const QStringList &				opts,
+			const QList<QStringList> &		opts_descr,
+			const QStringList &				obs
+			);
+	
+public:
+
+	//! callback for functions with no arguments
+	typedef QString ( * arg0Func)	( void );
+
+	//! callback for functions with one argument
+	typedef QString ( * arg1Func)	( const QString & s_arg_1, const AaToken & tk1 );
+	
+	
+	
+protected:
+	
+	//! helper for functions with no arguments
+	static bool			funcArg0		(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err,
+			arg0Func				kb
+			);
+	
+	//! helper for functions with one argument
+	static bool			funcArg1		(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err,
+			arg1Func				kb
+			);
+	
+	
+	
 	/*  FUNCTIONS    ======================================================= */
 	//
 	//
 	//
 	//
-
+	
 };	/*	class AaModule	*/
 
 /*  CLASS    =============================================================== */

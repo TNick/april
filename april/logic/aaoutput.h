@@ -1,13 +1,13 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			aaapril.h
+  \file			aaoutput.h
   \date			Apr 2013
   \author		TNick
-
-  \brief		Contains the definition for AaApril class
-
-
+  
+  \brief		Contains the definition for AaOutput class
+  
+  
 *//*
 
 
@@ -17,8 +17,8 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __AAAPRIL_INC__
-#define __AAAPRIL_INC__
+#ifndef __AAOUTPUT_INC__
+#define __AAOUTPUT_INC__
 //
 //
 //
@@ -26,7 +26,6 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include    <april/april.h>
-#include    <april/abstracta/aamodule.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -45,99 +44,103 @@ namespace   april    {
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief	Module that provides commands related to introspection
+*	@brief	Manages the output in abstracta application
 */
-class AaApril		: public AaModule		{
-	BBM_TRACK( AaApril );
-
+class
+	APRILSHARED_EXPORT
+	AaOutput		: public MemTrack		{
+	BBM_TRACK( AaOutput );
+	
 	//
 	//
 	//
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
-
+	
 	/*  DEFINITIONS    ===================================================== */
 	//
 	//
 	//
 	//
 	/*  DATA    ------------------------------------------------------------ */
-
+	
 private:
+	
+	//! the prompt
+	std::string				prompt_string;
 
-
-
+	
+	
+	//! the one and only instance
+	static AaOutput *		uniq_;
+	
 	/*  DATA    ============================================================ */
 	//
 	//
 	//
 	//
 	/*  FUNCTIONS    ------------------------------------------------------- */
-
-public:
-
-	//! constructor
-	AaApril			( void );
-
-protected:
-
-	//! destructor;
-	virtual				~AaApril		( void );
-
-	//! insert all commands (request from AbstractApril)
-	virtual void		insertCommands	( void );
-
-	//! remove all commands (request from AbstractApril)
-	virtual void		removeCommands	( void );
 	
-	//! tell your name
-	virtual QString		name			( void );
-
-private:
-
-	//! list all registered commands
-	static bool			commands		(
-			const QString &			s_cmd,
-			const AaTkString &		atks,
-			QString &				s_err
+public:
+	
+	//! initialise the output system
+	static bool				init				( void );
+	
+	//! terminate the output system
+	static void				end					( void );
+	
+	//! present an informative message
+	static void				showInfo			( const QString & s_msg );
+	
+	//! present an warning message
+	static void				showWarning			( const QString & s_msg );
+	
+	//! present an error message
+	static void				showError			( const QString & s_msg );
+	
+	//! present an informative message
+	static void				showInfo			( 
+			const QString &			s_title,
+			const QString &			s_msg
 			);
-
-	//! list all registered modules
-	static bool			modules			(
-			const QString &			s_cmd,
-			const AaTkString &		atks,
-			QString &				s_err
+	
+	//! present an warning message
+	static void				showWarning			( 
+			const QString &			s_title,
+			const QString &			s_msg
 			);
-
-	//! prints the version
-	static bool			version			(
-			const QString &			s_cmd,
-			const AaTkString &		atks,
-			QString &				s_err
+	
+	//! present an error message
+	static void				showError			( 
+			const QString &			s_title,
+			const QString &			s_msg
 			);
-
-	//! informs about the copyright
-	static bool			copyright			(
-			const QString &			s_cmd,
-			const AaTkString &		atks,
-			QString &				s_err
+	
+	
+	//! present a table
+	static void				showTable			(
+			const QList<QStringList> &	table,
+			bool						has_header,
+			bool						row_index = true
 			);
-
-	//! change the prompt to specified string
-	static bool			prompt			(
-			const QString &			s_cmd,
-			const AaTkString &		atks,
-			QString &				s_err
+	
+	
+	//! change the prompt
+	static void				setPrompt			(
+			const QString &			s_new_prompt	
 			);
-
-
+	
+	//! show the prompt
+	static void				showPrompt			( void );
+	
+	
 	/*  FUNCTIONS    ======================================================= */
 	//
 	//
 	//
 	//
-
-};	/*	class AaApril	*/
+	
+};	/*	class AaOutput	*/
 
 /*  CLASS    =============================================================== */
 //
@@ -147,6 +150,6 @@ private:
 
 }   //  namespace   april
 
-#endif // __AAAPRIL_INC__
+#endif // __AAOUTPUT_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */

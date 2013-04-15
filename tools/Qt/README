@@ -8,12 +8,6 @@ version.pri
 Version information. Gets included in each final product.
 
 
-library-sources.pri
-===================
-
-qmake include file. Groups all the files that compose the library (either static or dynamic). By including these files in a project one can avoid using libraries.
-
-
 local_defs.pri and local_defs.pri.template
 ==========================================
 

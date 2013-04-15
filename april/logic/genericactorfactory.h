@@ -51,7 +51,9 @@ namespace   april    {
 *	The factory simply worls with IDs and DNA. For each DNA registered an
 *	ID is used.
 */
-class GenericActorFactory		: public ActorFactory		{
+class
+		APRILSHARED_EXPORT
+		GenericActorFactory		: public ActorFactory		{
 	BBM_TRACK( GenericActorFactory );
 
 	//

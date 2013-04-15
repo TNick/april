@@ -26,7 +26,7 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include    <april/april.h>
-#include    <april/abstracta/aamodule.h>
+#include    <april/cmd/aamodule.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -47,7 +47,9 @@ namespace   april    {
 /**
 *	@brief	Module that provides commands related to DNA
 */
-class AaDNA		: public AaModule		{
+class
+	APRILSHARED_EXPORT
+	AaDNA		: public AaModule		{
 	BBM_TRACK( AaDNA );
 
 	//
@@ -77,18 +79,18 @@ private:
 public:
 
 	//! constructor
-	AaDNA			( void );
+	AaDNA				( CommandMap * cmd_map );
 
 protected:
 
 	//! destructor;
 	virtual				~AaDNA			( void );
 
-	//! insert all commands (request from AbstractApril)
-	virtual void		insertCommands	( void );
+	//! insert all commands
+	virtual void		insertCommands	( CommandMap * cm );
 
-	//! remove all commands (request from AbstractApril)
-	virtual void		removeCommands	( void );
+	//! remove all commands
+	virtual void		removeCommands	( CommandMap * cm );
 	
 	//! tell your name
 	virtual QString		name			( void );

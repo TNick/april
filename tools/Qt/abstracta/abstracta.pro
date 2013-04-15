@@ -19,9 +19,9 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0
 #######################################################
 LIBS += -L../build
 CONFIG(debug, debug|release) {
-	LIBS += -lbbb_debug -lapril_debug
+	LIBS += -lbbb_debug -lapril_debug -lapril-cmd_debug
 } else {
-	LIBS += -lbbb -lapril
+	LIBS += -lbbb -lapril -lapril-cmd
 }
 
 
@@ -66,29 +66,13 @@ ICON = ../../../april/abstracta/abstracta.icns
 
 SOURCES += \
     ../../../april/abstracta/abstracta-main.cc \
-    ../../../april/abstracta/aaoutput.cc \
-    ../../../april/abstracta/aatokenizer.cc \
-    ../../../april/abstracta/commandmap.cc \
-    ../../../april/abstracta/abstractapril.cc \
-    ../../../april/abstracta/modules/aaworld.cc \
-    ../../../april/abstracta/aamodule.cc \
-    ../../../april/abstracta/modules/aaplugins.cc \
-    ../../../april/abstracta/modules/aaapril.cc \
-    ../../../april/abstracta/modules/aadna.cc
+    ../../../april/abstracta/abstractapril.cc
 
 RESOURCES += \
     ../../../april/abstracta/abstracta.qrc
 
 HEADERS += \
-    ../../../april/abstracta/aaoutput.h \
-    ../../../april/abstracta/aatokenizer.h \
-    ../../../april/abstracta/commandmap.h \
-    ../../../april/abstracta/abstractapril.h \
-    ../../../april/abstracta/modules/aaworld.h \
-    ../../../april/abstracta/aamodule.h \
-    ../../../april/abstracta/modules/aaplugins.h \
-    ../../../april/abstracta/modules/aaapril.h \
-    ../../../april/abstracta/modules/aadna.h
+    ../../../april/abstracta/abstractapril.h
 
 
 

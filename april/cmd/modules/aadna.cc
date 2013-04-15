@@ -24,10 +24,9 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include	"aadna.h"
-#include	<april/abstracta/abstractapril.h>
-#include	<april/abstracta/commandmap.h>
-#include	<april/abstracta/aatokenizer.h>
-#include	<april/abstracta/aaoutput.h>
+#include	<april/cmd/commandmap.h>
+#include	<april/cmd/aatokenizer.h>
+#include	<april/logic/aaoutput.h>
 #include	<april/logic/world.h>
 #include	<april/logic/genericactorfactory.h>
 #include	<april/plugins/aprilplugininterf.h>
@@ -59,8 +58,8 @@ using namespace april;
 /*  CLASS    --------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------------- */
-AaDNA::AaDNA	( void )
-	: AaModule()
+AaDNA::AaDNA	( CommandMap * cmd_map )
+	: AaModule(cmd_map)
 {
 	APRDBG_CDTOR;
 	/* stub */
@@ -76,13 +75,13 @@ AaDNA::~AaDNA	( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void			AaDNA::insertCommands			( void )
+void			AaDNA::insertCommands			( CommandMap * cm )
 {
 	/// @cond internal
 	
 	//! register a command from this package 
 #define addOneCmd(c)	\
-	AbstractApril::addCommand( QObject::tr( "dna." stringify(c) ), AaDNA::c##DNA )
+	cm->addCommand( QObject::tr( "dna." stringify(c) ), AaDNA::c##DNA )
 	
 	addOneCmd(new);
 	addOneCmd(list);
@@ -93,13 +92,13 @@ void			AaDNA::insertCommands			( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void			AaDNA::removeCommands			( void )
+void			AaDNA::removeCommands			( CommandMap * cm )
 {
 	/// @cond internal
 	
 	//! unregister a command from this package @internal
 #define remOneCmd(c)	\
-	AbstractApril::remCommand( QObject::tr( "dna." stringify(c) ), AaDNA::c##DNA );
+	cm->remCommand( QObject::tr( "dna." stringify(c) ), AaDNA::c##DNA );
 	
 	remOneCmd(new);
 	remOneCmd(list);

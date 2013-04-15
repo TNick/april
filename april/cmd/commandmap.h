@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			abstractapril.h
+  \file			commandmap.h
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the definition for AbstractApril class
+  \brief		Contains the definition for CommandMap class
 
 
 *//*
@@ -17,8 +17,8 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __ABSTRACTAPRIL_INC__
-#define __ABSTRACTAPRIL_INC__
+#ifndef __COMMANDMAP_INC__
+#define __COMMANDMAP_INC__
 //
 //
 //
@@ -26,7 +26,7 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include    <april/april.h>
-#include    <april/cmd/commandmap.h>
+#include	<QMap>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -37,7 +37,15 @@
 
 namespace   april    {
 
+class	AaTkString;
 class	AaModule;
+
+//! the definition for a callback used with commands
+typedef	bool	(*cmdCallBack)	(
+		const QString &			s_cmd,
+		const AaTkString &		atks,
+		QString &				s_err
+		);
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -47,10 +55,12 @@ class	AaModule;
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief	Main class for abstracta application
+*	@brief	Class capable  of storing a list of commands and associated callbacks
 */
-class AbstractApril		: public MemTrack		{
-	BBM_TRACK( AbstractApril );
+class
+	APRILSHARED_EXPORT
+	CommandMap		: public MemTrack		{
+	BBM_TRACK( CommandMap );
 
 	//
 	//
@@ -58,6 +68,9 @@ class AbstractApril		: public MemTrack		{
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
 
+	typedef QMap<QString,cmdCallBack>						CmdList;
+	typedef QMap<QString,cmdCallBack>::Iterator				CmdIter;
+	
 	/*  DEFINITIONS    ===================================================== */
 	//
 	//
@@ -67,15 +80,18 @@ class AbstractApril		: public MemTrack		{
 
 private:
 
-	//! map of commands
-	CommandMap					cmd_map;
-	
-	//! application exit code
-	int							exit_code_;
-	
-	//! the one and only instance
-	static AbstractApril *		uniq_;
+	//! the list of commands
+	CmdList						cmd_list_;
 
+	//! should exit?
+	bool						b_exit_;
+	
+	//! the list of modules
+	QList<AaModule*>			modules_;
+	
+	//! default instance	
+	static CommandMap *			def_inst_;
+	
 	/*  DATA    ============================================================ */
 	//
 	//
@@ -83,55 +99,47 @@ private:
 	//
 	/*  FUNCTIONS    ------------------------------------------------------- */
 
-private:
-
-	//! constructor
-	AbstractApril		( void );
-
-	//! destructor;
-	virtual				~AbstractApril		( void );
-
 public:
 
-	//! enter main loop; return program exit code
-	static int			runMainLoop			( const QStringList & sl_init_files );
+	//! constructor
+	CommandMap			( void );
 
-	//! execute the list of commands separated by && then exit
-	static int			executeCommands		( const QString & cmds );
-
-	//! execute the list of commands in the file then exit
-	static int			executeFile			( const QString & cmds );
+	//! destructor;
+	virtual				~CommandMap		( void );
 
 
 	//! add a command to the list; returns false if the string is in use
-	static bool			addCommand			( const QString & s_cmd, cmdCallBack kb );
+	bool				addCommand		( const QString & s_cmd, cmdCallBack kb );
 
 	//! remove a command to from list; returns false if not found or don't match
-	static bool			remCommand			( const QString & s_cmd, cmdCallBack kb );
-
+	bool				remCommand		( const QString & s_cmd, cmdCallBack kb );
+	
 	//! the list of registered commands
-	static QStringList	commands			( void );
-
-	//! execute the command associated with the given string
-	static void			execute				( const QString & s_input )
-	{ uniq_->cmd_map.execute( s_input ); }
+	QStringList			commands		( void ) const;
 
 	//! add an module; appends module's list of commands and appends the module
-	static bool			addModule			( AaModule * m );
+	bool				addModule		( AaModule * m );
 
 	//! add an module; removes module's list of commands and removes the module
-	static bool			remModule			( AaModule * m );
+	bool				remModule		( AaModule * m );
 	
 	//! the list of registered modules
-	static QStringList	modules				( void );
+	QStringList			modules			( void ) const;
 
 	
-private:
+	//! execute the command associated with the given string
+	void				execute			( const QString & s_input );
+	
+	//! should exit?
+	bool				shouldExit		( void ) const
+	{ return b_exit_; }
+	
+	//! should not exit?
+	bool				shouldContinue	( void ) const
+	{ return b_exit_ == false; }
 
-	//! initialisation
-	void				init				( void );
-
-
+	//! default instance
+	static const CommandMap *	defaultInstance	( void );
 
 	/*  FUNCTIONS    ======================================================= */
 	//
@@ -139,7 +147,7 @@ private:
 	//
 	//
 	
-};	/*	class AbstractApril	*/
+};	/*	class CommandMap	*/
 
 /*  CLASS    =============================================================== */
 //
@@ -149,6 +157,6 @@ private:
 
 }   //  namespace   april
 
-#endif // __ABSTRACTAPRIL_INC__
+#endif // __COMMANDMAP_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */

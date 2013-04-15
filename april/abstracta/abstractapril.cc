@@ -4,10 +4,10 @@
   \file			abstractapril.cc
   \date			Apr 2013
   \author		TNick
-
+  
   \brief		Contains the implementation of AbstractApril class
-
-
+  
+  
 *//*
 
 
@@ -25,13 +25,15 @@
 
 #include	"abstractapril.h"
 #include	<iostream>
-#include	"aamodule.h"
-#include	"aaoutput.h"
-#include	"aatokenizer.h"
-#include	"modules/aaapril.h"
-#include	"modules/aaworld.h"
-#include	"modules/aaplugins.h"
-#include	"modules/aadna.h"
+
+#include	<april/cmd/aamodule.h>
+#include	<april/cmd/aatokenizer.h>
+#include	<april/cmd/modules/aaapril.h>
+#include	<april/cmd/modules/aaworld.h>
+#include	<april/cmd/modules/aaplugins.h>
+#include	<april/cmd/modules/aadna.h>
+#include	<april/logic/aaoutput.h>
+
 #include	<QFile>
 
 /*  INCLUDES    ============================================================ */
@@ -63,8 +65,8 @@ AbstractApril *		AbstractApril::uniq_ = NULL;
 /* ------------------------------------------------------------------------- */
 AbstractApril::AbstractApril	( void )
 	: MemTrack(),
-	cmd_map(),
-	exit_code_(0)
+	  cmd_map(),
+	  exit_code_(0)
 {
 	APRDBG_CDTOR;
 	AaOutput::init();
@@ -75,10 +77,6 @@ AbstractApril::AbstractApril	( void )
 AbstractApril::~AbstractApril	( void )
 {
 	APRDBG_CDTOR;
-	foreach( AaModule * itr, modules_ )
-	{
-		DEC_REF(itr,this);
-	}
 	AaOutput::end();
 }
 /* ========================================================================= */
@@ -88,22 +86,22 @@ void			AbstractApril::init					( void )
 {
 	/* load build-in modules */
 	
-	AaApril * module_april = new AaApril();
+	AaApril * module_april = new AaApril( &cmd_map );
 	addModule( module_april );
 	REMOVE_CONSTRUCTOR_REF(module_april);
 	
-	AaWorld * module_w = new AaWorld();
+	AaWorld * module_w = new AaWorld( &cmd_map );
 	addModule( module_w );
 	REMOVE_CONSTRUCTOR_REF(module_w);
-
-	AaPlugIns * module_p = new AaPlugIns();
+	
+	AaPlugIns * module_p = new AaPlugIns( &cmd_map );
 	addModule( module_p );
 	REMOVE_CONSTRUCTOR_REF(module_p);
-
-	AaDNA * module_dna = new AaDNA();
+	
+	AaDNA * module_dna = new AaDNA( &cmd_map );
 	addModule( module_dna );
 	REMOVE_CONSTRUCTOR_REF(module_dna);
-
+	
 }
 /* ========================================================================= */
 
@@ -204,28 +202,14 @@ int				AbstractApril::runMainLoop			(
 /* ------------------------------------------------------------------------- */
 bool			AbstractApril::addModule			( AaModule * m )
 {
-	if ( uniq_->modules_.contains( m ) )
-	{
-		return false;
-	}
-	uniq_->modules_.append( m );
-	m->insertCommands();
-	INC_REF(m,uniq_);
-	return true;
+	return uniq_->cmd_map.addModule( m );
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
 bool			AbstractApril::remModule			( AaModule * m )
 {
-	if ( uniq_->modules_.contains( m ) == false )
-	{
-		return false;
-	}
-	uniq_->modules_.removeOne( m );
-	m->removeCommands();
-	DEC_REF(m,uniq_);
-	return true;
+	return uniq_->cmd_map.remModule( m );
 }
 /* ========================================================================= */
 
@@ -239,14 +223,26 @@ QStringList		AbstractApril::commands				( void )
 /* ------------------------------------------------------------------------- */
 QStringList		AbstractApril::modules				( void )
 {
-	QStringList sl;
-	foreach( AaModule * itr, uniq_->modules_ )
-	{
-		sl.append( itr->name() );
-	}
-	return sl;
+	return uniq_->cmd_map.modules();
 }
 /* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			AbstractApril::addCommand			(
+		const QString & s_cmd, cmdCallBack kb )
+{ 
+	return uniq_->cmd_map.addCommand( s_cmd, kb ); 
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool			AbstractApril::remCommand			(
+		const QString & s_cmd, cmdCallBack kb )
+{ 
+	return uniq_->cmd_map.remCommand( s_cmd, kb );
+}
+/* ========================================================================= */
+
 
 /*  CLASS    =============================================================== */
 //
