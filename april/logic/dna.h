@@ -72,7 +72,7 @@ class
 	friend class DNAView;
 	friend class ActorFactory;
 	
-protected:
+public:
 	
 	
 	//! an entry in the list of partitions
@@ -274,6 +274,10 @@ public:
 	//! get the list of reflexes
 	QList<ID>		reflexes		( void ) const;
 	
+	//! list of regions that partition the list of values
+	QVector<Partition>	partitions	( void ) const
+	{ return parts_; }
+
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
 	

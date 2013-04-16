@@ -53,8 +53,8 @@ class	CommandMap;
 *	@brief	Base class for all modules
 */
 class
-	APRILSHARED_EXPORT
-	AprilModule		: public libbbb::RefCnt, public MemTrack		{
+		APRILSHARED_EXPORT
+		AprilModule		: public libbbb::RefCnt, public MemTrack		{
 	BBM_TRACK( AprilModule );
 	
 	//
@@ -107,7 +107,7 @@ public:
 	inline CommandMap *	cmdMap			( void ) const 
 	{ return cmd_map_; }
 	
-
+	
 public:
 	//!@{
 	//! common types of errors
@@ -117,6 +117,7 @@ public:
 	static void errorEnergyInteger(QString &s_err);
 	static void errorUnknownOprion(QString &s_err, const QString &s_tk);
 	static void errorIntegerExpected(QString &s_err, const QString &s_tk);
+	static void errorIdExpected(QString &s_err, const QString &s_tk);
 	static void errorNoCurrentWorld(QString &s_err);
 	//!@}
 	
@@ -135,17 +136,35 @@ public:
 			const QStringList &				obs
 			);
 	
-
+	
 	//! callback for functions with no arguments
 	typedef QString ( * arg0Func)	( void );
-
+	
 	//! callback for functions with one argument
 	typedef QString ( * arg1Func)	( const QString & s_arg_1, const AaToken & tk1 );
+	
+	//! callback for functions with no arguments and world ewxpectations
+	typedef QString ( * arg0WFunc)	( World * w );
+	
+	//! callback for functions with one argument and world ewxpectations
+	typedef QString ( * arg1WFunc)	( 
+			World *					w, 
+			const QString &			s_arg_1, 
+			const AaToken &			tk1
+			);
 	
 	//! callback for functions that require a default world with 2 args
 	typedef QString ( * argW2Func)	( 
 			World * w, const QString & s_arg_1, const AaToken & tk1,
 			const QString & s_arg_2, const AaToken & tk2 );
+	
+	//! parse argument i and get an unsigned integer
+	static bool			getUIntArg		(
+			const AaTkString &		atks,
+			int						i,
+			QString &				s_err,
+			quint64 *				val
+			);
 	
 protected:
 	
@@ -163,6 +182,22 @@ protected:
 			const AaTkString &		atks,
 			QString &				s_err,
 			arg1Func				kb
+			);
+	
+	//! helper for functions with no arguments and world ewxpectations
+	static bool			funcArg0W		(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err,
+			arg0WFunc				kb
+			);
+	
+	//! helper for functions with one argument and world ewxpectations
+	static bool			funcArg1W		(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err,
+			arg1WFunc				kb
 			);
 	
 	

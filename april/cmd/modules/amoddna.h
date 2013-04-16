@@ -111,6 +111,13 @@ private:
 			QString &				s_err
 			);
 			
+	//! information about a particular DNA
+	static bool			infoDNA			(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err
+			);
+			
 	//! add a sensor to an existing kind
 	static bool			sDNA		(
 			const QString &			s_cmd,

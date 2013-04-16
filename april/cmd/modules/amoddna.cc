@@ -85,6 +85,11 @@ void			AModDNA::insertCommands			( CommandMap * cm )
 	
 	addOneCmd(new);
 	addOneCmd(list);
+	addOneCmd(info);
+	addOneCmd(s);
+	addOneCmd(a);
+	addOneCmd(r);
+	addOneCmd(b);
 	
 #undef addOneCmd
 	//! @endcond
@@ -102,6 +107,12 @@ void			AModDNA::removeCommands			( CommandMap * cm )
 	
 	remOneCmd(new);
 	remOneCmd(list);
+	remOneCmd(info);
+	remOneCmd(s);
+	remOneCmd(a);
+	remOneCmd(r);
+	remOneCmd(b);
+	
 	
 #undef remOneCmd
 	//! @endcond
@@ -124,6 +135,9 @@ bool			AModDNA::newDNA				(
 	
 	int arg_cnt = atks.tk_.count() - 1;
 	QString arg1;
+	QString arg2;
+	QString arg3;
+	QString arg4;
 	DNA::InitData init_d;
 	init_d.cost_ = InvalidId;
 	init_d.cost_ = 10;
@@ -132,7 +146,12 @@ bool			AModDNA::newDNA				(
 	World * w = NULL;
 	for ( ;; )
 	{
-		if ( arg_cnt > 0 )
+		if ( arg_cnt > 4 )
+		{
+			errorNumberOfArguments( s_err );
+			break;
+		}
+		else if ( arg_cnt > 0 )
 		{
 			arg1 = atks.getToken( 1 );
 			if ( arg1 == QObject::tr( "help" ) )
@@ -147,11 +166,19 @@ bool			AModDNA::newDNA				(
 			
 			if ( arg_cnt > 1 )
 			{
+				if ( !AprilModule::getUIntArg( 
+						 atks, 1, s_err, &init_d.cost_ ) )
+					break;
 				if ( arg_cnt > 2 )
 				{
+					if ( !AprilModule::getUIntArg( 
+							 atks, 2, s_err, &init_d.age_ ) )
+						break;
 					if ( arg_cnt > 3 )
 					{
-						/** @todo  */
+						if ( !AprilModule::getUIntArg( 
+								 atks, 3, s_err, &init_d.energy_ ) )
+							break;
 					}
 				}
 			}
@@ -260,7 +287,6 @@ enum do_dna_x_type	{
 	do_dna_x_brain,
 	do_dna_x_reflex
 };
-
 
 static QString	do_dna_x					( 
 		do_dna_x_type ty, World * w, 
@@ -432,6 +458,172 @@ bool			AModDNA::rDNA				(
 }
 /* ========================================================================= */
 
+
+/* ------------------------------------------------------------------------- */
+static QString	do_dna_info					( 
+		World * w, const QString & s_arg_1, const AaToken & tk1 )
+{
+	ID id;
+	QString s;
+	QString s_name;
+	if ( tk1.isInteger() == false )
+	{
+		AprilModule::errorIdExpected( s, s_arg_1 );
+		return s;
+	}
+	bool b;
+	id = s_arg_1.toULongLong( &b );
+	if ( ( b == false ) || ( id == InvalidId ) )
+	{
+		AprilModule::errorIdExpected( s, s_arg_1 );
+		return s;
+	}
+	GenericActorFactory * gf = 
+			GenericActorFactory::findMyself( w );
+	Q_ASSERT( gf != NULL );
+	const DNA & dna = gf->dna( id );
+	if ( dna.isValid() == false )
+	{
+		s = QObject::tr( 
+					"DNA with ID %1 does not exists.\n"
+					).arg( id );
+		DEC_REF(gf,gf);
+		return s;
+	}
+	s.append( QObject::tr( "Information about DNA with ID %1:\n" ).arg( id ) );
+	
+	s.append( QString( 4, QChar( ' ' ) ) );
+	s.append( QObject::tr( "name: " ) );
+	s_name = w->nameForId( id );
+	s.append( s_name.isEmpty() ? QObject::tr( "none" ) : s_name );
+	s.append( QChar( '\n' ) );
+	
+	s.append( QString( 4, QChar( ' ' ) ) );
+	s.append( QObject::tr( "id: " ) );
+	s.append( QString::number( dna.kind() ) );
+	s.append( QChar( '\n' ) );
+	
+	s.append( QString( 4, QChar( ' ' ) ) );
+	s.append( QObject::tr( "cost: " ) );
+	s.append( QString::number( dna.cost() ) );
+	s.append( QChar( '\n' ) );
+	
+	s.append( QString( 4, QChar( ' ' ) ) );
+	s.append( QObject::tr( "energy: " ) );
+	s.append( QString::number( dna.energy() ) );
+	s.append( QChar( '\n' ) );
+	
+	QList<ID> brains = dna.brains();
+	QList<ID> actuators = dna.actuators();
+	QList<ID> sensors = dna.sensors();
+	QList<ID> reflexes = dna.reflexes();
+	QVector<DNA::Partition> partitions = dna.partitions();
+
+	s.append( QString( 4, QChar( ' ' ) ) );
+	s.append( QObject::tr( "sensors: " ) );
+	if ( sensors.count() == 0 )
+	{
+		s.append( QObject::tr( "none\n" ) );
+	}
+	else
+	{
+		s.append( QChar( '\n' ) );
+		foreach( ID iter, sensors ) {
+			s.append( QString( 8, QChar( ' ' ) ) );
+			s.append( QString::number( iter ) );
+			s.append( QString( 2, QChar( ' ' ) ) );
+			s.append( w->nameForId( iter ) );
+			s.append( QChar( '\n' ) );
+		}
+	}
+
+	s.append( QString( 4, QChar( ' ' ) ) );
+	s.append( QObject::tr( "reflexes: " ) );
+	if ( reflexes.count() == 0 )
+	{
+		s.append( QObject::tr( "none\n" ) );
+	}
+	else
+	{
+		s.append( QChar( '\n' ) );
+		foreach( ID iter, reflexes ) {
+			s.append( QString( 8, QChar( ' ' ) ) );
+			s.append( QString::number( iter ) );
+			s.append( QString( 2, QChar( ' ' ) ) );
+			s.append( w->nameForId( iter ) );
+			s.append( QChar( '\n' ) );
+		}
+	}
+	
+	s.append( QString( 4, QChar( ' ' ) ) );
+	s.append( QObject::tr( "brains: " ) );
+	if ( brains.count() == 0 )
+	{
+		s.append( QObject::tr( "none\n" ) );
+	}
+	else
+	{
+		s.append( QChar( '\n' ) );
+		foreach( ID iter, brains ) {
+			s.append( QString( 8, QChar( ' ' ) ) );
+			s.append( QString::number( iter ) );
+			s.append( QString( 2, QChar( ' ' ) ) );
+			s.append( w->nameForId( iter ) );
+			s.append( QChar( '\n' ) );
+		}
+	}
+	
+	s.append( QString( 4, QChar( ' ' ) ) );
+	s.append( QObject::tr( "actuators: " ) );
+	if ( actuators.count() == 0 )
+	{
+		s.append( QObject::tr( "none\n" ) );
+	}
+	else
+	{
+		s.append( QChar( '\n' ) );
+		foreach( ID iter, actuators ) {
+			s.append( QString( 8, QChar( ' ' ) ) );
+			s.append( QString::number( iter ) );
+			s.append( QString( 2, QChar( ' ' ) ) );
+			s.append( w->nameForId( iter ) );
+			s.append( QChar( '\n' ) );
+		}
+	}
+	
+	s.append( QString( 4, QChar( ' ' ) ) );
+	s.append( QObject::tr( "partitions: " ) );
+	if ( partitions.count() == 0 )
+	{
+		s.append( QObject::tr( "none\n" ) );
+	}
+	else
+	{
+		s.append( QChar( '\n' ) );
+		foreach( DNA::Partition iter, partitions ) {
+			s.append( QString( 8, QChar( ' ' ) ) );
+			s.append( QObject::tr( "id: " ) );
+			s.append( QString::number( iter.id_ ) );
+			s.append( QObject::tr( "(%1), " ).arg( w->nameForId( iter.id_ ) ) );
+			s.append( QObject::tr( "start: " ) );
+			s.append( QString::number( iter.start_ ) );
+			s.append( QObject::tr( ", count: " ) );
+			s.append( QString::number( iter.count_ ) );
+			s.append( QChar( '\n' ) );
+		}
+	}
+
+	
+	DEC_REF(gf,gf);
+	return s;
+}
+bool			AModDNA::infoDNA			(
+		const QString & s_cmd, const AaTkString & atks, QString & s_err )
+{
+	Q_ASSERT( s_cmd == "dna.info" );
+	return funcArg1W( s_cmd, atks, s_err, do_dna_info );
+}
+/* ========================================================================= */
 
 
 

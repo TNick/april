@@ -56,7 +56,7 @@ using namespace april;
 /* ------------------------------------------------------------------------- */
 AprilModule::AprilModule	( CommandMap * cmd_map )
 	: libbbb::RefCnt(), MemTrack(),
-	cmd_map_( cmd_map )
+	  cmd_map_( cmd_map )
 {
 	APRDBG_CDTOR;
 	/* stub */
@@ -133,6 +133,17 @@ void		AprilModule::errorIntegerExpected		(
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+void		AprilModule::errorIdExpected		( 
+		QString & s_err, const QString & s_tk )
+{
+	s_err.append(
+				QObject::tr( 
+					"Error! An identificator was expected instead of %1.\n\n"
+					).arg( s_tk) );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
 void		AprilModule::errorNoCurrentWorld		( 
 		QString & s_err )
 {
@@ -142,12 +153,31 @@ void		AprilModule::errorNoCurrentWorld		(
 					) );
 }
 /* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool		AprilModule::getUIntArg ( 
+		const AaTkString & atks, int i, QString & s_err, quint64 * val )
+{
+	if ( ( i < 0 ) || ( i >= atks.tk_.count() ) )
+	{
+		errorNumberOfArguments(s_err);
+		return false;
+	}
+	if ( atks.isInteger( i ) == false )
+		return false;
+	QString s_arg = atks.getToken( i );
+	bool b;
+	*val = s_arg.toULongLong( &b );
+	return b;
+}
+/* ========================================================================= */
+
 /* ------------------------------------------------------------------------- */
 bool		AprilModule::setUsage					( 
-	const QString & s_name, 
-	const QStringList & usage, const QStringList & usage_descr, 
-	const QStringList & opts, const QList<QStringList> & opts_descr, 
-	const QStringList & obs )
+		const QString & s_name, 
+		const QStringList & usage, const QStringList & usage_descr, 
+		const QStringList & opts, const QList<QStringList> & opts_descr, 
+		const QStringList & obs )
 {
 	Q_ASSERT( usage.count() == usage_descr.count() );
 	Q_ASSERT( opts.count() == opts_descr.count() );
@@ -303,6 +333,48 @@ bool		AprilModule::funcArg0					(
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+bool		AprilModule::funcArg0W					(
+		const QString & s_cmd, const AaTkString & atks, 
+		QString & s_err, AprilModule::arg0WFunc kb )
+{
+	Q_ASSERT( atks.tk_.count() >= 1 );
+	Q_ASSERT( kb != NULL );
+	int arg_cnt = atks.tk_.count() - 1;
+	QString arg1;
+	for ( ;; )
+	{
+		if ( arg_cnt == 0 )
+		{
+			World * w = AprilLibrary::crtWorld();
+			if ( w == NULL )
+			{
+				AprilModule::errorNoCurrentWorld( s_err );
+				return false;
+			}
+			s_err.append( kb(w) );
+			return false;
+		}
+		else if ( arg_cnt == 1 )
+		{
+			arg1 = atks.getToken( 1 );
+			if ( arg1 == QObject::tr( "help" ) )
+				break;
+			errorUnknownOprion( s_err, arg1 );
+			break;
+		}
+		else
+		{
+			errorNumberOfArguments( s_err );
+			break;
+		}
+	}
+	/* print the usage */
+	s_err.append( getCLUsage( s_cmd ) );
+	return false;	
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
 bool		AprilModule::funcArg1					(
 		const QString & s_cmd, const AaTkString & atks, 
 		QString & s_err, AprilModule::arg1Func kb )
@@ -330,11 +402,44 @@ bool		AprilModule::funcArg1					(
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+bool		AprilModule::funcArg1W					(
+		const QString & s_cmd, const AaTkString & atks, 
+		QString & s_err, AprilModule::arg1WFunc kb )
+{
+	Q_ASSERT( atks.tk_.count() >= 1 );
+	Q_ASSERT( kb != NULL );
+	int arg_cnt = atks.tk_.count() - 1;
+	
+	for ( ;; )
+	{
+		if ( arg_cnt != 1 )
+		{
+			errorOneArgumentExpected ( s_err );
+			break;
+		}
+		QString arg1 = atks.getToken( 1 );
+		if ( arg1 == QObject::tr( "help" ) )
+			break;
+		World * w = AprilLibrary::crtWorld();
+		if ( w == NULL )
+		{
+			AprilModule::errorNoCurrentWorld( s_err );
+			return false;
+		}
+		s_err.append( kb( w, arg1, atks.tk_.at( 1 ) ) );
+		return false;
+	}
+	s_err.append( getCLUsage( s_cmd ) );
+	return false;	
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
 bool		AprilModule::funcArg_W2					(
 		const QString & s_cmd, const AaTkString & atks, 
 		QString & s_err, AprilModule::argW2Func kb )
 {
-
+	
 	Q_ASSERT( atks.tk_.count() >= 1 );
 	int arg_cnt = atks.tk_.count() - 1;
 	QString arg1;
@@ -348,7 +453,11 @@ bool		AprilModule::funcArg_W2					(
 				AprilModule::errorNoCurrentWorld( s_err );
 				return false;
 			}
-			
+			s_err.append( kb( w, atks.getToken(1),
+							  atks.tk_.at(1),
+							  atks.getToken(2),
+							  atks.tk_.at(2) ) );
+			return false;
 		}
 		else if ( arg_cnt == 1 )
 		{
