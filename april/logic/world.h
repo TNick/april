@@ -428,6 +428,17 @@ public:
 	//! first in the list of actors (alive or recently dead)
 	Actor *			firstActor			( void ) const;
 
+	//! get nth actor (NULL if out of bounds)
+	Actor *			actorAt				( int i ) const;
+
+	//! an actor is being killed and its energy transferred to world
+	/**
+	 * This is simply a shortcut to Actor::killMe
+	 * @param a The actor to kill
+	 * @return true if everything went well (well, bad for the actor)
+	 */
+	bool			killActor			( Actor * a );
+	
 protected:
 
 	//! used by the Actor class to insert itself

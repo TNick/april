@@ -190,6 +190,16 @@ public:
 	//! associated factory, if any
 	virtual Factory *	factory					( void ) const;
 	
+protected:
+
+	//! kill the actor; both the actor and the world use this method
+	/**
+	 * The world is informed using World::actorDies(). Any remaining energy 
+	 * remaining inside is taken by the world.
+	 */
+	void				killMe					( void );
+	
+	
 	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
 	/** @name Allow access to components
 	 */
@@ -274,7 +284,7 @@ public:
 	inline quint64		toLive					( void ) const
 	{ return death_-birth_; }
 	
-	//! energy reserve
+	//! own energy reserve
 	quint64				energy					( void ) const
 	{ return energy_; }
 	
@@ -339,9 +349,9 @@ protected:
 	void				makeAlive				( void );
 
 	//! total energy packed in this agent (the agent itself and the compoenets)
-	quint64				totalEnergy				( void );
+	quint64				totalEnergy				( void ) const;
 
-	//! make the actor alive (used by the world to initialise actor)
+	//! set total energy (used by the world to initialise and terminate actor)
 	void				setEnergy				( quint64 new_val )
 	{ energy_ = new_val; }
 

@@ -100,7 +100,7 @@ World::World	( const QString & name, quint64 tot_energ )
 #include <QDir>
 /* ------------------------------------------------------------------------- */
 World *			World::fromStg			( 
-	const QString & s_file, QString & s_err )
+		const QString & s_file, QString & s_err )
 { FUNC_ENTRY;
 	
 	QFile f( s_file );
@@ -175,7 +175,7 @@ World::~World	( void )
 	}
 	
 	/* ...... */
-/// @cond internal
+	/// @cond internal
 #	define	discardFactory(f,F) \
 	QMap<ID,F*>::ConstIterator itr_##f =f##_factories_.constBegin();\
 	QMap<ID,F*>::ConstIterator itr_end_##f = f##_factories_.constEnd();\
@@ -193,7 +193,7 @@ World::~World	( void )
 	discardFactory(reflex,ReflexFactory);
 	
 #	undef	discardFactory
-/// @endcond
+	/// @endcond
 	
 	QMap<ID,EventLine*>::ConstIterator itr_event_lines = event_lines_.constBegin();
 	QMap<ID,EventLine*>::ConstIterator itr_end_event_lines = event_lines_.constEnd();
@@ -226,6 +226,23 @@ bool				World::setTotEnergy			( quint64 new_val )
 Actor *				World::firstActor			( void ) const
 {
 	return firstActor_(this);
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+Actor *				World::actorAt				( int i ) const
+{
+	return static_cast<Actor*>( actors_.item( i ) );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool				World::killActor			( Actor * a )
+{ FUNC_ENTRY;
+	if ( a == NULL )
+		return false;
+	a->killMe();
+	return true;
 }
 /* ========================================================================= */
 
@@ -568,7 +585,7 @@ Actor *				World::createActor			( ID id_kind )
 		}
 		else
 		{ /* we have a proper actor */
-			quint64 e = ret->dna().energy();
+			quint64 e = ret->totalEnergy();
 			if ( e > energy_free_ )
 			{
 				DEC_REF( ret, ret );
@@ -577,7 +594,7 @@ Actor *				World::createActor			( ID id_kind )
 			}
 			else
 			{
-				ret->setEnergy( e );
+				energy_free_ -= e;
 				ret->makeAlive();
 				ret->inserted();
 			}
@@ -643,6 +660,31 @@ Reflex *			World::createReflex			( Actor * actor, ID id )
 /* ------------------------------------------------------------------------- */
 void				World::actorDies			( Actor * actor )
 { FUNC_ENTRY;
+	
+	/* get any energy left inside and transfer it to the world */
+	energy_free_ += actor->energy();
+	actor->setEnergy( 0 );
+	
+	
+	/// @cond internal
+	
+#define harvestEnergyX(X)	           \
+	X * X##_itr = actor->first##X();   \
+	while ( X##_itr != NULL ) {        \
+	energy_free_ += X##_itr->energy(); \
+	X##_itr->setEnergy( 0 );           \
+	X##_itr = next##X##_(X##_itr);     \
+}
+	
+	/* same for all its components */
+	harvestEnergyX(Sensor);
+	harvestEnergyX(Actuator);
+	harvestEnergyX(Reflex);
+	harvestEnergyX(Brain);
+	
+#undef harvestEnergyX
+	/// @endcond
+	
 	/* may decide to keep it arround */
 	remActor( actor );
 }
@@ -770,7 +812,7 @@ bool				World::save				( QSettings & stg ) const
 		}
 		stg.endArray();
 		if ( !b ) { _LG_("  events_ failed"); break; }
-	
+		
 		stg.beginWriteArray( "event_lines_", event_lines_.count() );
 		i_cnt = 0;
 		QMap<ID,EventLine*>::ConstIterator itr_event_lines = event_lines_.constBegin();
@@ -800,7 +842,7 @@ bool				World::save				( QSettings & stg ) const
 	return b;
 	
 #	undef	saveFactory
-
+	
 }
 /* ========================================================================= */
 
@@ -853,33 +895,33 @@ bool				World::load				( QSettings & stg )
 		b = b & uid_.load( stg );
 		if ( !b ) break;
 		
-//		i_cnt = stg.beginReadArray( "actor_factories_" ); 
-//		for ( int i = 0; i < i_cnt; i++ ) {
-//			stg.setArrayIndex( i );
-//			factory_name = stg.value( "factory_name" ).toString();
-//			id = stg.value( "factory_id" ).toULongLong( &b );
-//			if ( !b ) break;
-//			f = AprilLibrary::factoryForString( this, factory_name );
-//			if ( f == NULL )
-//			{ b = false; break; }
-//			else if ( f->factoryType() != FTyActor )
-//			{ DEC_REF(f,f); b = false; break; }
-//			af = static_cast<ActorFactory*>(f);
-//			addActorFactory( af, id );
-//			DEC_REF(f,f);
-//			b = b & af->load( stg );
-//			if ( !b ) break;
-//		}
-//		stg.endArray();
-//		if ( !b ) break;
-
+		//		i_cnt = stg.beginReadArray( "actor_factories_" ); 
+		//		for ( int i = 0; i < i_cnt; i++ ) {
+		//			stg.setArrayIndex( i );
+		//			factory_name = stg.value( "factory_name" ).toString();
+		//			id = stg.value( "factory_id" ).toULongLong( &b );
+		//			if ( !b ) break;
+		//			f = AprilLibrary::factoryForString( this, factory_name );
+		//			if ( f == NULL )
+		//			{ b = false; break; }
+		//			else if ( f->factoryType() != FTyActor )
+		//			{ DEC_REF(f,f); b = false; break; }
+		//			af = static_cast<ActorFactory*>(f);
+		//			addActorFactory( af, id );
+		//			DEC_REF(f,f);
+		//			b = b & af->load( stg );
+		//			if ( !b ) break;
+		//		}
+		//		stg.endArray();
+		//		if ( !b ) break;
+		
 		loadFactory(actor,ActorFactory,FTyActor);
 		loadFactory(actuator,ActuatorFactory,FTyActuator);
 		loadFactory(brain,BrainFactory,FTyBrain);
 		loadFactory(sensor,SensorFactory,FTySensor);
 		loadFactory(event,EventFactory,FTyEvent);
 		loadFactory(reflex,ReflexFactory,FTyReflex);
-
+		
 		i_cnt = stg.beginReadArray( "actors_" );
 		for ( int i = 0; i < i_cnt; i++ )
 		{
@@ -896,12 +938,12 @@ bool				World::load				( QSettings & stg )
 		stg.endArray();
 		if ( !b ) break;
 		// EventSource::fromStg()
-
+		
 		break;
 	}
 	stg.endGroup();
 	return b;
-
+	
 #	undef	loadFactory
 	
 	
@@ -986,11 +1028,11 @@ bool		World::saveAsStg			(
 
 /// @cond internal
 #define findFactory(ty,var)	\
-ty##Factory*	World::find##ty##Factory	( const QString & s_name ) {             \
+	ty##Factory*	World::find##ty##Factory	( const QString & s_name ) {             \
 	QMap<ID,ty##Factory*>::ConstIterator	itr = var.constBegin();                  \
 	QMap<ID,ty##Factory*>::ConstIterator	itr_e = var.constEnd();                  \
 	while ( itr != itr_e )                                                           \
-		{ if ( itr.value()->factoryName() == s_name ) return itr.value(); itr++; }           \
+{ if ( itr.value()->factoryName() == s_name ) return itr.value(); itr++; }           \
 	return NULL; }
 
 findFactory(Actor,actor_factories_)

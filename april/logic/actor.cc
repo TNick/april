@@ -216,6 +216,7 @@ bool			Actor::decodeDNA				( void )
 	/* cache some values */
 	kind_ = dna_.kind();
 	cost_ = dna_.cost();
+	energy_ = dna_.energy();
 	
 	Brain * itr_brain;
 	foreach( ID itr, dna_.brains() )
@@ -364,8 +365,7 @@ void				Actor::doSteps					( int steps )
 	age_ += steps;
 	if ( dies() )
 	{
-		world_->actorDies( this );
-		alive_ = false;
+		killMe();
 		return;
 	}
 	
@@ -462,7 +462,7 @@ void				Actor::makeAlive				( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-quint64				Actor::totalEnergy				( void )
+quint64				Actor::totalEnergy				( void ) const
 { FUNC_ENTRY;
 	quint64 ret = energy_;
 	Sensor * itr_sens = firstSensor_(this);
@@ -585,77 +585,28 @@ bool				Actor::save						( QSettings & stg ) const
 		b = b & dna_.save( stg );
 		if ( !b ) { _LG_("  dna_ fails"); break; }
 		
-/// @cond internal
-
+		/// @cond internal
+		
 #define saveActorComp(slist,cls)								    \
-		stg.beginWriteArray( stringify(slist), slist.count() );     \
-		cls * itr_##cls = first##cls##_(this);                       \
-		i = 0;                                                      \
-		while ( itr_##cls != NULL ) {                                \
-			stg.setArrayIndex( i );                                 \
-			b = b & itr_##cls->save( stg );                          \
-			itr_##cls = next##cls##_(itr_##cls);                      \
-			i++;                                                    \
-		}                                                           \
-		stg.endArray();                                             \
-		if ( !b ) break
+	stg.beginWriteArray( stringify(slist), slist.count() );     \
+	cls * itr_##cls = first##cls##_(this);                       \
+	i = 0;                                                      \
+	while ( itr_##cls != NULL ) {                                \
+	stg.setArrayIndex( i );                                 \
+	b = b & itr_##cls->save( stg );                          \
+	itr_##cls = next##cls##_(itr_##cls);                      \
+	i++;                                                    \
+	}                                                           \
+	stg.endArray();                                             \
+	if ( !b ) break
 		
 		saveActorComp(sensors_,Sensor);
 		saveActorComp(actuators_,Actuator);
 		saveActorComp(reflexes_,Reflex);
 		saveActorComp(brains_,Brain);
 #undef	saveActorComp
-
-/// @endcond
-
-//		stg.beginWriteArray( "sensors_", sensors_.count() );
-//		Sensor * itr_sens = firstSensor_(this);
-//		i = 0;
-//		while ( itr_sens != NULL )
-//		{
-//			stg.setArrayIndex( i );
-//			b = b & itr_sens->save( stg );
-//			itr_sens = nextSensor_(itr_sens);
-//			i++;
-//		}
-//		stg.endArray();
-//		if ( !b ) break;
 		
-		
-		/*
-		
-		stg.beginWriteArray( "actuators_", actuators_.count() );
-		Actuator * itr_act = firstActuator_(this);
-		while ( itr_act != NULL )
-		{
-			b = b & itr_act->save( stg );
-			itr_act = nextActuator_(itr_act);
-		}
-		stg.endArray();
-		if ( !b ) break;
-		
-		stg.beginWriteArray( "reflexes_", reflexes_.count() );
-		Reflex * itr_refl = firstReflex_(this);
-		while ( itr_refl != NULL )
-		{
-			b = b & itr_refl->save( stg );
-			itr_refl = nextReflex_(itr_refl);
-		}
-		stg.endArray();
-		if ( !b ) break;
-		
-		stg.beginWriteArray( "brains_", brains_.count() );
-		Brain * itr_brn = firstBrain_(this);
-		while ( itr_brn != NULL )
-		{
-			b = b & itr_brn->save( stg );
-			itr_brn = nextBrain_(itr_brn);
-		}
-		stg.endArray();
-		if ( !b ) break;
-		
-		
-		*/
+		/// @endcond
 		
 		stg.setValue( "birth_", birth_ );
 		stg.setValue( "death_", death_ );
@@ -664,7 +615,7 @@ bool				Actor::save						( QSettings & stg ) const
 		stg.setValue( "alive_", alive_ );
 		// the kind is present in DNA
 		// the cost is present in DNA
-
+		
 		b = b & Component::save( stg );
 		_LG2_("  Component: ",b);
 		
@@ -703,47 +654,47 @@ bool				Actor::load						( QSettings & stg )
 		kind_ = dna_.kind(); // the kind is present in DNA
 		cost_ = dna_.cost(); // the cost is present in DNA
 		
-/// @cond internal
+		/// @cond internal
 		
-#define loadActorComp(slist,cls)							    \
-		i_cnt = stg.beginReadArray( stringify(slist) );         \
-		for ( int i = 0; i < i_cnt; i++ ) {                     \
-			stg.setArrayIndex( i );                             \
-			cls * act = cls::fromStg( this, stg );              \
-			if ( act == NULL ) {                                \
-				b = false;                                      \
-				_LG2_( "  " stringify(slist) " fails: ",i);     \
-				break;                                          \
-			}                                                   \
-			DEC_REF(act,act);                                   \
-		}                                                       \
-		stg.endArray();                                         \
-		if ( !b ) break
-				
+#define loadActorComp(slist,cls)                        \
+	i_cnt = stg.beginReadArray( stringify(slist) );	    \
+	for ( int i = 0; i < i_cnt; i++ ) {                 \
+	stg.setArrayIndex( i );                             \
+	cls * act = cls::fromStg( this, stg );              \
+	if ( act == NULL ) {                                \
+	b = false;                                          \
+	_LG2_( "  " stringify(slist) " fails: ",i);         \
+	break;                                              \
+	}                                                   \
+	DEC_REF(act,act);                                   \
+	}                                                   \
+	stg.endArray();                                     \
+	if ( !b ) break
+		
 		loadActorComp(sensors_,Sensor);
 		loadActorComp(actuators_,Actuator);
 		loadActorComp(reflexes_,Reflex);
 		loadActorComp(brains_,Brain);
 #undef	loadActorComp
-
-/// @endcond
-
-//		i_cnt = stg.beginReadArray( "sensors_" );
-//		for ( int i = 0; i < i_cnt; i++ )
-//		{
-//			stg.setArrayIndex( i );
-//			Sensor * act = Sensor::fromStg( this, stg );
-//			if ( act == NULL )
-//			{
-//				b = false;
-//				_LG2_("  sensor fails: ",i);
-//				break;
-//			}
-//			DEC_REF(act,act);
-//		}
-//		stg.endArray();
-//		if ( !b ) break;
-
+		
+		/// @endcond
+		
+		//		i_cnt = stg.beginReadArray( "sensors_" );
+		//		for ( int i = 0; i < i_cnt; i++ )
+		//		{
+		//			stg.setArrayIndex( i );
+		//			Sensor * act = Sensor::fromStg( this, stg );
+		//			if ( act == NULL )
+		//			{
+		//				b = false;
+		//				_LG2_("  sensor fails: ",i);
+		//				break;
+		//			}
+		//			DEC_REF(act,act);
+		//		}
+		//		stg.endArray();
+		//		if ( !b ) break;
+		
 		
 		break;
 	}
@@ -766,6 +717,13 @@ Factory *			Actor::factory				( void ) const
 }
 /* ========================================================================= */
 
+/* ------------------------------------------------------------------------- */
+void				Actor::killMe				( void )
+{
+	world_->actorDies( this );
+	alive_ = false;
+}
+/* ========================================================================= */
 
 /*  CLASS    =============================================================== */
 //

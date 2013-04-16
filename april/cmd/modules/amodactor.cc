@@ -28,6 +28,7 @@
 #include	<april/logic/world.h>
 #include	<april/logic/actor.h>
 #include	<april/logic/genericactorfactory.h>
+#include	<april/logic/aoutput.h>
 #include	<april/cmd/apriltokenizer.h>
 #include	<april/cmd/commandmap.h>
 #include	<QObject>
@@ -182,18 +183,30 @@ static QString	do_actor_list					( World * w )
 	}
 	else
 	{
+		QList<QStringList>	datao;
+		QStringList			sl;
+		sl.append( QObject::tr( "ID" ) );
+		sl.append( QObject::tr( "Name" ) );
+		sl.append( QObject::tr( "Birth" ) );
+		sl.append( QObject::tr( "Death" ) );
+		sl.append( QObject::tr( "Age" ) );
+		sl.append( QObject::tr( "Energy" ) );
+		datao.append( sl ); sl.clear();
+		
 		while ( itr != NULL )
 		{
-			s.append( QObject::tr( "    id %1 (%2), birth: %3, death: %4, age: %5, energy: %6\n" )
-					  .arg( itr->kind() )
-					  .arg( itr->kindName() )
-					  .arg( itr->birth() )
-					  .arg( itr->death() )
-					  .arg( itr->age() )
-					  .arg( itr->energy() )
-					  );
+			sl.append( QString::number( itr->kind() ) );
+			sl.append( itr->kindName() );
+			sl.append( QString::number( itr->birth() ) );
+			sl.append( QString::number( itr->death() ) );
+			sl.append( QString::number( itr->age() ) );
+			sl.append( QString::number( itr->energy() ) );
+			datao.append( sl ); sl.clear();
 			itr = nextActor_(itr);
 		}
+		AOutput::showInfo( s );
+		AOutput::showTable( datao, true );
+		s.clear();
 	}
 	return s;
 }
@@ -206,14 +219,41 @@ bool			AModActor::listActor		(
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+static QString	do_kill_actor				( 
+		World * w, const QString & s_arg_1, const AaToken & tk1 )
+{
+	QString s;
+	if ( tk1.isInteger() == true )
+	{
+		bool b;
+		int idx = s_arg_1.toULongLong( &b );
+		if ( b && ( idx >= 0 ) )
+		{
+			Actor * a = w->actorAt( idx );
+			if ( a == NULL )
+			{
+				s = QObject::tr( 
+							"There is no actor at index %1.\n"
+							).arg( idx );
+			}
+			else
+			{
+				w->killActor( a );
+				s = QObject::tr( 
+							"Actor at index %1 was killed.\n"
+							).arg( idx );
+			}
+			return s;
+		}
+	}
+	AprilModule::errorIntegerExpected( s, s_arg_1 );
+	return s;	
+}
 bool			AModActor::killActor		(
 		const QString & s_cmd, const AaTkString & atks, QString & s_err )
 {
 	Q_ASSERT( s_cmd == "a.kill" );
-	
-	
-	
-	return false;
+	return funcArg1W( s_cmd, atks, s_err, do_kill_actor );
 }
 /* ========================================================================= */
 

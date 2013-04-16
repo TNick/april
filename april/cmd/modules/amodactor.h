@@ -45,7 +45,7 @@ namespace   april    {
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief
+*	@brief	Module that provides commands related to actors
 */
 class
 	APRILSHARED_EXPORT
