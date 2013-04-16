@@ -26,13 +26,14 @@
 #include	"abstractapril.h"
 #include	<iostream>
 
+#include	<april/logic/aoutput.h>
 #include	<april/cmd/aprilmodule.h>
 #include	<april/cmd/apriltokenizer.h>
 #include	<april/cmd/modules/amodapril.h>
 #include	<april/cmd/modules/amodworld.h>
 #include	<april/cmd/modules/amodplugins.h>
 #include	<april/cmd/modules/amoddna.h>
-#include	<april/logic/aoutput.h>
+#include	<april/cmd/modules/amodid.h>
 
 #include	<QFile>
 
@@ -101,6 +102,10 @@ void			AbstractApril::init					( void )
 	AModDNA * module_dna = new AModDNA( &cmd_map );
 	addModule( module_dna );
 	REMOVE_CONSTRUCTOR_REF(module_dna);
+	
+	AModId * module_id = new AModId( &cmd_map );
+	addModule( module_id );
+	REMOVE_CONSTRUCTOR_REF(module_id);
 	
 }
 /* ========================================================================= */

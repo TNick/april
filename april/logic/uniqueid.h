@@ -149,6 +149,9 @@ public:
 	//! generate an unique name based on a pattern
 	QString			createName		( const QString & s_pattern );
 
+	//! allocated keys
+	QList<ID>		ids				( void ) const
+	{ return map_.keys(); }
 
 	/*  FUNCTIONS    ======================================================= */
 	//

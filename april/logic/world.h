@@ -410,6 +410,10 @@ public:
 	QString			createIdName	( const QString & s_pattern )
 	{ return uid_.createName( s_pattern ); }
 
+	//! allocated ids
+	QList<ID>		allocatedIds	( void ) const
+	{ return uid_.ids(); }
+
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
 
