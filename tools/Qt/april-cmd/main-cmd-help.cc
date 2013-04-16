@@ -266,7 +266,21 @@ int			main			( int argc, char *argv[] )
 				QStringList()
 				);
 	/* 000000000000000000000000000000000000000000000000000000000000000000000 */
-
+	april::AprilModule::setUsage( 
+				"a.new",
+				QStringList()
+				<< NO_ARGUMENT
+				<< "<kind>",
+				QStringList() 
+				<< "the kind of the actor to produce",
+				QStringList(),
+				QList<QStringList>(),
+				QStringList() 
+				<< "The kind must be one that has an associated DNA."
+				<< "The energy for the actor is taken from the free"
+				<< "energy of the world."
+				);
+	/* 000000000000000000000000000000000000000000000000000000000000000000000 */
 
 	/* --------------------------------------------------------------------- */
 	/* now read 'em */

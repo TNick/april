@@ -34,6 +34,7 @@
 #include	<april/cmd/modules/amodplugins.h>
 #include	<april/cmd/modules/amoddna.h>
 #include	<april/cmd/modules/amodid.h>
+#include	<april/cmd/modules/amodactor.h>
 
 #include	<QFile>
 
@@ -106,6 +107,10 @@ void			AbstractApril::init					( void )
 	AModId * module_id = new AModId( &cmd_map );
 	addModule( module_id );
 	REMOVE_CONSTRUCTOR_REF(module_id);
+	
+	AModActor * module_a = new AModActor( &cmd_map );
+	addModule( module_a );
+	REMOVE_CONSTRUCTOR_REF(module_a);
 	
 }
 /* ========================================================================= */

@@ -69,7 +69,8 @@ SOURCES += \
     ../../../april/cmd/modules/amoddna.cc \
     ../../../april/cmd/modules/amodplugins.cc \
     ../../../april/cmd/modules/amodworld.cc \
-    ../../../april/cmd/modules/amodid.cc
+    ../../../april/cmd/modules/amodid.cc \
+    ../../../april/cmd/modules/amodactor.cc
 
 HEADERS += \
     ../../../april/cmd/commandmap.h \
@@ -79,5 +80,6 @@ HEADERS += \
     ../../../april/cmd/modules/amoddna.h \
     ../../../april/cmd/modules/amodplugins.h \
     ../../../april/cmd/modules/amodworld.h \
-    ../../../april/cmd/modules/amodid.h
+    ../../../april/cmd/modules/amodid.h \
+    ../../../april/cmd/modules/amodactor.h
 
