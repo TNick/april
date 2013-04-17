@@ -111,7 +111,7 @@ void		AprilModule::errorEnergyInteger			( QString & s_err )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void		AprilModule::errorUnknownOprion			( 
+void		AprilModule::errorUnknownOption			( 
 		QString & s_err, const QString & s_tk )
 {
 	s_err.append(
@@ -317,7 +317,7 @@ bool		AprilModule::funcArg0					(
 			arg1 = atks.getToken( 1 );
 			if ( arg1 == QObject::tr( "help" ) )
 				break;
-			errorUnknownOprion( s_err, arg1 );
+			errorUnknownOption( s_err, arg1 );
 			break;
 		}
 		else
@@ -359,7 +359,7 @@ bool		AprilModule::funcArg0W					(
 			arg1 = atks.getToken( 1 );
 			if ( arg1 == QObject::tr( "help" ) )
 				break;
-			errorUnknownOprion( s_err, arg1 );
+			errorUnknownOption( s_err, arg1 );
 			break;
 		}
 		else
@@ -464,7 +464,7 @@ bool		AprilModule::funcArg_W2					(
 			arg1 = atks.getToken( 1 );
 			if ( arg1 == QObject::tr( "help" ) )
 				break;
-			errorUnknownOprion( s_err, arg1 );
+			errorUnknownOption( s_err, arg1 );
 			break;
 		}
 		else
@@ -478,6 +478,136 @@ bool		AprilModule::funcArg_W2					(
 	return false;	
 }
 /* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool		AprilModule::funcArg_A0					(
+		const QString & s_cmd, const AaTkString & atks, 
+		QString & s_err, AprilModule::argA0Func kb )
+{
+	Q_ASSERT( atks.tk_.count() >= 1 );
+	int arg_cnt = atks.tk_.count() - 1;
+	QString arg1;
+	bool b;
+	for ( ;; )
+	{
+		if ( arg_cnt != 1 )
+		{
+			errorOneArgumentExpected ( s_err );
+			break;
+		}
+		arg1 = atks.getToken( 1 );
+		if ( arg1 == QObject::tr( "help" ) )
+			break;
+		World * w = AprilLibrary::crtWorld();
+		if ( w == NULL )
+		{
+			AprilModule::errorNoCurrentWorld( s_err );
+			return false;
+		}
+		if ( atks.tk_.at( 1 ).isInteger() )
+		{
+			int aidx = arg1.toInt( &b );
+			if ( b && ( aidx >= 0 ) )
+			{
+				Actor * a = w->actorAt( aidx );
+				if ( a == NULL )
+				{
+					s_err.append( QObject::tr( 
+									  "There is no actor at index %1.\n"
+									  ).arg( aidx ) );
+				}
+				else
+				{
+					s_err.append( kb(a) );
+				}
+				return false;
+			}
+		}
+		errorIntegerExpected( s_err, arg1 );
+		break;
+	}
+	/* print the usage */
+	s_err.append( getCLUsage( s_cmd ) );
+	return false;	
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+bool		AprilModule::funcArg_AID					(
+		const QString & s_cmd, const AaTkString & atks, 
+		QString & s_err, AprilModule::argAIdFunc kb )
+{
+	Q_ASSERT( atks.tk_.count() >= 1 );
+	int arg_cnt = atks.tk_.count() - 1;
+	QString arg1;
+	QString arg2;
+	bool b;
+	for ( ;; )
+	{
+		if ( arg_cnt == 1 )
+		{
+			arg1 = atks.getToken( 1 );
+			if ( arg1 == QObject::tr( "help" ) )
+				break;
+			errorUnknownOption( s_err, arg1 );
+			break;
+		}
+		else if ( arg_cnt == 2 )
+		{
+			arg1 = atks.getToken( 1 );
+			World * w = AprilLibrary::crtWorld();
+			if ( w == NULL )
+			{
+				AprilModule::errorNoCurrentWorld( s_err );
+				return false;
+			}
+			if ( atks.tk_.at( 1 ).isInteger() )
+			{
+				int aidx = arg1.toInt( &b );
+				if ( b && ( aidx >= 0 ) )
+				{
+					Actor * a = w->actorAt( aidx );
+					if ( a == NULL )
+					{
+						s_err.append( 
+									QObject::tr( 
+										"There is no actor at index %1.\n"
+										).arg( aidx ) );
+						return false;
+					}
+					else
+					{
+						arg2 = atks.getToken( 1 );
+						if ( atks.tk_.at( 2 ).isInteger() )
+						{
+							ID id = arg2.toInt( &b );
+							if ( b && ( id != InvalidId ) )
+							{
+								s_err.append( kb(a,id) );
+								return false;
+							}
+						}
+						errorIdExpected( s_err, arg2 );
+						break;
+					}
+				}
+			}
+			errorIntegerExpected( s_err, arg1 );
+			break;
+		}
+		else
+		{
+			errorNumberOfArguments( s_err );
+			break;
+		}
+		Q_ASSERT( false );
+	}
+	/* print the usage */
+	s_err.append( getCLUsage( s_cmd ) );
+	return false;	
+}
+/* ========================================================================= */
+
 
 
 /*  CLASS    =============================================================== */

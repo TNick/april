@@ -47,7 +47,9 @@ namespace   april    {
 /**
 *	@brief	Module that provides commands related to sensors
 */
-class AModSensor		: public AprilModule		{
+class
+	APRILSHARED_EXPORT
+	AModSensor		: public AprilModule		{
 	BBM_TRACK( AModSensor );
 
 	//

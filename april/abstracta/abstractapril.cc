@@ -35,6 +35,10 @@
 #include	<april/cmd/modules/amoddna.h>
 #include	<april/cmd/modules/amodid.h>
 #include	<april/cmd/modules/amodactor.h>
+#include	<april/cmd/modules/amodactuator.h>
+#include	<april/cmd/modules/amodsensor.h>
+#include	<april/cmd/modules/amodbrain.h>
+#include	<april/cmd/modules/amodreflex.h>
 
 #include	<QFile>
 
@@ -111,6 +115,22 @@ void			AbstractApril::init					( void )
 	AModActor * module_a = new AModActor( &cmd_map );
 	addModule( module_a );
 	REMOVE_CONSTRUCTOR_REF(module_a);
+	
+	AModSensor * module_s = new AModSensor( &cmd_map );
+	addModule( module_s );
+	REMOVE_CONSTRUCTOR_REF(module_s);
+	
+	AModReflex * module_r = new AModReflex( &cmd_map );
+	addModule( module_r );
+	REMOVE_CONSTRUCTOR_REF(module_r);
+	
+	AModBrain * module_b = new AModBrain( &cmd_map );
+	addModule( module_b );
+	REMOVE_CONSTRUCTOR_REF(module_b);
+	
+	AModActuator * module_ak = new AModActuator( &cmd_map );
+	addModule( module_ak );
+	REMOVE_CONSTRUCTOR_REF(module_ak);
 	
 }
 /* ========================================================================= */

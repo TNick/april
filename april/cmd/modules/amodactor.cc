@@ -226,7 +226,7 @@ static QString	do_kill_actor				(
 	if ( tk1.isInteger() == true )
 	{
 		bool b;
-		int idx = s_arg_1.toULongLong( &b );
+		int idx = s_arg_1.toInt( &b );
 		if ( b && ( idx >= 0 ) )
 		{
 			Actor * a = w->actorAt( idx );

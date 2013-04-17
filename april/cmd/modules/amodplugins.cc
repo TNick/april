@@ -277,7 +277,7 @@ bool			AModPlugIns::listPlugIn			(
 			arg1 = atks.getToken( 1 );
 			if ( arg1 == QObject::tr( "help" ) )
 				break;
-			errorUnknownOprion( s_err, arg1 );
+			errorUnknownOption( s_err, arg1 );
 			break;
 		}
 		else

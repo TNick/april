@@ -47,7 +47,9 @@ namespace   april    {
 /**
 *	@brief	Module that provides commands related to Actuators
 */
-class AModActuator		: public AprilModule		{
+class
+	APRILSHARED_EXPORT
+	AModActuator		: public AprilModule		{
 	BBM_TRACK( AModActuator );
 
 	//

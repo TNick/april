@@ -25,6 +25,7 @@
 
 #include	"actorcomp.h"
 #include	"actor.h"
+#include	"world.h"
 #include	<QSettings>
 
 /*  INCLUDES    ============================================================ */
@@ -133,6 +134,18 @@ bool				ActorComp::load				( QSettings & stg )
 	stg.endGroup();
 	
 	return b;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+QString				ActorComp::myName			( void ) const
+{
+	if ( actor_ == NULL )
+		return QString();
+	World * w = actor_->world();
+	if ( w == NULL )
+		return QString();
+	return w->nameForId( identificator() );
 }
 /* ========================================================================= */
 

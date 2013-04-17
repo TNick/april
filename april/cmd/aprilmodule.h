@@ -27,6 +27,7 @@
 
 #include    <april/april.h>
 #include	<libbbb/1/refcnt.h>
+#include	<april/logic/uniqueid.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -41,6 +42,7 @@ class	World;
 class	AaTkString;
 class	AaToken;
 class	CommandMap;
+class	Actor;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -115,7 +117,7 @@ public:
 	static void errorOneArgumentExpected(QString &s_err);
 	static void errorNoAssocFile(World *w, QString &s_err);
 	static void errorEnergyInteger(QString &s_err);
-	static void errorUnknownOprion(QString &s_err, const QString &s_tk);
+	static void errorUnknownOption(QString &s_err, const QString &s_tk);
 	static void errorIntegerExpected(QString &s_err, const QString &s_tk);
 	static void errorIdExpected(QString &s_err, const QString &s_tk);
 	static void errorNoCurrentWorld(QString &s_err);
@@ -143,10 +145,10 @@ public:
 	//! callback for functions with one argument
 	typedef QString ( * arg1Func)	( const QString & s_arg_1, const AaToken & tk1 );
 	
-	//! callback for functions with no arguments and world ewxpectations
+	//! callback for functions with no arguments and world expectations
 	typedef QString ( * arg0WFunc)	( World * w );
 	
-	//! callback for functions with one argument and world ewxpectations
+	//! callback for functions with one argument and world expectations
 	typedef QString ( * arg1WFunc)	( 
 			World *					w, 
 			const QString &			s_arg_1, 
@@ -157,6 +159,14 @@ public:
 	typedef QString ( * argW2Func)	( 
 			World * w, const QString & s_arg_1, const AaToken & tk1,
 			const QString & s_arg_2, const AaToken & tk2 );
+	
+	//! callback for functions with an actor as single argument
+	typedef QString ( * argA0Func)	( Actor * a );
+	
+	//! callback for functions with an actor and an ID as argument
+	typedef QString ( * argAIdFunc)	( Actor * a, ID id );
+	
+	
 	
 	//! parse argument i and get an unsigned integer
 	static bool			getUIntArg		(
@@ -184,7 +194,7 @@ protected:
 			arg1Func				kb
 			);
 	
-	//! helper for functions with no arguments and world ewxpectations
+	//! helper for functions with no arguments and world expectations
 	static bool			funcArg0W		(
 			const QString &			s_cmd,
 			const AaTkString &		atks,
@@ -192,7 +202,7 @@ protected:
 			arg0WFunc				kb
 			);
 	
-	//! helper for functions with one argument and world ewxpectations
+	//! helper for functions with one argument and world expectations
 	static bool			funcArg1W		(
 			const QString &			s_cmd,
 			const AaTkString &		atks,
@@ -201,7 +211,7 @@ protected:
 			);
 	
 	
-	//! helper for functions with two arguments and world ewxpectations
+	//! helper for functions with two arguments and world expectations
 	static bool			funcArg_W2		(
 			const QString &			s_cmd,
 			const AaTkString &		atks,
@@ -209,6 +219,22 @@ protected:
 			argW2Func				kb
 			);
 	
+	
+	//! helper for functions with an argument that is an actor index
+	static bool			funcArg_A0		(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err,
+			argA0Func				kb
+			);
+	
+	//! helper for functions with irst argument an actor index and second an ID
+	static bool			funcArg_AID		(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err,
+			argAIdFunc				kb
+			);
 	
 	/*  FUNCTIONS    ======================================================= */
 	//

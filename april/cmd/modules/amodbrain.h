@@ -47,7 +47,9 @@ namespace   april    {
 /**
 *	@brief	Module that provides commands related to brains
 */
-class AModBrain		: public AprilModule		{
+class
+	APRILSHARED_EXPORT
+	AModBrain		: public AprilModule		{
 	BBM_TRACK( AModBrain );
 
 	//

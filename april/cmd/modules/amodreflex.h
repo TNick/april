@@ -47,7 +47,9 @@ namespace   april    {
 /**
 *	@brief	Module that provides commands related to reflexes
 */
-class AModReflex		: public AprilModule		{
+class
+	APRILSHARED_EXPORT
+	AModReflex		: public AprilModule		{
 	BBM_TRACK( AModReflex );
 
 	//

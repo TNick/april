@@ -116,6 +116,9 @@ public:
 	//! parent actor
 	inline Actor *		actor		( void ) const
 	{ return actor_; }
+	
+	//! get the name of my ID
+	QString				myName		( void ) const;
 
 	//! cost per time unit
 	/**
