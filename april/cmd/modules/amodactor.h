@@ -118,6 +118,13 @@ private:
 			QString &				s_err
 			);
 
+	//! prints the version
+	static bool			kindsActor		(
+			const QString &			s_cmd,
+			const AaTkString &		atks,
+			QString &				s_err
+			);
+
 	/*  FUNCTIONS    ======================================================= */
 	//
 	//

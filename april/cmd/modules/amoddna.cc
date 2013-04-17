@@ -87,7 +87,7 @@ void			AModDNA::insertCommands			( CommandMap * cm )
 	addOneCmd(list);
 	addOneCmd(info);
 	addOneCmd(s);
-	addOneCmd(a);
+	addOneCmd(ak);
 	addOneCmd(r);
 	addOneCmd(b);
 	
@@ -109,7 +109,7 @@ void			AModDNA::removeCommands			( CommandMap * cm )
 	remOneCmd(list);
 	remOneCmd(info);
 	remOneCmd(s);
-	remOneCmd(a);
+	remOneCmd(ak);
 	remOneCmd(r);
 	remOneCmd(b);
 	
@@ -274,187 +274,6 @@ bool			AModDNA::listDNA				(
 {
 	Q_ASSERT( s_cmd == "dna.list" );
 	return funcArg0( s_cmd, atks, s_err, do_dna_list );
-}
-/* ========================================================================= */
-
-
-
-
-/* ------------------------------------------------------------------------- */
-enum do_dna_x_type	{
-	do_dna_x_sensor,
-	do_dna_x_actuator,
-	do_dna_x_brain,
-	do_dna_x_reflex
-};
-
-static QString	do_dna_x					( 
-		do_dna_x_type ty, World * w, 
-		const QString & s_arg_1, const AaToken & tk1,
-		const QString & s_arg_2, const AaToken & tk2 )
-{
-	ID id1; ID id2;
-	bool b;
-	QString s;
-	QString s_arg = s_arg_1;
-	if ( tk1.isInteger() )
-	{
-		id1 = s_arg_1.toLongLong( &b );
-		if ( b && id1 > 0 )
-		{
-			s_arg = s_arg_2;
-			if ( tk2.isInteger() )
-			{
-				id2 = s_arg_2.toLongLong( &b );
-				if ( b && id2 > 0 )
-				{
-					GenericActorFactory * gf = 
-							GenericActorFactory::findMyself( w );
-					Q_ASSERT( gf != NULL );
-					for ( ;; ) {
-						/* find the DNA to alter */
-						DNA & dna_target = gf->dna( id1 );
-						if ( dna_target.isValid() == false )
-						{
-							s = QObject::tr( 
-										"DNA with ID %1 does not exists.\n"
-										).arg( id1 );
-							break;
-						}
-						if ( ty == do_dna_x_sensor )
-						{
-							SensorFactory * f = w->sensorFactory( id2 );
-							if ( f == NULL )
-							{
-								s = QObject::tr( 
-											"Sensor with ID %1 does not exists.\n"
-											).arg( id2 );
-								break;
-							}
-							dna_target.addSensor( id2 );
-							s = QObject::tr(
-										"Sensor type %1 added to kind %2" 
-										).arg( id2 ).arg( id1 );
-						}
-						else if ( ty == do_dna_x_actuator )
-						{
-							ActuatorFactory * f = w->actuatorFactory( id2 );
-							if ( f == NULL )
-							{
-								s = QObject::tr( 
-											"Actuator with ID %1 does not exists.\n"
-											).arg( id2 );
-								break;
-							}
-							dna_target.addActuator( id2 );
-							s = QObject::tr(
-										"Actuator type %1 added to kind %2" 
-										).arg( id2 ).arg( id1 );
-						}
-						else if ( ty == do_dna_x_brain )
-						{
-							BrainFactory * f = w->brainFactory( id2 );
-							if ( f == NULL )
-							{
-								s = QObject::tr( 
-											"Brain with ID %1 does not exists.\n"
-											).arg( id2 );
-								break;
-							}
-							dna_target.addBrain( id2 );
-							s = QObject::tr(
-										"Brain type %1 added to kind %2" 
-										).arg( id2 ).arg( id1 );
-						}
-						else if ( ty == do_dna_x_reflex )
-						{
-							ReflexFactory * f = w->reflexFactory( id2 );
-							if ( f == NULL )
-							{
-								s = QObject::tr( 
-											"Reflex with ID %1 does not exists.\n"
-											).arg( id2 );
-								break;
-							}
-							dna_target.addReflex( id2 );
-							s = QObject::tr(
-										"Reflex type %1 added to kind %2" 
-										).arg( id2 ).arg( id1 );
-						}
-						else
-						{	
-							Q_ASSERT( false );
-						}
-						break;
-					}
-					DEC_REF(gf,gf);
-					return s;
-				}
-			}
-		}
-	}
-	AprilModule::errorIntegerExpected( s, s_arg );
-	return s;
-}
-/* ========================================================================= */
-
-/* ------------------------------------------------------------------------- */
-static QString	do_dna_s					( 
-		World * w, const QString & s_arg_1, const AaToken & tk1,
-		const QString & s_arg_2, const AaToken & tk2 )
-{
-	return do_dna_x( do_dna_x_sensor, w, s_arg_1, tk1, s_arg_2, tk2 );
-}
-bool			AModDNA::sDNA				(
-		const QString & s_cmd, const AaTkString & atks, QString & s_err )
-{
-	Q_ASSERT( s_cmd == "dna.s" );
-	return funcArg_W2( s_cmd, atks, s_err, do_dna_s );
-}
-/* ========================================================================= */
-
-/* ------------------------------------------------------------------------- */
-static QString	do_dna_a					( 
-		World * w, const QString & s_arg_1, const AaToken & tk1,
-		const QString & s_arg_2, const AaToken & tk2 )
-{
-	return do_dna_x( do_dna_x_actuator, w, s_arg_1, tk1, s_arg_2, tk2 );
-}
-bool			AModDNA::aDNA			(
-		const QString & s_cmd, const AaTkString & atks, QString & s_err )
-{
-	Q_ASSERT( s_cmd == "dna.a" );
-	return funcArg_W2( s_cmd, atks, s_err, do_dna_a );
-}
-/* ========================================================================= */
-
-/* ------------------------------------------------------------------------- */
-static QString	do_dna_b					( 
-		World * w, const QString & s_arg_1, const AaToken & tk1,
-		const QString & s_arg_2, const AaToken & tk2 )
-{
-	return do_dna_x( do_dna_x_brain, w, s_arg_1, tk1, s_arg_2, tk2 );
-}
-bool			AModDNA::bDNA				(
-		const QString & s_cmd, const AaTkString & atks, QString & s_err )
-{
-	Q_ASSERT( s_cmd == "dna.b" );
-	return funcArg_W2( s_cmd, atks, s_err, do_dna_b );
-}
-/* ========================================================================= */
-
-/* ------------------------------------------------------------------------- */
-static QString	do_dna_r					( 
-		World * w, const QString & s_arg_1, const AaToken & tk1,
-		const QString & s_arg_2, const AaToken & tk2 )
-{
-	return do_dna_x( do_dna_x_reflex, w, s_arg_1, tk1, s_arg_2, tk2 );
-}
-bool			AModDNA::rDNA				(
-		const QString & s_cmd, const AaTkString & atks, QString & s_err )
-{
-	Q_ASSERT( s_cmd == "dna.r" );
-	return funcArg_W2( s_cmd, atks, s_err, do_dna_r );
 }
 /* ========================================================================= */
 
@@ -624,6 +443,185 @@ bool			AModDNA::infoDNA			(
 	return funcArg1W( s_cmd, atks, s_err, do_dna_info );
 }
 /* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+enum do_dna_x_type	{
+	do_dna_x_sensor,
+	do_dna_x_actuator,
+	do_dna_x_brain,
+	do_dna_x_reflex
+};
+
+static QString	do_dna_x					( 
+		do_dna_x_type ty, World * w, 
+		const QString & s_arg_1, const AaToken & tk1,
+		const QString & s_arg_2, const AaToken & tk2 )
+{
+	ID id1; ID id2;
+	bool b;
+	QString s;
+	QString s_arg = s_arg_1;
+	if ( tk1.isInteger() )
+	{
+		id1 = s_arg_1.toLongLong( &b );
+		if ( b && id1 > 0 )
+		{
+			s_arg = s_arg_2;
+			if ( tk2.isInteger() )
+			{
+				id2 = s_arg_2.toLongLong( &b );
+				if ( b && id2 > 0 )
+				{
+					GenericActorFactory * gf = 
+							GenericActorFactory::findMyself( w );
+					Q_ASSERT( gf != NULL );
+					for ( ;; ) {
+						/* find the DNA to alter */
+						DNA & dna_target = gf->dna( id1 );
+						if ( dna_target.isValid() == false )
+						{
+							s = QObject::tr( 
+										"DNA with ID %1 does not exists.\n"
+										).arg( id1 );
+							break;
+						}
+						if ( ty == do_dna_x_sensor )
+						{
+							SensorFactory * f = w->sensorFactory( id2 );
+							if ( f == NULL )
+							{
+								s = QObject::tr( 
+											"Sensor with ID %1 does not exists.\n"
+											).arg( id2 );
+								break;
+							}
+							dna_target.addSensor( id2 );
+							s = QObject::tr(
+										"Sensor type %1 added to kind %2" 
+										).arg( id2 ).arg( id1 );
+						}
+						else if ( ty == do_dna_x_actuator )
+						{
+							ActuatorFactory * f = w->actuatorFactory( id2 );
+							if ( f == NULL )
+							{
+								s = QObject::tr( 
+											"Actuator with ID %1 does not exists.\n"
+											).arg( id2 );
+								break;
+							}
+							dna_target.addActuator( id2 );
+							s = QObject::tr(
+										"Actuator type %1 added to kind %2" 
+										).arg( id2 ).arg( id1 );
+						}
+						else if ( ty == do_dna_x_brain )
+						{
+							BrainFactory * f = w->brainFactory( id2 );
+							if ( f == NULL )
+							{
+								s = QObject::tr( 
+											"Brain with ID %1 does not exists.\n"
+											).arg( id2 );
+								break;
+							}
+							dna_target.addBrain( id2 );
+							s = QObject::tr(
+										"Brain type %1 added to kind %2" 
+										).arg( id2 ).arg( id1 );
+						}
+						else if ( ty == do_dna_x_reflex )
+						{
+							ReflexFactory * f = w->reflexFactory( id2 );
+							if ( f == NULL )
+							{
+								s = QObject::tr( 
+											"Reflex with ID %1 does not exists.\n"
+											).arg( id2 );
+								break;
+							}
+							dna_target.addReflex( id2 );
+							s = QObject::tr(
+										"Reflex type %1 added to kind %2" 
+										).arg( id2 ).arg( id1 );
+						}
+						else
+						{	
+							Q_ASSERT( false );
+						}
+						break;
+					}
+					DEC_REF(gf,gf);
+					return s;
+				}
+			}
+		}
+	}
+	AprilModule::errorIntegerExpected( s, s_arg );
+	return s;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+static QString	do_dna_s					( 
+		World * w, const QString & s_arg_1, const AaToken & tk1,
+		const QString & s_arg_2, const AaToken & tk2 )
+{
+	return do_dna_x( do_dna_x_sensor, w, s_arg_1, tk1, s_arg_2, tk2 );
+}
+bool			AModDNA::sDNA				(
+		const QString & s_cmd, const AaTkString & atks, QString & s_err )
+{
+	Q_ASSERT( s_cmd == "dna.s" );
+	return funcArg_W2( s_cmd, atks, s_err, do_dna_s );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+static QString	do_dna_ak					( 
+		World * w, const QString & s_arg_1, const AaToken & tk1,
+		const QString & s_arg_2, const AaToken & tk2 )
+{
+	return do_dna_x( do_dna_x_actuator, w, s_arg_1, tk1, s_arg_2, tk2 );
+}
+bool			AModDNA::akDNA			(
+		const QString & s_cmd, const AaTkString & atks, QString & s_err )
+{
+	Q_ASSERT( s_cmd == "dna.ak" );
+	return funcArg_W2( s_cmd, atks, s_err, do_dna_ak );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+static QString	do_dna_b					( 
+		World * w, const QString & s_arg_1, const AaToken & tk1,
+		const QString & s_arg_2, const AaToken & tk2 )
+{
+	return do_dna_x( do_dna_x_brain, w, s_arg_1, tk1, s_arg_2, tk2 );
+}
+bool			AModDNA::bDNA				(
+		const QString & s_cmd, const AaTkString & atks, QString & s_err )
+{
+	Q_ASSERT( s_cmd == "dna.b" );
+	return funcArg_W2( s_cmd, atks, s_err, do_dna_b );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+static QString	do_dna_r					( 
+		World * w, const QString & s_arg_1, const AaToken & tk1,
+		const QString & s_arg_2, const AaToken & tk2 )
+{
+	return do_dna_x( do_dna_x_reflex, w, s_arg_1, tk1, s_arg_2, tk2 );
+}
+bool			AModDNA::rDNA				(
+		const QString & s_cmd, const AaTkString & atks, QString & s_err )
+{
+	Q_ASSERT( s_cmd == "dna.r" );
+	return funcArg_W2( s_cmd, atks, s_err, do_dna_r );
+}
+/* ========================================================================= */
+
 
 
 

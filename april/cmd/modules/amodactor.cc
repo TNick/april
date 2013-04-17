@@ -85,6 +85,7 @@ void			AModActor::insertCommands			( CommandMap * cm )
 	addOneCmd(new);
 	addOneCmd(list);
 	addOneCmd(kill);
+	addOneCmd(kinds);
 	
 #undef addOneCmd
 	//! @endcond
@@ -103,6 +104,7 @@ void			AModActor::removeCommands			( CommandMap * cm )
 	remOneCmd(new);
 	remOneCmd(list);
 	remOneCmd(kill);
+	remOneCmd(kinds);
 	
 #undef remOneCmd
 	//! @endcond
@@ -200,7 +202,7 @@ static QString	do_actor_list					( World * w )
 			sl.append( QString::number( itr->birth() ) );
 			sl.append( QString::number( itr->death() ) );
 			sl.append( QString::number( itr->age() ) );
-			sl.append( QString::number( itr->energy() ) );
+			sl.append( QString::number( itr->totalEnergy() ) );
 			datao.append( sl ); sl.clear();
 			itr = nextActor_(itr);
 		}
@@ -256,6 +258,40 @@ bool			AModActor::killActor		(
 	return funcArg1W( s_cmd, atks, s_err, do_kill_actor );
 }
 /* ========================================================================= */
+
+
+/* ------------------------------------------------------------------------- */
+static QString	do_actors_kinds					( World * w )
+{
+	
+	QList<QStringList>	datao;
+	QStringList			sl;
+	sl.append( QObject::tr( "ID" ) );
+	sl.append( QObject::tr( "Name" ) );
+	sl.append( QObject::tr( "Factory name" ) );
+	datao.append( sl ); sl.clear();
+
+	const QMap<ID,ActorFactory*> & sf = w->actorFactories();
+	QMap<ID,ActorFactory*>::ConstIterator itr = sf.constBegin();
+	QMap<ID,ActorFactory*>::ConstIterator itr_e = sf.constEnd();
+	while ( itr != itr_e )
+	{
+		sl.append( QString::number( itr.key() ) );
+		sl.append( w->nameForId( itr.key() ) );
+		sl.append( itr.value()->factoryName() );
+		itr++;
+	}
+	AOutput::showTable( datao, true, false );
+	return QString();
+}
+bool			AModActor::kindsActor		(
+		const QString & s_cmd, const AaTkString & atks, QString & s_err )
+{
+	Q_ASSERT( s_cmd == "a.kinds" );
+	return funcArg0W( s_cmd, atks, s_err, do_actors_kinds );
+}
+/* ========================================================================= */
+
 
 /*  CLASS    =============================================================== */
 //

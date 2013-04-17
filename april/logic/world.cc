@@ -614,7 +614,21 @@ Actuator *			World::createActuator		( Actor * actor, ID id )
 		return NULL;
 	}
 	Q_ASSERT( itr.value() != NULL );
-	return itr.value()->create( actor, id );
+	Actuator * ret = itr.value()->create( actor, id );
+	if ( ret != NULL )
+	{
+		if ( energy_free_ >= ret->energy() )
+		{
+			energy_free_ -= ret->energy();
+		}
+		else
+		{
+			DEC_REF(ret,ret);
+			actor->remActuator( ret );
+			ret = NULL;
+		}
+	}
+	return ret;
 }
 /* ========================================================================= */
 
@@ -627,7 +641,21 @@ Brain *				World::createBrain			( Actor * actor, ID id )
 		return NULL;
 	}
 	Q_ASSERT( itr.value() != NULL );
-	return itr.value()->create( actor, id );
+	Brain * ret = itr.value()->create( actor, id );
+	if ( ret != NULL )
+	{
+		if ( energy_free_ >= ret->energy() )
+		{
+			energy_free_ -= ret->energy();
+		}
+		else
+		{
+			DEC_REF(ret,ret);
+			actor->remBrain( ret );
+			ret = NULL;
+		}
+	}
+	return ret;
 }
 /* ========================================================================= */
 
@@ -640,7 +668,21 @@ Sensor *			World::createSensor			( Actor * actor, ID id )
 		return NULL;
 	}
 	Q_ASSERT( itr.value() != NULL );
-	return itr.value()->create( actor, id );
+	Sensor * ret = itr.value()->create( actor, id );
+	if ( ret != NULL )
+	{
+		if ( energy_free_ >= ret->energy() )
+		{
+			energy_free_ -= ret->energy();
+		}
+		else
+		{
+			DEC_REF(ret,ret);
+			actor->remSensor( ret );
+			ret = NULL;
+		}
+	}
+	return ret;
 }
 /* ========================================================================= */
 
@@ -653,7 +695,21 @@ Reflex *			World::createReflex			( Actor * actor, ID id )
 		return NULL;
 	}
 	Q_ASSERT( itr.value() != NULL );
-	return itr.value()->create( actor, id );
+	Reflex * ret = itr.value()->create( actor, id );
+	if ( ret != NULL )
+	{
+		if ( energy_free_ >= ret->energy() )
+		{
+			energy_free_ -= ret->energy();
+		}
+		else
+		{
+			DEC_REF(ret,ret);
+			actor->remReflex( ret );
+			ret = NULL;
+		}
+	}
+	return ret;
 }
 /* ========================================================================= */
 

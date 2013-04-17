@@ -15,7 +15,123 @@ int			main			( int argc, char *argv[] )
 	QCoreApplication apl( argc, argv );
 	Q_UNUSED( apl );
 	
-	
+	/* 000000000000000000000000000000000000000000000000000000000000000000000 */
+	april::AprilModule::setUsage( 
+				"a.new",
+				QStringList()
+				<< "<kind>",
+				QStringList() 
+				<< "create new actor instance",
+				QStringList()
+				<< "kind",
+				QList<QStringList>()
+				<< (QStringList()
+					<< "the kind of the actor to produce;"
+					<< "to create a kind use dna.new"),
+				QStringList()
+				<< "This function creates a new actor in current world."
+				<< "The kind must be one that has an associated DNA."
+				<< "The energy for the actor is taken from the free"
+				<< "energy of the world."
+				);
+	april::AprilModule::setUsage( 
+				"a.list",
+				QStringList()
+				<< NO_ARGUMENT,
+				QStringList() 
+				<< "lists actors in current world",
+				QStringList(),
+				QList<QStringList>(),
+				QStringList() 
+				<< "This function lists actors in current world"
+				<< "and some of their basic properties"
+				<< "(id, name of the id, date of birth and death,"
+				<< "current age and ammount of energy inside)."
+				);
+	april::AprilModule::setUsage( 
+				"a.kill",
+				QStringList()
+				<< "<index>",
+				QStringList() 
+				<< "kills an actor in current world",
+				QStringList()
+				<< "index",
+				QList<QStringList>() 
+				<< (QStringList() 
+					<< "the index of the actor in the world"),
+				QStringList() 
+				<< "This function terminates an actor in current world"
+				<< "(the actor may not be removed immediatelly but"
+				<< "will be dead)."
+				<< "The energy of the actor and of alll of its components"
+				<< "will be added to the free energy of the current world."
+				);
+	april::AprilModule::setUsage( 
+				"a.kinds",
+				QStringList()
+				<< NO_ARGUMENT,
+				QStringList() 
+				<< "list kinds of actors",
+				QStringList(),
+				QList<QStringList>(),
+				QStringList() 
+				<< "The list of registered types of actors."
+				<< "This function lists all types but a.new"
+				<< "is only capable of creating actors"
+				<< "of kinds created with dna.new"
+				);
+	/* 000000000000000000000000000000000000000000000000000000000000000000000 */
+	april::AprilModule::setUsage( 
+				"ak.new",
+				QStringList()
+				<< "<actor> <id>",
+				QStringList() 
+				<< "create new actuator instance",
+				QStringList()
+				<< "actor"
+				<< "id",
+				QList<QStringList>()
+				<< (QStringList()
+					<< "destination actor where new actuator is created;"
+					<< "this is the offset of the actor in the world list")
+				<< (QStringList()
+					<< "the ID of the new actuator to create;"
+					<< "if the id is invalid or represents a different"
+					<< "component the function fails."),
+				QStringList()
+				<< "This function creates a new actuator in an actor"
+				<< "in current world."
+				<< "The energy for the actuator is taken from the free"
+				<< "energy of the world."
+				);
+	april::AprilModule::setUsage( 
+				"ak.list",
+				QStringList()
+				<< "<actor>",
+				QStringList() 
+				<< "lists actors in current world",
+				QStringList()
+				<< "actor",
+				QList<QStringList>()
+				<< (QStringList()
+					<< "the actor who'se actuators are listed;"
+					<< "this is the offset of the actor in the world list"),
+				QStringList() 
+				<< "This function lists actuators in an actor in current world"
+				<< "and some of their basic properties"
+				<< "(id, name of the id, running cost and packed energy)."
+				);
+	april::AprilModule::setUsage( 
+				"ak.kinds",
+				QStringList()
+				<< NO_ARGUMENT,
+				QStringList() 
+				<< "list kinds of actors",
+				QStringList(),
+				QList<QStringList>(),
+				QStringList() 
+				<< "The list of registered types of actuators in current world."
+				);
 	/* 000000000000000000000000000000000000000000000000000000000000000000000 */
 	april::AprilModule::setUsage( 
 				"april.commands",
@@ -26,6 +142,9 @@ int			main			( int argc, char *argv[] )
 				QStringList(),
 				QList<QStringList>(),
 				QStringList()
+				<< "The command lists ALL commands that are registered"
+				<< "with the command system. If a command is accesible"
+				<< "it is present in this list."
 				);
 	april::AprilModule::setUsage( 
 				"april.modules",
@@ -36,6 +155,10 @@ int			main			( int argc, char *argv[] )
 				QStringList(),
 				QList<QStringList>(),
 				QStringList()
+				<< "The command lists ALL modules that are registered"
+				<< "with the command system. This lists the long names"
+				<< "that can't be used in a real command - these often use"
+				<< "shorter forms for the commands."
 				);
 	april::AprilModule::setUsage( 
 				"april.version",
@@ -56,7 +179,73 @@ int			main			( int argc, char *argv[] )
 				QStringList(),
 				QList<QStringList>(),
 				QStringList()
+				<< "The command prints the content of the COPYING"
+				<< "file if found, otherwise ives general directions."
 				);
+	april::AprilModule::setUsage( 
+				"april.prompt",
+				QStringList()
+				<< "<new prompt>",
+				QStringList() 
+				<< "changes current prompt to new value",
+				QStringList(),
+				QList<QStringList>(),
+				QStringList()
+				<< "Any string provided as argument will be"
+				<< "printed at the beginning of each command line."
+				);
+	/* 000000000000000000000000000000000000000000000000000000000000000000000 */
+	april::AprilModule::setUsage( 
+				"b.new",
+				QStringList()
+				<< "<actor> <id>",
+				QStringList() 
+				<< "create new brain instance",
+				QStringList()
+				<< "actor"
+				<< "id",
+				QList<QStringList>()
+				<< (QStringList()
+					<< "destination actor where new brain is created;"
+					<< "this is the offset of the actor in the world list")
+				<< (QStringList()
+					<< "the ID of the new brain to create;"
+					<< "if the id is invalid or represents a different"
+					<< "component the function fails."),
+				QStringList()
+				<< "This function creates a new brain in an actor"
+				<< "in current world."
+				<< "The energy for the brain is taken from the free"
+				<< "energy of the world."
+				);
+	april::AprilModule::setUsage( 
+				"b.list",
+				QStringList()
+				<< "<actor>",
+				QStringList() 
+				<< "lists actors in current world",
+				QStringList()
+				<< "actor",
+				QList<QStringList>()
+				<< (QStringList()
+					<< "the actor who'se brains are listed;"
+					<< "this is the offset of the actor in the world list"),
+				QStringList() 
+				<< "This function lists brains in an actor in current world"
+				<< "and some of their basic properties"
+				<< "(id, name of the id, running cost and packed energy)."
+				);
+	april::AprilModule::setUsage( 
+				"b.kinds",
+				QStringList()
+				<< NO_ARGUMENT,
+				QStringList() 
+				<< "list kinds of actors",
+				QStringList(),
+				QList<QStringList>(),
+				QStringList() 
+				<< "The list of registered types of brains in current world."
+				);				
 	/* 000000000000000000000000000000000000000000000000000000000000000000000 */
 	april::AprilModule::setUsage( 
 				"dna.new",
@@ -100,9 +289,194 @@ int			main			( int argc, char *argv[] )
 				QStringList()
 				<< NO_ARGUMENT,
 				QStringList() 
-				<< "lists the available kinds in this world",
+				<< "lists available kinds in this world",
 				QStringList(),
 				QList<QStringList>(),
+				QStringList()
+				<< "These are the IDs that are available for a.new command."
+				);
+	april::AprilModule::setUsage( 
+				"dna.info",
+				QStringList()
+				<< "<id>",
+				QStringList() 
+				<< "detalied information about a kind",
+				QStringList()
+				<< "id",
+				QList<QStringList>()
+				<< (QStringList() 
+					<< "An id previously registered using dna.new"),
+				QStringList()
+				<< "The function provides a lot of details about"
+				<< "the DNA for a certain kind. This includes:"
+				<< "- id and name"
+				<< "- running cost for the actor"
+				<< "- ammount of energy at birth"
+				<< "- list of brains, reflexes, sensors and actuators"
+				<< "- the list of partitions and details about them"
+				);
+	april::AprilModule::setUsage( 
+				"dna.s",
+				QStringList()
+				<< "<kind> <id>",
+				QStringList() 
+				<< "add a sensor to a DNA sequence",
+				QStringList()
+				<< "kind"
+				<< "id",
+				QList<QStringList>()
+				<< (QStringList() 
+					<< "A kind previously registered using dna.new (id)")
+				<< (QStringList() 
+					<< "The id of the sensor to add; this id must be"
+					<< "valid (the function checks it before proceeding)"),
+				QStringList()
+				<< "The actors created based on this DNA will all attempt"
+				<< "to create for themselves a sensor of this kind."
+				);
+	april::AprilModule::setUsage( 
+				"dna.ak",
+				QStringList()
+				<< "<kind> <id>",
+				QStringList() 
+				<< "add a actuator to a DNA sequence",
+				QStringList()
+				<< "kind"
+				<< "id",
+				QList<QStringList>()
+				<< (QStringList() 
+					<< "A kind previously registered using dna.new (id)")
+				<< (QStringList() 
+					<< "The id of the actuator to add; this id must be"
+					<< "valid (the function checks it before proceeding)"),
+				QStringList()
+				<< "The actors created based on this DNA will all attempt"
+				<< "to create for themselves a actuator of this kind."
+				);
+	april::AprilModule::setUsage( 
+				"dna.b",
+				QStringList()
+				<< "<kind> <id>",
+				QStringList() 
+				<< "add a brain to a DNA sequence",
+				QStringList()
+				<< "kind"
+				<< "id",
+				QList<QStringList>()
+				<< (QStringList() 
+					<< "A kind previously registered using dna.new (id)")
+				<< (QStringList() 
+					<< "The id of the brain to add; this id must be"
+					<< "valid (the function checks it before proceeding)"),
+				QStringList()
+				<< "The actors created based on this DNA will all attempt"
+				<< "to create for themselves a brain of this kind."
+				<< "Note that there is nothing stpping an actor to have"
+				<< "more than one brains."
+				);
+	april::AprilModule::setUsage( 
+				"dna.r",
+				QStringList()
+				<< "<kind> <id>",
+				QStringList() 
+				<< "add a reflex to a DNA sequence",
+				QStringList()
+				<< "kind"
+				<< "id",
+				QList<QStringList>()
+				<< (QStringList() 
+					<< "A kind previously registered using dna.new (id)")
+				<< (QStringList() 
+					<< "The id of the reflex to add; this id must be"
+					<< "valid (the function checks it before proceeding)"),
+				QStringList()
+				<< "The actors created based on this DNA will all attempt"
+				<< "to create for themselves a reflex of this kind."
+				);
+	/* 000000000000000000000000000000000000000000000000000000000000000000000 */
+	april::AprilModule::setUsage( 
+				"e.new",
+				QStringList()
+				<< "<id>",
+				QStringList() 
+				<< "create new event source",
+				QStringList()
+				<< "id",
+				QList<QStringList>()
+				<< (QStringList()
+					<< "a previously registered id for the event to create;"
+					<< "the function checks this id for validity before proceding."),
+				QStringList()
+				<< "This function creates a new event source"
+				<< "in current world."
+				);
+	april::AprilModule::setUsage( 
+				"e.list",
+				QStringList()
+				<< NO_ARGUMENT,
+				QStringList() 
+				<< "lists event sources in current world",
+				QStringList(),
+				QList<QStringList>(),
+				QStringList() 
+				<< "This function lists event sources in current world"
+				<< "and some of their basic properties"
+				<< "(id, name of the id)."
+				);
+	april::AprilModule::setUsage( 
+				"e.kinds",
+				QStringList()
+				<< NO_ARGUMENT,
+				QStringList() 
+				<< "list registered kinds of events",
+				QStringList(),
+				QList<QStringList>(),
+				QStringList() 
+				<< "The list of registered types of event sources"
+				<< "in current world."
+				);
+	/* 000000000000000000000000000000000000000000000000000000000000000000000 */
+	april::AprilModule::setUsage( 
+				"id.new",
+				QStringList()
+				<< "<name>",
+				QStringList() 
+				<< "create new unique id in current world",
+				QStringList()
+				<< "name",
+				QList<QStringList>()
+				<< (QStringList()
+					<< "the string to be associated with the new"
+					<< "numeric id that will be created."),
+				QStringList()
+				<< "This function will check if that name"
+				<< "is already associted with an id and will"
+				<< "refuse to create the id if that is the case."
+				);
+	april::AprilModule::setUsage( 
+				"id.list",
+				QStringList()
+				<< NO_ARGUMENT,
+				QStringList() 
+				<< "lists registered IDs in current world",
+				QStringList(),
+				QList<QStringList>(),
+				QStringList() 
+				<< "Along with the numeric value the strings"
+				<< "associated with them are also printed."
+				);
+	april::AprilModule::setUsage( 
+				"id.info",
+				QStringList()
+				<< "<id>",
+				QStringList() 
+				<< "information about this id",
+				QStringList()
+				<< "id",
+				QList<QStringList>()
+				<< (QStringList()
+					<< "An id previously registered with id.new"
+					<< "or with other functions that register IDs"),
 				QStringList()
 				);
 	/* 000000000000000000000000000000000000000000000000000000000000000000000 */
@@ -137,6 +511,110 @@ int			main			( int argc, char *argv[] )
 				QStringList(),
 				QList<QStringList>(),
 				QStringList()
+				);
+	/* 000000000000000000000000000000000000000000000000000000000000000000000 */
+	april::AprilModule::setUsage( 
+				"r.new",
+				QStringList()
+				<< "<actor> <id>",
+				QStringList() 
+				<< "create new reflex instance",
+				QStringList()
+				<< "actor"
+				<< "id",
+				QList<QStringList>()
+				<< (QStringList()
+					<< "destination actor where new reflex is created;"
+					<< "this is the offset of the actor in the world list")
+				<< (QStringList()
+					<< "the ID of the new reflex to create;"
+					<< "if the id is invalid or represents a different"
+					<< "component the function fails."),
+				QStringList()
+				<< "This function creates a new reflex in an actor"
+				<< "in current world."
+				<< "The energy for the reflex is taken from the free"
+				<< "energy of the world."
+				);
+	april::AprilModule::setUsage( 
+				"r.list",
+				QStringList()
+				<< "<actor>",
+				QStringList() 
+				<< "lists actors in current world",
+				QStringList()
+				<< "actor",
+				QList<QStringList>()
+				<< (QStringList()
+					<< "the actor who'se reflexs are listed;"
+					<< "this is the offset of the actor in the world list"),
+				QStringList() 
+				<< "This function lists reflexs in an actor in current world"
+				<< "and some of their basic properties"
+				<< "(id, name of the id, running cost and packed energy)."
+				);
+	april::AprilModule::setUsage( 
+				"r.kinds",
+				QStringList()
+				<< NO_ARGUMENT,
+				QStringList() 
+				<< "list kinds of actors",
+				QStringList(),
+				QList<QStringList>(),
+				QStringList() 
+				<< "The list of registered types of reflexs in current world."
+				);
+	/* 000000000000000000000000000000000000000000000000000000000000000000000 */
+	april::AprilModule::setUsage( 
+				"s.new",
+				QStringList()
+				<< "<actor> <id>",
+				QStringList() 
+				<< "create new sensor instance",
+				QStringList()
+				<< "actor"
+				<< "id",
+				QList<QStringList>()
+				<< (QStringList()
+					<< "destination actor where new sensor is created;"
+					<< "this is the offset of the actor in the world list")
+				<< (QStringList()
+					<< "the ID of the new sensor to create;"
+					<< "if the id is invalid or represents a different"
+					<< "component the function fails."),
+				QStringList()
+				<< "This function creates a new sensor in an actor"
+				<< "in current world."
+				<< "The energy for the sensor is taken from the free"
+				<< "energy of the world."
+				);
+	april::AprilModule::setUsage( 
+				"s.list",
+				QStringList()
+				<< "<actor>",
+				QStringList() 
+				<< "lists actors in current world",
+				QStringList()
+				<< "actor",
+				QList<QStringList>()
+				<< (QStringList()
+					<< "the actor who'se sensors are listed;"
+					<< "this is the offset of the actor in the world list"),
+				QStringList() 
+				<< "This function lists sensors in an actor in current world"
+				<< "and some of their basic properties"
+				<< "(id, name of the id, running cost and packed energy)."
+				);
+	april::AprilModule::setUsage( 
+				"s.kinds",
+				QStringList()
+				<< NO_ARGUMENT,
+				QStringList() 
+				<< "list kinds of actors",
+				QStringList(),
+				QList<QStringList>(),
+				QStringList() 
+				<< "The list of registered types of sensors in current world."
 				);
 	/* 000000000000000000000000000000000000000000000000000000000000000000000 */
 	april::AprilModule::setUsage( 
@@ -266,22 +744,7 @@ int			main			( int argc, char *argv[] )
 				QStringList()
 				);
 	/* 000000000000000000000000000000000000000000000000000000000000000000000 */
-	april::AprilModule::setUsage( 
-				"a.new",
-				QStringList()
-				<< NO_ARGUMENT
-				<< "<kind>",
-				QStringList() 
-				<< "the kind of the actor to produce",
-				QStringList(),
-				QList<QStringList>(),
-				QStringList() 
-				<< "The kind must be one that has an associated DNA."
-				<< "The energy for the actor is taken from the free"
-				<< "energy of the world."
-				);
-	/* 000000000000000000000000000000000000000000000000000000000000000000000 */
-
+	
 	/* --------------------------------------------------------------------- */
 	/* now read 'em */
 	/* --------------------------------------------------------------------- */

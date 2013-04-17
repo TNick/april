@@ -126,7 +126,7 @@ private:
 			);
 			
 	//! add a actuator to an existing kind
-	static bool			aDNA		(
+	static bool			akDNA		(
 			const QString &			s_cmd,
 			const AaTkString &		atks,
 			QString &				s_err

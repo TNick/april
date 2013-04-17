@@ -287,6 +287,9 @@ public:
 	//! own energy reserve
 	quint64				energy					( void ) const
 	{ return energy_; }
+
+	//! total energy packed in this agent (the agent itself and the compoenets)
+	quint64				totalEnergy				( void ) const;
 	
 	//! energy cost
 	quint64				cost					( void ) const
@@ -347,9 +350,6 @@ protected:
 
 	//! make the actor alive
 	void				makeAlive				( void );
-
-	//! total energy packed in this agent (the agent itself and the compoenets)
-	quint64				totalEnergy				( void ) const;
 
 	//! set total energy (used by the world to initialise and terminate actor)
 	void				setEnergy				( quint64 new_val )
