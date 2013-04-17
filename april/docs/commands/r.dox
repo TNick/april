@@ -1,0 +1,74 @@
+
+namespace   april    {
+
+/**
+
+\page	module_reflex  Command module ...
+
+<strong>module_name</strong> is part of the command interface
+for april library.
+
+@cond hide_cmd_marker
+This is where automatic process places command documentation.
+@endcond
+
+\section r_kinds r.kinds
+
+\subsection r_kinds_usage Usage
+
+<table>
+<<tr><td>r.kinds </td<td>list kinds of actors</td></tr>
+<<tr><td>r.kinds help</td<td>prints usage instructions</td></tr>
+</table>
+\subsection r_kinds_obs Observations
+
+The list of registered types of reflexs in current world.
+
+\section r_list r.list
+
+\subsection r_list_usage Usage
+
+<table>
+<<tr><td>r.list <actor></td<td>lists actors in current world</td></tr>
+<<tr><td>r.list help</td<td>prints usage instructions</td></tr>
+</table>
+\subsection r_list_opts Options
+
+<table>
+<<tr><td>actor</td<td>the actor who'se reflexs are listed; this is the offset of the actor in the world list</td></tr>
+</table>
+\subsection r_list_obs Observations
+
+This function lists reflexs in an actor in current world and some of their basic properties (id, name of the id, running cost and packed energy).
+
+\section r_new r.new
+
+\subsection r_new_usage Usage
+
+<table>
+<<tr><td>r.new <actor> <id></td<td>create new reflex instance</td></tr>
+<<tr><td>r.new help</td<td>prints usage instructions</td></tr>
+</table>
+\subsection r_new_opts Options
+
+<table>
+<<tr><td>actor</td<td>destination actor where new reflex is created; this is the offset of the actor in the world list</td></tr>
+<<tr><td>id</td<td>the ID of the new reflex to create; if the id is invalid or represents a different component the function fails.</td></tr>
+</table>
+\subsection r_new_obs Observations
+
+This function creates a new reflex in an actor in current world. The energy for the reflex is taken from the free energy of the world.
+@cond hide_cmd_marker
+End of the area with command documentation.
+@endcond
+
+<br><br><hr>
+<table width=100%><tr>
+<td align=left> \ref prev </td>
+<td align=center> 'ref up </td>
+<td align=right> \ref next </td>
+</tr></table>
+
+*/
+
+}   //  namespace   april

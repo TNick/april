@@ -1,0 +1,68 @@
+
+namespace   april    {
+
+/**
+
+\page	module_plugins  Command module ...
+
+<strong>module_name</strong> is part of the command interface
+for april library.
+
+@cond hide_cmd_marker
+This is where automatic process places command documentation.
+@endcond
+
+\section p_list p.list
+
+\subsection p_list_usage Usage
+
+<table>
+<<tr><td>p.list </td<td>lists the plug-ins and their paths</td></tr>
+<<tr><td>p.list help</td<td>prints usage instructions</td></tr>
+</table>
+
+\section p_load p.load
+
+\subsection p_load_usage Usage
+
+<table>
+<<tr><td>p.load <file-name></td<td>loads specified plug-in file</td></tr>
+<<tr><td>p.load help</td<td>prints usage instructions</td></tr>
+</table>
+
+\section p_unload p.unload
+
+\subsection p_unload_usage Usage
+
+<table>
+<<tr><td>p.unload <index></td<td>unloads the plug-in at specified index</td></tr>
+<<tr><td>p.unload <name></td<td>unloads the plug-in having that name</td></tr>
+<<tr><td>p.unload help</td<td>prints usage instructions</td></tr>
+</table>
+@cond hide_cmd_marker
+End of the area with command documentation.
+@endcond
+
+<br><br><hr>
+<table width=100%><tr>
+<td align=left> \ref prev </td>
+<td align=center> 'ref up </td>
+<td align=right> \ref next </td>
+</tr></table>
+
+*/
+
+}   //  namespace   april
+th command documentation.
+@endcond
+
+<br><br><hr>
+<table width=100%><tr>
+<td align=left> \ref prev </td>
+<td align=center> 'ref up </td>
+<td align=right> \ref next </td>
+</tr></table>
+
+*/
+
+}   //  namespace   april

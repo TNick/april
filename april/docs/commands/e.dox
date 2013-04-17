@@ -1,0 +1,68 @@
+
+namespace   april    {
+
+/**
+
+\page	moduleevent  Command module ...
+
+<strong>module_name</strong> is part of the command interface
+for april library.
+
+@cond hide_cmd_marker
+This is where automatic process places command documentation.
+@endcond
+
+\section e_kinds e.kinds
+
+\subsection e_kinds_usage Usage
+
+<table>
+<<tr><td>e.kinds </td<td>list registered kinds of events</td></tr>
+<<tr><td>e.kinds help</td<td>prints usage instructions</td></tr>
+</table>
+\subsection e_kinds_obs Observations
+
+The list of registered types of event sources in current world.
+
+\section e_list e.list
+
+\subsection e_list_usage Usage
+
+<table>
+<<tr><td>e.list </td<td>lists event sources in current world</td></tr>
+<<tr><td>e.list help</td<td>prints usage instructions</td></tr>
+</table>
+\subsection e_list_obs Observations
+
+This function lists event sources in current world and some of their basic properties (id, name of the id).
+
+\section e_new e.new
+
+\subsection e_new_usage Usage
+
+<table>
+<<tr><td>e.new <id></td<td>create new event source</td></tr>
+<<tr><td>e.new help</td<td>prints usage instructions</td></tr>
+</table>
+\subsection e_new_opts Options
+
+<table>
+<<tr><td>id</td<td>a previously registered id for the event to create; the function checks this id for validity before proceding.</td></tr>
+</table>
+\subsection e_new_obs Observations
+
+This function creates a new event source in current world.
+@cond hide_cmd_marker
+End of the area with command documentation.
+@endcond
+
+<br><br><hr>
+<table width=100%><tr>
+<td align=left> \ref prev </td>
+<td align=center> 'ref up </td>
+<td align=right> \ref next </td>
+</tr></table>
+
+*/
+
+}   //  namespace   april

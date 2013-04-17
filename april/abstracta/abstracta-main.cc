@@ -264,7 +264,7 @@ void			mainEnd			( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-//! appliation entry point
+//! application entry point
 int			main			( int argc, char *argv[] )
 {
 	int i_ret;

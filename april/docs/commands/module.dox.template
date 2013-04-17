@@ -1,0 +1,28 @@
+
+namespace   april    {
+
+/**
+
+\page	module_name  Command module ...
+
+<strong>module_name</strong> is part of the command interface
+for april library.
+
+@cond hide_cmd_marker
+This is where automatic process places command documentation.
+@endcond
+
+@cond hide_cmd_marker
+End of the area with command documentation.
+@endcond
+
+<br><br><hr>
+<table width=100%><tr>
+<td align=left> \ref prev </td>
+<td align=center> 'ref up </td>
+<td align=right> \ref next </td>
+</tr></table>
+
+*/
+
+}   //  namespace   april

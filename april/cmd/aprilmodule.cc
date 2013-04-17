@@ -226,8 +226,8 @@ QString		AprilModule::getCLUsage				( const QString & s_name )
 	QString s_usage_descr;
 	QString s_opt;
 	QStringList s_opt_descr;
-	QString s_ret;
 	QStringList s_obs;
+	QString s_ret;
 	
 	/** @todo file from app settings */
 	QSettings	stg( "help.dat", QSettings::IniFormat );

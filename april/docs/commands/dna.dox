@@ -1,0 +1,145 @@
+
+namespace   april    {
+
+/**
+
+\page	module_dna  Command module ...
+
+<strong>module_name</strong> is part of the command interface
+for april library.
+
+@cond hide_cmd_marker
+This is where automatic process places command documentation.
+@endcond
+
+\section dna_ak dna.ak
+
+\subsection dna_ak_usage Usage
+
+<table>
+<<tr><td>dna.ak <kind> <id></td<td>add a actuator to a DNA sequence</td></tr>
+<<tr><td>dna.ak help</td<td>prints usage instructions</td></tr>
+</table>
+\subsection dna_ak_opts Options
+
+<table>
+<<tr><td>kind</td<td>A kind previously registered using dna.new (id)</td></tr>
+<<tr><td>id</td<td>The id of the actuator to add; this id must be valid (the function checks it before proceeding)</td></tr>
+</table>
+\subsection dna_ak_obs Observations
+
+The actors created based on this DNA will all attempt to create for themselves a actuator of this kind.
+
+\section dna_b dna.b
+
+\subsection dna_b_usage Usage
+
+<table>
+<<tr><td>dna.b <kind> <id></td<td>add a brain to a DNA sequence</td></tr>
+<<tr><td>dna.b help</td<td>prints usage instructions</td></tr>
+</table>
+\subsection dna_b_opts Options
+
+<table>
+<<tr><td>kind</td<td>A kind previously registered using dna.new (id)</td></tr>
+<<tr><td>id</td<td>The id of the brain to add; this id must be valid (the function checks it before proceeding)</td></tr>
+</table>
+\subsection dna_b_obs Observations
+
+The actors created based on this DNA will all attempt to create for themselves a brain of this kind. Note that there is nothing stpping an actor to have more than one brains.
+
+\section dna_info dna.info
+
+\subsection dna_info_usage Usage
+
+<table>
+<<tr><td>dna.info <id></td<td>detalied information about a kind</td></tr>
+<<tr><td>dna.info help</td<td>prints usage instructions</td></tr>
+</table>
+\subsection dna_info_opts Options
+
+<table>
+<<tr><td>id</td<td>An id previously registered using dna.new</td></tr>
+</table>
+\subsection dna_info_obs Observations
+
+The function provides a lot of details about the DNA for a certain kind. This includes: - id and name - running cost for the actor - ammount of energy at birth - list of brains, reflexes, sensors and actuators - the list of partitions and details about them
+
+\section dna_list dna.list
+
+\subsection dna_list_usage Usage
+
+<table>
+<<tr><td>dna.list </td<td>lists available kinds in this world</td></tr>
+<<tr><td>dna.list help</td<td>prints usage instructions</td></tr>
+</table>
+\subsection dna_list_obs Observations
+
+These are the IDs that are available for a.new command.
+
+\section dna_new dna.new
+
+\subsection dna_new_usage Usage
+
+<table>
+<<tr><td>dna.new [id] [cost] [age] [energy]</td<td>creates a new kind</td></tr>
+<<tr><td>dna.new help</td<td>prints usage instructions</td></tr>
+</table>
+\subsection dna_new_opts Options
+
+<table>
+<<tr><td>id</td<td>the name to assign to the new numeric ID that will be generated. If ommited, a new, unique name will be generated. A form like this is recomended: Actor.Kind.<name>.</td></tr>
+<<tr><td>cost</td<td>the intrinsec energy cost for the agent per time unit; other components that are added will increase the total cost for running the agent.n This value must be an integer larger than 0. By default the cost is set to 10.</td></tr>
+<<tr><td>age</td<td>average age of death. This is an orientative value (suggestion). It must be larger than 0. By default it is set to 100.</td></tr>
+<<tr><td>energy</td<td>energy required at birth. At least this ammount of energy units are assigned at birt to an agent of this kind. When the user creates the agent, the energy is substracted from the free energy of the world. By default it is set to 10.</td></tr>
+</table>
+
+\section dna_r dna.r
+
+\subsection dna_r_usage Usage
+
+<table>
+<<tr><td>dna.r <kind> <id></td<td>add a reflex to a DNA sequence</td></tr>
+<<tr><td>dna.r help</td<td>prints usage instructions</td></tr>
+</table>
+\subsection dna_r_opts Options
+
+<table>
+<<tr><td>kind</td<td>A kind previously registered using dna.new (id)</td></tr>
+<<tr><td>id</td<td>The id of the reflex to add; this id must be valid (the function checks it before proceeding)</td></tr>
+</table>
+\subsection dna_r_obs Observations
+
+The actors created based on this DNA will all attempt to create for themselves a reflex of this kind.
+
+\section dna_s dna.s
+
+\subsection dna_s_usage Usage
+
+<table>
+<<tr><td>dna.s <kind> <id></td<td>add a sensor to a DNA sequence</td></tr>
+<<tr><td>dna.s help</td<td>prints usage instructions</td></tr>
+</table>
+\subsection dna_s_opts Options
+
+<table>
+<<tr><td>kind</td<td>A kind previously registered using dna.new (id)</td></tr>
+<<tr><td>id</td<td>The id of the sensor to add; this id must be valid (the function checks it before proceeding)</td></tr>
+</table>
+\subsection dna_s_obs Observations
+
+The actors created based on this DNA will all attempt to create for themselves a sensor of this kind.
+@cond hide_cmd_marker
+End of the area with command documentation.
+@endcond
+
+<br><br><hr>
+<table width=100%><tr>
+<td align=left> \ref prev </td>
+<td align=center> 'ref up </td>
+<td align=right> \ref next </td>
+</tr></table>
+
+*/
+
+}   //  namespace   april

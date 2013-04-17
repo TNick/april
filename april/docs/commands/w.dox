@@ -1,0 +1,131 @@
+
+namespace   april    {
+
+/**
+
+\page	module_world  Command module ...
+
+<strong>module_name</strong> is part of the command interface
+for april library.
+
+@cond hide_cmd_marker
+This is where automatic process places command documentation.
+@endcond
+
+\section w_adv w.adv
+
+\subsection w_adv_usage Usage
+
+<table>
+<<tr><td>w.adv <index> [steps]</td<td>advances the world at specified index 'steps' time units</td></tr>
+<<tr><td>w.adv <name> [steps]</td<td>advances the world having that name 'steps' time units</td></tr>
+<<tr><td>w.adv help</td<td>prints usage instructions</td></tr>
+</table>
+
+\section w_close w.close
+
+\subsection w_close_usage Usage
+
+<table>
+<<tr><td>w.close <index></td<td>close the world at specified index</td></tr>
+<<tr><td>w.close <name></td<td>close the world having that name</td></tr>
+<<tr><td>w.close help</td<td>prints usage instructions</td></tr>
+</table>
+
+\section w_crt w.crt
+
+\subsection w_crt_usage Usage
+
+<table>
+<<tr><td>w.crt </td<td>prints the name of current world</td></tr>
+<<tr><td>w.crt <index></td<td>changes current world to the one indicated by index</td></tr>
+<<tr><td>w.crt <name></td<td>changes current world to the one indicated by name</td></tr>
+<<tr><td>w.crt help</td<td>prints usage instructions</td></tr>
+</table>
+
+\section w_list w.list
+
+\subsection w_list_usage Usage
+
+<table>
+<<tr><td>w.list </td<td>lists the worlds and basic properties</td></tr>
+<<tr><td>w.list help</td<td>prints usage instructions</td></tr>
+</table>
+
+\section w_new w.new
+
+\subsection w_new_usage Usage
+
+<table>
+<<tr><td>w.new </td<td>creates a new world with default values</td></tr>
+<<tr><td>w.new [name] [energy]</td<td>creates a world with given name and energy</td></tr>
+<<tr><td>w.new help</td<td>prints usage instructions</td></tr>
+</table>
+\subsection w_new_opts Options
+
+<table>
+<<tr><td>name</td<td>the name of the world; this will identify the world in future dialogs; when no name is given an unique one is generated;</td></tr>
+<<tr><td>energy</td<td>the ammount of energy in the world; this must be a positive integer. In order to set the energy you MUST set a name. By default the energy is set to 100000 units.</td></tr>
+</table>
+
+\section w_open w.open
+
+\subsection w_open_usage Usage
+
+<table>
+<<tr><td>w.open <file-name></td<td>opens specified file and loads the world inside</td></tr>
+<<tr><td>w.open help</td<td>prints usage instructions</td></tr>
+</table>
+
+\section w_save w.save
+
+\subsection w_save_usage Usage
+
+<table>
+<<tr><td>w.save [name] [file]</td<td>saves specified world to a file</td></tr>
+<<tr><td>w.save [index] [file]</td<td>saves specified world to a file</td></tr>
+<<tr><td>w.save help</td<td>prints usage instructions</td></tr>
+</table>
+\subsection w_save_opts Options
+
+<table>
+<<tr><td>name</td<td>the name of the world.</td></tr>
+<<tr><td>energy</td<td>where to save; if not specified the file asociated with the world is used.</td></tr>
+</table>
+\subsection w_save_obs Observations
+
+If the opperation is succefull the internal association is also updated.
+
+\section w_start w.start
+
+\subsection w_start_usage Usage
+
+<table>
+<<tr><td>w.start <index></td<td>starts the world at specified index</td></tr>
+<<tr><td>w.start <name></td<td>starts the world having that name</td></tr>
+<<tr><td>w.start help</td<td>prints usage instructions</td></tr>
+</table>
+
+\section w_stop w.stop
+
+\subsection w_stop_usage Usage
+
+<table>
+<<tr><td>w.stop <index></td<td>stops the world at specified index</td></tr>
+<<tr><td>w.stop <name></td<td>stops the world having that name</td></tr>
+<<tr><td>w.stop help</td<td>prints usage instructions</td></tr>
+</table>
+@cond hide_cmd_marker
+End of the area with command documentation.
+@endcond
+
+<br><br><hr>
+<table width=100%><tr>
+<td align=left> \ref prev </td>
+<td align=center> 'ref up </td>
+<td align=right> \ref next </td>
+</tr></table>
+
+*/
+
+}   //  namespace   april

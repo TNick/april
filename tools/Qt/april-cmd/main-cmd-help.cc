@@ -1,19 +1,16 @@
 #include	<QCoreApplication>
 #include	<QStringList>
 #include	<QSettings>
+#include	<QDir>
 #include	<april/cmd/aprilmodule.h>
 
 #define	NO_ARGUMENT		QString()
 
+
 /* ------------------------------------------------------------------------- */
-//! appliation entry point
-int			main			( int argc, char *argv[] )
+static void		update_settings_file	( void )
 {
-	int i_ret = 0;
 	
-	/* prepare to start */
-	QCoreApplication apl( argc, argv );
-	Q_UNUSED( apl );
 	
 	/* 000000000000000000000000000000000000000000000000000000000000000000000 */
 	april::AprilModule::setUsage( 
@@ -745,10 +742,13 @@ int			main			( int argc, char *argv[] )
 				);
 	/* 000000000000000000000000000000000000000000000000000000000000000000000 */
 	
-	/* --------------------------------------------------------------------- */
-	/* now read 'em */
-	/* --------------------------------------------------------------------- */
-	
+	qDebug() << "help.dat was updated\n";
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+static void				print_all_settings			( void )
+{
 	QSettings	stg( "help.dat", QSettings::IniFormat );
 	QStringList sl = stg.childGroups();
 	sl.sort();
@@ -760,6 +760,279 @@ int			main			( int argc, char *argv[] )
 		qDebug() << april::AprilModule::getCLUsage( s ).toLatin1().constBegin();
 		qDebug() << QString( 80, QChar( '=' ) ).toLatin1().constBegin();
 	}
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+static void				update_documentation		( void )
+{
+	static QString s_key_1 = "This is where automatic process places command documentation.";
+	static QString s_key_2 = "@cond hide_cmd_marker";
+	static QString s_key_e = "@endcond";
+	
+	/* start with current directory in build area */
+	QDir	d("../../april/april/docs/commands");
+	if ( d.exists() == false )
+	{
+		qDebug() << "Could not locate documentation directory\n"
+				 << d.absolutePath()
+				 << "Documentation not updated\n";
+		return;
+	}
+	
+	QSettings	stg( "help.dat", QSettings::IniFormat );
+	QStringList sl_all = stg.childGroups();
+	if ( sl_all.isEmpty() )
+	{
+		qDebug() << "Please generate documentation in help.dat file (u command).\n"
+				 << "Documentation not updated\n";
+		return;
+	}
+	
+	
+	/* get a list of modules */
+	QString s_mod_in_cmd;
+	QMap<QString,QStringList>	mod_map;
+	foreach( QString s_cmd, sl_all )
+	{
+		int i_dot = s_cmd.indexOf( '.' );
+		if ( i_dot > 0 )
+		{
+			s_mod_in_cmd = s_cmd.mid( 0, i_dot );
+			if ( mod_map.contains( s_mod_in_cmd ) )
+			{
+				QStringList & cmd_l = mod_map[s_mod_in_cmd];
+				cmd_l.append( s_cmd );
+			}
+			else
+			{
+				mod_map.insert( s_mod_in_cmd, QStringList( s_cmd ) );
+			}
+		}
+	}
+	
+	/* for each module open its dox file */
+	QMap<QString,QStringList>::ConstIterator itr = mod_map.constBegin();
+	QMap<QString,QStringList>::ConstIterator itr_e = mod_map.constEnd();
+	while ( itr != itr_e )
+	{
+		QString s_file = d.absoluteFilePath( itr.key() + ".dox" );
+		const QStringList & sl_commands = itr.value();
+		qDebug() << s_file << "\n" << itr.value();
+		if ( d.exists( s_file ) == false )
+		{
+			QFile::copy( 
+						d.absoluteFilePath( "./module.dox.template" ),
+						s_file );
+		}
+		
+		QFile f( s_file );
+		if ( f.open( QIODevice::ReadWrite ) == false )
+		{
+			qDebug() << "Failed to open dox file " << s_file << "\n"
+					 << f.errorString()
+					 << "Documentation not updated\n";
+			return;
+		}
+		
+		enum Stat {
+			StsWaitSecStart,
+			StsWaitEnd1,
+			StsInsideArea,
+			StsOutsideArea
+		};
+		
+		QString s_usage;
+		QString s_usage_descr;
+		QString s_opt;
+		QStringList s_opt_descr;
+		QStringList s_obs;
+		
+		QString s_file_cont( f.readAll() );
+		QStringList s_lines = s_file_cont.split( '\n' );
+		QStringList s_lines_out;
+		int i_max = s_lines.count();
+		Stat sts = StsWaitSecStart;
+		for ( int i = 0; i < i_max; i++ )
+		{
+			switch ( sts ) {
+			case StsWaitSecStart:	{
+				if ( s_lines.at( i ) == s_key_1 )
+				{
+					sts = StsWaitEnd1;
+				}
+				s_lines_out.append( s_lines.at( i ) );
+				break; }
+			case StsWaitEnd1:	{
+				if ( s_lines.at( i ) == s_key_e )
+				{
+					sts = StsInsideArea;
+				}
+				s_lines_out.append( s_lines.at( i ) );
+				break; }
+			case StsInsideArea:	{
+				if ( s_lines.at( i ) == s_key_2 )
+				{
+					sts = StsOutsideArea;
+					
+					foreach( QString s_iter_cmd, sl_commands ) {
+						stg.beginGroup( s_iter_cmd );
+						QString s_sec_name = s_iter_cmd;
+						s_sec_name.replace( '.', '_' );
+						
+						s_lines_out.append( QString() );
+						s_lines_out.append( "\\section " + s_sec_name + " " + s_iter_cmd );
+						s_lines_out.append( QString() );
+						
+						/* -------------------------- */
+						s_lines_out.append( "\\subsection " + s_sec_name + "_usage Usage" );
+						s_lines_out.append( QString() );
+						s_lines_out.append( "<table>" );
+						int usg_max = stg.beginReadArray( "Usage" );
+						for ( int j = 0; j < usg_max; j++ )
+						{
+							stg.setArrayIndex( j );
+							s_usage = stg.value( "cmd" ).toString();
+							s_usage_descr = stg.value( "descr" ).toString();
+							s_lines_out.append( 
+										QString( "<<tr><td>%1</td<td>%2</td></tr>" )
+										.arg( s_usage )
+										.arg( s_usage_descr )
+										);
+						}
+						stg.endArray(); // Usage
+						s_lines_out.append( "</table>" );
+						
+						
+						/* -------------------------- */
+						int opt_max = stg.beginReadArray( "Options" );
+						if ( opt_max > 0 )
+						{
+							s_lines_out.append( "\\subsection " + s_sec_name + "_opts Options" );
+							s_lines_out.append( QString() );
+							
+							s_lines_out.append( "<table>" );
+							for ( int j = 0; j < opt_max; j++ )
+							{
+								stg.setArrayIndex( j );
+								s_opt = stg.value( "opt" ).toString();
+								s_opt_descr = stg.value( "descr" ).toStringList();
+								s_lines_out.append( 
+											QString( "<<tr><td>%1</td<td>%2</td></tr>" )
+											.arg( s_opt )
+											.arg( s_opt_descr.join( '\n' ) )
+											);
+							}
+							s_lines_out.append( "</table>" );
+						}
+						stg.endArray(); // Options
+						
+						
+						/* -------------------------- */
+						s_obs = stg.value( "Observations" ).toStringList();
+						if ( s_obs.count() > 0 )
+						{
+							s_lines_out.append( "\\subsection " + s_sec_name + "_obs Observations" );
+							s_lines_out.append( QString() );
+							
+							s_lines_out.append( s_obs.join( '\n' ) );
+						}
+						stg.endGroup();
+					}
+					
+					s_lines_out.append( s_lines.at( i ) );
+					break;
+				}
+				break; }
+			case StsOutsideArea:	{
+				s_lines_out.append( s_lines.at( i ) );
+				break; }
+			}
+		}
+		
+		f.seek( 0 );
+		f.write( s_lines_out.join( '\n' ).toLatin1() );
+		f.close();
+		
+		itr++;
+	}
+	
+	
+	
+	qDebug() << "documentation was updated\n";
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+//! application entry point
+int			main			( int argc, char *argv[] )
+{
+	int i_ret = 0;
+	
+	/* prepare to start */
+	QCoreApplication apl( argc, argv );
+	Q_UNUSED( apl );
+	
+	for ( ;; )
+	{
+		if ( argc < 2 )
+		{
+			update_settings_file();
+			print_all_settings();
+			return 0;
+		}
+		else if ( argc > 3 )
+		{
+			qDebug() << "Invalid number of arguments!";
+			break;
+		}
+		else
+		{
+			QString s_cmd( argv[1] );
+			s_cmd = s_cmd.toLower();
+			if ( ( s_cmd == "u" ) || ( s_cmd == "update" ) )
+			{
+				update_settings_file();
+				return 0;
+			}
+			else if (
+					 ( s_cmd == "?" ) ||  
+					 ( s_cmd == "/?" ) || 
+					 ( s_cmd == "h" ) || 
+					 ( s_cmd == "help" )  || 
+					 ( s_cmd == "--help" ) )
+			{
+				break;
+			}
+			else if (
+					 ( s_cmd == "p" ) ||  
+					 ( s_cmd == "print" ) )
+			{
+				print_all_settings();
+				return 0;
+			}
+			else if (
+					 ( s_cmd == "d" ) ||  
+					 ( s_cmd == "docs" ) )
+			{
+				update_documentation();
+				return 0;
+			}
+			else
+			{
+				qDebug() << "Unknown command!";
+				break;
+			}
+		}
+		Q_ASSERT(false);
+	}
+	qDebug() << "Usage:\n"
+			 << "april-cmd-help ?      prints this help message\n"
+			 << "april-cmd-help u      update the commands in help.dat file\n"
+			 << "april-cmd-help p      print commands from help.dat to console\n"
+			 << "april-cmd-help d      update dox files from help.dat\n"
+				;
+	
 	
 	return i_ret;
 }

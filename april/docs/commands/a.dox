@@ -1,0 +1,85 @@
+
+namespace   april    {
+
+/**
+
+\page	module_actor  Command module ...
+
+<strong>module_name</strong> is part of the command interface
+for april library.
+
+@cond hide_cmd_marker
+This is where automatic process places command documentation.
+@endcond
+
+\section a_kill a.kill
+
+\subsection a_kill_usage Usage
+
+<table>
+<<tr><td>a.kill <index></td<td>kills an actor in current world</td></tr>
+<<tr><td>a.kill help</td<td>prints usage instructions</td></tr>
+</table>
+\subsection a_kill_opts Options
+
+<table>
+<<tr><td>index</td<td>the index of the actor in the world</td></tr>
+</table>
+\subsection a_kill_obs Observations
+
+This function terminates an actor in current world (the actor may not be removed immediatelly but will be dead). The energy of the actor and of alll of its components will be added to the free energy of the current world.
+
+\section a_kinds a.kinds
+
+\subsection a_kinds_usage Usage
+
+<table>
+<<tr><td>a.kinds </td<td>list kinds of actors</td></tr>
+<<tr><td>a.kinds help</td<td>prints usage instructions</td></tr>
+</table>
+\subsection a_kinds_obs Observations
+
+The list of registered types of actors. This function lists all types but a.new is only capable of creating actors of kinds created with dna.new
+
+\section a_list a.list
+
+\subsection a_list_usage Usage
+
+<table>
+<<tr><td>a.list </td<td>lists actors in current world</td></tr>
+<<tr><td>a.list help</td<td>prints usage instructions</td></tr>
+</table>
+\subsection a_list_obs Observations
+
+This function lists actors in current world and some of their basic properties (id, name of the id, date of birth and death, current age and ammount of energy inside).
+
+\section a_new a.new
+
+\subsection a_new_usage Usage
+
+<table>
+<<tr><td>a.new <kind></td<td>create new actor instance</td></tr>
+<<tr><td>a.new help</td<td>prints usage instructions</td></tr>
+</table>
+\subsection a_new_opts Options
+
+<table>
+<<tr><td>kind</td<td>the kind of the actor to produce; to create a kind use dna.new</td></tr>
+</table>
+\subsection a_new_obs Observations
+
+This function creates a new actor in current world. The kind must be one that has an associated DNA. The energy for the actor is taken from the free energy of the world.
+@cond hide_cmd_marker
+End of the area with command documentation.
+@endcond
+
+<br><br><hr>
+<table width=100%><tr>
+<td align=left> \ref prev </td>
+<td align=center> 'ref up </td>
+<td align=right> \ref next </td>
+</tr></table>
+
+*/
+
+}   //  namespace   april

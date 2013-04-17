@@ -1,0 +1,74 @@
+
+namespace   april    {
+
+/**
+
+\page	module_brain  Command module ...
+
+<strong>module_name</strong> is part of the command interface
+for april library.
+
+@cond hide_cmd_marker
+This is where automatic process places command documentation.
+@endcond
+
+\section b_kinds b.kinds
+
+\subsection b_kinds_usage Usage
+
+<table>
+<<tr><td>b.kinds </td<td>list kinds of actors</td></tr>
+<<tr><td>b.kinds help</td<td>prints usage instructions</td></tr>
+</table>
+\subsection b_kinds_obs Observations
+
+The list of registered types of brains in current world.
+
+\section b_list b.list
+
+\subsection b_list_usage Usage
+
+<table>
+<<tr><td>b.list <actor></td<td>lists actors in current world</td></tr>
+<<tr><td>b.list help</td<td>prints usage instructions</td></tr>
+</table>
+\subsection b_list_opts Options
+
+<table>
+<<tr><td>actor</td<td>the actor who'se brains are listed; this is the offset of the actor in the world list</td></tr>
+</table>
+\subsection b_list_obs Observations
+
+This function lists brains in an actor in current world and some of their basic properties (id, name of the id, running cost and packed energy).
+
+\section b_new b.new
+
+\subsection b_new_usage Usage
+
+<table>
+<<tr><td>b.new <actor> <id></td<td>create new brain instance</td></tr>
+<<tr><td>b.new help</td<td>prints usage instructions</td></tr>
+</table>
+\subsection b_new_opts Options
+
+<table>
+<<tr><td>actor</td<td>destination actor where new brain is created; this is the offset of the actor in the world list</td></tr>
+<<tr><td>id</td<td>the ID of the new brain to create; if the id is invalid or represents a different component the function fails.</td></tr>
+</table>
+\subsection b_new_obs Observations
+
+This function creates a new brain in an actor in current world. The energy for the brain is taken from the free energy of the world.
+@cond hide_cmd_marker
+End of the area with command documentation.
+@endcond
+
+<br><br><hr>
+<table width=100%><tr>
+<td align=left> \ref prev </td>
+<td align=center> 'ref up </td>
+<td align=right> \ref next </td>
+</tr></table>
+
+*/
+
+}   //  namespace   april
