@@ -456,6 +456,8 @@ protected:
 	 */
 	///@{
 	
+public:
+	
 	//! first in the list of events (alive or recently dead)
 	EventSource *	firstEvent			( void ) const;
 

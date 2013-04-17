@@ -74,7 +74,8 @@ SOURCES += \
     ../../../april/cmd/modules/amodsensor.cc \
     ../../../april/cmd/modules/amodreflex.cc \
     ../../../april/cmd/modules/amodbrain.cc \
-    ../../../april/cmd/modules/amodactuator.cc
+    ../../../april/cmd/modules/amodactuator.cc \
+    ../../../april/cmd/modules/amodevents.cc
 
 HEADERS += \
     ../../../april/cmd/commandmap.h \
@@ -89,5 +90,6 @@ HEADERS += \
     ../../../april/cmd/modules/amodsensor.h \
     ../../../april/cmd/modules/amodreflex.h \
     ../../../april/cmd/modules/amodbrain.h \
-    ../../../april/cmd/modules/amodactuator.h
+    ../../../april/cmd/modules/amodactuator.h \
+    ../../../april/cmd/modules/amodevents.h
 
