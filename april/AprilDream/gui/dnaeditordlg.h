@@ -39,6 +39,7 @@
 namespace   april	{
 
 class	World;
+class	DNA;
 
 namespace	Gui		{
 
@@ -65,6 +66,16 @@ class DNAEditorDlg : public QDialog, public MemTrack		{
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
 
+	//! te order of the tabs
+	enum Tabs {
+		TabGeneral = 0,
+		TabSensors,
+		TabReflexes,
+		TabBrains,
+		TabActuators
+	};
+
+
 	/*  DEFINITIONS    ===================================================== */
 	//
 	//
@@ -80,6 +91,12 @@ private:
 	//! the world we're editing
 	World *						w_;
 	
+	//! the DNA that we're editing here
+	DNA &						dna_;
+	
+	//! invalid DNA reference
+	static DNA					invalid_dna_;
+	
 	/*  DATA    ============================================================ */
 	//
 	//
@@ -89,12 +106,20 @@ private:
 
 public:
 
-	//! constructor
+	//! constructor; we're creating a new DNA pice
 	explicit				DNAEditorDlg		( MW * parent, World * w  );
+
+	//! constructor; we're editing an existing DNA pice
+	explicit				DNAEditorDlg		( MW * parent, World * w, DNA & dna  );
 
 	//! destructor
 	~DNAEditorDlg			(void);
 
+private:
+	
+	//! common initialisation for all constructors
+	void					init				( void );
+	
 protected:
 	
 	//!@{

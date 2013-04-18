@@ -193,12 +193,13 @@ bool			AModDNA::newDNA				(
 		/* get an ID for this new kind */
 		if ( arg1.isEmpty() == false )
 		{
-			if ( w->idValue( arg1 ) != InvalidId )
+			ID other_id = w->idValue( arg1 );
+			if ( other_id != InvalidId )
 			{
 				s_err.append( QObject::tr( 
-								  "ID name %1 is already assigned.\n"
+								  "ID name %1 is already assigned to id %2.\n"
 								  "Please choose a different one.\n\n"
-								  ).arg( arg1 ) );
+								  ).arg( arg1 ).arg( other_id ) );
 				return false;
 			}
 		}

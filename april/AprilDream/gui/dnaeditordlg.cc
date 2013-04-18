@@ -28,6 +28,7 @@
 #include	<QListWidget>
 #include	<QListWidgetItem>
 #include	<QMessageBox>
+#include	<april/logic/dna.h>
 #include	<april/logic/eventsource.h>
 #include	<april/logic/eventfactory.h>
 #include	<april/logic/sensor.h>
@@ -39,7 +40,9 @@
 #include	<april/logic/reflex.h>
 #include	<april/logic/reflexfactory.h>
 #include	<april/logic/world.h>
+#include	<april/logic/genericactorfactory.h>
 #include	<april/AprilDream/gui/mw.h>
+
 
 
 /*  INCLUDES    ============================================================ */
@@ -76,6 +79,8 @@ public:
 //
 /*  DATA    ---------------------------------------------------------------- */
 
+DNA					DNAEditorDlg::invalid_dna_;
+
 /*  DATA    ================================================================ */
 //
 //
@@ -86,9 +91,27 @@ public:
 /* ------------------------------------------------------------------------- */
 DNAEditorDlg::DNAEditorDlg					( MW * parent, World * w ) :
 	QDialog(parent), MemTrack(),
-	w_( w )
+	w_( w ), dna_( invalid_dna_ )
 {
 	APRDBG_CDTOR;
+	init();
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+DNAEditorDlg::DNAEditorDlg					( MW * parent, World * w, DNA & dna ) :
+	QDialog(parent), MemTrack(),
+	w_( w ), dna_( dna )
+{
+	APRDBG_CDTOR;
+	init();
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void				DNAEditorDlg::init		( void )
+{
+	Q_ASSERT( w_ != NULL );
 	
 	ui.setupUi(this);
 	connect( ui.buttonBox, SIGNAL( accepted() ),
@@ -111,7 +134,7 @@ DNAEditorDlg::DNAEditorDlg					( MW * parent, World * w ) :
 	connect( ui.b_refl_rem, SIGNAL( clicked() ),
 			 this, SLOT( remSensor() ) );
 	
-	
+	/* load all components types */
 	{
 		const QMap<ID,SensorFactory*> & sf = w_->sensorFactories();
 		QMap<ID,SensorFactory*>::ConstIterator itr = sf.constBegin();
@@ -121,7 +144,7 @@ DNAEditorDlg::DNAEditorDlg					( MW * parent, World * w ) :
 			IdEntry * ide = 
 					new IdEntry( 
 						itr.key(),
-						w->nameForId( itr.key() ), 
+						w_->nameForId( itr.key() ), 
 						itr.value()->factoryName() );
 			ui.ls_sens_other->addItem( ide );
 			itr++;
@@ -136,7 +159,7 @@ DNAEditorDlg::DNAEditorDlg					( MW * parent, World * w ) :
 			IdEntry * ide = 
 					new IdEntry( 
 						itr.key(),
-						w->nameForId( itr.key() ), 
+						w_->nameForId( itr.key() ), 
 						itr.value()->factoryName() );
 			ui.ls_brains_other->addItem( ide );
 			itr++;
@@ -151,7 +174,7 @@ DNAEditorDlg::DNAEditorDlg					( MW * parent, World * w ) :
 			IdEntry * ide = 
 					new IdEntry( 
 						itr.key(),
-						w->nameForId( itr.key() ), 
+						w_->nameForId( itr.key() ), 
 						itr.value()->factoryName() );
 			ui.ls_refl_other->addItem( ide );
 			itr++;
@@ -166,7 +189,7 @@ DNAEditorDlg::DNAEditorDlg					( MW * parent, World * w ) :
 			IdEntry * ide = 
 					new IdEntry( 
 						itr.key(),
-						w->nameForId( itr.key() ), 
+						w_->nameForId( itr.key() ), 
 						itr.value()->factoryName() );
 			ui.ls_ak_others->addItem( ide );
 			itr++;
@@ -198,7 +221,7 @@ void					DNAEditorDlg::changeEvent			( QEvent *e )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void		moveLeft		( QListWidget * src, QListWidget * dst )
+static void		moveLeft		( QListWidget * src, QListWidget * dst )
 {
 	QList<QListWidgetItem*> itl = src->selectedItems();
 	if ( itl.count() == 0 )
@@ -219,7 +242,7 @@ void		moveLeft		( QListWidget * src, QListWidget * dst )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void		moveRight		( QListWidget * dst, QListWidget * src )
+static void		moveRight		( QListWidget * dst, QListWidget * src )
 {
 	QList<QListWidgetItem*> itl = src->selectedItems();
 	if ( itl.count() == 0 )
@@ -298,9 +321,66 @@ void					DNAEditorDlg::remSensor			( void )
 /* ------------------------------------------------------------------------- */
 void					DNAEditorDlg::validate			( void )
 {
+	DNA::InitData init_d;
+	init_d.kind_ = InvalidId;
+	init_d.cost_ = ui.sp_cost->value();
+	Q_ASSERT( init_d.cost_ > 0 );
+	init_d.age_ = ui.sp_age->value();
+	Q_ASSERT( init_d.age_ > 0 );
+	init_d.energy_ = ui.sp_energy->value();
+	Q_ASSERT( init_d.energy_ > 0 );
 	
-	/** @todo validate */
+	QString s_name = ui.le_name->text();
+	ID other_id = w_->idValue( s_name );
+	if ( other_id != InvalidId )
+	{
+		QMessageBox::warning(
+					NULL, QObject::tr( "Failed to create" ),
+					QObject::tr( 
+						"ID name %1 is already assigned to id %2.\n"
+						"Please choose a different one.\n\n"
+						).arg( s_name ).arg( other_id ),
+					QMessageBox::Ok );
+		ui.tabWidget->setCurrentIndex( TabGeneral );
+		ui.le_name->setFocus();
+		ui.le_name->selectAll();
+		return;
+	}
+	init_d.kind_ = w_->addNewId( s_name );
 	
+	/* create this kind */
+	GenericActorFactory * gf = GenericActorFactory::findMyself( w_ );
+	Q_ASSERT( gf != NULL );
+	gf->addNewKind( init_d );
+	bool b = w_->addActorFactory( gf, init_d.kind_ );
+	Q_ASSERT(b);
+	Q_UNUSED(b);
+	DEC_REF(gf,gf);
+	
+	/* get the DNA that we've created */
+	DNA & dna = gf->dna( init_d.kind_ );
+	Q_ASSERT( dna.isValid() );
+	
+	/* add things to this kind */
+	int i_max;
+	
+	/// @cond internal
+#	define	loadComponentX(uicmp,X)	\
+	i_max = ui.ls_##uicmp##_part->count(); \
+	for ( int i = 0; i < i_max; i++ ) { \
+		IdEntry * ide = static_cast<IdEntry*>( ui.ls_sens_part->item( i ) ); \
+		dna.addSensor( ide->id_ ); \
+	}
+	
+	loadComponentX(sens,Sensor);
+	loadComponentX(refl,Reflex);
+	loadComponentX(brains,Brain);
+	loadComponentX(ak,Actuator);
+
+#	undef	loadComponentX
+	/// @endcond
+	
+	accept();
 }
 /* ========================================================================= */
 
