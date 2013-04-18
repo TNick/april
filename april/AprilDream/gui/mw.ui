@@ -52,7 +52,16 @@
      <string>Help</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuComponents">
+    <property name="title">
+     <string>Components</string>
+    </property>
+    <addaction name="action_new_kind"/>
+    <addaction name="action_edit_kind"/>
+    <addaction name="separator"/>
+   </widget>
    <addaction name="menuWorld"/>
+   <addaction name="menuComponents"/>
    <addaction name="menuTools"/>
    <addaction name="menuView"/>
    <addaction name="menuHelp"/>
@@ -191,6 +200,16 @@
    </property>
    <property name="toolTip">
     <string>Allows loading-unloading plug-ins</string>
+   </property>
+  </action>
+  <action name="action_new_kind">
+   <property name="text">
+    <string>New kind...</string>
+   </property>
+  </action>
+  <action name="action_edit_kind">
+   <property name="text">
+    <string>Edit kind...</string>
    </property>
   </action>
  </widget>

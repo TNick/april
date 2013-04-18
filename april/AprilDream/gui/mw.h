@@ -155,6 +155,15 @@ private slots:
 	bool					slotSaveWorldAs		( void );
 	//!@}
 	
+	//! create a new kind
+	void					slotNewKind			( void );
+	
+	//! edit an existing kind
+	void					slotEditKind		( void );
+	
+	//! create a new actor
+	void					slotNewActor		( void );
+
 
 private:
 

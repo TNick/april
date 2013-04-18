@@ -28,6 +28,8 @@
 #include	"ui_mw.h"
 #include	"newworlddlg.h"
 #include	"pluginsdlg.h"
+#include	"dnaeditordlg.h"
+#include	"newactordlg.h"
 
 #include	<april/logic/world.h>
 #include	<april/aprillibrary.h>
@@ -293,6 +295,44 @@ bool					MW::slotSaveWorldAs	( void )
 	}
 	newWorldStatus();
 	return true;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void					MW::slotNewKind			( void )
+{
+	if ( hasWorld() == false )
+		return;
+	DNAEditorDlg	ded;
+	ded.exec();
+	newWorldStatus();
+	return;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void					MW::slotEditKind		( void )
+{
+	if ( hasWorld() == false )
+		return;
+	DNAEditorDlg	ded;
+	ded.exec();
+	
+	newWorldStatus();
+	return;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void					MW::slotNewActor		( void )
+{
+	if ( hasWorld() == false )
+		return;
+	NewActorDlg acd;
+	acd.exec();
+	
+	newWorldStatus();
+	return;
 }
 /* ========================================================================= */
 

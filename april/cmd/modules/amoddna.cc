@@ -135,11 +135,8 @@ bool			AModDNA::newDNA				(
 	
 	int arg_cnt = atks.tk_.count() - 1;
 	QString arg1;
-	QString arg2;
-	QString arg3;
-	QString arg4;
 	DNA::InitData init_d;
-	init_d.cost_ = InvalidId;
+	init_d.kind_ = InvalidId;
 	init_d.cost_ = 10;
 	init_d.age_ = 100;
 	init_d.energy_ = 10;
