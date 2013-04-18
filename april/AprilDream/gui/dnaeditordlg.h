@@ -49,7 +49,7 @@ namespace	Gui		{
 
 
 /**
-*	@brief	Dialog to ...
+*	@brief	Dialog to create or edit a kind
 */
 class DNAEditorDlg : public QDialog, public MemTrack		{
 	Q_OBJECT
@@ -84,7 +84,7 @@ private:
 public:
 
 	//! constructor
-	explicit			DNAEditorDlg		( QWidget *parent = 0 );
+	explicit				DNAEditorDlg		( QWidget *parent = 0 );
 
 	//! destructor
 	~DNAEditorDlg			(void);
@@ -93,8 +93,22 @@ protected:
 	
 	//!@{
 	//! other events
-	void				changeEvent			( QEvent *e );
+	void					changeEvent			( QEvent *e );
 	//!@}
+
+	//!@{
+	//! list of components
+	void					addActuators		( void );
+	void					addBrains			( void );
+	void					addReflex			( void );
+	void					addSensor			( void );
+	void					remActuators		( void );
+	void					remBrains			( void );
+	void					remReflex			( void );
+	void					remSensor			( void );
+	//!@}
+	
+
 
 	/*  FUNCTIONS    ======================================================= */
 	//

@@ -86,6 +86,7 @@ MW::MW	( QWidget *parent ) :
 	viever_.setScene( &w_scene_ );
 	
 	prepareActionsWorld();
+	prepareActionsComp();
 	
 	connect( ui.actionStart, SIGNAL(triggered()),
 			 this, SLOT( startWorld() ) );
@@ -118,6 +119,20 @@ void					MW::prepareActionsWorld	( void )
 			 this, SLOT( slotSaveWorldAs() ) );
 	connect( ui.action_exit, SIGNAL( triggered() ),
 			 this, SLOT( close() ) );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void					MW::prepareActionsComp	( void )
+{
+	connect( ui.action_new_kind, SIGNAL( triggered() ),
+			 this, SLOT( slotNewKind() ) );
+	connect( ui.action_edit_kind, SIGNAL( triggered() ),
+			 this, SLOT( slotEditKind() ) );
+	connect( ui.action_new_actor, SIGNAL( triggered() ),
+			 this, SLOT( slotNewActor() ) );
+	connect( ui.action_kill_actor, SIGNAL( triggered() ),
+			 this, SLOT( slotKillActor() ) );
 }
 /* ========================================================================= */
 
@@ -303,8 +318,9 @@ void					MW::slotNewKind			( void )
 {
 	if ( hasWorld() == false )
 		return;
-	DNAEditorDlg	ded;
+	DNAEditorDlg	ded(this);
 	ded.exec();
+	/** @todo slotNewKind() */
 	newWorldStatus();
 	return;
 }
@@ -315,8 +331,10 @@ void					MW::slotEditKind		( void )
 {
 	if ( hasWorld() == false )
 		return;
-	DNAEditorDlg	ded;
+	DNAEditorDlg	ded(this);
 	ded.exec();
+	
+	/** @todo slotEditKind() */
 	
 	newWorldStatus();
 	return;
@@ -328,8 +346,23 @@ void					MW::slotNewActor		( void )
 {
 	if ( hasWorld() == false )
 		return;
-	NewActorDlg acd;
+	NewActorDlg acd(this);
 	acd.exec();
+	
+	/** @todo slotNewActor() */
+	
+	newWorldStatus();
+	return;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void					MW::slotKillActor		( void )
+{
+	if ( hasWorld() == false )
+		return;
+	
+	/** @todo slotKillActor() */
 	
 	newWorldStatus();
 	return;

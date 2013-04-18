@@ -84,7 +84,7 @@ private:
 public:
 
 	//! constructor
-	explicit			NewActorDlg		( QWidget *parent = 0 );
+	explicit				NewActorDlg		( QWidget *parent = 0 );
 
 	//! destructor
 	~NewActorDlg			(void);
@@ -93,7 +93,7 @@ protected:
 	
 	//!@{
 	//! other events
-	void				changeEvent			( QEvent *e );
+	void					changeEvent		( QEvent *e );
 	//!@}
 
 	/*  FUNCTIONS    ======================================================= */

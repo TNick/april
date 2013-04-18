@@ -164,6 +164,8 @@ private slots:
 	//! create a new actor
 	void					slotNewActor		( void );
 
+	//! kill an existing actor
+	void					slotKillActor		( void );
 
 private:
 
@@ -171,6 +173,7 @@ private:
 	//!@{
 	//! prepare to start
 	void					prepareActionsWorld	( void );
+	void					prepareActionsComp	( void );
 	//!@}
 	
 	//! called when a world is opened/created or closed
