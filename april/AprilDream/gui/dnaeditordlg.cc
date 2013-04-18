@@ -28,6 +28,19 @@
 #include	<QListWidget>
 #include	<QListWidgetItem>
 #include	<QMessageBox>
+#include	<april/logic/eventsource.h>
+#include	<april/logic/eventfactory.h>
+#include	<april/logic/sensor.h>
+#include	<april/logic/sensorfactory.h>
+#include	<april/logic/actuator.h>
+#include	<april/logic/actuatorfactory.h>
+#include	<april/logic/brain.h>
+#include	<april/logic/brainfactory.h>
+#include	<april/logic/reflex.h>
+#include	<april/logic/reflexfactory.h>
+#include	<april/logic/world.h>
+#include	<april/AprilDream/gui/mw.h>
+
 
 /*  INCLUDES    ============================================================ */
 //
@@ -38,6 +51,23 @@
 
 using namespace april;
 using namespace april::Gui;
+
+//! an item in a list holding an ID for future use
+class IdEntry : public QListWidgetItem, public MemTrack {
+	BBM_TRACK( IdEntry );
+public:
+	ID	id_;
+	IdEntry( ID id, const QString & s_name, const QString & s_factory_name )
+		: QListWidgetItem(),
+		  id_(id)
+	{
+		setText( QObject::tr( "%1\t%2 (%3)" )
+				 .arg( id )
+				 .arg( s_name )
+				 .arg( s_factory_name )
+				 );
+	}
+};
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -54,8 +84,9 @@ using namespace april::Gui;
 /*  CLASS    --------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------------- */
-DNAEditorDlg::DNAEditorDlg					( QWidget *parent ) :
-	QDialog(parent), MemTrack()
+DNAEditorDlg::DNAEditorDlg					( MW * parent, World * w ) :
+	QDialog(parent), MemTrack(),
+	w_( w )
 {
 	APRDBG_CDTOR;
 	
@@ -80,29 +111,67 @@ DNAEditorDlg::DNAEditorDlg					( QWidget *parent ) :
 	connect( ui.b_refl_rem, SIGNAL( clicked() ),
 			 this, SLOT( remSensor() ) );
 	
-	/*
-	QDialogButtonBox *buttonBox;
-	QLineEdit *le_name;
-	QListWidget *ls_ak_others;
-	QListWidget *ls_ak_part;
-	QListWidget *ls_brains_other;
-	QListWidget *ls_brains_part;
-	QListWidget *ls_refl_other;
-	QListWidget *ls_refl_part;
-	QListWidget *ls_sens_other;
-	QListWidget *ls_sens_part;
-	QSpinBox *sp_age;
-	QSpinBox *sp_cost;
-	QSpinBox *sp_energy;
-	QToolButton *b_ak_add;
-	QToolButton *b_ak_rem;
-	QToolButton *b_brains_add;
-	QToolButton *b_brains_rem;
-	QToolButton *b_refl_add;
-	QToolButton *b_refl_rem;
-	QToolButton *b_sens_add;
-	QToolButton *b_sens_rem;
-	*/
+	
+	{
+		const QMap<ID,SensorFactory*> & sf = w_->sensorFactories();
+		QMap<ID,SensorFactory*>::ConstIterator itr = sf.constBegin();
+		QMap<ID,SensorFactory*>::ConstIterator itr_e = sf.constEnd();
+		while ( itr != itr_e )
+		{
+			IdEntry * ide = 
+					new IdEntry( 
+						itr.key(),
+						w->nameForId( itr.key() ), 
+						itr.value()->factoryName() );
+			ui.ls_sens_other->addItem( ide );
+			itr++;
+		}
+	}
+	{
+		const QMap<ID,BrainFactory*> & sf = w_->brainFactories();
+		QMap<ID,BrainFactory*>::ConstIterator itr = sf.constBegin();
+		QMap<ID,BrainFactory*>::ConstIterator itr_e = sf.constEnd();
+		while ( itr != itr_e )
+		{
+			IdEntry * ide = 
+					new IdEntry( 
+						itr.key(),
+						w->nameForId( itr.key() ), 
+						itr.value()->factoryName() );
+			ui.ls_brains_other->addItem( ide );
+			itr++;
+		}
+	}
+	{
+		const QMap<ID,ReflexFactory*> & sf = w_->reflexFactories();
+		QMap<ID,ReflexFactory*>::ConstIterator itr = sf.constBegin();
+		QMap<ID,ReflexFactory*>::ConstIterator itr_e = sf.constEnd();
+		while ( itr != itr_e )
+		{
+			IdEntry * ide = 
+					new IdEntry( 
+						itr.key(),
+						w->nameForId( itr.key() ), 
+						itr.value()->factoryName() );
+			ui.ls_refl_other->addItem( ide );
+			itr++;
+		}
+	}
+	{
+		const QMap<ID,ActuatorFactory*> & sf = w_->actuatorFactories();
+		QMap<ID,ActuatorFactory*>::ConstIterator itr = sf.constBegin();
+		QMap<ID,ActuatorFactory*>::ConstIterator itr_e = sf.constEnd();
+		while ( itr != itr_e )
+		{
+			IdEntry * ide = 
+					new IdEntry( 
+						itr.key(),
+						w->nameForId( itr.key() ), 
+						itr.value()->factoryName() );
+			ui.ls_ak_others->addItem( ide );
+			itr++;
+		}
+	}
 }
 /* ========================================================================= */
 
@@ -223,6 +292,15 @@ void					DNAEditorDlg::addSensor			( void )
 void					DNAEditorDlg::remSensor			( void )
 {
 	moveRight( ui.ls_sens_other, ui.ls_sens_part );	
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void					DNAEditorDlg::validate			( void )
+{
+	
+	/** @todo validate */
+	
 }
 /* ========================================================================= */
 

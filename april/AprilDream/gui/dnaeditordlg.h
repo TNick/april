@@ -38,7 +38,11 @@
 
 namespace   april	{
 
+class	World;
+
 namespace	Gui		{
+
+class	MW;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -73,7 +77,9 @@ private:
 	//! GUI components embedded in this instance
 	Ui::DNAEditorDlg 			ui;
 
-
+	//! the world we're editing
+	World *						w_;
+	
 	/*  DATA    ============================================================ */
 	//
 	//
@@ -84,7 +90,7 @@ private:
 public:
 
 	//! constructor
-	explicit				DNAEditorDlg		( QWidget *parent = 0 );
+	explicit				DNAEditorDlg		( MW * parent, World * w  );
 
 	//! destructor
 	~DNAEditorDlg			(void);
@@ -95,6 +101,8 @@ protected:
 	//! other events
 	void					changeEvent			( QEvent *e );
 	//!@}
+
+protected slots:
 
 	//!@{
 	//! list of components
@@ -108,6 +116,8 @@ protected:
 	void					remSensor			( void );
 	//!@}
 	
+	//! check input and accept
+	void					validate			( void );
 
 
 	/*  FUNCTIONS    ======================================================= */

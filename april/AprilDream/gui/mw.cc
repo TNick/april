@@ -318,7 +318,7 @@ void					MW::slotNewKind			( void )
 {
 	if ( hasWorld() == false )
 		return;
-	DNAEditorDlg	ded(this);
+	DNAEditorDlg	ded(this,world());
 	ded.exec();
 	/** @todo slotNewKind() */
 	newWorldStatus();
@@ -331,7 +331,7 @@ void					MW::slotEditKind		( void )
 {
 	if ( hasWorld() == false )
 		return;
-	DNAEditorDlg	ded(this);
+	DNAEditorDlg	ded(this,world());
 	ded.exec();
 	
 	/** @todo slotEditKind() */
