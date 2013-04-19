@@ -27,6 +27,8 @@
 
 #include    <QDialog>
 #include    <april/april.h>
+#include    <april/logic/uniqueid.h>
+#include    <april/logic/dna.h>
 #include	"ui_dnaeditordlg.h"
 
 /*  INCLUDES    ============================================================ */
@@ -114,7 +116,7 @@ public:
 
 	//! destructor
 	~DNAEditorDlg			(void);
-
+	
 private:
 	
 	//! common initialisation for all constructors
@@ -144,6 +146,16 @@ protected slots:
 	//! check input and accept
 	void					validate			( void );
 
+private:
+
+
+	//!@{
+	//! support methods
+	QString					getName				( ID & id_for_name );
+	void					validateNew			( DNA::InitData &init_d );
+	void					validateEdit		( DNA::InitData & init_d );
+	void					componentsToDNA		( DNA & dna );
+	//!@}
 
 	/*  FUNCTIONS    ======================================================= */
 	//

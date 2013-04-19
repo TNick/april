@@ -101,7 +101,7 @@ DNAEditorDlg::DNAEditorDlg					( MW * parent, World * w ) :
 
 /* ------------------------------------------------------------------------- */
 static void				addIdList			( 
-		QList<ID> & lst, QListWidget * existing, QListWidget * mine )
+		const QList<ID> & lst, QListWidget * existing, QListWidget * mine )
 {
 	foreach( ID id, lst )
 	{
@@ -111,8 +111,8 @@ static void				addIdList			(
 			IdEntry * itr_existing = static_cast<IdEntry*>( existing->item( i ) );
 			if ( itr_existing->id_ == id )
 			{
-				existing->takeItem( src->row(itr) );
-				mine->addItem( itr );
+				existing->takeItem( existing->row( itr_existing ) );
+				mine->addItem( itr_existing );
 				break;
 			}
 		}
@@ -268,7 +268,7 @@ static void		moveLeft		( QListWidget * src, QListWidget * dst )
 	if ( itl.count() == 0 )
 	{
 		QMessageBox::warning(
-					this, QObject::tr( "Failed to add" ),
+					qApp->activeWindow(), QObject::tr( "Failed to add" ),
 					QObject::tr( "There is no selected item in\n"
 								 "the right panel." ),
 					QMessageBox::Ok );
@@ -289,7 +289,7 @@ static void		moveRight		( QListWidget * dst, QListWidget * src )
 	if ( itl.count() == 0 )
 	{
 		QMessageBox::warning(
-					this, QObject::tr( "Failed to add" ),
+					qApp->activeWindow(), QObject::tr( "Failed to add" ),
 					QObject::tr( "There is no selected item in\n"
 								 "the left panel." ),
 					QMessageBox::Ok );
@@ -370,27 +370,44 @@ QString					DNAEditorDlg::getName			( ID & id_for_name )
 					QObject::tr( 
 						"There is no name assigned to the kind.\n"
 						"Please type a name.\n\n"
-						).arg( s_name ).arg( other_id ),
+						),
 					QMessageBox::Ok );
 		ui.tabWidget->setCurrentIndex( TabGeneral );
 		ui.le_name->setFocus();
 	}
-	id_for_name = w_->idValue();
+	id_for_name = w_->idValue( s_name );
 	return s_name;
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void					DNAEditorDlg::validateNew		( void )
+void					DNAEditorDlg::componentsToDNA	( DNA & dna )
 {
-	DNA::InitData init_d;
-	init_d.kind_ = InvalidId;
-	init_d.cost_ = ui.sp_cost->value();
-	Q_ASSERT( init_d.cost_ > 0 );
-	init_d.age_ = ui.sp_age->value();
-	Q_ASSERT( init_d.age_ > 0 );
-	init_d.energy_ = ui.sp_energy->value();
-	Q_ASSERT( init_d.energy_ > 0 );
+	/* add things to this kind */
+	int i_max;
+	
+	/// @cond internal
+#	define	loadComponentX(uicmp,X)	\
+	i_max = ui.ls_##uicmp##_part->count(); \
+	for ( int i = 0; i < i_max; i++ ) { \
+	IdEntry * ide = static_cast<IdEntry*>( ui.ls_##uicmp##_part->item( i ) ); \
+	dna.add##X( ide->id_ ); \
+}
+	
+	loadComponentX(sens,Sensor);
+	loadComponentX(refl,Reflex);
+	loadComponentX(brains,Brain);
+	loadComponentX(ak,Actuator);
+	
+#	undef	loadComponentX
+	/// @endcond
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void					DNAEditorDlg::validateNew		( 
+		DNA::InitData & init_d )
+{
 	
 	ID other_id;
 	QString s_name = getName( other_id );
@@ -425,31 +442,15 @@ void					DNAEditorDlg::validateNew		( void )
 	DNA & dna = gf->dna( init_d.kind_ );
 	Q_ASSERT( dna.isValid() );
 	
-	/* add things to this kind */
-	int i_max;
-	
-	/// @cond internal
-#	define	loadComponentX(uicmp,X)	\
-	i_max = ui.ls_##uicmp##_part->count(); \
-	for ( int i = 0; i < i_max; i++ ) { \
-	IdEntry * ide = static_cast<IdEntry*>( ui.ls_sens_part->item( i ) ); \
-	dna.add##X( ide->id_ ); \
-}
-	
-	loadComponentX(sens,Sensor);
-	loadComponentX(refl,Reflex);
-	loadComponentX(brains,Brain);
-	loadComponentX(ak,Actuator);
-	
-#	undef	loadComponentX
-	/// @endcond
+	componentsToDNA( dna );
 	
 	accept();
 }
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void					DNAEditorDlg::validateEdit		( void )
+void					DNAEditorDlg::validateEdit		( 
+		DNA::InitData & init_d )
 {
 	ID other_id;
 	QString s_name = getName( other_id );
@@ -467,8 +468,10 @@ void					DNAEditorDlg::validateEdit		( void )
 		return;
 	}
 	
-	
-	
+	DNA dna_new;
+	dna_new.initDNA( init_d );
+	componentsToDNA( dna_new );
+	dna_.reinitDNA( dna_new, false );
 	accept();
 }
 /* ========================================================================= */
@@ -476,13 +479,22 @@ void					DNAEditorDlg::validateEdit		( void )
 /* ------------------------------------------------------------------------- */
 void					DNAEditorDlg::validate			( void )
 {
+	DNA::InitData init_d;
+	init_d.kind_ = InvalidId;
+	init_d.cost_ = ui.sp_cost->value();
+	Q_ASSERT( init_d.cost_ > 0 );
+	init_d.age_ = ui.sp_age->value();
+	Q_ASSERT( init_d.age_ > 0 );
+	init_d.energy_ = ui.sp_energy->value();
+	Q_ASSERT( init_d.energy_ > 0 );
+
 	if ( dna_.isValid() )
 	{
-		validateEdit();
+		validateEdit( init_d );
 	}
 	else
 	{
-		validateNew();
+		validateNew( init_d );
 	}
 }
 /* ========================================================================= */

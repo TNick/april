@@ -131,6 +131,19 @@ void			DNA::initDNA		( const InitData & init )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+void			DNA::reinitDNA		( const DNA & src, bool clear_content )
+{ FUNC_ENTRY;
+	
+	values_i_ = src.values_i_;
+	if ( clear_content )
+	{
+		parts_.clear();
+		values_.clear();
+	}
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
 bool			DNA::fromMerge		( const DNA & p1, const DNA & p2 )
 { FUNC_ENTRY;
 	Q_UNUSED( p1 );

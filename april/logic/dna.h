@@ -339,7 +339,6 @@ public:
 	//! the level of noise to add to copy opperations
 	static qreal	dnaNoise		( void );
 	
-protected:
 	
 	//! get the index of the ID or -1 if not found
 	int				findID			( ID id ) const;
@@ -351,7 +350,14 @@ protected:
 	 */
 	void			initDNA			( const InitData & init );
 	
-	
+	//! set components and characteristics for source DNA
+	/**
+	 * 
+	 * @param src source DNA (values are copied from this one
+	 * @param clear_content should we clear \b values_ and \b parts_ ?
+	 */
+	void			reinitDNA		( const DNA & src, bool clear_content );
+
 	
 	/* OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
 	/** @name Merge helpers
