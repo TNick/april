@@ -764,11 +764,21 @@ static void				print_all_settings			( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
+static QString				properDoxString		( const QString & s_in )
+{
+	QString s_out = s_in;
+	s_out.replace( "<", "\\<" );
+	s_out.replace( ">", "\\> " );
+	return s_out;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
 static void				update_documentation		( void )
 {
 	static QString s_key_1 = "This is where automatic process places command documentation.";
-	static QString s_key_2 = "@cond hide_cmd_marker";
-	static QString s_key_e = "@endcond";
+	static QString s_key_2 = "@if hide_cmd_marker";
+	static QString s_key_e = "@endif";
 	
 	/* start with current directory in build area */
 	QDir	d("../../april/april/docs/commands");
@@ -818,7 +828,6 @@ static void				update_documentation		( void )
 	{
 		QString s_file = d.absoluteFilePath( itr.key() + ".dox" );
 		const QStringList & sl_commands = itr.value();
-		qDebug() << s_file << "\n" << itr.value();
 		if ( d.exists( s_file ) == false )
 		{
 			QFile::copy( 
@@ -881,21 +890,32 @@ static void				update_documentation		( void )
 						s_sec_name.replace( '.', '_' );
 						
 						s_lines_out.append( QString() );
+						s_lines_out.append( "<br><br>" );
 						s_lines_out.append( "\\section " + s_sec_name + " " + s_iter_cmd );
 						s_lines_out.append( QString() );
 						
 						/* -------------------------- */
+						s_obs = stg.value( "Observations" ).toStringList();
+						if ( s_obs.count() > 0 )
+						{
+							//s_lines_out.append( "\\subsection " + s_sec_name + "_obs Observations" );
+							s_lines_out.append( QString() );
+							
+							s_lines_out.append( properDoxString( s_obs.join( '\n' ) ) );
+						}						
+						
+						/* -------------------------- */
 						s_lines_out.append( "\\subsection " + s_sec_name + "_usage Usage" );
 						s_lines_out.append( QString() );
-						s_lines_out.append( "<table>" );
+						s_lines_out.append( "<table width=\"70%\">" );
 						int usg_max = stg.beginReadArray( "Usage" );
 						for ( int j = 0; j < usg_max; j++ )
 						{
 							stg.setArrayIndex( j );
-							s_usage = stg.value( "cmd" ).toString();
-							s_usage_descr = stg.value( "descr" ).toString();
+							s_usage = properDoxString( stg.value( "cmd" ).toString() );
+							s_usage_descr = properDoxString( stg.value( "descr" ).toString() );
 							s_lines_out.append( 
-										QString( "<<tr><td>%1</td<td>%2</td></tr>" )
+										QString( "<tr><td width=\"30%\">%1</td><td>%2</td></tr>" )
 										.arg( s_usage )
 										.arg( s_usage_descr )
 										);
@@ -911,33 +931,23 @@ static void				update_documentation		( void )
 							s_lines_out.append( "\\subsection " + s_sec_name + "_opts Options" );
 							s_lines_out.append( QString() );
 							
-							s_lines_out.append( "<table>" );
+							s_lines_out.append( "<table width=\"70%\">" );
 							for ( int j = 0; j < opt_max; j++ )
 							{
 								stg.setArrayIndex( j );
-								s_opt = stg.value( "opt" ).toString();
+								s_opt = properDoxString( stg.value( "opt" ).toString() );
 								s_opt_descr = stg.value( "descr" ).toStringList();
 								s_lines_out.append( 
-											QString( "<<tr><td>%1</td<td>%2</td></tr>" )
+											QString( "<tr><td width=\"30%\">%1</td><td>%2</td></tr>" )
 											.arg( s_opt )
-											.arg( s_opt_descr.join( '\n' ) )
+											.arg( properDoxString( s_opt_descr.join( '\n' ) ) )
 											);
 							}
 							s_lines_out.append( "</table>" );
 						}
 						stg.endArray(); // Options
-						
-						
-						/* -------------------------- */
-						s_obs = stg.value( "Observations" ).toStringList();
-						if ( s_obs.count() > 0 )
-						{
-							s_lines_out.append( "\\subsection " + s_sec_name + "_obs Observations" );
-							s_lines_out.append( QString() );
-							
-							s_lines_out.append( s_obs.join( '\n' ) );
-						}
 						stg.endGroup();
+						
 					}
 					
 					s_lines_out.append( s_lines.at( i ) );

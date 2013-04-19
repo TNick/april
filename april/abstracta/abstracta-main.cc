@@ -89,8 +89,10 @@ enum		ExitCode		{
 	ExitMax				/**< bounds check */
 };
 
+//! the program exited normally
+#define EXIT_OK				0
 
-#define EXIT_OK				-1
+//! exit is ok and should continue
 #define EXIT_CONTINUE		-1
 
 using namespace	april;

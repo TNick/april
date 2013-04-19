@@ -59,7 +59,11 @@ using namespace april::Gui;
 class IdEntry : public QListWidgetItem, public MemTrack {
 	BBM_TRACK( IdEntry );
 public:
+
+	//! holding the id for future reference
 	ID	id_;
+	
+	//! constructor
 	IdEntry( ID id, const QString & s_name, const QString & s_factory_name )
 		: QListWidgetItem(),
 		  id_(id)

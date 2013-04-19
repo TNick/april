@@ -66,7 +66,11 @@ public:
 
 	//! a list of ID and DNA values
 	typedef	QMap<ID,DNA>					IdDnaMap;
+	
+	//! iterator for a DNA map
 	typedef	QMap<ID,DNA>::Iterator			IdDnaMapIter;
+	
+	//! constant iterator for a DNA map
 	typedef	QMap<ID,DNA>::ConstIterator		IdDnaMapIterC;
 
 	/*  DEFINITIONS    ===================================================== */
