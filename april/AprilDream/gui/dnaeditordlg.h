@@ -109,7 +109,7 @@ private:
 public:
 
 	//! constructor; we're creating a new DNA pice
-	explicit				DNAEditorDlg		( MW * parent, World * w  );
+	explicit				DNAEditorDlg		( MW * parent, World * w );
 
 	//! constructor; we're editing an existing DNA pice
 	explicit				DNAEditorDlg		( MW * parent, World * w, DNA & dna  );

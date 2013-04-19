@@ -27,6 +27,7 @@
 
 #include    <QDialog>
 #include    <april/april.h>
+#include    <april/logic/uniqueid.h>
 #include	"ui_newactordlg.h"
 
 /*  INCLUDES    ============================================================ */
@@ -38,7 +39,11 @@
 
 namespace   april	{
 
+class	World;
+
 namespace	Gui		{
+
+class	MW;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -49,7 +54,7 @@ namespace	Gui		{
 
 
 /**
-*	@brief	Dialog to ...
+*	@brief	Dialog to add a new actor
 */
 class NewActorDlg : public QDialog, public MemTrack		{
 	Q_OBJECT
@@ -73,6 +78,8 @@ private:
 	//! GUI components embedded in this instance
 	Ui::NewActorDlg 			ui;
 
+	//! the world we're editing
+	World *						w_;
 
 	/*  DATA    ============================================================ */
 	//
@@ -84,10 +91,13 @@ private:
 public:
 
 	//! constructor
-	explicit				NewActorDlg		( QWidget *parent = 0 );
+	explicit				NewActorDlg		(  MW * parent, World * w );
 
 	//! destructor
 	~NewActorDlg			(void);
+
+	//! the ID that was selected by the user
+	ID						selectedID		( void ) const;
 
 protected:
 	

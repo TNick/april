@@ -346,10 +346,11 @@ void					MW::slotNewActor		( void )
 {
 	if ( hasWorld() == false )
 		return;
-	NewActorDlg acd(this);
-	acd.exec();
-	
-	/** @todo slotNewActor() */
+	NewActorDlg acd(this,world());
+	if ( acd.exec() == QDialog::Accepted )
+	{
+		world()->createActor( acd.selectedID() );
+	}
 	
 	newWorldStatus();
 	return;

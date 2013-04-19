@@ -456,6 +456,7 @@ void					DNAEditorDlg::validateEdit		(
 	QString s_name = getName( other_id );
 	if ( s_name.isEmpty() )
 		return;
+	init_d.kind_ = dna_.kind();
 	if ( other_id != dna_.kind() )
 	{
 		QMessageBox::warning(
@@ -468,6 +469,10 @@ void					DNAEditorDlg::validateEdit		(
 		return;
 	}
 	
+	/* change the name of the ID */
+	w_->insertId( init_d.kind_, s_name );
+	
+	/* create ghost dna to use in copy process */
 	DNA dna_new;
 	dna_new.initDNA( init_d );
 	componentsToDNA( dna_new );

@@ -24,6 +24,8 @@
 /*  INCLUDES    ------------------------------------------------------------ */
 
 #include	"newactordlg.h"
+#include	<april/logic/genericactorfactory.h>
+#include	<april/AprilDream/gui/mw.h>
 
 
 /*  INCLUDES    ============================================================ */
@@ -51,13 +53,38 @@ using namespace april::Gui;
 /*  CLASS    --------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------------- */
-NewActorDlg::NewActorDlg					( QWidget *parent ) :
-	QDialog(parent), MemTrack()
+NewActorDlg::NewActorDlg					(  MW * parent, World * w ) :
+	QDialog(parent), MemTrack(),
+	ui(),
+	w_( w )
 {
 	APRDBG_CDTOR;
 
 	ui.setupUi(this);
 
+	GenericActorFactory * gf = 
+			GenericActorFactory::findMyself( w );
+	Q_ASSERT( gf != NULL );
+	
+	GenericActorFactory::IdDnaMap lst = gf->dnaList();
+	GenericActorFactory::IdDnaMapIterC itr = lst.constBegin();
+	GenericActorFactory::IdDnaMapIterC itr_end = lst.constEnd();
+	ID id;
+	QString s_name;
+	while ( itr != itr_end )
+	{
+		id = itr.key();
+		s_name = w_->nameForId( id );
+		if ( s_name.isEmpty() )
+		{
+			s_name = tr( "Kind with id %1" ).arg( id );
+		}
+		else
+		{
+			s_name = tr( "%1 (%2)" ).arg( s_name ).arg( id );
+		}
+		ui.cb_kinds->addItem( s_name, QVariant( id ) );
+	}
 }
 /* ========================================================================= */
 
@@ -66,6 +93,13 @@ NewActorDlg::~NewActorDlg					( void )
 {
 	APRDBG_CDTOR;
 	/* stub */
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+ID						NewActorDlg::selectedID				( void ) const
+{
+	return ui.cb_kinds->itemData( ui.cb_kinds->currentIndex() ).toULongLong();
 }
 /* ========================================================================= */
 
