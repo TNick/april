@@ -95,6 +95,28 @@ DNAEditorDlg::DNAEditorDlg					( MW * parent, World * w ) :
 {
 	APRDBG_CDTOR;
 	init();
+	setWindowTitle( tr( "Create a new kind" ) );
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+static void				addIdList			( 
+		QList<ID> & lst, QListWidget * existing, QListWidget * mine )
+{
+	foreach( ID id, lst )
+	{
+		int i_max = existing->count();
+		for ( int i = 0; i < i_max; i++ )
+		{
+			IdEntry * itr_existing = static_cast<IdEntry*>( existing->item( i ) );
+			if ( itr_existing->id_ == id )
+			{
+				existing->takeItem( src->row(itr) );
+				mine->addItem( itr );
+				break;
+			}
+		}
+	}
 }
 /* ========================================================================= */
 
@@ -105,6 +127,24 @@ DNAEditorDlg::DNAEditorDlg					( MW * parent, World * w, DNA & dna ) :
 {
 	APRDBG_CDTOR;
 	init();
+	if ( dna.isValid() && w_->isIDAssigned( dna.kind() ) )
+	{
+		setWindowTitle( tr( "Edit kind id %1" ).arg( dna.kind() ) );
+		ui.le_name->setText( w_->nameForId( dna.kind() ) );
+		ui.sp_age->setValue( dna.age() );
+		ui.sp_cost->setValue( dna.cost() );
+		ui.sp_energy->setValue( dna.energy() );
+		
+		addIdList( dna.sensors(), ui.ls_sens_other, ui.ls_sens_part );
+		addIdList( dna.reflexes(), ui.ls_refl_other, ui.ls_refl_part );
+		addIdList( dna.brains(), ui.ls_brains_other, ui.ls_brains_part );
+		addIdList( dna.actuators(), ui.ls_ak_others, ui.ls_ak_part );
+		
+	}
+	else
+	{
+		setWindowTitle( tr( "Create a new kind" ) );
+	}
 }
 /* ========================================================================= */
 
@@ -129,9 +169,9 @@ void				DNAEditorDlg::init		( void )
 			 this, SLOT( addReflex() ) );
 	connect( ui.b_refl_rem, SIGNAL( clicked() ),
 			 this, SLOT( remReflex() ) );
-	connect( ui.b_refl_add, SIGNAL( clicked() ),
+	connect( ui.b_sens_add, SIGNAL( clicked() ),
 			 this, SLOT( addSensor() ) );
-	connect( ui.b_refl_rem, SIGNAL( clicked() ),
+	connect( ui.b_sens_rem, SIGNAL( clicked() ),
 			 this, SLOT( remSensor() ) );
 	
 	/* load all components types */
@@ -195,6 +235,7 @@ void				DNAEditorDlg::init		( void )
 			itr++;
 		}
 	}
+	ui.tabWidget->setCurrentIndex( 0 );
 }
 /* ========================================================================= */
 
@@ -227,7 +268,7 @@ static void		moveLeft		( QListWidget * src, QListWidget * dst )
 	if ( itl.count() == 0 )
 	{
 		QMessageBox::warning(
-					NULL, QObject::tr( "Failed to add" ),
+					this, QObject::tr( "Failed to add" ),
 					QObject::tr( "There is no selected item in\n"
 								 "the right panel." ),
 					QMessageBox::Ok );
@@ -248,7 +289,7 @@ static void		moveRight		( QListWidget * dst, QListWidget * src )
 	if ( itl.count() == 0 )
 	{
 		QMessageBox::warning(
-					NULL, QObject::tr( "Failed to add" ),
+					this, QObject::tr( "Failed to add" ),
 					QObject::tr( "There is no selected item in\n"
 								 "the left panel." ),
 					QMessageBox::Ok );
@@ -319,7 +360,28 @@ void					DNAEditorDlg::remSensor			( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-void					DNAEditorDlg::validate			( void )
+QString					DNAEditorDlg::getName			( ID & id_for_name )
+{
+	QString s_name = ui.le_name->text();
+	if ( s_name.isEmpty() )
+	{
+		QMessageBox::warning(
+					this, QObject::tr( "Failed to create" ),
+					QObject::tr( 
+						"There is no name assigned to the kind.\n"
+						"Please type a name.\n\n"
+						).arg( s_name ).arg( other_id ),
+					QMessageBox::Ok );
+		ui.tabWidget->setCurrentIndex( TabGeneral );
+		ui.le_name->setFocus();
+	}
+	id_for_name = w_->idValue();
+	return s_name;
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void					DNAEditorDlg::validateNew		( void )
 {
 	DNA::InitData init_d;
 	init_d.kind_ = InvalidId;
@@ -330,12 +392,14 @@ void					DNAEditorDlg::validate			( void )
 	init_d.energy_ = ui.sp_energy->value();
 	Q_ASSERT( init_d.energy_ > 0 );
 	
-	QString s_name = ui.le_name->text();
-	ID other_id = w_->idValue( s_name );
+	ID other_id;
+	QString s_name = getName( other_id );
+	if ( s_name.isEmpty() )
+		return;
 	if ( other_id != InvalidId )
 	{
 		QMessageBox::warning(
-					NULL, QObject::tr( "Failed to create" ),
+					this, QObject::tr( "Failed to create" ),
 					QObject::tr( 
 						"ID name %1 is already assigned to id %2.\n"
 						"Please choose a different one.\n\n"
@@ -368,19 +432,58 @@ void					DNAEditorDlg::validate			( void )
 #	define	loadComponentX(uicmp,X)	\
 	i_max = ui.ls_##uicmp##_part->count(); \
 	for ( int i = 0; i < i_max; i++ ) { \
-		IdEntry * ide = static_cast<IdEntry*>( ui.ls_sens_part->item( i ) ); \
-		dna.addSensor( ide->id_ ); \
-	}
+	IdEntry * ide = static_cast<IdEntry*>( ui.ls_sens_part->item( i ) ); \
+	dna.add##X( ide->id_ ); \
+}
 	
 	loadComponentX(sens,Sensor);
 	loadComponentX(refl,Reflex);
 	loadComponentX(brains,Brain);
 	loadComponentX(ak,Actuator);
-
+	
 #	undef	loadComponentX
 	/// @endcond
 	
 	accept();
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void					DNAEditorDlg::validateEdit		( void )
+{
+	ID other_id;
+	QString s_name = getName( other_id );
+	if ( s_name.isEmpty() )
+		return;
+	if ( other_id != dna_.kind() )
+	{
+		QMessageBox::warning(
+					this, QObject::tr( "Failed to create" ),
+					QObject::tr( 
+						"ID name %1 is already assigned to id %2.\n"
+						"Please choose a different one.\n\n"
+						).arg( s_name ).arg( other_id ),
+					QMessageBox::Ok );
+		return;
+	}
+	
+	
+	
+	accept();
+}
+/* ========================================================================= */
+
+/* ------------------------------------------------------------------------- */
+void					DNAEditorDlg::validate			( void )
+{
+	if ( dna_.isValid() )
+	{
+		validateEdit();
+	}
+	else
+	{
+		validateNew();
+	}
 }
 /* ========================================================================= */
 

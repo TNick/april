@@ -414,6 +414,10 @@ public:
 	QList<ID>		allocatedIds	( void ) const
 	{ return uid_.ids(); }
 
+	//! tell if an ID is assigned
+	bool			isIDAssigned	( ID id ) const
+	{ return uid_.isAssigned( id ); }
+	
 	///@}
 	/* ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo */
 

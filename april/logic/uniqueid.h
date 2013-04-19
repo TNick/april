@@ -153,6 +153,10 @@ public:
 	QList<ID>		ids				( void ) const
 	{ return map_.keys(); }
 
+	//! tell if an ID is assigned
+	bool			isAssigned		( ID id ) const
+	{ return map_.contains( id ); }
+
 	/*  FUNCTIONS    ======================================================= */
 	//
 	//
