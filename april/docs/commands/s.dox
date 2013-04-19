@@ -3,70 +3,79 @@ namespace   april    {
 
 /**
 
-\page	module_sensor  Command module ...
+\page	module_s  Sensors
 
 <strong>module_name</strong> is part of the command interface
 for april library.
 
-@cond hide_cmd_marker
+@if hide_cmd_marker
 This is where automatic process places command documentation.
-@endcond
+@endif
 
+<br><br>
 \section s_kinds s.kinds
 
-\subsection s_kinds_usage Usage
-
-<table>
-<<tr><td>s.kinds </td<td>list kinds of actors</td></tr>
-<<tr><td>s.kinds help</td<td>prints usage instructions</td></tr>
-</table>
-\subsection s_kinds_obs Observations
 
 The list of registered types of sensors in current world.
+\subsection s_kinds_usage Usage
 
+<table width="70%">
+<tr><td width="30%">s.kinds </td><td>list kinds of actors</td></tr>
+<tr><td width="30%">s.kinds help</td><td>prints usage instructions</td></tr>
+</table>
+
+<br><br>
 \section s_list s.list
 
+
+This function lists sensors in an actor in current world
+and some of their basic properties
+(id, name of the id, running cost and packed energy).
 \subsection s_list_usage Usage
 
-<table>
-<<tr><td>s.list <actor></td<td>lists actors in current world</td></tr>
-<<tr><td>s.list help</td<td>prints usage instructions</td></tr>
+<table width="70%">
+<tr><td width="30%">s.list \<actor\> </td><td>lists actors in current world</td></tr>
+<tr><td width="30%">s.list help</td><td>prints usage instructions</td></tr>
 </table>
 \subsection s_list_opts Options
 
-<table>
-<<tr><td>actor</td<td>the actor who'se sensors are listed; this is the offset of the actor in the world list</td></tr>
+<table width="70%">
+<tr><td width="30%">actor</td><td>the actor who'se sensors are listed;
+this is the offset of the actor in the world list</td></tr>
 </table>
-\subsection s_list_obs Observations
 
-This function lists sensors in an actor in current world and some of their basic properties (id, name of the id, running cost and packed energy).
-
+<br><br>
 \section s_new s.new
 
+
+This function creates a new sensor in an actor
+in current world.
+The energy for the sensor is taken from the free
+energy of the world.
 \subsection s_new_usage Usage
 
-<table>
-<<tr><td>s.new <actor> <id></td<td>create new sensor instance</td></tr>
-<<tr><td>s.new help</td<td>prints usage instructions</td></tr>
+<table width="70%">
+<tr><td width="30%">s.new \<actor\>  \<id\> </td><td>create new sensor instance</td></tr>
+<tr><td width="30%">s.new help</td><td>prints usage instructions</td></tr>
 </table>
 \subsection s_new_opts Options
 
-<table>
-<<tr><td>actor</td<td>destination actor where new sensor is created; this is the offset of the actor in the world list</td></tr>
-<<tr><td>id</td<td>the ID of the new sensor to create; if the id is invalid or represents a different component the function fails.</td></tr>
+<table width="70%">
+<tr><td width="30%">actor</td><td>destination actor where new sensor is created;
+this is the offset of the actor in the world list</td></tr>
+<tr><td width="30%">id</td><td>the ID of the new sensor to create;
+if the id is invalid or represents a different
+component the function fails.</td></tr>
 </table>
-\subsection s_new_obs Observations
-
-This function creates a new sensor in an actor in current world. The energy for the sensor is taken from the free energy of the world.
-@cond hide_cmd_marker
+@if hide_cmd_marker
 End of the area with command documentation.
-@endcond
+@endif
 
 <br><br><hr>
 <table width=100%><tr>
-<td align=left> \ref prev </td>
-<td align=center> 'ref up </td>
-<td align=right> \ref next </td>
+<td align=left> \ref module_a </td>
+<td align=center> \ref april-cmd  </td>
+<td align=right> \ref module_r </td>
 </tr></table>
 
 */

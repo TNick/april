@@ -3,70 +3,79 @@ namespace   april    {
 
 /**
 
-\page	module_actuator  Command module ...
+\page	module_ak  Actuators
 
-<strong>module_name</strong> is part of the command interface
+<strong>Actuators module</strong> is part of the command interface
 for april library.
 
-@cond hide_cmd_marker
+@if hide_cmd_marker
 This is where automatic process places command documentation.
-@endcond
+@endif
 
+<br><br>
 \section ak_kinds ak.kinds
 
-\subsection ak_kinds_usage Usage
-
-<table>
-<<tr><td>ak.kinds </td<td>list kinds of actors</td></tr>
-<<tr><td>ak.kinds help</td<td>prints usage instructions</td></tr>
-</table>
-\subsection ak_kinds_obs Observations
 
 The list of registered types of actuators in current world.
+\subsection ak_kinds_usage Usage
 
+<table width="70%">
+<tr><td width="30%">ak.kinds </td><td>list kinds of actors</td></tr>
+<tr><td width="30%">ak.kinds help</td><td>prints usage instructions</td></tr>
+</table>
+
+<br><br>
 \section ak_list ak.list
 
+
+This function lists actuators in an actor in current world
+and some of their basic properties
+(id, name of the id, running cost and packed energy).
 \subsection ak_list_usage Usage
 
-<table>
-<<tr><td>ak.list <actor></td<td>lists actors in current world</td></tr>
-<<tr><td>ak.list help</td<td>prints usage instructions</td></tr>
+<table width="70%">
+<tr><td width="30%">ak.list \<actor\> </td><td>lists actors in current world</td></tr>
+<tr><td width="30%">ak.list help</td><td>prints usage instructions</td></tr>
 </table>
 \subsection ak_list_opts Options
 
-<table>
-<<tr><td>actor</td<td>the actor who'se actuators are listed; this is the offset of the actor in the world list</td></tr>
+<table width="70%">
+<tr><td width="30%">actor</td><td>the actor who'se actuators are listed;
+this is the offset of the actor in the world list</td></tr>
 </table>
-\subsection ak_list_obs Observations
 
-This function lists actuators in an actor in current world and some of their basic properties (id, name of the id, running cost and packed energy).
-
+<br><br>
 \section ak_new ak.new
 
+
+This function creates a new actuator in an actor
+in current world.
+The energy for the actuator is taken from the free
+energy of the world.
 \subsection ak_new_usage Usage
 
-<table>
-<<tr><td>ak.new <actor> <id></td<td>create new actuator instance</td></tr>
-<<tr><td>ak.new help</td<td>prints usage instructions</td></tr>
+<table width="70%">
+<tr><td width="30%">ak.new \<actor\>  \<id\> </td><td>create new actuator instance</td></tr>
+<tr><td width="30%">ak.new help</td><td>prints usage instructions</td></tr>
 </table>
 \subsection ak_new_opts Options
 
-<table>
-<<tr><td>actor</td<td>destination actor where new actuator is created; this is the offset of the actor in the world list</td></tr>
-<<tr><td>id</td<td>the ID of the new actuator to create; if the id is invalid or represents a different component the function fails.</td></tr>
+<table width="70%">
+<tr><td width="30%">actor</td><td>destination actor where new actuator is created;
+this is the offset of the actor in the world list</td></tr>
+<tr><td width="30%">id</td><td>the ID of the new actuator to create;
+if the id is invalid or represents a different
+component the function fails.</td></tr>
 </table>
-\subsection ak_new_obs Observations
-
-This function creates a new actuator in an actor in current world. The energy for the actuator is taken from the free energy of the world.
-@cond hide_cmd_marker
+@if hide_cmd_marker
 End of the area with command documentation.
-@endcond
+@endif
 
 <br><br><hr>
 <table width=100%><tr>
-<td align=left> \ref prev </td>
-<td align=center> 'ref up </td>
-<td align=right> \ref next </td>
+<td align=left> \ref module_b </td>
+<td align=center> \ref april-cmd  </td>
+<td align=right> \ref module_e </td>
 </tr></table>
 
 */

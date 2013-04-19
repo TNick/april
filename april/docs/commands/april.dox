@@ -3,80 +3,88 @@ namespace   april    {
 
 /**
 
-\page	module_april  Command module ...
+\page	module_april  April management and introspection
 
 <strong>module_name</strong> is part of the command interface
 for april library.
 
-@cond hide_cmd_marker
+@if hide_cmd_marker
 This is where automatic process places command documentation.
-@endcond
+@endif
 
+<br><br>
 \section april_commands april.commands
 
+
+The command lists ALL commands that are registered
+with the command system. If a command is accesible
+it is present in this list.
 \subsection april_commands_usage Usage
 
-<table>
-<<tr><td>april.commands </td<td>lists the commands</td></tr>
-<<tr><td>april.commands help</td<td>prints usage instructions</td></tr>
+<table width="70%">
+<tr><td width="30%">april.commands </td><td>lists the commands</td></tr>
+<tr><td width="30%">april.commands help</td><td>prints usage instructions</td></tr>
 </table>
-\subsection april_commands_obs Observations
 
-The command lists ALL commands that are registered with the command system. If a command is accesible it is present in this list.
-
+<br><br>
 \section april_copyright april.copyright
 
+
+The command prints the content of the COPYING
+file if found, otherwise ives general directions.
 \subsection april_copyright_usage Usage
 
-<table>
-<<tr><td>april.copyright </td<td>display information about copyright</td></tr>
-<<tr><td>april.copyright help</td<td>prints usage instructions</td></tr>
+<table width="70%">
+<tr><td width="30%">april.copyright </td><td>display information about copyright</td></tr>
+<tr><td width="30%">april.copyright help</td><td>prints usage instructions</td></tr>
 </table>
-\subsection april_copyright_obs Observations
 
-The command prints the content of the COPYING file if found, otherwise ives general directions.
-
+<br><br>
 \section april_modules april.modules
 
+
+The command lists ALL modules that are registered
+with the command system. This lists the long names
+that can't be used in a real command - these often use
+shorter forms for the commands.
 \subsection april_modules_usage Usage
 
-<table>
-<<tr><td>april.modules </td<td>lists the modules</td></tr>
-<<tr><td>april.modules help</td<td>prints usage instructions</td></tr>
+<table width="70%">
+<tr><td width="30%">april.modules </td><td>lists the modules</td></tr>
+<tr><td width="30%">april.modules help</td><td>prints usage instructions</td></tr>
 </table>
-\subsection april_modules_obs Observations
 
-The command lists ALL modules that are registered with the command system. This lists the long names that can't be used in a real command - these often use shorter forms for the commands.
-
+<br><br>
 \section april_prompt april.prompt
 
+
+Any string provided as argument will be
+printed at the beginning of each command line.
 \subsection april_prompt_usage Usage
 
-<table>
-<<tr><td>april.prompt <new prompt></td<td>changes current prompt to new value</td></tr>
-<<tr><td>april.prompt help</td<td>prints usage instructions</td></tr>
+<table width="70%">
+<tr><td width="30%">april.prompt \<new prompt\> </td><td>changes current prompt to new value</td></tr>
+<tr><td width="30%">april.prompt help</td><td>prints usage instructions</td></tr>
 </table>
-\subsection april_prompt_obs Observations
 
-Any string provided as argument will be printed at the beginning of each command line.
-
+<br><br>
 \section april_version april.version
 
 \subsection april_version_usage Usage
 
-<table>
-<<tr><td>april.version </td<td>display the version</td></tr>
-<<tr><td>april.version help</td<td>prints usage instructions</td></tr>
+<table width="70%">
+<tr><td width="30%">april.version </td><td>display the version</td></tr>
+<tr><td width="30%">april.version help</td><td>prints usage instructions</td></tr>
 </table>
-@cond hide_cmd_marker
+@if hide_cmd_marker
 End of the area with command documentation.
-@endcond
+@endif
 
 <br><br><hr>
 <table width=100%><tr>
-<td align=left> \ref prev </td>
-<td align=center> 'ref up </td>
-<td align=right> \ref next </td>
+<td align=left> \ref april-cmd </td>
+<td align=center>  </td>
+<td align=right> \ref module_p </td>
 </tr></table>
 
 */

@@ -10,7 +10,7 @@ This provides classes that inherit the building blocks, adding 2D or 3D
 locality, graphical representation and so on.
 
 <br><br><hr>
-<table width=100%><tr><td> \ref april-core </td>
+<table width=100%><tr><td> \ref april-cmd </td>
 <td align=center> <a href="index.html">Documentation root</a> </td>
 <td align=right> \ref AprilDream </td>
 </tr></table>

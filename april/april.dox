@@ -69,6 +69,7 @@ href="http://github.com/TNick/april/issues">GitHub provided issue tracker</a>.
 \section	sec_guide_content The content of this guide
 
 - \subpage april-core
+- \subpage april-cmd
 - \subpage april-gui
 - \subpage AprilDream
 - \subpage abstract-april

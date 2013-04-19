@@ -1,0 +1,50 @@
+
+namespace   april    {
+
+/**
+
+\page	april-cmd   april-cmd library
+
+This library provides an interface through text commands to core functions.
+It is easly extendable and has support for new classes.
+
+The commands follow this pattern:
+<strong>module.command</strong> arg arg arg
+
+If the arguments contain spaces then quotes are required, otherwise 
+they are optional:
+@code
+some.command argument_1 "argument 2" 'argument 3'
+@endcode
+
+Either tabs or spaces may separate arguments.
+
+Modules are logically related groups of commands. While the commands 
+belonging to a certain module usually start with the name of the module
+or a short form of it, the library does not enforce this rule and
+any module may provide any command or the command may not be
+provided by a module at all.
+
+Here are the build-in modules:
+
+- \subpage module_april
+- \subpage module_p
+- \subpage module_id
+- \subpage module_w
+- \subpage module_dna
+- \subpage module_a
+- \subpage module_s
+- \subpage module_r
+- \subpage module_b
+- \subpage module_ak
+- \subpage module_e
+
+
+<br><br><hr>
+<table width=100%><tr><td> \ref april-core </td>
+<td align=center> <a href="index.html">Documentation root</a> </td>
+<td align=right> \ref april-gui </td>
+</tr></table>
+*/
+
+}   //  namespace   april

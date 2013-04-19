@@ -118,8 +118,8 @@ $ROOT/tools/scripts contains a script that is used in official builds for Ubuntu
 
 <br><br><hr>
 <table width=100%><tr><td> \ref AprilDream </td>
-<td align=center>  </td>
-<td align=right> <a href="index.html">Documentation root</a> </td>
+<td align=center> <a href="index.html">Documentation root</a> </td>
+<td align=right> \ref saveload </td>
 </tr></table>
 */
 
