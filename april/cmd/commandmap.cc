@@ -79,7 +79,7 @@ CommandMap::~CommandMap	( void )
 /* ========================================================================= */
 
 /* ------------------------------------------------------------------------- */
-const CommandMap *	CommandMap::defaultInstance			( void )
+CommandMap *	CommandMap::defaultInstance			( void )
 {
 	return def_inst_;
 }

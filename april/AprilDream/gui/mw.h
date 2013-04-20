@@ -34,8 +34,10 @@
 #include    <april/AprilDream/gui/dockids.h>
 #include    <april/AprilDream/gui/docktree.h>
 #include    <april/AprilDream/gui/dockworld.h>
+#include    <april/AprilDream/gui/dockcmdlog.h>
 #include    <april/AprilDream/gui/sceneviewer.h>
 
+#include    <april/cmd/commandmap.h>
 
 /*  INCLUDES    ============================================================ */
 //
@@ -88,6 +90,7 @@ private:
 	DockIds			d_ids_;
 	DockTree		d_tree_;
 	DockWorld		d_world_;
+	DockCmdLog		d_cmd_;
 	//!@}
 	
 	//! the scene 
@@ -98,6 +101,9 @@ private:
 	
 	//! the label showing run/stop status
 	QLabel *		l_run;
+	
+	//! map of commands
+	CommandMap 		cmd_map_;
 	
 	
 	/*  DATA    ============================================================ */

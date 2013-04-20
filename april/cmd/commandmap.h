@@ -139,7 +139,7 @@ public:
 	{ return b_exit_ == false; }
 
 	//! default instance
-	static const CommandMap *	defaultInstance	( void );
+	static CommandMap *	defaultInstance	( void );
 
 	/*  FUNCTIONS    ======================================================= */
 	//

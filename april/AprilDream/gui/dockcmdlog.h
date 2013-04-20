@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			dockcrtsel.h
+  \file			dockcmdlog.h
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the definition for DockCrtSel class
+  \brief		Contains the definition for DockCmdLog class
 
 
 *//*
@@ -17,8 +17,8 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __DOCKCRTSEL_INC__
-#define __DOCKCRTSEL_INC__
+#ifndef __DOCKCMDLOG_INC__
+#define __DOCKCMDLOG_INC__
 //
 //
 //
@@ -35,12 +35,12 @@
 //
 /*  DEFINITIONS    --------------------------------------------------------- */
 
-namespace   april	{
+namespace   april    {
 
 namespace	Gui		{
 
 class	MW;
-class	DockCrtSel_p;
+class	DockCmdLog_p;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -50,10 +50,10 @@ class	DockCrtSel_p;
 /*  CLASS    --------------------------------------------------------------- */
 
 /**
-*	@brief	Properties of current selection
+*	@brief	Command and log dock panel
 */
-class DockCrtSel		: public Dock		{
-	BBM_TRACK( DockCrtSel );
+class DockCmdLog		: public Dock		{
+	BBM_TRACK( DockCmdLog );
 
 	//
 	//
@@ -61,8 +61,6 @@ class DockCrtSel		: public Dock		{
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
 
-
-	
 	/*  DEFINITIONS    ===================================================== */
 	//
 	//
@@ -73,7 +71,7 @@ class DockCrtSel		: public Dock		{
 private:
 
 	//! data only allocated when visible
-	DockCrtSel_p *		d_;
+	DockCmdLog_p *		d_;
 
 	/*  DATA    ============================================================ */
 	//
@@ -84,16 +82,11 @@ private:
 
 public:
 
+	//! constructor
+	DockCmdLog			( MW * mw );
 
-	/**
-	*	@brief	constructor;
-	*/
-	DockCrtSel			( MW * mw );
-
-	/**
-	*	@brief	destructor;
-	*/
-	virtual				~DockCrtSel				( void );
+	//! destructor;
+	virtual				~DockCmdLog		( void );
 
 protected:
 
@@ -110,7 +103,7 @@ protected:
 	//
 	//
 
-};	/*	class DockCrtSel	*/
+};	/*	class DockCmdLog	*/
 
 /*  CLASS    =============================================================== */
 //
@@ -119,8 +112,9 @@ protected:
 //
 
 }   //  namespace   Gui
+
 }   //  namespace   april
 
-#endif // __DOCKCRTSEL_INC__
+#endif // __DOCKCMDLOG_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */

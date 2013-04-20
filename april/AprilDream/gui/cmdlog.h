@@ -1,11 +1,11 @@
 /* ========================================================================= */
 /* ------------------------------------------------------------------------- */
 /*!
-  \file			dockcrtsel.h
+  \file			cmdlog.h
   \date			Apr 2013
   \author		TNick
 
-  \brief		Contains the definition for DockCrtSel class
+  \brief		Contains the definition for CmdLog class
 
 
 *//*
@@ -17,16 +17,17 @@
 */
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */
-#ifndef __DOCKCRTSEL_INC__
-#define __DOCKCRTSEL_INC__
+#ifndef __CMDLOG_INC__
+#define __CMDLOG_INC__
 //
 //
 //
 //
 /*  INCLUDES    ------------------------------------------------------------ */
 
+#include    <QMainWindow>
 #include    <april/april.h>
-#include    <april/AprilDream/gui/dock.h>
+#include	"ui_cmdlog.h"
 
 /*  INCLUDES    ============================================================ */
 //
@@ -35,12 +36,13 @@
 //
 /*  DEFINITIONS    --------------------------------------------------------- */
 
-namespace   april	{
+namespace   april    {
+
+class CommandMap;
 
 namespace	Gui		{
 
 class	MW;
-class	DockCrtSel_p;
 
 /*  DEFINITIONS    ========================================================= */
 //
@@ -49,11 +51,13 @@ class	DockCrtSel_p;
 //
 /*  CLASS    --------------------------------------------------------------- */
 
+
 /**
-*	@brief	Properties of current selection
+*	@brief	Form that allows interfacing with april-cmd library
 */
-class DockCrtSel		: public Dock		{
-	BBM_TRACK( DockCrtSel );
+class CmdLog : public QWidget, public MemTrack		{
+	Q_OBJECT
+	BBM_TRACK( CmdLog );
 
 	//
 	//
@@ -61,8 +65,6 @@ class DockCrtSel		: public Dock		{
 	//
 	/*  DEFINITIONS    ----------------------------------------------------- */
 
-
-	
 	/*  DEFINITIONS    ===================================================== */
 	//
 	//
@@ -72,8 +74,16 @@ class DockCrtSel		: public Dock		{
 
 private:
 
-	//! data only allocated when visible
-	DockCrtSel_p *		d_;
+
+	//! map of commands
+	CommandMap *			cmd_map_;
+
+	//! the CommandMap instance is owned by us
+	bool					b_own_map_;
+	
+	//! GUI components embedded here
+	Ui::CmdLog				ui;
+	
 
 	/*  DATA    ============================================================ */
 	//
@@ -84,33 +94,37 @@ private:
 
 public:
 
+	//! constructor
+	explicit			CmdLog				( QWidget * parent  );
 
-	/**
-	*	@brief	constructor;
-	*/
-	DockCrtSel			( MW * mw );
-
-	/**
-	*	@brief	destructor;
-	*/
-	virtual				~DockCrtSel				( void );
-
+	//! destructor
+	~CmdLog				( void );
+	
+	
 protected:
 
-	//! used to construct the widget
-	void				construct				( void );
+	//!@{
+	//! other events
+	void				changeEvent			( QEvent *e );
+	//!@}
 
-	//! used to destruct the widget
-	void				deconstruct				( void );
+private slots:
+	
+	//! executes the command in the text area
+	void				executeCommand		( void );
+	
+signals:
 
-
+	//! the program should close
+	void				appClose			( void );
+	
 	/*  FUNCTIONS    ======================================================= */
 	//
 	//
 	//
 	//
 
-};	/*	class DockCrtSel	*/
+};	/*	class CmdLog	*/
 
 /*  CLASS    =============================================================== */
 //
@@ -118,9 +132,10 @@ protected:
 //
 //
 
-}   //  namespace   Gui
+}	//	namespace	Gui
+
 }   //  namespace   april
 
-#endif // __DOCKCRTSEL_INC__
+#endif // __CMDLOG_INC__
 /* ------------------------------------------------------------------------- */
 /* ========================================================================= */

@@ -70,9 +70,11 @@ MW::MW	( QWidget *parent ) :
 	d_ids_(this),
 	d_tree_(this),
 	d_world_(this),
+	d_cmd_(this),
 	w_scene_(),
 	viever_(),
-	l_run(NULL)
+	l_run(NULL),
+	cmd_map_()
 {
 	APRDBG_CDTOR;
 	ui.setupUi( this );
@@ -81,6 +83,7 @@ MW::MW	( QWidget *parent ) :
 	ui.menuView->addAction( d_ids_.action() );
 	ui.menuView->addAction( d_tree_.action() );
 	ui.menuView->addAction( d_world_.action() );
+	ui.menuView->addAction( d_cmd_.action() );
 	
 	setCentralWidget( &viever_ );
 	viever_.setScene( &w_scene_ );

@@ -69,7 +69,8 @@ FORMS += \
     ../../../april/AprilDream/gui/newworlddlg.ui \
     ../../../april/AprilDream/gui/pluginsdlg.ui \
     ../../../april/AprilDream/gui/dnaeditordlg.ui \
-    ../../../april/AprilDream/gui/newactordlg.ui
+    ../../../april/AprilDream/gui/newactordlg.ui \
+    ../../../april/AprilDream/gui/cmdlog.ui
 
 HEADERS += \
     ../../../april/AprilDream/gui/mw.h \
@@ -90,7 +91,9 @@ HEADERS += \
     ../../../april/AprilDream/gui/newworlddlg.h \
     ../../../april/AprilDream/gui/pluginsdlg.h \
     ../../../april/AprilDream/gui/dnaeditordlg.h \
-    ../../../april/AprilDream/gui/newactordlg.h
+    ../../../april/AprilDream/gui/newactordlg.h \
+    ../../../april/AprilDream/gui/cmdlog.h \
+    ../../../april/AprilDream/gui/dockcmdlog.h
 
 SOURCES += \
     ../../../april/AprilDream/gui/mw.cc \
@@ -112,7 +115,9 @@ SOURCES += \
     ../../../april/AprilDream/gui/newworlddlg.cc \
     ../../../april/AprilDream/gui/pluginsdlg.cc \
     ../../../april/AprilDream/gui/dnaeditordlg.cc \
-    ../../../april/AprilDream/gui/newactordlg.cc
+    ../../../april/AprilDream/gui/newactordlg.cc \
+    ../../../april/AprilDream/gui/cmdlog.cc \
+    ../../../april/AprilDream/gui/dockcmdlog.cc
 
 RESOURCES += \
     ../../../april/AprilDream/aprildream.qrc
