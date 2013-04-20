@@ -5,7 +5,7 @@ namespace   april    {
 
 \page	module_w  World
 
-<strong>World</strong> is part of the command interface
+<strong>World module</strong> is part of the command interface
 for april library. It contains commands that open or close the worlds,
 change the status or querry their properties.
 

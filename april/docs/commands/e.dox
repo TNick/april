@@ -5,7 +5,7 @@ namespace   april    {
 
 \page	module_e  Events
 
-<strong>module_name</strong> is part of the command interface
+<strong>Events module</strong> is part of the command interface
 for april library.
 
 @if hide_cmd_marker

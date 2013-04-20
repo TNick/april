@@ -5,7 +5,7 @@ namespace   april    {
 
 \page	module_dna  DNA
 
-<strong>module_name</strong> is part of the command interface
+<strong>DNA module</strong> is part of the command interface
 for april library.
 
 @if hide_cmd_marker

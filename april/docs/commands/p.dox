@@ -5,7 +5,7 @@ namespace   april    {
 
 \page	module_p  Plug-ins
 
-<strong>module_name</strong> is part of the command interface
+<strong>Plug-ins module</strong> is part of the command interface
 for april library.
 
 @if hide_cmd_marker
