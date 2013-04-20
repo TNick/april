@@ -115,11 +115,6 @@ public:
 	 */
 	virtual EventSource *	create				( ID id );
 
-	//! create an event source;
-	/** @deprecated */
-	virtual EventSource *	create				( QSettings & stg )
-	{ Q_UNUSED(stg); return NULL;}
-
 	//! save to a QSettings object
 	virtual bool			save				( QSettings & s ) const;
 	
