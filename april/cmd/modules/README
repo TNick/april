@@ -1,0 +1,27 @@
+Predefined modules. The names of the files (and classes inside)
+start with *a* for april, *mod* for module and a specific name.
+
+Content of the directory
+===========================
+amodactor.cc and amodactor.h
+    Actor module. Provides commands related to Actors.
+amodactuator.cc and amodactuator.h
+    Actuator module. Provides commands related to Actuators.
+amodapril.cc and amodapril.h
+    April module. Provides commands related to introspection.
+amodbrain.cc and amodbrain.h
+    Brain module. Provides commands related to Brains.
+amoddna.cc and amoddna.h
+    DNA module. Provides commands related to DNA manipulation.
+amodevents.cc and amodevents.h
+    Events module. Provides commands related to Events.
+amodid.cc and amodid.h
+    ID module. Provides commands related to IDs.
+amodplugins.cc and amodplugins.h
+    Plugins module. Provides commands related to plug-ins.
+amodreflex.cc and amodreflex.h
+    Reflex module. Provides commands related to Reflexes.
+amodsensor.cc and amodsensor.h
+    Sensor module. Provides commands related to Sensors.
+amodworld.cc and amodworld.h
+    World module. Provides commands related to World as a whole.

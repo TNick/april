@@ -1,0 +1,12 @@
+Support for commands is located in this directory
+
+Content of the directory
+===========================
+modules (directory)
+    actual modules are inside this directory
+aprilmodule.cc and aprilmodule.h
+    base class for modules and support code
+apriltokenizer.cc and apriltokenizer.h
+    class for tokenizing strings and representing the tokens
+commandmap.cc and commandmap.h
+    class capable  of storing a list of commands and associated callbacks

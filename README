@@ -45,16 +45,15 @@ To build and install the library follow the instructions in INSTALL file.
 Content of the package
 ===========================
 
-build (directory)
+april (directory)
+    groups the C++ source files and headers
+debian (directory)
+    contains the files that are used to generate debian distributions.build (directory)
     by default the result of the building process are placed 
     in this directory. It is not part of the source distribution.
-debian (directory)
-    contains the files that are used to generate debian distributions.
 distrib (directory)
     this is where the distributions are generated. It is not part of the source
     distribution.
-april (directory)
-    groups the C++ source files and headers
 tools (directory)
     various helper files
 

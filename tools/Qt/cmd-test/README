@@ -1,0 +1,13 @@
+This directory contains files used by the qmake[1] to build a 
+stand-alone executable: cmd-test. It is capable of starting a 
+command line executable and send various commands to it.
+The output is then matched against expectations.
+
+
+cmd-test.pro
+=======================
+
+qmake project file.
+
+
+[1] - http://qt-project.org/doc/qt-4.8/qmake-manual.html

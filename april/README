@@ -1,1 +1,49 @@
 Main source directory.
+
+Content of the directory
+===========================
+
+abstracta (directory)
+    
+AprilDream (directory)
+    hosts source files specific for AprilDream GUI application.
+cmd (directory)
+    source files for commands
+docs (directory)
+    documentation files used with Doxygen documentation system.
+examples (directory)
+    complete example applications
+gui (directory)
+    graphical inteface objects are sourced here
+logic (directory)
+    basic objects for the core library
+plugins (directory)
+    infrastructure for plug-ins and actual plug-ins
+res (directory)
+    other resources like icons, images and so on
+tests (directory)
+    tests for objects
+april_config.h
+    configuration file; this results from april_config.h.in and contains
+    the customisation of the library for current computer
+april_config.h.in
+    model for april_config.h; this is actually renamed to april_config.h
+    when building standard distributions
+april_debug.cc
+    debug code
+april_debug.h
+    debug definitions
+april.dox
+    main documentation file for Doxygen; holds main page
+april_global.h
+    global definitions for april project
+april.h
+    main header
+aprillibrary.cc
+    main source file for the library
+aprillibrary.h
+    definition of the core library root object
+april_version.h
+    current version
+README
+    this file

@@ -1,0 +1,16 @@
+Source directory for command-line utility.
+
+Content of the directory
+===========================
+gui (directory)
+    graphical objects for the application
+propertybrowser (directory)
+    Qt Solution's property browser
+aprildream-main.cc
+    main source file for the application; contains the definition of main()
+aprildream.qrc
+    resource file for qmake build system
+README
+    this file
+win-res.rc  
+    Windows specific resources

@@ -1,9 +1,51 @@
-This directory contains files used by the qmake[1] to build a dynamic library.
+This directory contains qmake[1] related files for
+dealing with commands.
 
+
+Content of the directory
+===========================
+april-cmd-exe.pro
+    qmake[1] project file for building a library (april-cmd) to 
+    manage commands, modules, to tokenize strings and so on. 
+    The library also contains actual modules.
+april-cmd-help.pro
+    qmake[1] project file for building a helper command line utility
+    (see below)
 april-cmd.pro
-=============
+    qmake[1] management project; directs the build system in 
+    building other projects.
+main-cmd-help.cc
+    source file for command line utility (see below)
+README
+    this file
 
-qmake project file.
+
+april-cmd-help.pro
+===========================
+This project produces a command line utility (april-cmd) to 
+help with the documentation of commands in modules that
+are packed inside april-cmd library.
+
+Note that the actual source for the documentation is 
+main-cmd-help.cc file. To update/add content modify this file.
+
+Usage for april-cmd utility:
+    april-cmd-help ?      prints this help message    
+    april-cmd-help u      update the commands in help.dat file    
+    april-cmd-help p      print commands from help.dat to console    
+    april-cmd-help d      update dox files from help.dat    
+
+help.dat is created or read from current directory. The dox files
+are searched relative to current directory in:
+
+../../april/april/docs/commands
+
+A dox file for each module is created/updated in that directory 
+with same name as the module. The dox will generate a page
+in the documentation (for example module_april.html for april
+module).
+
 
 
 [1] - http://qt-project.org/doc/qt-4.8/qmake-manual.html
+

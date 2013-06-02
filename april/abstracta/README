@@ -1,0 +1,15 @@
+Source directory for command-line utility.
+
+Content of the directory
+===========================
+abstracta-main.cc
+    main source file for the application; contains the definition of main()
+abstractapril.cc
+    source code for main class for abstracta application
+abstractapril.h
+    definition for main class for abstracta application
+abstracta.qrc
+    resource file for qmake build system
+README
+    this file
+

@@ -63,3 +63,17 @@ isEmpty( UI_DIR ) {
 SOURCES += \
     main-cmd-help.cc
 
+OTHER_FILES += \
+    ../../../april/docs/commands/w.dox \
+    ../../../april/docs/commands/s.dox \
+    ../../../april/docs/commands/r.dox \
+    ../../../april/docs/commands/p.dox \
+    ../../../april/docs/commands/module.dox.template \
+    ../../../april/docs/commands/id.dox \
+    ../../../april/docs/commands/e.dox \
+    ../../../april/docs/commands/dna.dox \
+    ../../../april/docs/commands/b.dox \
+    ../../../april/docs/commands/april.dox \
+    ../../../april/docs/commands/ak.dox \
+    ../../../april/docs/commands/a.dox
+
