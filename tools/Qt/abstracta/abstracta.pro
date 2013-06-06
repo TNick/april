@@ -31,7 +31,7 @@ CONFIG(debug, debug|release) {
 
 include( "../version.pri" )
 include( "../local_defs.pri" )
-
+ 
 # argtable
 LIBS += -largtable2
 

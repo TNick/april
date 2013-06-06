@@ -183,8 +183,8 @@ void					PluginsDlg::scanDirectories		( void )
 	int i_max = ui.lv_dirs->count();
 	for ( int i = 0; i < i_max; i++ )
 	{
-		scanDirectory( iter->text() );
 		iter = ui.lv_dirs->item( i );
+		scanDirectory( iter->text() );
 	} /* for ( int i = 0; i < i_max; i++ ) */
 }
 /* ========================================================================= */

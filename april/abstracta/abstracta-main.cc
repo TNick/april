@@ -66,7 +66,7 @@ enum		ArgsTable		{
 #define a__help		((struct arg_lit *)argtable[ARG_HELP])
 #define a__ver		((struct arg_lit *)argtable[ARG_VER])
 #define a__init		((struct arg_file *)argtable[ARG_INIT_FILES])
-#define a__cmds		((struct arg_str *)argtable[ARG_INIT_FILES])
+#define a__cmds		((struct arg_str *)argtable[ARG_COMMANDS])
 #define a__cmdfile	((struct arg_str *)argtable[ARG_CMDFILE])
 #define a__end		((struct arg_end *)argtable[ARG_END])
 //!@}
@@ -273,6 +273,7 @@ int			main			( int argc, char *argv[] )
 	
 	/* prepare to start */
 	QCoreApplication apl( argc, argv );
+	Q_UNUSED( apl );
 	
 	i_ret = mainInit( argc, argv );
 	if ( i_ret == ExitOk )

@@ -1,11 +1,26 @@
+FREQUENCY 100
 # tester script for abstracta
 
 # should present helper message and exit
-TARGET abstracta ARGS --help
+TARGET abstracta_debug ARGS --help
 EXPECT Usage
-END TARGET
+EXIT CODE 0
 
 # should present the version and exit
-TARGET abstracta ARGS --version
-EXPECT abstract version [0-9]+\.[0-9]+\.[0-9]
-END TARGET
+TARGET abstracta_debug ARGS --version
+EXPECT abstracta version [0-9]+\.[0-9]+\.[0-9]
+EXIT CODE 0
+
+# a wrong argument shoud trigger an error
+TARGET abstracta_debug ARGS --wrong_argument
+EXPECT invalid
+EXIT CODE 1
+
+# todo --commands
+# execute commands in argument then exit
+
+# todo --worlds
+# load a world
+
+# todo --file
+# execute commands in file then exit

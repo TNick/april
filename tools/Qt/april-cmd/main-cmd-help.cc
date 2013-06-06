@@ -2,6 +2,7 @@
 #include	<QStringList>
 #include	<QSettings>
 #include	<QDir>
+#include	<QDebug>
 #include	<april/cmd/aprilmodule.h>
 
 #define	NO_ARGUMENT		QString()

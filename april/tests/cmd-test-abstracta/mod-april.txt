@@ -1,0 +1,73 @@
+FREQUENCY 100
+
+# tester script for abstracta
+TARGET abstracta_debug
+
+# ---------------------------------------------------------
+# list all commands
+COMMAND april.commands
+EXPECT april.commands
+
+COMMAND april.commands help
+EXPECT Usage
+
+COMMAND april.commands some_unknown_option
+EXPECT Error
+# ---------------------------------------------------------
+
+# ---------------------------------------------------------
+# list all modules
+COMMAND april.modules
+EXPECT April
+
+COMMAND april.modules help
+EXPECT Usage
+
+COMMAND april.modules some_unknown_option
+EXPECT Error
+# ---------------------------------------------------------
+
+# ---------------------------------------------------------
+# prints the version
+COMMAND april.version
+EXPECT April Version [0-9]+\.[0-9]+\.[0-9]+
+
+COMMAND april.version help
+EXPECT Usage
+
+COMMAND april.version some_unknown_option
+EXPECT Error
+# ---------------------------------------------------------
+
+# ---------------------------------------------------------
+COMMAND april.copyright
+EXPECT BSD
+
+COMMAND april.copyright help
+EXPECT Usage
+
+COMMAND april.copyright some_unknown_option
+EXPECT Error
+# ---------------------------------------------------------
+
+# ---------------------------------------------------------
+COMMAND april.prompt
+EXPECT Error
+COMMAND april.prompt X1X
+EXPECT X1X
+COMMAND april.prompt >
+
+COMMAND april.prompt help
+EXPECT Usage
+
+COMMAND april.prompt some_unknown_option some_other_option
+EXPECT Error
+# ---------------------------------------------------------
+
+
+# send exit command
+COMMAND exit
+
+# expected to exit
+END TARGET
+EXIT CODE 0

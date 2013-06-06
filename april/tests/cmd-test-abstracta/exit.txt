@@ -1,8 +1,11 @@
+FREQUENCY 100
+
 # tester script for abstracta
-TARGET abstracta
+TARGET abstracta_debug
 
 # send exit command
 COMMAND exit
 
 # expected to exit
 END TARGET
+EXIT CODE 0
