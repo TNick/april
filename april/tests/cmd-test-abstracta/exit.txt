@@ -1,0 +1,8 @@
+# tester script for abstracta
+TARGET abstracta
+
+# send exit command
+COMMAND exit
+
+# expected to exit
+END TARGET

@@ -1,0 +1,11 @@
+# tester script for abstracta
+
+# should present helper message and exit
+TARGET abstracta ARGS --help
+EXPECT Usage
+END TARGET
+
+# should present the version and exit
+TARGET abstracta ARGS --version
+EXPECT abstract version [0-9]+\.[0-9]+\.[0-9]
+END TARGET
