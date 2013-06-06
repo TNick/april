@@ -58,7 +58,7 @@ AaTkString				AprilTokenizer::basicTk			( const QString & s )
 	AaToken		tkn;
 	ushort		c;
 	QChar		ch;
-	ushort		quote;
+	ushort		quote = 0;
 	bool		in_token = false;
 	int			i_current = 0;
 	

@@ -93,7 +93,7 @@ APRILSHARED_EXPORT	bool				april::filterDebug			( int i )
 {
 	Q_ASSERT( i >= APRDBG_CTORDTOR );
 	Q_ASSERT( i < APRDBG_MAX );
-	
+	Q_UNUSED( i );
 	
 	
 	return false;

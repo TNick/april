@@ -8,4 +8,3 @@ SUBDIRS += examples
 SUBDIRS += plugins
 SUBDIRS += AprilDream
 SUBDIRS += abstracta
-SUBDIRS += cmd-test
