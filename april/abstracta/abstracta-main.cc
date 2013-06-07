@@ -81,19 +81,13 @@ enum		ArgsTable		{
 
 //! exit codes used by routins in this file
 enum		ExitCode		{
-	ExitOkBreak = -1,	/**< all went fine and should quit the program */
 	ExitOk = 0,			/**< all went fine and should continue */
 	ExitArgError,		/**< provided arguments were wrong */
 	ExitFail,			/**< the command(s) failed to execute properly */
 	
+	ExitOkBreak,		/**< all went fine and should quit the program */
 	ExitMax				/**< bounds check */
 };
-
-//! the program exited normally
-#define EXIT_OK				0
-
-//! exit is ok and should continue
-#define EXIT_CONTINUE		-1
 
 using namespace	april;
 using namespace std;
@@ -137,7 +131,7 @@ void		translatable		( void )
 #ifndef	QT_NO_DEBUG
 	else
 	{
-		qDebug() << "Language file was not loded: " << s_file;
+		// qDebug() << "Language file was not loded: " << s_file;
 	}
 #endif
 }
@@ -292,6 +286,10 @@ int			main			( int argc, char *argv[] )
 			i_ret = AbstractApril::runMainLoop( sl_init_load );
 		}
 		mainEnd();
+	}
+	else if ( i_ret == ExitOkBreak )
+	{
+		i_ret = 0;
 	}
 	
 	return i_ret;

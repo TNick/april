@@ -1,5 +1,3 @@
-FREQUENCY 100
-
 # tester script for abstracta
 TARGET abstracta_debug
 
