@@ -221,7 +221,7 @@ void			AprilLibrary::addWorld					( World * world )
 void			AprilLibrary::internalAddWorld			( World * world )
 {
 	APRDBG_FUNC(APRDBG_LIBRARY);
-	uniq_->worlds_.prepend( world );
+	uniq_->worlds_.append( world );
 	INC_REF( world, this );
 	if ( def_world_ == NULL )
 	{

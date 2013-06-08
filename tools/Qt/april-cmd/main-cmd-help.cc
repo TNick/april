@@ -651,8 +651,8 @@ static void		update_settings_file	( void )
 	april::AprilModule::setUsage( 
 				"w.save",
 				QStringList()
-				<< "[name] [file]"
-				<< "[index] [file]" ,
+				<< "<name> [file]"
+				<< "<index> [file]" ,
 				QStringList() 
 				<< "saves specified world to a file"
 				<< "saves specified world to a file",
