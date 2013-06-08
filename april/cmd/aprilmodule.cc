@@ -164,7 +164,10 @@ bool		AprilModule::getUIntArg (
 		return false;
 	}
 	if ( atks.isInteger( i ) == false )
+	{
+		errorIntegerExpected(s_err, atks.getToken( i ) );
 		return false;
+	}
 	QString s_arg = atks.getToken( i );
 	bool b;
 	*val = s_arg.toULongLong( &b );

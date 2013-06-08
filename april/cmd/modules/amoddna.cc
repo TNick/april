@@ -164,17 +164,17 @@ bool			AModDNA::newDNA				(
 			if ( arg_cnt > 1 )
 			{
 				if ( !AprilModule::getUIntArg( 
-						 atks, 1, s_err, &init_d.cost_ ) )
+						 atks, 2, s_err, &init_d.cost_ ) )
 					break;
 				if ( arg_cnt > 2 )
 				{
 					if ( !AprilModule::getUIntArg( 
-							 atks, 2, s_err, &init_d.age_ ) )
+							 atks, 3, s_err, &init_d.age_ ) )
 						break;
 					if ( arg_cnt > 3 )
 					{
 						if ( !AprilModule::getUIntArg( 
-								 atks, 3, s_err, &init_d.energy_ ) )
+								 atks, 4, s_err, &init_d.energy_ ) )
 							break;
 					}
 				}
