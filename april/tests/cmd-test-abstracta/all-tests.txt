@@ -17,3 +17,4 @@ INCLUDE exit.txt
 INCLUDE arguments.txt
 INCLUDE mod-april.txt
 INCLUDE mod-world.txt
+INCLUDE mod-actor.txt

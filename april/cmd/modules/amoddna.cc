@@ -326,6 +326,11 @@ static QString	do_dna_info					(
 	s.append( QChar( '\n' ) );
 	
 	s.append( QString( 4, QChar( ' ' ) ) );
+	s.append( QObject::tr( "age: " ) );
+	s.append( QString::number( dna.age() ) );
+	s.append( QChar( '\n' ) );
+	
+	s.append( QString( 4, QChar( ' ' ) ) );
 	s.append( QObject::tr( "energy: " ) );
 	s.append( QString::number( dna.energy() ) );
 	s.append( QChar( '\n' ) );
