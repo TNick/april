@@ -1,0 +1,224 @@
+FREQUENCY 100
+
+# tester script for abstracta
+TARGET abstracta_debug
+WAIT DATA 1000
+
+
+
+# ---------------------------------------------------------
+# create a brand new world
+COMMAND w.new
+WAIT DATA 1000
+EXPECT  New world <World[0-9]*> was created with [0-9]* units of energy.
+
+COMMAND w.new "World Name"
+WAIT DATA 1000
+EXPECT  New world <World Name> was created with [0-9]* units of energy.
+
+COMMAND w.new "World Name" 123456
+WAIT DATA 1000
+EXPECT  New world <World Name> was created with 123456 units of energy.
+
+COMMAND w.new help
+WAIT DATA 1000
+BEGIN EXPECT
+    Usage
+    Options
+    name
+    energy
+END
+
+COMMAND w.new some_unknown_option some_unknown_option some_unknown_option
+EXPECT  Error
+# ---------------------------------------------------------
+
+# ---------------------------------------------------------
+# this fails because there is no associated file
+COMMAND w.save 0 
+EXPECT  Error
+
+# save an existing world to a file
+COMMAND w.save 0 saved_file_1.tmp
+EXPECT  World <.*> was saved.
+
+COMMAND w.save "World Name" "file to be loaded later"
+EXPECT  World <World Name> was saved.
+# ---------------------------------------------------------
+
+# ---------------------------------------------------------
+# create open an existing world
+COMMAND w.open
+EXPECT  Error
+
+COMMAND w.open help
+EXPECT  Usage
+
+COMMAND w.open "some file name"
+EXPECT  The file does not exists
+
+COMMAND w.open "file to be loaded later"
+EXPECT  World <World Name> was opened
+# ---------------------------------------------------------
+
+# ---------------------------------------------------------
+# stop it and start it again
+COMMAND exit
+WAIT END 5000
+TARGET abstracta_debug
+# ---------------------------------------------------------
+
+# ---------------------------------------------------------
+# list existing worlds
+COMMAND w.list
+EXPECT  No worlds loaded.
+
+COMMAND w.new
+COMMAND w.list
+BEGIN EXPECT
+  Name\s+Bounded\s+Free\s+Time\s+Status
+  World1.*Stopped
+END
+
+COMMAND w.new
+COMMAND w.list
+BEGIN EXPECT
+  Name\s+Bounded\s+Free\s+Time\s+Status
+  World1.*Stopped
+  World2.*Stopped
+END
+
+COMMAND w.list some_argument
+EXPECT  Error
+COMMAND w.list some_argument some_argument
+EXPECT  Error
+
+COMMAND w.list help
+EXPECT  Usage
+# ---------------------------------------------------------
+
+# ---------------------------------------------------------
+# stop it and start it again
+COMMAND exit
+WAIT END 5000
+TARGET abstracta_debug
+# ---------------------------------------------------------
+
+# ---------------------------------------------------------
+# current world
+COMMAND w.crt
+EXPECT  \(no current world\)
+
+COMMAND w.new W1
+COMMAND w.crt
+EXPECT  <W1>
+
+COMMAND w.new W2
+COMMAND w.crt
+EXPECT  <W2>
+
+COMMAND w.crt W1
+EXPECT  World <W1> was made current.
+
+COMMAND w.crt W2
+EXPECT  World <W2> was made current.
+
+COMMAND w.crt 0
+EXPECT  World <W1> was made current.
+
+COMMAND w.crt 1
+EXPECT  World <W2> was made current.
+
+COMMAND w.crt 1 abc
+EXPECT  Error
+
+COMMAND w.crt abc
+EXPECT  Error
+
+COMMAND w.crt 100
+EXPECT  Error
+
+COMMAND w.crt 2
+EXPECT  Error
+
+COMMAND w.crt help
+EXPECT  Usage
+# ---------------------------------------------------------
+
+# ---------------------------------------------------------
+# running 
+COMMAND w.start 0
+EXPECT  World <W1> was started.
+COMMAND w.list
+EXPECT  W1.*Running
+COMMAND w.adv 0
+EXPECT  Time in world <W1> is now 1.
+COMMAND w.adv 0
+EXPECT  Time in world <W1> is now 2.
+COMMAND w.adv 0 2
+EXPECT  Time in world <W1> is now 4.
+COMMAND w.adv 0 100
+EXPECT  Time in world <W1> is now 104.
+COMMAND w.stop 0
+EXPECT  World <W1> was stopped.
+
+COMMAND w.list
+EXPECT  W1.*104.*Stopped
+COMMAND w.start W1
+COMMAND w.list
+EXPECT  W1.*104.*Running
+COMMAND w.adv 0
+COMMAND w.list
+EXPECT  W1.*105.*Running
+
+COMMAND w.start W2
+EXPECT  World <W2> was started.
+COMMAND w.start W2
+EXPECT  Error
+COMMAND w.stop W2
+EXPECT  World <W2> was stopped.
+COMMAND w.stop W2
+EXPECT  Error
+
+COMMAND w.adv W2
+BEGIN EXPECT
+  World <W2> was started.
+  Time in world <W2> is now 1.
+END
+
+COMMAND w.start
+EXPECT  Error
+COMMAND w.adv
+EXPECT  Error
+COMMAND w.stop
+EXPECT  Error
+
+COMMAND w.start 3
+EXPECT  Error
+COMMAND w.adv 3
+EXPECT  Error
+COMMAND w.stop 3
+EXPECT  Error
+
+COMMAND w.start some_non_existing_world
+EXPECT  Error
+COMMAND w.adv some_non_existing_world
+EXPECT  Error
+COMMAND w.stop some_non_existing_world
+EXPECT  Error
+
+COMMAND w.start help
+EXPECT  Usage
+COMMAND w.adv help
+EXPECT  Usage
+COMMAND w.stop help
+EXPECT  Usage
+# ---------------------------------------------------------
+
+
+# send exit command
+COMMAND exit
+WAIT END 1000
+# expected to exit
+END TARGET
+EXIT CODE 0

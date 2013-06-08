@@ -16,3 +16,4 @@ LOG FAILURE TRACE
 INCLUDE exit.txt
 INCLUDE arguments.txt
 INCLUDE mod-april.txt
+INCLUDE mod-world.txt

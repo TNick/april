@@ -54,6 +54,7 @@ EXPECT Error
 COMMAND april.prompt X1X
 EXPECT X1X
 COMMAND april.prompt >
+EXPECT >
 
 COMMAND april.prompt help
 EXPECT Usage
