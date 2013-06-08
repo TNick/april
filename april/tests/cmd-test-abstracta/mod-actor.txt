@@ -1,0 +1,32 @@
+FREQUENCY 100
+
+# tester script for abstracta
+TARGET abstracta_debug
+WAIT DATA 1000
+
+
+
+# ---------------------------------------------------------
+# 
+COMMAND w.new W1
+
+COMMAND a.list
+BEGIN EXPECT
+  List of actors in world <W1>:
+  none
+END
+
+# TODO create DNA; create actor
+
+
+
+COMMAND a.new help
+EXPECT  Usage
+# ---------------------------------------------------------
+
+# send exit command
+COMMAND exit
+WAIT END 1000
+# expected to exit
+END TARGET
+EXIT CODE 0

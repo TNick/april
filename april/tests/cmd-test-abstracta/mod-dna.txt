@@ -1,0 +1,184 @@
+FREQUENCY 100
+
+# tester script for abstracta
+TARGET abstracta_debug
+WAIT DATA 1000
+
+
+
+# ---------------------------------------------------------
+# 
+
+COMMAND dna.list
+EXPECT  Error! No current world.
+
+COMMAND w.new W1
+COMMAND dna.list
+EXPECT  No kinds registered in this world.
+
+COMMAND dna.new
+EXPECT  A new kind was created and assigned ID 1
+COMMAND dna.list
+BEGIN EXPECT
+  ID\s+Name
+  1\s+Actor.Kind.1
+END
+COMMAND dna.info 1
+BEGIN EXPECT
+  Information about DNA with ID 1:
+  name: Actor.Kind.1
+  id: 1
+  cost: 10
+  age: 100
+  energy: 10
+  sensors: none
+  reflexes: none
+  brains: none
+  actuators: none
+  partitions: none
+END
+
+
+COMMAND dna.new ActorName1
+EXPECT  A new kind was created and assigned ID 2
+COMMAND dna.list
+BEGIN EXPECT
+  ID\s+Name
+  1\s+Actor.Kind.1
+  2\s+ActorName1
+END
+COMMAND dna.info 2
+BEGIN EXPECT
+  Information about DNA with ID 2:
+  name: ActorName1
+  id: 2
+  cost: 10
+  age: 100
+  energy: 10
+  sensors: none
+  reflexes: none
+  brains: none
+  actuators: none
+  partitions: none
+END
+
+COMMAND dna.new "Actor.Kind.2" 15
+EXPECT  A new kind was created and assigned ID 3
+COMMAND dna.list
+BEGIN EXPECT
+  ID\s+Name
+  1\s+Actor.Kind.1
+  2\s+ActorName
+  3\s+Actor.Kind.2
+END
+COMMAND dna.info 3
+BEGIN EXPECT
+  Information about DNA with ID 3:
+  name: Actor.Kind.2
+  id: 3
+  cost: 15
+  age: 100
+  energy: 10
+  sensors: none
+  reflexes: none
+  brains: none
+  actuators: none
+  partitions: none
+END
+
+COMMAND dna.new Actor.Kind.3 16 151
+EXPECT  A new kind was created and assigned ID 4
+COMMAND dna.list
+BEGIN EXPECT
+  ID\s+Name
+  1\s+Actor.Kind.1
+  2\s+ActorName
+  3\s+Actor.Kind.2
+  4\s+Actor.Kind.3
+END
+COMMAND dna.info 4
+BEGIN EXPECT
+  Information about DNA with ID 4:
+  name: Actor.Kind.3
+  id: 4
+  cost: 16
+  age: 151
+  energy: 10
+  sensors: none
+  reflexes: none
+  brains: none
+  actuators: none
+  partitions: none
+END
+
+COMMAND dna.new Actor.Kind.4 17 152 11
+EXPECT  A new kind was created and assigned ID 5
+COMMAND dna.list
+BEGIN EXPECT
+  ID\s+Name
+  1\s+Actor.Kind.1
+  2\s+ActorName
+  3\s+Actor.Kind.2
+  4\s+Actor.Kind.3
+  5\s+Actor.Kind.4
+END
+COMMAND dna.info 5
+BEGIN EXPECT
+  Information about DNA with ID 5:
+  name: Actor.Kind.4
+  id: 5
+  cost: 17
+  age: 152
+  energy: 11
+  sensors: none
+  reflexes: none
+  brains: none
+  actuators: none
+  partitions: none
+END
+
+# can't assign same name twice
+COMMAND dna.new ActorName1
+EXPECT  ID name ActorName1 is already assigned
+
+
+COMMAND dna.info 5000
+EXPECT  DNA with ID 5000 does not exists.
+COMMAND dna.info 0
+EXPECT  Error
+COMMAND dna.info some_text
+EXPECT  Error
+
+COMMAND dna.list some_argument
+EXPECT  Error
+COMMAND dna.new 0 1 2 3 4
+EXPECT  Error
+
+COMMAND dna.list help
+EXPECT  Usage
+COMMAND dna.new help
+EXPECT  Usage
+COMMAND dna.info help
+EXPECT  Usage
+# ---------------------------------------------------------
+
+
+# ---------------------------------------------------------
+# TODO
+# add a sensor
+# dna.s
+# add an actuator
+# dna.ak
+# add a reflex
+# dna.r
+# add a brain
+# dna.b
+# ---------------------------------------------------------
+
+
+# send exit command
+COMMAND exit
+WAIT END 1000
+# expected to exit
+END TARGET
+EXIT CODE 0
