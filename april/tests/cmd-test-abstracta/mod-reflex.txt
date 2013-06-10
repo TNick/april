@@ -1,0 +1,48 @@
+FREQUENCY 100
+
+# tester script for abstracta
+TARGET abstracta_debug
+WAIT DATA 1000
+
+
+
+# ---------------------------------------------------------
+# 
+
+COMMAND r.new
+EXPECT  Error
+COMMAND r.new arg1
+EXPECT  Error
+COMMAND r.list
+EXPECT  Error
+COMMAND r.kinds
+EXPECT  Error
+
+COMMAND r.list arg1 arg2
+EXPECT  Error
+
+COMMAND w.new
+
+COMMAND r.kinds
+EXPECT  ID\s+Name\s+Factory name
+
+COMMAND dna.new
+COMMAND a.new 1
+# COMMAND r.new
+# TODO create reflex
+
+
+COMMAND r.new help
+EXPECT  Usage
+COMMAND r.list help
+EXPECT  Usage
+COMMAND r.kinds help
+EXPECT  Usage
+# ---------------------------------------------------------
+
+# send exit command
+COMMAND exit
+WAIT END 1000
+# expected to exit
+END TARGET
+EXIT CODE 0
