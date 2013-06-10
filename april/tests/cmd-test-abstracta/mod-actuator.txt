@@ -1,0 +1,48 @@
+FREQUENCY 100
+
+# tester script for abstracta
+TARGET abstracta_debug
+WAIT DATA 1000
+
+
+
+# ---------------------------------------------------------
+# 
+
+COMMAND ak.new
+EXPECT  Error
+COMMAND ak.new arg1
+EXPECT  Error
+COMMAND ak.list
+EXPECT  Error
+COMMAND ak.kinds
+EXPECT  Error
+
+COMMAND ak.list arg1 arg2
+EXPECT  Error
+
+COMMAND w.new
+
+COMMAND ak.kinds
+EXPECT  ID\s+Name\s+Factory name
+
+COMMAND dna.new
+COMMAND a.new 1
+# COMMAND ak.new
+# TODO create actuator
+
+
+COMMAND ak.new help
+EXPECT  Usage
+COMMAND ak.list help
+EXPECT  Usage
+COMMAND ak.kinds help
+EXPECT  Usage
+# ---------------------------------------------------------
+
+# send exit command
+COMMAND exit
+WAIT END 1000
+# expected to exit
+END TARGET
+EXIT CODE 0
