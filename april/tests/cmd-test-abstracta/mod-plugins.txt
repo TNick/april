@@ -1,0 +1,72 @@
+FREQUENCY 100
+LOG FAILURE TRACE
+
+# tester script for abstracta
+TARGET abstracta_debug
+WAIT DATA 1000
+
+
+
+# ---------------------------------------------------------
+# 
+COMMAND p.list
+EXPECT  No plug-ins loaded\.
+
+COMMAND p.load
+EXPECT  Error
+
+COMMAND p.load nonexisting_plugin
+EXPECT  Failed to load plug-in
+
+COMMAND p.load libsample_debug.so
+BEGIN EXPECT
+        Plug-in <libsample_debug\.so> was loaded
+        Sample plug-in was constructed
+        Sample plug-in was initialised
+END
+
+COMMAND p.list
+BEGIN EXPECT
+        Name\s+Path
+        0\s+Sample PlugIn
+END
+
+COMMAND p.unload
+EXPECT  Error
+
+
+COMMAND p.unload 0
+BEGIN EXPECT
+        Sample plug-in was terminated
+        Sample plug-in was destructed
+        Plug-in <Sample PlugIn> was unloaded
+END
+
+COMMAND p.load libsample_debug.so
+COMMAND p.unload libsample_debug.so
+
+COMMAND p.list
+EXPECT  No plug-ins loaded\.
+
+COMMAND p.load some_arg some_other_arg
+EXPECT  Error
+COMMAND p.list some_arg
+EXPECT  Error
+COMMAND p.unload some_arg some_other_arg
+EXPECT  Error
+
+COMMAND p.load help
+EXPECT  Usage
+COMMAND p.list help
+EXPECT  Usage
+COMMAND p.unload help
+EXPECT  Usage
+
+# ---------------------------------------------------------
+
+# send exit command
+COMMAND exit
+WAIT END 1000
+# expected to exit
+END TARGET
+EXIT CODE 0
