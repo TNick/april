@@ -1,0 +1,90 @@
+FREQUENCY 100
+
+# tester script for abstracta
+TARGET abstracta_debug
+WAIT DATA 1000
+
+# ---------------------------------------------------------
+# create a brand new world
+COMMAND id.list
+WAIT DATA 1000
+EXPECT  Error! No current world.
+
+COMMAND id.info
+EXPECT  One argument expected.
+
+COMMAND id.new
+EXPECT  One argument expected.
+
+COMMAND id.info 1
+EXPECT  Error! No current world.
+
+COMMAND id.new "name"
+EXPECT  Error! No current world.
+
+COMMAND w.new
+
+COMMAND id.list
+EXPECT  List of allocated IDs in world
+
+COMMAND id.info
+EXPECT  Error
+
+COMMAND id.info 0
+EXPECT  Error
+
+COMMAND id.info 1
+EXPECT  Id 1 is not associated with any name in world
+
+COMMAND id.info 3
+EXPECT  Id 3 is not associated with any name in world
+
+COMMAND id.new "some name"
+COMMAND id.list
+BEGIN EXPECT  
+      List of allocated IDs in world
+      1\s+some name
+END
+
+COMMAND id.info 1
+EXPECT  Id 1 is associated with name some name in world <.*>\.
+
+COMMAND id.new "some name"
+EXPECT  Name some name already associated with id 1\.
+
+COMMAND id.new "some other name"
+COMMAND id.list
+BEGIN EXPECT  
+      List of allocated IDs in world
+      1\s+some name
+      2\s+some other name
+END
+
+COMMAND id.info 2
+EXPECT  Id 2 is associated with name some other name in world <.*>\.
+
+COMMAND id.new "some other name"
+EXPECT  Name some other name already associated with id 2\.
+
+
+COMMAND id.list some_other option
+EXPECT  Error
+
+COMMAND id.info some_other option
+EXPECT  Error
+
+COMMAND id.name name other_option
+EXPECT  Error
+
+COMMAND id.list help
+EXPECT  Usage
+
+# ---------------------------------------------------------
+
+
+# send exit command
+COMMAND exit
+WAIT END 1000
+# expected to exit
+END TARGET
+EXIT CODE 0
