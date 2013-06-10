@@ -1,0 +1,46 @@
+FREQUENCY 100
+
+# tester script for abstracta
+TARGET abstracta_debug
+WAIT DATA 1000
+
+
+
+# ---------------------------------------------------------
+# 
+
+COMMAND e.new
+EXPECT  Error
+COMMAND e.new arg1
+EXPECT  Error
+COMMAND e.list
+EXPECT  Error
+COMMAND e.kinds
+EXPECT  Error
+
+COMMAND e.list arg1 arg2
+EXPECT  Error
+
+COMMAND w.new
+
+COMMAND e.kinds
+EXPECT  ID\s+Name\s+Factory name
+
+# COMMAND e.new
+# TODO create event
+
+
+COMMAND e.new help
+EXPECT  Usage
+COMMAND e.list help
+EXPECT  Usage
+COMMAND e.kinds help
+EXPECT  Usage
+# ---------------------------------------------------------
+
+# send exit command
+COMMAND exit
+WAIT END 1000
+# expected to exit
+END TARGET
+EXIT CODE 0

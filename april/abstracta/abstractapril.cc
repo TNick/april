@@ -39,6 +39,7 @@
 #include	<april/cmd/modules/amodsensor.h>
 #include	<april/cmd/modules/amodbrain.h>
 #include	<april/cmd/modules/amodreflex.h>
+#include	<april/cmd/modules/amodevents.h>
 
 #include	<QFile>
 
@@ -131,6 +132,10 @@ void			AbstractApril::init					( void )
 	AModActuator * module_ak = new AModActuator( &cmd_map );
 	addModule( module_ak );
 	REMOVE_CONSTRUCTOR_REF(module_ak);
+	
+	AModEvent * module_e = new AModEvent( &cmd_map );
+	addModule( module_e );
+	REMOVE_CONSTRUCTOR_REF(module_e);
 	
 }
 /* ========================================================================= */
