@@ -27,6 +27,7 @@
 
 #include    <april/april.h>
 #include	<QMap>
+#include	<QStringList>
 
 /*  INCLUDES    ============================================================ */
 //

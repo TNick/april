@@ -29,6 +29,7 @@
 #include	<april/cmd/apriltokenizer.h>
 #include	<QObject>
 #include	<QSettings>
+#include	<QStringList>
 
 /*  INCLUDES    ============================================================ */
 //

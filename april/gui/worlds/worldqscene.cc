@@ -44,11 +44,11 @@ using namespace april::Gui;
 //! Item for scene that represents the origin and axis directions
 class	WQS_Unit		: public QGraphicsItem	{
 	
-	int		scale = 100;
+	int		scale;
 public:
 	
 	//! constructor
-	WQS_Unit() : QGraphicsItem()
+	WQS_Unit() : QGraphicsItem(), scale(100)
 	{}
 	
 	//! the rectangle that contains our item

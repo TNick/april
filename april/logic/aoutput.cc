@@ -27,6 +27,7 @@
 #include	<QDebug>
 #include	<QString>
 #include	<QSettings>
+#include	<QStringList>
 #include	<iostream>
 
 /*  INCLUDES    ============================================================ */
