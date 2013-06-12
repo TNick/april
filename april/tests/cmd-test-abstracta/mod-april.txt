@@ -1,5 +1,5 @@
 # tester script for abstracta
-TARGET abstracta_debug
+TARGET abstracta
 
 # ---------------------------------------------------------
 # list all commands

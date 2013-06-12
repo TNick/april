@@ -47,7 +47,9 @@ namespace   april    {
 /**
 *	@brief	Module that provides commands related to events
 */
-class AModEvent		: public AprilModule		{
+class
+	APRILSHARED_EXPORT
+	AModEvent		: public AprilModule		{
 	BBM_TRACK( AModEvents );
 
 	//

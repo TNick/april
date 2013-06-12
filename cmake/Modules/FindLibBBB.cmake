@@ -24,7 +24,7 @@ set(LIBBBB_INCLUDE_DIRS ${LIBBBB_INCLUDE_DIR} )
 include(FindPackageHandleStandardArgs)
 # handle the QUIETLY and REQUIRED arguments and set LIBBBB_FOUND to TRUE
 # if all listed variables are TRUE
-find_package_handle_standard_args(LibBBB  DEFAULT_MSG
+find_package_handle_standard_args(LIBBBB  DEFAULT_MSG
                                   LIBBBB_LIBRARY LIBBBB_INCLUDE_DIR)
 
 mark_as_advanced(LIBBBB_INCLUDE_DIR LIBBBB_LIBRARY )

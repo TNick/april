@@ -1,7 +1,7 @@
 FREQUENCY 100
 
 # tester script for abstracta
-TARGET abstracta_debug
+TARGET abstracta
 WAIT DATA 1000
 
 
@@ -65,7 +65,7 @@ EXPECT  World <World Name> was opened
 # stop it and start it again
 COMMAND exit
 WAIT END 5000
-TARGET abstracta_debug
+TARGET abstracta
 # ---------------------------------------------------------
 
 # ---------------------------------------------------------
@@ -101,7 +101,7 @@ EXPECT  Usage
 # stop it and start it again
 COMMAND exit
 WAIT END 5000
-TARGET abstracta_debug
+TARGET abstracta
 # ---------------------------------------------------------
 
 # ---------------------------------------------------------

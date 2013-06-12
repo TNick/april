@@ -1,17 +1,17 @@
 # tester script for abstracta
 
 # should present helper message and exit
-TARGET abstracta_debug ARGS --help
+TARGET abstracta ARGS --help
 EXPECT Usage
 EXIT CODE 0
 
 # should present the version and exit
-TARGET abstracta_debug ARGS --version
+TARGET abstracta ARGS --version
 EXPECT abstracta version [0-9]+\.[0-9]+\.[0-9]
 EXIT CODE 0
 
 # a wrong argument shoud trigger an error
-TARGET abstracta_debug ARGS --wrong_argument
+TARGET abstracta ARGS --wrong_argument
 EXPECT invalid
 EXIT CODE 1
 

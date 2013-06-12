@@ -8,13 +8,6 @@
   \brief		Contains definitions for configuring the package
 
 *//*
-
-
- WARNING!!!
-
- This file is copied exactly as it is by the release script into the archive
- and renamed libqtcp_config.h
- 
  
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  Please read COPYING and README files in root folder
@@ -66,9 +59,9 @@
 *	the components are complet6ly removed from output.
 *
 *	#define	BB_MEMTRACK			1
-*	#undef	BB_MEMTRACK
+*	
 */
-
+#undef	BB_MEMTRACK
 
 
 /*  DEFINITIONS    ========================================================= */
